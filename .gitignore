@@ -11,3 +11,6 @@ venv/
 .zsh-history
 .zshrc
 appart.conf
+__pycache__
+.vscode
+settings_local.py
