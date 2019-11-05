@@ -1,0 +1,13 @@
+venv/
+.pki/
+.local/
+.config/
+.cache/
+.bash_logout
+.bash_profile
+.bashrc
+.psql_history
+.viminfo
+.zsh-history
+.zshrc
+appart.conf
