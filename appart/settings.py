@@ -47,8 +47,8 @@ ROOT_URLCONF = 'appart.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
+        'DIRS': [],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -56,11 +56,38 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-        'libraries':{
-          'ita_template_tags': 'templatetags.ita_template_tags',
-        },
+            'libraries':{
+                'ita_template_tags': 'templatetags.ita_template_tags',
+            },
         }
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'APP_DIRS': True,
+        'DIRS': ['/jinja_templates'],
+        'OPTIONS': {
+            'autoescape': True,
+            'environment': 'jinja2.Environment',
+        }
+    },
+    # {
+    #     'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    #     'DIRS': [],
+    #     'APP_DIRS': True,
+    #     'OPTIONS': {
+    #         'environment': 'jinja2.Environment',
+    #         'autoescape': True,
+    #         'context_processors': [
+    #             'django.template.context_processors.debug',
+    #             'django.template.context_processors.request',
+    #             'django.contrib.auth.context_processors.auth',
+    #             'django.contrib.messages.context_processors.messages',
+    #         ],
+    #         # 'libraries':{
+    #         #     'ita_template_tags': 'templatetags.ita_template_tags',
+    #         # },
+    #     }
+    # },
 ]
 
 WSGI_APPLICATION = 'appart.wsgi.application'
