@@ -1,0 +1,19 @@
+{
+  "name": "appart",
+  "version": "1.0.0",
+  "description": "Automation system for apartments buildings.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kozlyuk/appart.git"
+  },
+  "author": "Itel-Service",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kozlyuk/appart/issues"
+  },
+  "homepage": "https://github.com/kozlyuk/appart#readme"
+}
