@@ -56,7 +56,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'libraries':{
+          'ita_template_tags': 'templatetags.ita_template_tags',
         },
+        }
     },
 ]
 
@@ -113,3 +116,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_production")
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
+
+
+
+COMPANY_NAME = 'Стоград'
