@@ -4,9 +4,11 @@
 <head>
     {% load static %}
     {% load bootstrap4 %}
+    {% load widget_tweaks %}
+    {% load ita_template_tags %}
     {% bootstrap_css %}
 
-    <title>Стоград | Вхід</title>
+    <title>{{settings}} | Вхід</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -16,7 +18,7 @@
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- VENDOR CSS -->
-    <link rel='stylesheet' type='text/css' href='{% static "bower_components/font-awesome-5/css/all.min.css" %}' />
+    <link rel='stylesheet' type='text/css' href='{% static "bower_components/font-awesome-5/css/all.css" %}' />
     <link rel="stylesheet" href="{% static 'dashboard/plugins/animate-css/vivify.min.css' %}">
 
     <!-- MAIN CSS -->
@@ -54,23 +56,29 @@
             <div class="card">
                 <div class="body">
                     <p class="lead">Вхід в аккаунт</p>
-                    <form class="form-auth-small m-t-20" action="index.html">
+                    <form class="form-auth-small m-t-20" action="" method="post"> {% csrf_token %}
+                        {% if form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                            {% for err in form.non_field_errors %}
+                                    {{ err }}
+                            {% endfor %}
+                                </div>
+                        {% endif %}
                         <div class="form-group">
-                            <label for="signin-email" class="control-label sr-only">Email</label>
-                            <input type="email" class="form-control round" id="signin-email" placeholder="Email">
+                            <label for="id_username" class="control-label sr-only">Email</label>
+                            {{form.username|add_class:"form-control round"|attr:"placeholder=Логін"}}
                         </div>
                         <div class="form-group">
-                            <label for="signin-password" class="control-label sr-only">Пароль</label>
-                            <input type="password" class="form-control round" id="signin-password"
-                                placeholder="Password">
+                            <label for="id_password" class="control-label sr-only">Пароль</label>
+                            {{form.password|add_class:"form-control round"|attr:"placeholder=Пароль"}}
                         </div>
-                        <div class="form-group clearfix">
+                        {% comment %} <div class="form-group clearfix">
                             <label class="fancy-checkbox element-left">
                                 <input type="checkbox">
                                 <span>Запам'ятати мене</span>
                             </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-round btn-block">ВХІД</button>
+                        </div> {% endcomment %}
+                        <button type="submit" class="btn btn-primary btn-round btn-block uppercase">Вхід</button>
                         <div class="bottom">
                             <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a
                                     href="page-forgot-password.html">Забули пароль?</a></span>
