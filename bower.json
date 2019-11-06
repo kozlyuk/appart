@@ -1,0 +1,21 @@
+{
+  "name": "appart",
+  "description": "Automation system for apartments buildings.",
+  "main": "index.js",
+  "authors": [
+    "Itel-Service"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/kozlyuk/appart",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}

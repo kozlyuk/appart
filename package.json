@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "sass --watch static/dashboard/sass:static/dashboard/compiled",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "cleancss -o merged.min.css static/dashboard/compiled/*.css"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/kozlyuk/appart/issues"
   },
-  "homepage": "https://github.com/kozlyuk/appart#readme"
+  "homepage": "https://github.com/kozlyuk/appart#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  }
 }
