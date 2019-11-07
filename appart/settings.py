@@ -10,8 +10,8 @@ from appart.settings_local import *
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR_JINJA = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -25,8 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
     'templatetags',
+    'accounts',
     'bootstrap4',
     'font_awesome',
     'widget_tweaks',
@@ -65,11 +65,11 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'APP_DIRS': True,
         'DIRS' : [
-            os.path.join(BASE_DIR, 'jinja_templates'),
+            os.path.join(BASE_DIR_JINJA, 'jinja_templates'),
         ],
         'OPTIONS': {
             'autoescape': True,
-            'environment': 'jinja2.Environment',
+            'environment': 'appart.jinja_enviroment.environment',
             'extensions' : [
                  'jinja2.ext.i18n',
                  'jinja2.ext.with_',

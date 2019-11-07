@@ -1,10 +1,60 @@
 <!doctype html>
-<html lang="en">
+
+{% with site_local = "uk" %}
+<html lang="{{site_local}}">
+{% endwith %}
 
 <head>
-
+    {% block title %}{% endblock title %}
 </head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="description" content="Automation system for apartments buildings.">
+{% with seo_tags = " some tags " %}
+<meta name="keywords" content="{{ seo_tags }}">
+{% endwith %}
+<meta name="author" content="Itel-Service">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<!-- VENDOR CSS -->
+<link rel="stylesheet" href="{{static ('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{static ('bower_components/font-awesome-5/css/all.min.css')}}">
+<link rel="stylesheet" href="{{static ('/dashboard/plugins/animate-css/vivify.min.css')}}">
+
+<link rel="stylesheet" href="{{static ('bower_components/c3/c3.min.css')}}" />
+<link rel="stylesheet" href="{{static ('bower_components/chartist/dist/chartist.min.css')}}" />
+<link rel="stylesheet"
+    href="{{static ('bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css')}}" />
+<link rel="stylesheet" href="{{static ('bower_components/toastr/toastr.min.css')}}" />
+
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="{{static ('dashboard/css/site.min.css')}}">
+{% block extra_css %}
+
+{% endblock extra_css %}
+
 <body class="theme-cyan font-montserrat">
 
+    {% include 'plugins/loader.j2' %}
+
+    {% block content %}{% endblock content %}
+
+    <!-- Javascript -->
+    <script src="{{static ('dashboard/bundles/libscripts.bundle.js')}}"></script>
+    <script src="{{static ('dashboard/bundles/vendorscripts.bundle.js')}}"></script>
+    <script src="{{static ('dashboard/bundles/c3.bundle.js')}}"></script>
+    <script src="{{static ('dashboard/bundles/chartist.bundle.js')}}"></script>
+    <script src="{{static ('dashboard/bundles/knob.bundle.js')}}"></script>
+    <script src="{{static ('bower_components/toastr/toastr.min.js')}}"></script>
+    <script src="{{static ('dashboard/bundles/mainscripts.bundle.js')}}"></script>
+
+    <script src="{{static ('dashboard/js/index2.js')}}"></script>
+
+    {% block extra_js %}{% endblock extra_js %}
+
 </body>
+
 </html>
