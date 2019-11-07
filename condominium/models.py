@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 
 class Company(models.Model):
@@ -16,7 +17,7 @@ class Company(models.Model):
     logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:
+    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
         verbose_name = _('Company')
         verbose_name_plural = _('Companies')
 
@@ -32,7 +33,7 @@ class House(models.Model):
     logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:
+    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
         unique_together = ('company', 'name')
         verbose_name = _('House')
         verbose_name_plural = _('Houses')
@@ -45,16 +46,18 @@ class House(models.Model):
 class Apartment(models.Model):
     """ Model contains Houses of managerial company """
     house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
+    resident = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Resident'),
+                                 null=True, on_delete=models.SET_NULL)
     number = models.PositiveSmallIntegerField(_('House'))
     area = models.PositiveSmallIntegerField(_('Area'), blank=True)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True)
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:
+    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
         unique_together = ('house', 'number')
         verbose_name = _('Apartment')
         verbose_name_plural = _('Apartments')
         ordering = ['-number']
 
     def __str__(self):
-        return self.name
+        return self.number
