@@ -13,4 +13,4 @@ venv/
 appart.conf
 __pycache__
 .vscode
-settings_local.py
+appart/settings_local.py
