@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    'condominium.apps.CondominiumConfig',
     'templatetags',
     'bootstrap4',
     'font_awesome',
