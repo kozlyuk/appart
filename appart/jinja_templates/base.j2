@@ -25,7 +25,19 @@
 
     {% include 'plugins/loader.j2' %}
 
-    {% block content %}{% endblock content %}
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+
+    <div id="wrapper">
+        {% include 'plugins/navbar.j2' %}
+
+        {% include 'plugins/sidebar_menu.j2' %}
+        <div id="main-content">
+            <div class="container-fluid">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </div>
 
     {% include 'dependencies/js.j2' %}
 
