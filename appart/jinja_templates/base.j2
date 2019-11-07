@@ -1,10 +1,46 @@
 <!doctype html>
-<html lang="en">
+
+{% with site_local = "uk" %}
+<html lang="{{site_local}}">
+{% endwith %}
 
 <head>
-
+    {% block title %}{% endblock title %}
 </head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="description" content="Automation system for apartments buildings.">
+{% with seo_tags = " some tags " %}
+<meta name="keywords" content="{{ seo_tags }}">
+{% endwith %}
+<meta name="author" content="Itel-Service">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+{% include 'dependencies/css.j2' %}
+
 <body class="theme-cyan font-montserrat">
 
+    {% include 'plugins/loader.j2' %}
+
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+
+    <div id="wrapper">
+        {% include 'plugins/navbar.j2' %}
+
+        {% include 'plugins/sidebar_menu.j2' %}
+        <div id="main-content">
+            <div class="container-fluid">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'dependencies/js.j2' %}
+
 </body>
+
 </html>
