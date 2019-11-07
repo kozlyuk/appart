@@ -25,7 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'templatetags',
     'accounts',
+    'bootstrap4',
+    'font_awesome',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -43,8 +47,8 @@ ROOT_URLCONF = 'appart.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
+        'DIRS': [],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -52,8 +56,38 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-        },
+            'libraries':{
+                'ita_template_tags': 'templatetags.ita_template_tags',
+            },
+        }
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'APP_DIRS': True,
+        'DIRS': ['/jinja_templates'],
+        'OPTIONS': {
+            'autoescape': True,
+            'environment': 'jinja2.Environment',
+        }
+    },
+    # {
+    #     'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    #     'DIRS': [],
+    #     'APP_DIRS': True,
+    #     'OPTIONS': {
+    #         'environment': 'jinja2.Environment',
+    #         'autoescape': True,
+    #         'context_processors': [
+    #             'django.template.context_processors.debug',
+    #             'django.template.context_processors.request',
+    #             'django.contrib.auth.context_processors.auth',
+    #             'django.contrib.messages.context_processors.messages',
+    #         ],
+    #         # 'libraries':{
+    #         #     'ita_template_tags': 'templatetags.ita_template_tags',
+    #         # },
+    #     }
+    # },
 ]
 
 WSGI_APPLICATION = 'appart.wsgi.application'
@@ -77,8 +111,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'accounts.User'
-
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -109,3 +143,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_production")
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
+
+
+
+COMPANY_NAME = 'Стоград'

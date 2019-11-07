@@ -1,0 +1,25 @@
+{
+  "name": "appart",
+  "version": "1.0.0",
+  "description": "Automation system for apartments buildings.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "sass --watch static/dashboard/sass:static/dashboard/compiled",
+    "compile": "cleancss -o merged.min.css static/dashboard/compiled/*.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kozlyuk/appart.git"
+  },
+  "author": "Itel-Service",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kozlyuk/appart/issues"
+  },
+  "homepage": "https://github.com/kozlyuk/appart#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  }
+}

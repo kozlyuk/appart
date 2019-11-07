@@ -13,4 +13,7 @@ venv/
 appart.conf
 __pycache__
 .vscode
-appart/settings_local.py
+settings_local.py
+package-lock.json
+node_modules/
+bower_components/
