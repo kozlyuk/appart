@@ -2,6 +2,7 @@ Django
 djangorestframework
 psycopg2
 pytz
+Pillow
 sqlparse
 django-bootstrap4 # https://pypi.org/project/django-bootstrap4/
 django-font-awesome # https://github.com/benbacardi/django-font-awesome
