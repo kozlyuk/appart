@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 
 from .managers import CustomUserManager
 
@@ -23,6 +24,7 @@ class User(AbstractUser):
     for authentication instead of usernames.
     Added fields mobile_number, birth_date, avatar, theme
     """
+    #  Fields
     username = None
     email = models.EmailField(_('Email address'), unique=True)
     mobile_number = models.CharField(_('Mobile number'), max_length=13, blank=True)
@@ -37,3 +39,9 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def get_absolute_url(self):
+        return reverse("accounts_User_detail", args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse("accounts_User_update", args=(self.pk,))
