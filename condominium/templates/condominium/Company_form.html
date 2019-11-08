@@ -1,0 +1,53 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'condominium_Company_list' %}">
+    Company Listing
+    </a>
+</p>
+    
+<form method="post">
+{% csrf_token %}
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="fullname">fullname: </label>
+  <input class="form-control col-sm-10" id="fullname" type="text" name="fullname" value="{{ object.fullname }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="chief">chief: </label>
+  <input class="form-control col-sm-10" id="chief" type="text" name="chief" value="{{ object.chief }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="logo">logo: </label>
+  <input class="form-control col-sm-10" id="logo" type="text" name="logo" value="{{ object.logo }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="name">name: </label>
+  <input class="form-control col-sm-10" id="name" type="text" name="name" value="{{ object.name }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="phone">phone: </label>
+  <input class="form-control col-sm-10" id="phone" type="text" name="phone" value="{{ object.phone }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="address">address: </label>
+  <input class="form-control col-sm-10" id="address" type="text" name="address" value="{{ object.address }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="description">description: </label>
+  <input class="form-control col-sm-10" id="description" type="text" name="description" value="{{ object.description }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="bank_requisites">bank_requisites: </label>
+  <input class="form-control col-sm-10" id="bank_requisites" type="text" name="bank_requisites" value="{{ object.bank_requisites }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="requisites">requisites: </label>
+  <input class="form-control col-sm-10" id="requisites" type="text" name="requisites" value="{{ object.requisites }}">
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}
