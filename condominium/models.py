@@ -3,10 +3,13 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.urls import reverse
 
 
 class Company(models.Model):
     """ Model contains managerial companies """
+
+    #  Fields
     name = models.CharField(_('Name'), max_length=45)
     fullname = models.CharField(_('Full name'), max_length=255)
     address = models.CharField(_('Legal address'), max_length=255, blank=True)
@@ -17,23 +20,33 @@ class Company(models.Model):
     logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
+    class Meta:
         verbose_name = _('Company')
         verbose_name_plural = _('Companies')
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("condominium_Company_detail", args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse("condominium_Company_update", args=(self.pk,))
+
 
 class House(models.Model):
     """ Model contains Houses of managerial company """
+
+    #  Relationships
     company = models.ForeignKey(Company, verbose_name=_('Company'), on_delete=models.PROTECT)
+
+    #  Fields
     name = models.CharField(_('Name'), max_length=255)
     address = models.CharField(_('Address'), max_length=255, blank=True)
     logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
+    class Meta:
         unique_together = ('company', 'name')
         verbose_name = _('House')
         verbose_name_plural = _('Houses')
@@ -42,18 +55,28 @@ class House(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("condominium_House_detail", args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse("condominium_House_update", args=(self.pk,))
+
 
 class Apartment(models.Model):
     """ Model contains Houses of managerial company """
+
+    #  Relationships
     house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
     resident = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Resident'),
                                  null=True, on_delete=models.SET_NULL)
+
+    #  Fields
     number = models.PositiveSmallIntegerField(_('House'))
     area = models.PositiveSmallIntegerField(_('Area'), blank=True)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True)
     description = models.TextField(_('Description'), blank=True)
 
-    class Meta:     # pylint: disable=too-few-public-methods, missing-class-docstring
+    class Meta:
         unique_together = ('house', 'number')
         verbose_name = _('Apartment')
         verbose_name_plural = _('Apartments')
@@ -61,3 +84,9 @@ class Apartment(models.Model):
 
     def __str__(self):
         return self.number
+
+    def get_absolute_url(self):
+        return reverse("condominium_Apartment_detail", args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse("condominium_Apartment_update", args=(self.pk,))
