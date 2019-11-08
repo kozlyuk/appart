@@ -1,7 +1,7 @@
 <!doctype html>
 
 {% with site_local = "uk" %}
-<html lang="{{site_local}}">
+    <html lang="{{site_local}}">
 {% endwith %}
 
 <head>
@@ -13,15 +13,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="description" content="Automation system for apartments buildings.">
 {% with seo_tags = " some tags " %}
-<meta name="keywords" content="{{ seo_tags }}">
+    <meta name="keywords" content="{{ seo_tags }}">
 {% endwith %}
 <meta name="author" content="Itel-Service">
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 
 {% include 'dependencies/css.j2' %}
-
-<body class="theme-cyan font-montserrat">
+<body class="theme-cyan font-montserrat {# light_version #}">
 
     {% include 'plugins/loader.j2' %}
 
