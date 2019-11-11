@@ -5,7 +5,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 class UserListView(generic.ListView):
     model = User
-
+    template_name = "user_list.j2"
 
 class UserCreateView(generic.CreateView):
     model = User
