@@ -10,9 +10,19 @@
     <div class="sidebar-scroll">
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
-                <li class="header">Main</li>
-                <li class="active open"><a href="index2.html"><i class="fas fa-tachometer-alt"></i><span>Головна</span></a></li>
-                <li><a href="#"><i class="fab fa-squarespace"></i><span>Landing Page</span></a></li>
+                <!-- <li class="header">Main</li> -->
+                <li {% if request.resolver_match.url_name == "dashboard_main" %}class="active"{% endif %}>
+                    <a href="/"><a href="/">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Головна</span>
+                    </a>
+                </li>
+                <li {% if request.resolver_match.url_name == "accounts_User_list" %}class="active"{% endif %}>
+                    <a href="{{ url ('accounts_User_list') }}">
+                        <i class="fab fa-squarespace"></i>
+                        <span>Користувачі</span>
+                    </a>
+                </li>
                 <li><a href="#"><i class="fas fa-user-circle"></i><span>Профіль</span></a></li>
             </ul>
         </nav>
