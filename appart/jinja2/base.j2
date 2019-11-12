@@ -20,7 +20,7 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 
 {% include 'dependencies/css.j2' %}
-<body class="theme-cyan font-montserrat {# light_version #}">
+<body class="theme-cyan font-montserrat  light_version">
 
     {% include 'plugins/loader.j2' %}
 
@@ -32,9 +32,7 @@
 
         {% include 'plugins/sidebar_menu.j2' %}
         <div id="main-content">
-            <div class="container-fluid">
-                {% block content %}{% endblock content %}
-            </div>
+            {% block content %}{% endblock content %}
         </div>
     </div>
 

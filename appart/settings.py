@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'condominium.apps.CondominiumConfig',
+    'appart',
     'templatetags',
     'bootstrap4',
     'font_awesome',

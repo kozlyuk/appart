@@ -17,6 +17,12 @@ class UserListView(generic.ListView):
 class UserCreateView(generic.CreateView):
     model = User
     form_class = CustomUserCreationForm
+    template_name = "user_form.j2"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserCreateView, self).get_context_data(**kwargs)
+        context['header'] = 'Додати користувача'
+        return context
 
 
 @method_decorator(login_required, name='dispatch')

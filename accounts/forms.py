@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.translation import ugettext_lazy as _
 
+from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomPasswordInput
+
 from accounts.models import User
 
 
@@ -16,12 +18,21 @@ class AuthenticationForm(forms.Form):
 
 
 class CustomUserCreationForm(UserCreationForm):
+    password1 = forms.CharField(label=_("Пароль"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Пароль'}))
+    password2 = forms.CharField(label=_('Підтвердження пароля'), max_length=255, required=True, widget=CustomPasswordInput(attrs={'label': 'Підтвердження пароля'}))
+    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Аватар'}))
+    birth_date = forms.CharField(required=False, widget=CustomInput(attrs={'label': 'День народження'}))
 
-    class Meta(UserCreationForm):
+    class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme')
+        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2')
+        widgets = {
+            'email': CustomInput(attrs={'label': 'Пошта'}),
+            'mobile_number': CustomInput(attrs={'label': 'Мобільний номер'}),
+            'theme': CustomSelect(attrs={'label': 'Тема'}),
+        }
 
-    email = EmailLowerField(required=True)
+        email = EmailLowerField(required=True)
 
 
 class CustomUserChangeForm(UserChangeForm):
