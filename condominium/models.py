@@ -63,7 +63,7 @@ class House(models.Model):
 
 
 class Apartment(models.Model):
-    """ Model contains Houses of managerial company """
+    """ Model contains Apartments """
 
     #  Relationships
     house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
@@ -71,7 +71,7 @@ class Apartment(models.Model):
                                  null=True, on_delete=models.SET_NULL)
 
     #  Fields
-    number = models.PositiveSmallIntegerField(_('House'))
+    number = models.PositiveSmallIntegerField(_('Apartment Number'))    #todo ask about deal_number
     area = models.PositiveSmallIntegerField(_('Area'), blank=True)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True)
     description = models.TextField(_('Description'), blank=True)

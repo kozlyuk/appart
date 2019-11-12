@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'font_awesome',
     'widget_tweaks',
+    'django_userforeignkey'
 ]
 
 MIDDLEWARE = [
@@ -151,7 +152,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_production")
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
-
-
-
-COMPANY_NAME = 'Стоград'
