@@ -11,8 +11,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR_JINJA = os.path.dirname(os.path.abspath(__file__))
-
+BASE_DIR_JINJA = os.path.dirname(__file__)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -66,7 +65,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'APP_DIRS': True,
         'DIRS' : [
-            os.path.join(BASE_DIR_JINJA, 'jinja_templates'),
+            os.path.join(BASE_DIR_JINJA, 'jinja2'),
         ],
         'OPTIONS': {
             'autoescape': True,
