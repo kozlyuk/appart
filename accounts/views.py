@@ -28,6 +28,7 @@ class UserCreateView(generic.CreateView):
 @method_decorator(login_required, name='dispatch')
 class UserDetailView(generic.DetailView):
     model = User
+    template_name = "user_detail.j2"
 #    form_class = forms.UserForm
 
 
