@@ -2,7 +2,12 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import User
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, EmailAuthenticationForm
+from django.contrib.auth.views import LoginView
+
+
+class EmailLoginView(LoginView):
+    form_class = EmailAuthenticationForm
 
 
 @method_decorator(login_required, name='dispatch')

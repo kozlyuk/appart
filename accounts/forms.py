@@ -12,27 +12,25 @@ class EmailLowerField(forms.EmailField):
         return value.lower()
 
 
-#class AuthenticationForm(AuthenticationForm):
-#    username = None
-#    email = EmailLowerField(required=True)
-#    password = forms.CharField(label=_('Password'), max_length=255, required=True, widget=forms.PasswordInput)
+class EmailAuthenticationForm(AuthenticationForm):
+    username = EmailLowerField(required=True)
 
 
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label=_("Пароль"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Пароль'}))
-    password2 = forms.CharField(label=_('Підтвердження пароля'), max_length=255, required=True, widget=CustomPasswordInput(attrs={'label': 'Підтвердження пароля'}))
+    password2 = forms.CharField(label=_('Підтвердження пароля'), max_length=255, required=True,
+                                widget=CustomPasswordInput(attrs={'label': 'Підтвердження пароля'}))
     avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Аватар'}))
     birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'День народження'}))
+    email = EmailLowerField(required=True, widget=CustomInput(attrs={'label': 'Пошта'}))
 
     class Meta:
         model = User
         fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2')
         widgets = {
-            'email': CustomInput(attrs={'label': 'Пошта'}),
             'mobile_number': CustomInput(attrs={'label': 'Мобільний номер'}),
             'theme': CustomSelect(attrs={'label': 'Тема'}),
         }
-        email = EmailLowerField(required=True)
 
 
 class CustomUserChangeForm(UserChangeForm):
