@@ -20,14 +20,6 @@ class BillViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class BillPaymentViewSet(viewsets.ModelViewSet):
-    """ViewSet for the BillPayment class"""
-
-    queryset = models.BillPayment.objects.all()
-    serializer_class = serializers.BillPaymentSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
 class ServiceViewSet(viewsets.ModelViewSet):
     """ViewSet for the Service class"""
 

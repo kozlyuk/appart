@@ -1,22 +1,24 @@
-from django import forms
+from rest_framework import serializers
+
 from . import models
 
 
-class PaymentForm(forms.ModelForm):
+class PaymentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Payment
         fields = [
+            "date_created",
             "date_updated",
             "type",
             "amount",
             "description",
             "date",
             "action",
-            "bill",
         ]
 
+class BillSerializer(serializers.ModelSerializer):
 
-class BillForm(forms.ModelForm):
     class Meta:
         model = models.Bill
         fields = [
@@ -25,12 +27,11 @@ class BillForm(forms.ModelForm):
             "date_updated",
             "pdf_copy",
             "date",
-            "apartment",
-            "service",
+            "date_created",
         ]
 
+class ServiceSerializer(serializers.ModelSerializer):
 
-class ServiceForm(forms.ModelForm):
     class Meta:
         model = models.Service
         fields = [

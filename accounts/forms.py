@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib.auth.forms import AuthenticationForm
 from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomPasswordInput
 
 from accounts.models import User
@@ -12,9 +12,10 @@ class EmailLowerField(forms.EmailField):
         return value.lower()
 
 
-class AuthenticationForm(forms.Form):
-    email = EmailLowerField(required=True)
-    password = forms.CharField(label=_('Password'), max_length=255, required=True, widget=forms.PasswordInput)
+#class AuthenticationForm(AuthenticationForm):
+#    username = None
+#    email = EmailLowerField(required=True)
+#    password = forms.CharField(label=_('Password'), max_length=255, required=True, widget=forms.PasswordInput)
 
 
 class CustomUserCreationForm(UserCreationForm):
