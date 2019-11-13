@@ -2,7 +2,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import User
-from .forms import CustomUserCreationForm, CustomUserChangeForm, EmailAuthenticationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, EmailAuthenticationForm, CustomUserSelfUpdateForm
 from django.contrib.auth.views import LoginView
 
 
@@ -26,7 +26,7 @@ class UserCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
-        context['header'] = 'Додати користувача'
+        context['header'] = 'Add user'
         return context
 
 
@@ -47,5 +47,21 @@ class UserUpdateView(generic.UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         email = str(context['user'])
-        context['header'] = 'Редагувати користувача: ' + email
+        context['header'] = 'Edit user: ' + email
+        return context
+
+
+@method_decorator(login_required, name='dispatch')  # pylint: disable=too-many-ancestors
+class UserSelfUpdate(generic.UpdateView):
+    """ PartnerSelfUpdate - view for partners self updating """
+    template_name = 'user_form.j2'
+    form_class = CustomUserSelfUpdateForm
+    # success_url = reverse_lazy('manager_home')
+
+    def get_object(self, queryset=None):
+        return User.objects.get(email=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserSelfUpdate, self).get_context_data(**kwargs)
+        context['header'] = 'My profile'
         return context

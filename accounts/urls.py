@@ -25,5 +25,6 @@ urlpatterns = [
     path("accounts/User/create/", views.UserCreateView.as_view(), name="accounts_User_create"),
     path("accounts/User/detail/<int:pk>/", views.UserDetailView.as_view(), name="accounts_User_detail"),
     path("accounts/User/update/<int:pk>/", views.UserUpdateView.as_view(), name="accounts_User_update"),
+    path('accounts/User/self_update/', views.UserSelfUpdate.as_view(), name='user_self_update'),
 
 ]
