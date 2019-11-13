@@ -14,16 +14,16 @@
                 <li {% if request.resolver_match.url_name == "dashboard_main" %}class="active"{% endif %}>
                     <a href="/"><a href="/">
                         <i class="fas fa-tachometer-alt"></i>
-                        <span>Головна</span>
+                        <span>{{ _('Main') }}</span>
                     </a>
                 </li>
                 <li {% if request.resolver_match.url_name == "accounts_User_list" %}class="active"{% endif %}>
                     <a href="{{ url ('accounts_User_list') }}">
                         <i class="fab fa-squarespace"></i>
-                        <span>Користувачі</span>
+                        <span>{{ _('Users') }}</span>
                     </a>
                 </li>
-                <li><a href="#"><i class="fas fa-user-circle"></i><span>Профіль</span></a></li>
+                <li><a href="#"><i class="fas fa-user-circle"></i><span>{{ _('Profile') }}</span></a></li>
             </ul>
         </nav>
     </div>
