@@ -1,0 +1,10 @@
+<div class="input-group">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">{{ widget.attrs.label }}</label>
+    </div>
+    <select class="custom-select" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>{% for group_name, group_choices, group_index in widget.optgroups %}{% if group_name %}
+        <option label="{{ group_name }}">{% endif %}{% for option in group_choices %}
+            {% include option.template_name with widget=option %}{% endfor %}{% if group_name %}
+        </option>{% endif %}{% endfor %}
+    </select>
+</div>
