@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('', include('condominium.urls')),
+    path('', include('payments.urls')),
 
     path('', TemplateView.as_view(template_name="main.j2")),
     

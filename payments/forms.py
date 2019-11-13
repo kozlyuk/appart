@@ -6,7 +6,6 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = models.Payment
         fields = [
-            "date_updated",
             "type",
             "amount",
             "description",
@@ -22,7 +21,6 @@ class BillForm(forms.ModelForm):
         fields = [
             "amount",
             "number",
-            "date_updated",
             "pdf_copy",
             "date",
             "apartment",

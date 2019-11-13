@@ -1,6 +1,6 @@
 """  Models for Payments application  """
 
-from datetime import datetime
+from datetime import datetime, date
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django_userforeignkey.models.fields import UserForeignKey
@@ -42,7 +42,7 @@ class Bill(models.Model):
     #  Fields
     number = models.CharField(_('Bill number'), max_length=32)
     amount = models.DecimalField(_('Bill amount'), max_digits=8, decimal_places=2)
-    date = models.DateField(_('Bill date'), default=datetime.date.today)
+    date = models.DateField(_('Bill date'), default=date.today)
     pdf_copy = ContentTypeRestrictedFileField(_('Electronic copy'), upload_to=bills_directory_path,
                                               content_types=['application/pdf'],
                                               max_upload_size=10485760,
@@ -79,11 +79,11 @@ class Payment(models.Model):
         ('PY', 'pay'),
     )
     #  Relationships
-    bill = models.ManyToManyField(Bill, through='BillPayment', verbose_name=_('Bill'), on_delete=models.PROTECT)
+    bill = models.ManyToManyField(Bill, through='BillPayment', verbose_name=_('Bill'))
     #  Fields
     type = models.CharField(_('Payment type'), max_length=2, choices=PAYMENT_TYPE_CHOICES, default='BP')
     action = models.CharField(_('Payment action'), max_length=2, choices=PAYMENT_ACTION_CHOICES, default='PY')
-    date = models.DateField(_('Payment date'), default=datetime.date.today)
+    date = models.DateField(_('Payment date'), default=date.today)
     amount = models.DecimalField(_('Payment amount'), max_digits=8, decimal_places=2)
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
 
