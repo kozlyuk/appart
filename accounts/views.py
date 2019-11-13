@@ -35,5 +35,12 @@ class UserDetailView(generic.DetailView):
 @method_decorator(login_required, name='dispatch')
 class UserUpdateView(generic.UpdateView):
     model = User
+    template_name = "user_form.j2"
     form_class = CustomUserChangeForm
     pk_url_kwarg = "pk"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        email = str(context['user'])
+        context['header'] = 'Редагувати користувача: ' + email
+        return context

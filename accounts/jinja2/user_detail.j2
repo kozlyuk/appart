@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div>
-                        <button class="btn btn-primary btn-sm">Редагувати профіль</button>
+                        <button onclick="window.location.href = '{{ url('accounts_User_update', kwargs={'pk':user.pk}) }}'" class="btn btn-primary btn-sm">Редагувати профіль</button>
                         <button class="btn btn-danger btn-sm">Видалити</button>
                     </div>
                 </div>
