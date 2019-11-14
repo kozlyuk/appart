@@ -18,5 +18,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install requirements
       run: pip install django
+    - name: Create temp settings file
+      run: touch appart/settings_local.py
     - name: Run tests
       run: python3 manage.py test
