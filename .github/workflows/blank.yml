@@ -27,4 +27,3 @@ jobs:
     - name: Run tests condominium
       run: python3 manage.py test condominium.test_views
 
-      
