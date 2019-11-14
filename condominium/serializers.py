@@ -22,6 +22,7 @@ class HouseSerializer(serializers.ModelSerializer):
             "address",
             "name",
             "logo",
+            "apartments_count"
         ]
 
 class CompanySerializer(serializers.ModelSerializer):

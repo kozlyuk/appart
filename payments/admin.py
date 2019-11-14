@@ -22,15 +22,6 @@ class PaymentAdmin(admin.ModelAdmin):
         "date",
         "action",
     ]
-    readonly_fields = [
-        "date_created",
-        "date_updated",
-        "type",
-        "amount",
-        "description",
-        "date",
-        "action",
-    ]
 
 
 class BillAdminForm(forms.ModelForm):
@@ -43,14 +34,6 @@ class BillAdminForm(forms.ModelForm):
 class BillAdmin(admin.ModelAdmin):
     form = BillAdminForm
     list_display = [
-        "amount",
-        "number",
-        "date_updated",
-        "pdf_copy",
-        "date",
-        "date_created",
-    ]
-    readonly_fields = [
         "amount",
         "number",
         "date_updated",
@@ -87,10 +70,6 @@ class ServiceAdminForm(forms.ModelForm):
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceAdminForm
     list_display = [
-        "description",
-        "name",
-    ]
-    readonly_fields = [
         "description",
         "name",
     ]

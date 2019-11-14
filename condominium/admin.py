@@ -18,11 +18,6 @@ class ApartmentAdmin(admin.ModelAdmin):
         "area",
         "residents_count",
     ]
-    readonly_fields = [
-        "description",
-        "area",
-        "residents_count",
-    ]
 
 
 class HouseAdminForm(forms.ModelForm):
@@ -39,12 +34,7 @@ class HouseAdmin(admin.ModelAdmin):
         "address",
         "name",
         "logo",
-    ]
-    readonly_fields = [
-        "description",
-        "address",
-        "name",
-        "logo",
+        "apartments_count"
     ]
 
 
@@ -58,17 +48,6 @@ class CompanyAdminForm(forms.ModelForm):
 class CompanyAdmin(admin.ModelAdmin):
     form = CompanyAdminForm
     list_display = [
-        "fullname",
-        "chief",
-        "logo",
-        "name",
-        "phone",
-        "address",
-        "description",
-        "bank_requisites",
-        "requisites",
-    ]
-    readonly_fields = [
         "fullname",
         "chief",
         "logo",

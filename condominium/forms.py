@@ -23,6 +23,7 @@ class HouseForm(forms.ModelForm):
             "name",
             "logo",
             "company",
+            "apartments_count",
         ]
 
 
