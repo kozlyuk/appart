@@ -1,0 +1,29 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.6, 3.7]
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install requirements
+      run: pip install django django-bootstrap4 django-font-awesome django-widget-tweaks django_userforeignkey jinja2 djangorestframework pytz Pillow sqlparse pytest
+    - name: Create temp settings file
+      run: touch appart/settings_local.py
+    - name: Put content in temp settings file
+      run: echo "SECRET_KEY = 'asfffffffffffffffffffffffaaaasssdf'" >> appart/settings_local.py
+    - name: Run tests accounts
+      run: python3 manage.py test accounts.test_views
+    - name: Run tests condominium
+      run: python3 manage.py test condominium.test_views
+

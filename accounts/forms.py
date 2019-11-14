@@ -17,35 +17,70 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 class CustomUserCreationForm(UserCreationForm):
-    password1 = forms.CharField(label=_("Пароль"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Пароль'}))
-    password2 = forms.CharField(label=_('Підтвердження пароля'), max_length=255, required=True,
-                                widget=CustomPasswordInput(attrs={'label': 'Підтвердження пароля'}))
-    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Аватар'}))
-    birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'День народження'}))
-    email = EmailLowerField(required=True, widget=CustomInput(attrs={'label': 'Пошта'}))
+    password1 = forms.CharField(label=_("Password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Password'}))
+    password2 = forms.CharField(label=_('Confirm password'), max_length=255, required=True,
+                                widget=CustomPasswordInput(attrs={'label': 'Confirm password'}))
+    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Avatar'}))
+    birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'Birthday'}))
+    email = EmailLowerField(required=True, widget=CustomInput(attrs={'label': 'Email'}))
 
     class Meta:
         model = User
         fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2')
         widgets = {
-            'mobile_number': CustomInput(attrs={'label': 'Мобільний номер'}),
-            'theme': CustomSelect(attrs={'label': 'Тема'}),
+            'mobile_number': CustomInput(attrs={'label': 'Mobile phone'}),
+            'theme': CustomSelect(attrs={'label': 'Theme'}),
         }
 
 
 class CustomUserChangeForm(UserChangeForm):
-    password = forms.CharField(label=_("Пароль"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Поточний пароль'}))
-    password1 = forms.CharField(label=_("Пароль"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Новий пароль'}))
-    password2 = forms.CharField(label=_('Підтвердження пароля'), max_length=255, required=True, widget=CustomPasswordInput(attrs={'label': 'Підтвердження нового паролю'}))
-    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Аватар'}))
-    birth_date = forms.CharField(required=False, widget=CustomInput(attrs={'label': 'День народження'}))
+    password = forms.CharField(label=_("Current password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Current password'}))
+    password1 = forms.CharField(label=_("New password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'New password'}))
+    password2 = forms.CharField(label=_('Confirm new password'), max_length=255, required=True, widget=CustomPasswordInput(attrs={'label': 'Confirm new password'}))
+    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Avatar'}))
+    birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'Birthday'}))
 
     class Meta:
         model = User
         fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme')
         widgets = {
-            'email': CustomInput(attrs={'label': 'Пошта'}),
-            'mobile_number': CustomInput(attrs={'label': 'Мобільний номер'}),
-            'theme': CustomSelect(attrs={'label': 'Тема'}),
+            'email': CustomInput(attrs={'label': 'Email'}),
+            'mobile_number': CustomInput(attrs={'label': 'Mobile phone'}),
+            'theme': CustomSelect(attrs={'label': 'Theme'}),
         }
         email = EmailLowerField(required=True)
+
+
+class CustomUserSelfUpdateForm(forms.ModelForm):
+    """ EmployeeSelfUpdateForm - form for employees self-creating self-updating """
+    x = forms.FloatField(widget=forms.HiddenInput(), initial=0)
+    y = forms.FloatField(widget=forms.HiddenInput(), initial=0)
+    width = forms.FloatField(widget=forms.HiddenInput(), initial=0)
+    height = forms.FloatField(widget=forms.HiddenInput(), initial=0)
+    password = forms.CharField(label=_("Current password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Current password'}))
+    password1 = forms.CharField(label=_("New password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'New password'}))
+    password2 = forms.CharField(label=_('Confirm new password'), max_length=255, required=True, widget=CustomPasswordInput(attrs={'label': 'Confirm new password'}))
+    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Avatar'}))
+    birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'Birthday'}))
+
+    class Meta:
+        model = User
+        fields = ['email', 'mobile_number', 'birth_date', 'avatar', 'theme']
+        widgets = {
+            'email': CustomInput(attrs={'label': 'Email'}),
+            'mobile_number': CustomInput(attrs={'label': 'Mobile phone'}),
+            'theme': CustomSelect(attrs={'label': 'Theme'}),
+        }
+
+    def save(self, *args, **kwargs):  # pylint: disable=W0221
+        instance = super().save(*args, **kwargs)
+        pos_x = self.cleaned_data.get('x')
+        pos_y = self.cleaned_data.get('y')
+        width = self.cleaned_data.get('width')
+        height = self.cleaned_data.get('height')
+        if width > 0 and height > 0:
+            image = Image.open(instance.avatar)
+            cropped_image = image.crop((pos_x, pos_y, width+pos_x, height+pos_y))
+            resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+            resized_image.save(instance.avatar.path)
+        return instance

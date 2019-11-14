@@ -17,8 +17,8 @@
                         </div>
                     </div>
                     <div>
-                        <button onclick="window.location.href = '{{ url('accounts_User_update', kwargs={'pk':user.pk}) }}'" class="btn btn-primary btn-sm">Редагувати профіль</button>
-                        <button class="btn btn-danger btn-sm">Видалити</button>
+                        <button onclick="window.location.href = '{{ url('accounts_User_update', kwargs={'pk':user.pk}) }}'" class="btn btn-primary btn-sm">{{ _('Edit profile') }}</button>
+                        <button class="btn btn-danger btn-sm">{{ _('Delete') }}</button>
                     </div>
                 </div>
             </div>
@@ -29,14 +29,14 @@
         <div class="col-xl-12 col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h2>Інформація</h2>
+                    <h2>{{ _('Information') }}</h2>
                     <ul class="header-dropdown dropdown">
                         <li><a href="javascript:void(0);" class="full-screen"><i class="fas fa-object-ungroup"></i></a>
                         </li>
                     </ul>
                 </div>
                 <div class="body">
-                    <small class="text-muted">Адреса: </small>
+                    <small class="text-muted">{{ _('Adress: ') }}</small>
                     <p>795 Folsom Ave, Suite 600 San Francisco, 94107</p>
                     <div>
                         <iframe
@@ -44,13 +44,13 @@
                             width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
                     </div>
                     <hr>
-                    <small class="text-muted">Email address: </small>
+                    <small class="text-muted">{{ _('Email address: ') }}</small>
                     <p>{{ user.email }}</p>
                     <hr>
-                    <small class="text-muted">Mobile: </small>
+                    <small class="text-muted">{{ _('Mobile: ') }}</small>
                     <p>{{ user.mobile_number }}</p>
                     <hr>
-                    <small class="text-muted">Birth Date: </small>
+                    <small class="text-muted">{{ _('Birth Date: ') }}</small>
                     <p class="m-b-0">{{ user.birth_date }}</p>
                     <hr>
                     {# <small class="text-muted">Social: </small>

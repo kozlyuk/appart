@@ -16,7 +16,7 @@
         </div> -->
 
         <div class="col-md-6 col-sm-12 text-right hidden-xs">
-            <a href="{{url('accounts_User_create')}}" class="btn btn-sm btn-primary btn-round" title="">Add New</a>
+            <a href="{{url('accounts_User_create')}}" class="btn btn-sm btn-primary btn-round" title=""> {{ _('Add News user') }}</a>
         </div>
     </div>
 </div>
@@ -24,8 +24,8 @@
     <div class="col-lg-12">
         <div class="card">
             <ul class="nav nav-tabs">
-                <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#Users">Users</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#addUser">Add User</a></li>
+                <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#Users">{{ _('Users') }}</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#addUser">{{ _('Add User') }}</a></li>
             </ul>
             <div class="tab-content mt-0">
                 <div class="tab-pane active show" id="Users">
@@ -33,12 +33,12 @@
                         <table class="table table-hover table-custom spacing8">
                             <thead>
                                 <tr>
-                                    <th class="w60">Email</th>
+                                    <th class="w60">{{ _('Email') }}</th>
                                     <th></th>
                                     <th></th>
                                     <th>Дата заселення</th>
                                     <th>Role</th>
-                                    <th class="w100">Action</th>
+                                    <th class="w100">{{ _('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
