@@ -6,8 +6,8 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-from appart.settings_local import *
 import os
+from appart.settings_local import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +17,7 @@ BASE_DIR_JINJA = os.path.dirname(__file__)
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS += [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,9 +75,9 @@ TEMPLATES = [
             'autoescape': True,
             'environment': 'appart.jinja_enviroment.environment',
             'extensions' : [
-                 'jinja2.ext.i18n',
-                 'jinja2.ext.with_',
-                 'jinja2.ext.autoescape'
+                'jinja2.ext.i18n',
+                'jinja2.ext.with_',
+                'jinja2.ext.autoescape'
             ],
         },
     },
