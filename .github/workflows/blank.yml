@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install requirements
-      run: pip install django django-bootstrap4 django-font-awesome django-widget-tweaks django_userforeignkey jinja2 rest_framework pytz Pillow sqlparse
+      run: pip install django django-bootstrap4 django-font-awesome django-widget-tweaks django_userforeignkey jinja2 djangorestframework pytz Pillow sqlparse
     - name: Create temp settings file
       run: touch appart/settings_local.py
     - name: Put content in temp settings file
