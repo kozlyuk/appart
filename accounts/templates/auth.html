@@ -64,10 +64,20 @@
                                 </div>
                         {% endif %}
                         <div class="form-group">
+                        {% if form.username.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.username.errors|striptags }}
+                            </div>
+                        {% endif %}
                             <label for="id_username" class="control-label sr-only">Email</label>
                             {{form.username|add_class:"form-control round"|attr:"placeholder=Логін"}}
                         </div>
                         <div class="form-group">
+                        {% if form.password.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.password.errors|striptags }}
+                            </div>
+                        {% endif %}
                             <label for="id_password" class="control-label sr-only">Пароль</label>
                             {{form.password|add_class:"form-control round"|attr:"placeholder=Пароль"}}
                         </div>
