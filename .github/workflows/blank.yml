@@ -4,8 +4,7 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: [linux]
     strategy:
       max-parallel: 4
       matrix:
