@@ -20,5 +20,7 @@ jobs:
       run: pip install django
     - name: Create temp settings file
       run: touch appart/settings_local.py
+    - name: Put content in temp settings file
+      run: echo "SECRET_KEY = 'asfffffffffffffffffffffffaaaasssdf'" >> appart/settings_local.py
     - name: Run tests
       run: python3 manage.py test
