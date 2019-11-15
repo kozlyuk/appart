@@ -27,6 +27,7 @@ class UserCreateView(generic.CreateView):
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
         context['header'] = 'Add user'
+        context['text_submit'] = 'Add user'
         return context
 
 
@@ -48,6 +49,7 @@ class UserUpdateView(generic.UpdateView):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         email = str(context['user'])
         context['header'] = 'Edit user: ' + email
+        context['text_submit'] = 'Save'
         return context
 
 
