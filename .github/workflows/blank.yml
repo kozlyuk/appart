@@ -21,10 +21,7 @@ jobs:
     - name: Create temp settings file
       run: touch appart/settings_local.py
     - name: Put content in temp settings file
-      run: echo "SECRET_KEY = 'asfffffffffffffffffffffffaaaasssdf'" >> appart/settings_local.py
-      run: echo "INSTALLED_APPS = []" >> appart/settings_local.py
-    - name: Run tests accounts
-      run: python3 manage.py test accounts.test_views
-    - name: Run tests condominium
-      run: python3 manage.py test condominium.test_views
+      run: echo "SECRET_KEY = 'asfffffffffffffffffffffffaaaasssdf'/nINSTALLED_APPS = []" >> appart/settings_local.py
+    - name: Run all tests
+      run: python3 manage.py test tests/
 
