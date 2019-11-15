@@ -45,17 +45,7 @@ class HouseUpdateView(generic.UpdateView):
     pk_url_kwarg = "pk"
 
 
-class CompanyListView(generic.ListView):
-    model = models.Company
-    form_class = forms.CompanyForm
-
-
 class CompanyCreateView(generic.CreateView):
-    model = models.Company
-    form_class = forms.CompanyForm
-
-
-class CompanyDetailView(generic.DetailView):
     model = models.Company
     form_class = forms.CompanyForm
 
