@@ -2,63 +2,50 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row clearfix">
-        <div class="col-md-12">
-            <div class="card social">
-                <div class="profile-header d-flex justify-content-between justify-content-center">
-                    <div class="d-flex">
-                        <div class="mr-3">
-                            <img src="../assets/images/user.png" class="rounded" alt="">
-                        </div>
-                        <div class="details">
-                            <h5 class="mb-0">{{ user.email }}</h5>
-                            {# <span class="text-light">Ui UX Designer</span>
-                                    <p class="mb-0"><span>Posts: <strong>321</strong></span> <span>Followers: <strong>4,230</strong></span> <span>Following: <strong>560</strong></span></p> #}
-                        </div>
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="card c_grid c_yellow">
+                <div class="body text-center">
+                    <div class="circle">
+                        <img class="rounded-circle" src="https://picsum.photos/100" alt="">
                     </div>
-                    <div>
-                        <button onclick="window.location.href = '{{ url('accounts_User_update', kwargs={'pk':user.pk}) }}'" class="btn btn-primary btn-sm">{{ _('Edit profile') }}</button>
-                        <button class="btn btn-danger btn-sm">{{ _('Delete') }}</button>
-                    </div>
+                    {% if user.name %}
+                    <h6 class="mt-3 mb-0">{{ user.name }}</h6>
+                    {% endif %}
+                    <span>{{ user.email }}</span>
+                    <ul class="mt-3 list-unstyled d-flex justify-content-center">
+                        <li><a class="p-3" target="_blank" href="mailto:{{ user.email }}"><i class="fas fa-at"></i></a></li>
+                        {# <li><a class="p-3" target="_blank" href="#"><i class="fa fa-slack"></i></a></li>
+                        <li><a class="p-3" target="_blank" href="#"><i class="fa fa-linkedin"></i></a></li> #}
+                    </ul>
+                    {# <button class="btn btn-default btn-sm">Follow</button>
+                    <button class="btn btn-default btn-sm">Message</button> #}
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="col-xl-12 col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
-                    <h2>{{ _('Information') }}</h2>
-                    <ul class="header-dropdown dropdown">
-                        <li><a href="javascript:void(0);" class="full-screen"><i class="fas fa-object-ungroup"></i></a>
-                        </li>
-                    </ul>
+                    <h2 class="text-center">{{ _('User info') }}</h2>
                 </div>
-                <div class="body">
-                    <small class="text-muted">{{ _('Adress: ') }}</small>
-                    <p>795 Folsom Ave, Suite 600 San Francisco, 94107</p>
-                    <div>
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1923731.7533500232!2d-120.39098936853455!3d37.63767091877441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan+Francisco%2C+CA%2C+USA!5e0!3m2!1sen!2sin!4v1522391841133"
-                            width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
-                    <hr>
-                    <small class="text-muted">{{ _('Email address: ') }}</small>
-                    <p>{{ user.email }}</p>
-                    <hr>
-                    <small class="text-muted">{{ _('Mobile: ') }}</small>
-                    <p>{{ user.mobile_number }}</p>
-                    <hr>
-                    <small class="text-muted">{{ _('Birth Date: ') }}</small>
-                    <p class="m-b-0">{{ user.birth_date }}</p>
-                    <hr>
-                    {# <small class="text-muted">Social: </small>
-                            <p><i class="fa fa-twitter m-r-5"></i> twitter.com/example</p>
-                            <p><i class="fa fa-facebook  m-r-5"></i> facebook.com/example</p>
-                            <p><i class="fa fa-github m-r-5"></i> github.com/example</p>
-                            <p><i class="fa fa-instagram m-r-5"></i> instagram.com/example</p> #}
-                </div>
+                <ul class="list-group">
+                    {% if user.email %}
+                    <li class="list-group-item">
+                        <small class="text-muted">{{ _('User email: ') }} </small>
+                        <p class="mb-0">{{ user.email }}</p>
+                    </li>
+                    {% endif %}
+                    {% if user.mobile_number %}
+                    <li class="list-group-item">
+                        <small class="text-muted">{{ _('Mobile number: ') }}</small>
+                        <p class="mb-0">{{ user.mobile_number }}</p>
+                    </li>
+                    {% endif %}
+                    {% if user.birth_date %}
+                    <li class="list-group-item">
+                        <small class="text-muted">{{ _('Birth date: ') }}</small>
+                        <p class="mb-0">{{ user.birth_date }}</p>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </div>
