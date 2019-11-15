@@ -9,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from datetime import datetime
 
 from condominium import models as condominium_models
+from payments import models as payments_models
 from accounts import models as accounts_models
 
 
@@ -74,6 +75,7 @@ def create_condominium_Apartment(**kwargs):
 def create_condominium_House(**kwargs):
     defaults = {}
     defaults["description"] = ""
+    defaults["apartments_count"] = ""
     defaults["address"] = ""
     defaults["name"] = ""
     defaults["logo"] = ""
@@ -94,6 +96,46 @@ def create_condominium_Company(**kwargs):
     defaults["requisites"] = ""
     defaults.update(**kwargs)
     return condominium_models.Company.objects.create(**defaults)
+def create_payments_Payment(**kwargs):
+    defaults = {}
+    defaults["date_updated"] = datetime.now()
+    defaults["type"] = ""
+    defaults["amount"] = ""
+    defaults["description"] = ""
+    defaults["date"] = datetime.now()
+    defaults["action"] = ""
+    if "bill" not in kwargs:
+        defaults["bill"] = create_payments_Bill()
+    defaults.update(**kwargs)
+    return payments_models.Payment.objects.create(**defaults)
+def create_payments_Bill(**kwargs):
+    defaults = {}
+    defaults["amount"] = ""
+    defaults["number"] = ""
+    defaults["date_updated"] = datetime.now()
+    defaults["pdf_copy"] = ""
+    defaults["date"] = datetime.now()
+    if "apartment" not in kwargs:
+        defaults["apartment"] = create_condominium_Apartment()
+    if "service" not in kwargs:
+        defaults["service"] = create_payments_Service()
+    defaults.update(**kwargs)
+    return payments_models.Bill.objects.create(**defaults)
+def create_payments_BillPayment(**kwargs):
+    defaults = {}
+    defaults["amount"] = ""
+    if "bill" not in kwargs:
+        defaults["bill"] = create_payments_Bill()
+    if "payment" not in kwargs:
+        defaults["payment"] = create_payments_Payment()
+    defaults.update(**kwargs)
+    return payments_models.BillPayment.objects.create(**defaults)
+def create_payments_Service(**kwargs):
+    defaults = {}
+    defaults["description"] = ""
+    defaults["name"] = ""
+    defaults.update(**kwargs)
+    return payments_models.Service.objects.create(**defaults)
 def create_accounts_User(**kwargs):
     defaults = {}
     defaults["avatar"] = ""

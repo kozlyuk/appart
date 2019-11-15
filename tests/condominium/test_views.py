@@ -78,6 +78,7 @@ def tests_House_create_view():
     url = reverse("condominium_House_create")
     data = {
         "description": "text",
+        "apartments_count": 1,
         "address": "text",
         "name": "text",
         "logo": "anImage",
@@ -103,6 +104,7 @@ def tests_House_update_view():
     url = reverse("condominium_House_update", args=[instance.pk, ])
     data = {
         "description": "text",
+        "apartments_count": 1,
         "address": "text",
         "name": "text",
         "logo": "anImage",
