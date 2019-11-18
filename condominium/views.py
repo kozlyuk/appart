@@ -45,6 +45,7 @@ class HouseCreateView(generic.CreateView):
 
 class HouseDetailView(generic.DetailView):
     model = models.House
+    template_name = "house/house_detail.j2"
     form_class = forms.HouseForm
 
 

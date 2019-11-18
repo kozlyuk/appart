@@ -1,0 +1,67 @@
+{% extends "main.j2" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2 class="text-center">{{ _('House listing') }}</h2>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="https://picsum.photos/600/800" class="card-img" alt="house logo">
+                    </div>
+                    <div class="col-md-8">
+
+
+                        <ul class="list-group">
+                            {# <li class="list-group-item">
+                                <small class="text-muted">{{ _('Company logo: ') }}</small>
+                                <p class="mb-0">{{ object.logo }}</p>
+                            </li> #}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('House name: ') }}</small>
+                                <p class="mb-0">{{ object.name }}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Company: ') }}</small>
+                                <p class="mb-0">{{ object.company }}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Apartments count: ') }}</small>
+                                <p class="mb-0">{{ object.apartments_count }}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Address: ') }}</small>
+                                <p class="mb-0">{{ object.address }}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Description: ') }}</small>
+                                <p class="mb-0">{{ object.description }}</p>
+                            </li>
+                            {# <li class="list-group-item">
+                                <div>In Progress</div>
+                                <div class="progress progress-xxs progress-transparent custom-color-green mb-0 mt-3">
+                                    <div class="progress-bar" data-transitiongoal="67" aria-valuenow="67" style="width: 67%;">
+                                    </div>
+                                </div>
+                            </li> #}
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="btn-toolbar justify-content-between mt-2">
+                    <button type="submit" onclick="window.location.href = '{{url('condominium_House_list')}}'"
+                        class="btn btn-info text-right">{{ _('Return') }}</button>
+                    <button type="submit"
+                        onclick="window.location.href = '{{url('condominium_House_update', kwargs={'pk':house.pk})}}'"
+                        class="btn btn-warning text-right">{{ _('Edit') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

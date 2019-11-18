@@ -34,7 +34,7 @@ class HouseForm(forms.ModelForm):
             'address': CustomTextarea(attrs={'label': 'Address'}),
             'name': CustomInput(attrs={'label': 'House name'}),
             'company': CustomSelect(attrs={'label': 'Company'}),
-            'apartments_count': CustomNumberInput(attrs={'label': 'Apartaments count'}),
+            'apartments_count': CustomNumberInput(attrs={'label': 'Apartments count'}),
         }
 
 
