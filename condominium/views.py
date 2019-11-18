@@ -52,5 +52,6 @@ class CompanyCreateView(generic.CreateView):
 
 class CompanyUpdateView(generic.UpdateView):
     model = models.Company
+    template_name = "company/company_form.j2"
     form_class = forms.CompanyForm
     pk_url_kwarg = "pk"
