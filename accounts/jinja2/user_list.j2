@@ -36,7 +36,7 @@
                                     <th></th>
                                     <th class="w60">{{ _('Email') }}</th>
                                     <th></th>
-                                    <th>{{ _('Position') }}</th>
+                                    <th><!--{{ _('Position') }}--></th>
                                     <th class="w100">{{ _('Action') }}</th>
                                 </tr>
                             </thead>
@@ -50,10 +50,10 @@
                                         <a href="{{url('accounts_User_detail', kwargs={'pk':user.pk})}}">
                                             <h6 class="mb-0">{{ user.email }}</h6>
                                         </a>
-                                        <span>{{ lipsum(n=2, html=False, min=1, max=2) }}</span>
+                                        <span><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></span>
                                     </td>
-                                    <td><span class="badge badge-danger">Super Admin</span></td>
-                                    <td>{{ lipsum(n=2, html=False, min=1, max=2) }}</td>
+                                    <td><!--<span class="badge badge-danger">Super Admin</span>--></td>
+                                    <td><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></td>
                                     <td>
                                     <button type="button" class="btn btn-sm btn-default" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('accounts_User_update', kwargs={'pk':user.pk})}}'"><i class="fa fa-edit"></i></button>
                                     </td>
