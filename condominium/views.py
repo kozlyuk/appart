@@ -33,7 +33,14 @@ class HouseListView(generic.ListView):
 
 class HouseCreateView(generic.CreateView):
     model = models.House
+    template_name = "house/house_form.j2"
     form_class = forms.HouseForm
+
+    def get_context_data(self, **kwargs):
+        context = super(HouseCreateView, self).get_context_data(**kwargs)
+        context['header'] = 'Add new house'
+        context['text_submit'] = 'Add'
+        return context
 
 
 class HouseDetailView(generic.DetailView):
@@ -43,8 +50,16 @@ class HouseDetailView(generic.DetailView):
 
 class HouseUpdateView(generic.UpdateView):
     model = models.House
+    template_name = "house/house_form.j2"
     form_class = forms.HouseForm
     pk_url_kwarg = "pk"
+
+    def get_context_data(self, **kwargs):
+        context = super(HouseUpdateView, self).get_context_data(**kwargs)
+        house = str(context['house'])
+        context['header'] = 'Edit house: ' + house
+        context['text_submit'] = 'Save'
+        return context
 
 
 class CompanyCreateView(generic.CreateView):
