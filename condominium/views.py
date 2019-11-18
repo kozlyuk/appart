@@ -26,6 +26,8 @@ class ApartmentUpdateView(generic.UpdateView):
 
 class HouseListView(generic.ListView):
     model = models.House
+    template_name = "house/house_list.j2"
+    context_object_name = 'houses'
     form_class = forms.HouseForm
 
 

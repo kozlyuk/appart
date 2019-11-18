@@ -29,6 +29,12 @@
                         <span>{{ _('Company') }}</span>
                     </a>
                 </li>
+                <li {% if request.resolver_match.url_name == "condominium_House_list" %}class="active"{% endif %}>
+                    <a href="{{ url ('condominium_House_list') }}">
+                        <i class="fas fa-hotel"></i>
+                        <span>{{ _('Houses') }}</span>
+                    </a>
+                </li>
                 <li {% if request.resolver_match.url_name == "user_self_update" %}class="active"{% endif %}>
                     <a href="{{ url ('user_self_update') }}">
                         <i class="fas fa-user-circle"></i>
