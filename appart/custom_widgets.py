@@ -31,3 +31,6 @@ class CustomPasswordInput(PasswordInput):
 
 class CustomTextarea(Textarea):
     template_name = "widgets/customFormFields/customTextarea.html"
+
+class CustomNumberInput(CustomInput):
+    input_type = "number"
