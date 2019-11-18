@@ -1,4 +1,4 @@
-from django.forms import TextInput, Select, PasswordInput
+from django.forms import TextInput, Select, PasswordInput, Textarea
 from appart.settings import BASE_DIR
 
 class CustomInput(TextInput):
@@ -28,3 +28,6 @@ class CustomSelect(Select):
 class CustomPasswordInput(PasswordInput):
     input_type  =  'password' 
     template_name = "widgets/customFormFields/customFormField.html"
+
+class CustomTextarea(Textarea):
+    template_name = "widgets/customFormFields/customTextarea.html"

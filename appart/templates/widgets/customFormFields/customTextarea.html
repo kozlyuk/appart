@@ -1,0 +1,7 @@
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">{{ widget.attrs.label }}</span>
+    </div>
+    <textarea class="form-control" aria-label="With textarea" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+{% if widget.value %}{{ widget.value }}{% endif %}</textarea>
+</div>
