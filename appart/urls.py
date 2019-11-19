@@ -28,7 +28,7 @@ urlpatterns = [
     path('', include('payments.urls')),
 
     path('', TemplateView.as_view(template_name="main.j2")),
-    
+
     url(r'favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 

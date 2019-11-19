@@ -1,4 +1,6 @@
 from django.views import generic
+from django.urls import reverse_lazy
+
 from . import models
 from . import forms
 
@@ -66,6 +68,7 @@ class HouseUpdateView(generic.UpdateView):
 class CompanyCreateView(generic.CreateView):
     model = models.Company
     form_class = forms.CompanyForm
+    success_url = reverse_lazy('appart_main')
 
 
 class CompanyUpdateView(generic.UpdateView):
@@ -73,3 +76,4 @@ class CompanyUpdateView(generic.UpdateView):
     template_name = "company/company_form.j2"
     form_class = forms.CompanyForm
     pk_url_kwarg = "pk"
+    success_url = reverse_lazy('appart_main')

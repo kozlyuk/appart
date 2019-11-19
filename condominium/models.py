@@ -27,9 +27,6 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("condominium_Company_detail", args=(self.pk,))
-
     def get_update_url(self):
         return reverse("condominium_Company_update", args=(self.pk,))
 

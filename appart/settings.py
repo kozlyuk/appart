@@ -32,7 +32,7 @@ INSTALLED_APPS += [
     'bootstrap4',
     'font_awesome',
     'widget_tweaks',
-    'django_userforeignkey'
+    'django_userforeignkey',
 ]
 
 MIDDLEWARE = [
