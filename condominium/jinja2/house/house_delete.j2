@@ -8,7 +8,7 @@
             <h5 class="card-title">{{ _('Дійсно видалити') }} {{house}} </h5>
             <form action="" method="post">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                <button class="btn btn-sm btn-success mr-1">{{ _('Ні, повернутися назад') }}</button>
+                <button type="button" onclick="window.location.href = '{{url('condominium_House_list')}}'" class="btn btn-sm btn-success mr-1">{{ _('Ні, повернутися назад') }}</button>
                 <button type="submit" class="btn btn-sm btn-danger ml-1">{{ _('Так') }}</button>
             </form>
         </div>
