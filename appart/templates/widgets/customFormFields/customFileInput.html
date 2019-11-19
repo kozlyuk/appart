@@ -3,10 +3,14 @@
         <span class="input-group-text">{{ widget.attrs.label }}</span>
     </div>
     <div class="custom-file">
-        <input class="custom-file-input" type="{{ widget.type }}" name="{{ widget.name }}" {% if widget.value != None %}
-            value="{{ widget.value|stringformat:'s' }}" {% endif %} {% for name, value in widget.attrs.items %}
-            {% if value is not False %} {{ name }} {% if value is not True %}="{{ value|stringformat:'s' }}" {% endif %}
-            {% endif %} {% endfor %}>
+        <input class="custom-file-input" type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
         <label class="custom-file-label" for="{{ widget.attrs.id }}"></label>
     </div>
 </div>
+
+
+{% comment %} {% if widget.is_initial %}{{ widget.initial_text }}: <a href="{{ widget.value.url }}">{{ widget.value }}</a>{% if not widget.required %}
+<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
+<label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>{% endif %}<br>
+{{ widget.input_text }}:{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}> {% endcomment %}

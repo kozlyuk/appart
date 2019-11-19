@@ -1,5 +1,6 @@
 from django import forms
 from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomTextarea, CustomNumberInput
+from appart.formatChecker import ContentTypeRestrictedFileField
 from . import models
 
 
@@ -39,6 +40,9 @@ class HouseForm(forms.ModelForm):
 
 
 class CompanyForm(forms.ModelForm):
+
+    # logo = ContentTypeRestrictedFileField()
+
     class Meta:
         model = models.Company
         fields = [
@@ -63,3 +67,4 @@ class CompanyForm(forms.ModelForm):
             'bank_requisites': CustomTextarea(attrs={'label': 'Bank requisites'}),
             'requisites': CustomTextarea(attrs={'label': 'Requisites'}),
         }
+    

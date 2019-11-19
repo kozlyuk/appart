@@ -21,10 +21,6 @@ class CustomSelect(Select):
     input_type  =  'select' 
     template_name = "widgets/customFormFields/customSelect.html"
 
-class CustomSelect(Select):
-    input_type  =  'select' 
-    template_name = "widgets/customFormFields/customSelect.html"
-
 class CustomPasswordInput(PasswordInput):
     input_type  =  'password' 
     template_name = "widgets/customFormFields/customFormField.html"
