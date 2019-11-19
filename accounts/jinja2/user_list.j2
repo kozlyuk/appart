@@ -55,7 +55,7 @@
                                     <td><!--<span class="badge badge-danger">Super Admin</span>--></td>
                                     <td><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></td>
                                     <td>
-                                    <button type="button" class="btn btn-sm btn-default" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('accounts_User_update', kwargs={'pk':user.pk})}}'"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('accounts_User_update', kwargs={'pk':user.pk})}}'"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr>
                                 {% endfor %}

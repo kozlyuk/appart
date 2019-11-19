@@ -18,7 +18,7 @@ class ApartmentForm(forms.ModelForm):
 
 class HouseForm(forms.ModelForm):
 
-    logo = forms.ImageField(widget=CustomFileInput(attrs={'label': 'House logo'}))
+    logo = forms.ImageField(required=False, widget=CustomFileInput(attrs={'label': 'House logo'}))
 
     class Meta:
         model = models.House

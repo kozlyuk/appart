@@ -65,6 +65,13 @@ class HouseUpdateView(generic.UpdateView):
         return context
 
 
+class HouseDeleteView(generic.DeleteView):
+    """ EmployeeDelete - view for deleting employees """
+    model = models.House
+    template_name = 'house/house_delete.j2'
+    success_url = reverse_lazy('condominium_House_list')
+
+
 class CompanyCreateView(generic.CreateView):
     model = models.Company
     form_class = forms.CompanyForm

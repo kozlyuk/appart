@@ -41,7 +41,8 @@
                                     <td>{{ house.address }}</td>
                                     <td>{{ house.apartments_count }}</td>
                                     <td>
-                                    <button type="button" class="btn btn-sm btn-default" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_House_update', kwargs={'pk':house.pk})}}'"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_House_update', kwargs={'pk':house.pk})}}'"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-sm btn-danger" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_House_delete', kwargs={'pk':house.pk})}}'"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 {% endfor %}
