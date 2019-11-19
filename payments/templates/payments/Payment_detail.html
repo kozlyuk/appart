@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'payments_Payment_list' %}">
+    Payment Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>date_created</td><td>{{ object.date_created }}</td></tr>
+    <tr><td>date_updated</td><td>{{ object.date_updated }}</td></tr>
+    <tr><td>type</td><td>{{ object.type }}</td></tr>
+    <tr><td>amount</td><td>{{ object.amount }}</td></tr>
+    <tr><td>description</td><td>{{ object.description }}</td></tr>
+    <tr><td>date</td><td>{{ object.date }}</td></tr>
+    <tr><td>action</td><td>{{ object.action }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}
