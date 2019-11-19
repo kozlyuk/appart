@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('condominium.urls')),
     path('', include('payments.urls')),
 
-    path('', TemplateView.as_view(template_name="main.j2")),
+    path('', TemplateView.as_view(template_name="main.j2"), name='appart_main'),
 
     url(r'favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 ]
