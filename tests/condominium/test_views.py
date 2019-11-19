@@ -114,17 +114,6 @@ def tests_House_update_view():
     assert response.status_code == 302
 
 
-def tests_Company_list_view():
-    instance1 = test_helpers.create_condominium_Company()
-    instance2 = test_helpers.create_condominium_Company()
-    client = Client()
-    url = reverse("condominium_Company_list")
-    response = client.get(url)
-    assert response.status_code == 200
-    assert str(instance1) in response.content.decode("utf-8")
-    assert str(instance2) in response.content.decode("utf-8")
-
-
 def tests_Company_create_view():
     client = Client()
     url = reverse("condominium_Company_create")
@@ -141,15 +130,6 @@ def tests_Company_create_view():
     }
     response = client.post(url, data)
     assert response.status_code == 302
-
-
-def tests_Company_detail_view():
-    client = Client()
-    instance = test_helpers.create_condominium_Company()
-    url = reverse("condominium_Company_detail", args=[instance.pk, ])
-    response = client.get(url)
-    assert response.status_code == 200
-    assert str(instance) in response.content.decode("utf-8")
 
 
 def tests_Company_update_view():
