@@ -17,12 +17,6 @@ class ApartmentForm(forms.ModelForm):
 
 
 class HouseForm(forms.ModelForm):
-
-    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    logo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
-    apartments_count = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}))
     class Meta:
         model = models.House
         fields = [
@@ -32,12 +26,13 @@ class HouseForm(forms.ModelForm):
             "address",
             "description",
         ]
-        # widgets = {
-        #     'description': CustomTextarea(attrs={'label': 'Description'}),
-        #     'address': CustomTextarea(attrs={'label': 'Address'}),
-        #     'name': CustomInput(attrs={'label': 'House name'}),
-        #     'apartments_count': CustomNumberInput(attrs={'label': 'Apartments count'}),
-        # }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'logo': forms.FileInput(attrs={'class': 'custom-file-input'}),
+            'apartments_count': forms.NumberInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+        }
 
 
 class CompanyForm(forms.ModelForm):
