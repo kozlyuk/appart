@@ -35,14 +35,13 @@ class House(models.Model):
     """ Model contains Houses of managerial company """
 
     #  Fields
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), max_length=255, unique=True)
     address = models.CharField(_('Address'), max_length=255, blank=True)
     logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
     apartments_count = models.PositiveSmallIntegerField(_('Apartments count'), blank=True, null=True)
 
     class Meta:
-        unique_together = ('company', 'name')
         verbose_name = _('House')
         verbose_name_plural = _('Houses')
         ordering = ['-name']
