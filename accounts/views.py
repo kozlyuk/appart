@@ -14,8 +14,11 @@ class EmailLoginView(LoginView):
 class UserListView(generic.ListView):
     model = User
     context_object_name = 'users'
-    # success_url = reverse_lazy('manager_home')
     template_name = "user_list.j2"
+
+    def get_queryset(self):
+        deals = User.objects.filter(is_staff=True)
+        return deals
 
 
 @method_decorator(login_required, name='dispatch')
