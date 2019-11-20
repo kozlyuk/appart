@@ -21,7 +21,7 @@
                         <div class="input-group mb-3">
                                 {% if field.field.widget.input_type == 'file' %}
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">Upload house logo</span>
+                                        <span class="input-group-text">{{ field.label }}</span>
                                     </div>
                                     <div class="custom-file">
                                         {{field}}
