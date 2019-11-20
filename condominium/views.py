@@ -68,8 +68,8 @@ class HouseUpdateView(generic.UpdateView):
     def get_context_data(self, **kwargs):
         context = super(HouseUpdateView, self).get_context_data(**kwargs)
         house = str(context['house'])
-        context['header'] = 'Edit house: ' + house
-        context['text_submit'] = 'Save'
+        context['header'] = _('Edit house: ') + house
+        context['text_submit'] = _('Save')
         return context
 
 

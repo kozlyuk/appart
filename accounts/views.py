@@ -14,7 +14,7 @@ class EmailLoginView(LoginView):
 @method_decorator(login_required, name='dispatch')
 class UserListView(generic.ListView):
     model = User
-    context_object_name = _('users')
+    context_object_name = 'users'
     # success_url = reverse_lazy('manager_home')
     template_name = "user_list.j2"
 
