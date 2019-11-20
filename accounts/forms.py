@@ -22,7 +22,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2')
+        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2', 'is_active')
         widgets = {
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
@@ -39,7 +39,7 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme')
+        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password', 'password1', 'password2', 'is_active')
         widgets = {
             'email': forms.EmailInput(attrs={'class': ' form-control'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
