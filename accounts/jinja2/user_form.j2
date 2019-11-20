@@ -19,8 +19,21 @@
                             {% endif %}
                         
                         <div class="input-group mb-3">
-                            {{field}}
-                        </div>
+                                {% if field.field.widget.input_type == 'file' %}
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload house logo</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        {{field}}
+                                        <label class="custom-file-label" for="id_logo">Choose file</label>
+                                    </div>
+                                {% else %}
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ field.label }}</span>
+                                    </div>
+                                    {{field}}
+                                {% endif %}
+                            </div>
                         {% endfor %}
                         <div class="text-center">
                             <button type="submit" class="btn btn-success text-right">{{ text_submit }}</button>

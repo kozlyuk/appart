@@ -17,19 +17,18 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 class CustomUserCreationForm(UserCreationForm):
-    password1 = forms.CharField(label=_("Password"), strip=False, widget=CustomPasswordInput(attrs={'label': 'Password'}))
-    password2 = forms.CharField(label=_('Confirm password'), max_length=255, required=True,
-                                widget=CustomPasswordInput(attrs={'label': 'Confirm password'}))
-    avatar = forms.CharField(required=False, widget=CustomFileInput(attrs={'label': 'Avatar'}))
-    birth_date = forms.DateField(required=False, widget=CustomInput(attrs={'label': 'Birthday'}))
-    email = EmailLowerField(required=True, widget=CustomInput(attrs={'label': 'Email'}))
+    password1 = forms.CharField(label=_("Password"), strip=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput(attrs={'class': 'form-control'}), strip=False)
 
     class Meta:
         model = User
         fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2')
         widgets = {
-            'mobile_number': CustomInput(attrs={'label': 'Mobile phone'}),
-            'theme': CustomSelect(attrs={'label': 'Theme'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'birth_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'avatar': forms.FileInput(attrs={'class': 'custom-file-input'}),
+            'theme': forms.Select(attrs={'class': 'form-control'}),
         }
 
 
