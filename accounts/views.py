@@ -14,9 +14,17 @@ class EmailLoginView(LoginView):
 @method_decorator(login_required, name='dispatch')
 class UserListView(generic.ListView):
     model = User
+<<<<<<< HEAD
     context_object_name = _('users')
     # success_url = reverse_lazy('manager_home')
+=======
+    context_object_name = 'users'
+>>>>>>> 9528d09f81ba75e10c3e3831b242041df42b265b
     template_name = "user_list.j2"
+
+    def get_queryset(self):
+        deals = User.objects.filter(is_staff=True)
+        return deals
 
 
 @method_decorator(login_required, name='dispatch')
@@ -30,6 +38,10 @@ class UserCreateView(generic.CreateView):
         context['header'] = _('Add user')
         context['text_submit'] = _('Add user')
         return context
+
+    def form_valid(self, form):
+        form.instance.is_staff = True
+        return super().form_valid(form)
 
 
 @method_decorator(login_required, name='dispatch')
