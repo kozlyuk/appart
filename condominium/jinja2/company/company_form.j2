@@ -9,7 +9,7 @@
                     <h2 class="text-center">{{ _('Company edit') }}</h2>
                 </div>
                 <div class="body">
-                    <form action="" method="post"s>
+                    <form action="" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                         {% for field in form %}
                             {% if field.errors %}
@@ -19,7 +19,20 @@
                             {% endif %}
                         
                         <div class="input-group mb-3">
+                            {% if field.field.widget.input_type == 'file' %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ field.label }}</span>
+                            </div>
+                            <div class="custom-file">
+                                {{field}}
+                                <label class="custom-file-label" for="id_logo">Choose file</label>
+                            </div>
+                            {% else %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ field.label }}</span>
+                            </div>
                             {{field}}
+                            {% endif %}
                         </div>
                         {% endfor %}
                         <div class="text-center">

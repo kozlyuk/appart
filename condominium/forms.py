@@ -58,14 +58,14 @@ class CompanyForm(forms.ModelForm):
             "description",
         ]
         widgets = {
-            'name': CustomInput(attrs={'label': 'Full name'}),
-            'fullname': CustomInput(attrs={'label': 'Full name'}),
-            'chief': CustomInput(attrs={'label': 'Chief name'}),
-            'logo': CustomFileInput(attrs={'label': 'Company logo'}),
-            'phone': CustomInput(attrs={'label': 'Chief phone'}),
-            'address': CustomTextarea(attrs={'label': 'Company address'}),
-            'description': CustomTextarea(attrs={'label': 'Description'}),
-            'bank_requisites': CustomTextarea(attrs={'label': 'Bank requisites'}),
-            'requisites': CustomTextarea(attrs={'label': 'Requisites'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'fullname': forms.TextInput(attrs={'class': 'form-control'}),
+            'chief': forms.TextInput(attrs={'class': 'form-control'}),
+            'logo': forms.FileInput(attrs={'class': 'custom-file-input'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': '2'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            'bank_requisites': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            'requisites': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
         }
     
