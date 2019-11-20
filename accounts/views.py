@@ -33,6 +33,10 @@ class UserCreateView(generic.CreateView):
         context['text_submit'] = 'Add user'
         return context
 
+    def form_valid(self, form):
+        form.instance.is_staff = True
+        return super().form_valid(form)
+
 
 @method_decorator(login_required, name='dispatch')
 class UserDetailView(generic.DetailView):
