@@ -66,10 +66,17 @@ class HouseUpdateView(generic.UpdateView):
 
 
 class HouseDeleteView(generic.DeleteView):
-    """ EmployeeDelete - view for deleting employees """
+    """ HouseDelete - view for deleting houses """
     model = models.House
     template_name = 'house/house_delete.j2'
     success_url = reverse_lazy('condominium_House_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+        if obj.apartments_set.exists():
+            context['apartments'] = obj.apartments_set.all()
+        return context
 
 
 class CompanyCreateView(generic.CreateView):
