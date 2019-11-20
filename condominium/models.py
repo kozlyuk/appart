@@ -39,7 +39,7 @@ class House(models.Model):
     address = models.CharField(_('Address'), max_length=255, blank=True)
     logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
     description = models.TextField(_('Description'), blank=True)
-    apartments_count = models.PositiveSmallIntegerField(_('Apartments count'), blank=True, null=True)
+    apartments_count = models.PositiveSmallIntegerField(_('Apartments count'))
 
     class Meta:
         verbose_name = _('House')
@@ -66,8 +66,8 @@ class Apartment(models.Model):
 
     #  Fields
     number = models.PositiveSmallIntegerField(_('Apartment Number'))    #todo ask about deal_number
-    area = models.PositiveSmallIntegerField(_('Area'), blank=True)
-    residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True)
+    area = models.PositiveSmallIntegerField(_('Area'), blank=True, null=True)
+    residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True, null=True)
     description = models.TextField(_('Description'), blank=True)
 
     class Meta:
@@ -77,7 +77,7 @@ class Apartment(models.Model):
         ordering = ['-number']
 
     def __str__(self):
-        return self.number
+        return str(self.number)
 
     def get_absolute_url(self):
         return reverse("condominium_Apartment_detail", args=(self.pk,))

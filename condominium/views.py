@@ -1,5 +1,7 @@
+from django.shortcuts import redirect
 from django.views import generic
 from django.urls import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 
 from . import models
 from . import forms
@@ -40,9 +42,15 @@ class HouseCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(HouseCreateView, self).get_context_data(**kwargs)
-        context['header'] = 'Add new house'
-        context['text_submit'] = 'Add'
+        context['header'] = _('Add new house')
+        context['text_submit'] = _('Add')
         return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        for number in range(self.object.apartments_count):
+            models.Apartment.objects.create(house=self.object, number=number+1)
+        return redirect(self.get_success_url())
 
 
 class HouseDetailView(generic.DetailView):
@@ -66,7 +74,6 @@ class HouseUpdateView(generic.UpdateView):
 
 
 class HouseDeleteView(generic.DeleteView):
-    """ HouseDelete - view for deleting houses """
     model = models.House
     template_name = 'house/house_delete.j2'
     success_url = reverse_lazy('condominium_House_list')

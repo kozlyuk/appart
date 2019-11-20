@@ -14,9 +14,10 @@ class ApartmentAdminForm(forms.ModelForm):
 class ApartmentAdmin(admin.ModelAdmin):
     form = ApartmentAdminForm
     list_display = [
-        "description",
+        "number",
+        "house",
         "area",
-        "residents_count",
+        "resident",
     ]
 
 
