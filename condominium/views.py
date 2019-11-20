@@ -81,8 +81,8 @@ class HouseDeleteView(generic.DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = self.get_object()
-        if obj.apartments_set.exists():
-            context['apartments'] = obj.apartments_set.all()
+        if obj.apartment_set.exists():
+            context['apartments'] = obj.apartment_set.all()
         return context
 
 
