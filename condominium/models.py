@@ -34,9 +34,6 @@ class Company(models.Model):
 class House(models.Model):
     """ Model contains Houses of managerial company """
 
-    #  Relationships
-    company = models.ForeignKey(Company, verbose_name=_('Company'), on_delete=models.PROTECT)
-
     #  Fields
     name = models.CharField(_('Name'), max_length=255)
     address = models.CharField(_('Address'), max_length=255, blank=True)
