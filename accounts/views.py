@@ -1,10 +1,21 @@
-from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView
+
 from .models import User
 from .forms import EmailAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomUserSelfUpdateForm
-from django.contrib.auth.views import LoginView
+
+
+@method_decorator(login_required, name='dispatch')
+class DashboardView(TemplateView):
+    """ DashboardView - view for manager dashboard template """
+    template_name = 'dashboard.j2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class EmailLoginView(LoginView):
@@ -12,7 +23,7 @@ class EmailLoginView(LoginView):
 
 
 @method_decorator(login_required, name='dispatch')
-class UserListView(generic.ListView):
+class UserListView(ListView):
     model = User
     context_object_name = 'users'
     # success_url = reverse_lazy('manager_home')
@@ -24,7 +35,7 @@ class UserListView(generic.ListView):
 
 
 @method_decorator(login_required, name='dispatch')
-class UserCreateView(generic.CreateView):
+class UserCreateView(CreateView):
     model = User
     form_class = CustomUserCreationForm
     template_name = "user_form.j2"
@@ -41,14 +52,14 @@ class UserCreateView(generic.CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class UserDetailView(generic.DetailView):
+class UserDetailView(DetailView):
     model = User
     template_name = "user_detail.j2"
 #    form_class = forms.UserForm
 
 
 @method_decorator(login_required, name='dispatch')
-class UserUpdateView(generic.UpdateView):
+class UserUpdateView(UpdateView):
     model = User
     template_name = "user_form.j2"
     form_class = CustomUserChangeForm
@@ -63,7 +74,7 @@ class UserUpdateView(generic.UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')  # pylint: disable=too-many-ancestors
-class UserSelfUpdate(generic.UpdateView):
+class UserSelfUpdate(UpdateView):
     """ PartnerSelfUpdate - view for partners self updating """
     template_name = 'user_form.j2'
     form_class = CustomUserSelfUpdateForm
