@@ -7,12 +7,21 @@ class ApartmentForm(forms.ModelForm):
     class Meta:
         model = Apartment
         fields = [
-            "description",
-            "area",
-            "residents_count",
             "house",
             "resident",
+            "number",
+            "area",
+            "residents_count",
+            "description",
         ]
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            'area': forms.NumberInput(attrs={'class': 'form-control'}),
+            'residents_count': forms.NumberInput(attrs={'class': 'form-control'}),
+            'house': forms.Select(attrs={'class': 'form-control'}),
+            'resident': forms.Select(attrs={'class': 'form-control'}),
+            'number': forms.NumberInput(attrs={'class': 'form-control'})
+        }
 
 
 class HouseForm(forms.ModelForm):
