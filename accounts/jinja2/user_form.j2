@@ -10,16 +10,33 @@
                 </div>
                 <div class="body">
                     <form action="" method="post">
-                    {{ csrf_input }}
+                        {{ csrf_input }}
                         {% for field in form %}
-                            {% if field.errors %}
-                            <div class="alert alert-danger-2" role="alert">
-                                {{ field.errors }}
-                            </div>
-                            {% endif %}
-                        
+                        {% if field.errors %}
+                        <div class="alert alert-danger-2" role="alert">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+
                         <div class="input-group mb-3">
+                            {% if field.field.widget.input_type == 'file' %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ field.label }}</span>
+                            </div>
+                            <div class="custom-file">
+                                {{field}}
+                                <label class="custom-file-label" for="id_logo">Choose file</label>
+                            </div>
+                            {% elif field.field.widget.input_type == 'checkbox' %}
+                            <div class="fancy-checkbox ml-auto mr-auto">
+                                <label>{{ field }}<span>{{ field.label }}</span></label>
+                            </div>
+                            {% else %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ field.label }}</span>
+                            </div>
                             {{field}}
+                            {% endif %}
                         </div>
                         {% endfor %}
                         <div class="text-center">
@@ -33,3 +50,7 @@
 </div>
 {% include 'plugins/form_errors.j2' %}
 {% endblock content %}
+
+<div class="fancy-checkbox">
+    <label><input type="checkbox"><span>Fancy Checkbox 1</span></label>
+</div>

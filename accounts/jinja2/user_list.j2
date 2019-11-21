@@ -33,16 +33,18 @@
                         <table class="table table-hover table-custom spacing8">
                             <thead>
                                 <tr>
+                                    <th class="w60">#</th>
+                                    <th class="w60"></th>
+                                    <th>{{ _('Email') }}</th>
                                     <th></th>
-                                    <th class="w60">{{ _('Email') }}</th>
-                                    <th></th>
-                                    <th><!--{{ _('Position') }}--></th>
+                                    <th class="w60">{{ _('Active') }}</th>
                                     <th class="w100">{{ _('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for user in users.all() %}
                                 <tr>
+                                    <td><strong>{{loop.index}}</strong></td>
                                     <td class="width45">
                                         <img src="https://picsum.photos/100" data-toggle="tooltip" data-placement="top" title="" alt="Avatar" class="w35 h35 rounded" data-original-title="Avatar Name" aria-describedby="tooltip889898">
                                     </td>
@@ -53,7 +55,16 @@
                                         <span><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></span>
                                     </td>
                                     <td><!--<span class="badge badge-danger">Super Admin</span>--></td>
-                                    <td><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></td>
+                                    <td>{% if user.is_active %}
+                                            <span class="badge badge-pill badge-success">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-danger">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                     <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('accounts_User_update', kwargs={'pk':user.pk})}}'"><i class="fa fa-edit"></i></button>
                                     </td>

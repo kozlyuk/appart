@@ -45,6 +45,13 @@
                         <p class="mb-0">{{ user.birth_date }}</p>
                     </li>
                     {% endif %}
+                    <div class="btn-toolbar justify-content-between mt-2">
+                        <button type="submit" onclick="window.location.href = '{{url('accounts_User_list')}}'"
+                            class="btn btn-info text-right">{{ _('Return') }}</button>
+                        <button type="submit"
+                            onclick="window.location.href = '{{url('accounts_User_update', kwargs={'pk': user.pk})}}'"
+                            class="btn btn-warning text-right">{{ _('Edit') }}</button>
+                    </div>
                 </ul>
             </div>
         </div>

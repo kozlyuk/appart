@@ -1,6 +1,7 @@
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext, gettext_lazy as _
 from .models import User
 from .forms import EmailAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomUserSelfUpdateForm
 from django.contrib.auth.views import LoginView
@@ -14,6 +15,7 @@ class EmailLoginView(LoginView):
 class UserListView(generic.ListView):
     model = User
     context_object_name = 'users'
+    # success_url = reverse_lazy('manager_home')
     template_name = "user_list.j2"
 
     def get_queryset(self):
@@ -29,8 +31,8 @@ class UserCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
-        context['header'] = 'Add user'
-        context['text_submit'] = 'Add user'
+        context['header'] = _('Add user')
+        context['text_submit'] = _('Add user')
         return context
 
     def form_valid(self, form):
@@ -55,8 +57,8 @@ class UserUpdateView(generic.UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         email = str(context['user'])
-        context['header'] = 'Edit user: ' + email
-        context['text_submit'] = 'Save'
+        context['header'] = _('Edit user: ') + email
+        context['text_submit'] = _('Save')
         return context
 
 
@@ -72,5 +74,6 @@ class UserSelfUpdate(generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserSelfUpdate, self).get_context_data(**kwargs)
-        context['header'] = 'My profile'
+        context['header'] = _('My profile')
+        context['text_submit'] = _('Save')
         return context
