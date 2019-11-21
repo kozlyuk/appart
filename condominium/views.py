@@ -16,7 +16,14 @@ class ApartmentListView(generic.ListView):
 
 class ApartmentCreateView(generic.CreateView):
     model = Apartment
+    template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ApartmentCreateView, self).get_context_data(**kwargs)
+        context['header'] = _('Add new apartment')
+        context['text_submit'] = _('Add')
+        return context
 
 
 class ApartmentDetailView(generic.DetailView):
