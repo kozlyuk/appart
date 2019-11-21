@@ -9,6 +9,8 @@ from .forms import ApartmentForm, HouseForm, CompanyForm
 
 class ApartmentListView(generic.ListView):
     model = Apartment
+    template_name = "apartment/apartment_list.j2"
+    context_object_name = 'apartments'
     form_class = ApartmentForm
 
 
@@ -26,6 +28,12 @@ class ApartmentUpdateView(generic.UpdateView):
     model = Apartment
     form_class = ApartmentForm
     pk_url_kwarg = "pk"
+
+
+class ApartmentDeleteView(generic.DeleteView):
+    model = Apartment
+    template_name = 'apartment/apartment_delete.j2'
+    success_url = reverse_lazy('condominium_Apartment_list')
 
 
 class HouseListView(generic.ListView):
