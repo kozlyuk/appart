@@ -1,66 +1,66 @@
 from django.views import generic
-from . import models
-from . import forms
+from .models import Payment, Bill, Service
+from .forms import PaymentForm, BillForm, ServiceForm
 
 
 class PaymentListView(generic.ListView):
-    model = models.Payment
-    form_class = forms.PaymentForm
+    model = Payment
+    form_class = PaymentForm
 
 
 class PaymentCreateView(generic.CreateView):
-    model = models.Payment
-    form_class = forms.PaymentForm
+    model = Payment
+    form_class = PaymentForm
 
 
 class PaymentDetailView(generic.DetailView):
-    model = models.Payment
-    form_class = forms.PaymentForm
+    model = Payment
+    form_class = PaymentForm
 
 
 class PaymentUpdateView(generic.UpdateView):
-    model = models.Payment
-    form_class = forms.PaymentForm
+    model = Payment
+    form_class = PaymentForm
     pk_url_kwarg = "pk"
 
 
 class BillListView(generic.ListView):
-    model = models.Bill
-    form_class = forms.BillForm
+    model = Bill
+    form_class = BillForm
 
 
 class BillCreateView(generic.CreateView):
-    model = models.Bill
-    form_class = forms.BillForm
+    model = Bill
+    form_class = BillForm
 
 
 class BillDetailView(generic.DetailView):
-    model = models.Bill
-    form_class = forms.BillForm
+    model = Bill
+    form_class = BillForm
 
 
 class BillUpdateView(generic.UpdateView):
-    model = models.Bill
-    form_class = forms.BillForm
+    model = Bill
+    form_class = BillForm
     pk_url_kwarg = "pk"
 
 
 class ServiceListView(generic.ListView):
-    model = models.Service
-    form_class = forms.ServiceForm
+    model = Service
+    form_class = ServiceForm
 
 
 class ServiceCreateView(generic.CreateView):
-    model = models.Service
-    form_class = forms.ServiceForm
+    model = Service
+    form_class = ServiceForm
 
 
 class ServiceDetailView(generic.DetailView):
-    model = models.Service
-    form_class = forms.ServiceForm
+    model = Service
+    form_class = ServiceForm
 
 
 class ServiceUpdateView(generic.UpdateView):
-    model = models.Service
-    form_class = forms.ServiceForm
+    model = Service
+    form_class = ServiceForm
     pk_url_kwarg = "pk"

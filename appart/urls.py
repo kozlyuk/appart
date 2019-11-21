@@ -19,15 +19,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
 from django.views.generic.base import RedirectView
-from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('', include('condominium.urls')),
     path('', include('payments.urls')),
-
-    path('', TemplateView.as_view(template_name="main.j2"), name='appart_main'),
+    path('', include('pages.urls')),
 
     url(r'favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 ]

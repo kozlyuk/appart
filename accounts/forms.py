@@ -2,9 +2,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
-from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomPasswordInput
+from PIL import Image
 
-from accounts.models import User
+from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomPasswordInput
+from .models import User
 
 
 class EmailLowerField(forms.EmailField):

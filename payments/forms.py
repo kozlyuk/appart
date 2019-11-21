@@ -1,10 +1,10 @@
 from django import forms
-from . import models
+from .models import Payment, Bill, Service
 
 
 class PaymentForm(forms.ModelForm):
     class Meta:
-        model = models.Payment
+        model = Payment
         fields = [
             "type",
             "amount",
@@ -17,7 +17,7 @@ class PaymentForm(forms.ModelForm):
 
 class BillForm(forms.ModelForm):
     class Meta:
-        model = models.Bill
+        model = Bill
         fields = [
             "amount",
             "number",
@@ -30,7 +30,7 @@ class BillForm(forms.ModelForm):
 
 class ServiceForm(forms.ModelForm):
     class Meta:
-        model = models.Service
+        model = Service
         fields = [
             "description",
             "name",

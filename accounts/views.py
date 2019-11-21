@@ -2,7 +2,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import User
-from .forms import CustomUserCreationForm, CustomUserChangeForm, EmailAuthenticationForm, CustomUserSelfUpdateForm
+from .forms import EmailAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomUserSelfUpdateForm
 from django.contrib.auth.views import LoginView
 
 
