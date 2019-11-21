@@ -28,6 +28,7 @@ class ApartmentCreateView(generic.CreateView):
 
 class ApartmentDetailView(generic.DetailView):
     model = Apartment
+    template_name = "apartment/apartment_detail.j2"
     form_class = ApartmentForm
 
 

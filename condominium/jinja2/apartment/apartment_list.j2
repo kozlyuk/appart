@@ -25,7 +25,7 @@
                                     <th class="w100">{{ _('Apartment number') }}</th>
                                     <th class="w200">{{ _('House') }}</th>
                                     <th>{{ _('Area') }}</th>
-                                    <th>{{ _('Resident') }}</th>
+                                    <th class="w300">{{ _('Resident') }}</th>
                                     <th class="w100">{{ _('Action') }}</th>
                                 </tr>
                             </thead>
@@ -34,7 +34,7 @@
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>
-                                        <a href="{{url('condominium_House_detail', kwargs={'pk':apartment.pk})}}">
+                                        <a href="{{url('condominium_Apartment_detail', kwargs={'pk':apartment.pk})}}">
                                             <h6 class="mb-0">{{ apartment }}</h6>
                                         </a>
                                         <span><!--{{ lipsum(n=2, html=False, min=1, max=2) }}--></span>
@@ -43,8 +43,8 @@
                                     <td>{{ apartment.area }}</td>
                                     <td>{{ apartment.resident }}</td>
                                     <td>
-                                    <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_Apartment_update', kwargs={'pk':apartment.pk})}}'"><i class="fa fa-edit"></i></button>
-                                    <button type="button" class="btn btn-sm btn-danger" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_Apartment_delete', kwargs={'pk':apartment.pk})}}'"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('condominium_Apartment_update', kwargs={'pk':apartment.pk})}}'"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger" title="{{ _('Delete') }}" onclick="window.location.href = '{{url('condominium_Apartment_delete', kwargs={'pk':apartment.pk})}}'"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 {% endfor %}
