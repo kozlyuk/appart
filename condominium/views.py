@@ -33,8 +33,17 @@ class ApartmentDetailView(generic.DetailView):
 
 class ApartmentUpdateView(generic.UpdateView):
     model = Apartment
+    template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
     pk_url_kwarg = "pk"
+
+    def get_context_data(self, **kwargs):
+        context = super(ApartmentUpdateView, self).get_context_data(**kwargs)
+        apartment = str(context['apartment'])
+        context['header'] = _('Edit apartment: ') + apartment
+        context['text_submit'] = _('Save')
+        return context
+
 
 
 class ApartmentDeleteView(generic.DeleteView):
