@@ -27,4 +27,5 @@ urlpatterns = [
     path("accounts/User/update/<int:pk>/", views.UserUpdateView.as_view(), name="accounts_User_update"),
     path('accounts/User/self_update/', views.UserSelfUpdate.as_view(), name='user_self_update'),
 
+    path("dashboard/", views.DashboardView.as_view(), name='dashboard_main'),
 ]
