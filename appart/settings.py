@@ -30,6 +30,7 @@ INSTALLED_APPS += [
     'appart',
     'templatetags',
     'bootstrap4',
+    'rest_framework',
     'font_awesome',
     'widget_tweaks',
     'django_userforeignkey',
