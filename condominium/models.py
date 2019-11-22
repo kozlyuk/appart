@@ -37,7 +37,7 @@ class House(models.Model):
     #  Fields
     name = models.CharField(_('Name'), max_length=255, unique=True)
     address = models.CharField(_('Address'), max_length=255, blank=True)
-    logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
+    logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
     apartments_count = models.PositiveSmallIntegerField(_('Apartments count'))
 
