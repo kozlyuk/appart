@@ -1,10 +1,11 @@
-"""account URL Configuration"""
+"""appart.account URL Configuration"""
+
 from django.urls import path, include, reverse_lazy
+from django.contrib.auth import views as auth
 from rest_framework import routers
 
-from django.contrib.auth import views as auth
-from . import views
-from . import api
+from accounts import views
+from accounts import api
 
 router = routers.DefaultRouter()
 router.register("User", api.UserViewSet)
@@ -21,11 +22,11 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    path("accounts/User/", views.UserListView.as_view(), name="accounts_User_list"),
-    path("accounts/User/create/", views.UserCreateView.as_view(), name="accounts_User_create"),
-    path("accounts/User/detail/<int:pk>/", views.UserDetailView.as_view(), name="accounts_User_detail"),
-    path("accounts/User/update/<int:pk>/", views.UserUpdateView.as_view(), name="accounts_User_update"),
-    path('accounts/User/self_update/', views.UserSelfUpdate.as_view(), name='user_self_update'),
+    path("User/", views.UserListView.as_view(), name="accounts_User_list"),
+    path("User/create/", views.UserCreateView.as_view(), name="accounts_User_create"),
+    path("User/detail/<int:pk>/", views.UserDetailView.as_view(), name="accounts_User_detail"),
+    path("User/update/<int:pk>/", views.UserUpdateView.as_view(), name="accounts_User_update"),
+    path('User/self_update/', views.UserSelfUpdate.as_view(), name='user_self_update'),
 
     path("dashboard/", views.DashboardView.as_view(), name='dashboard_main'),
 ]
