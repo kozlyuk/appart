@@ -117,15 +117,15 @@ class HouseDeleteView(generic.DeleteView):
         return context
 
 
-class CompanyCreateView(generic.CreateView):
-    model = Company
-    form_class = CompanyForm
-    success_url = reverse_lazy('dashboard_main')
-
-
 class CompanyUpdateView(generic.UpdateView):
     model = Company
     template_name = "company/company_form.j2"
     form_class = CompanyForm
-    pk_url_kwarg = "pk"
     success_url = reverse_lazy('dashboard_main')
+
+    def get_object(self, queryset=None):
+        if Company.objects.exists():
+            return Company.objects.last()
+        else:
+            company = Company.objects.create()
+            return company
