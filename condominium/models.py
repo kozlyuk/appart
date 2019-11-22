@@ -74,7 +74,7 @@ class Apartment(models.Model):
         unique_together = ('house', 'number')
         verbose_name = _('Apartment')
         verbose_name_plural = _('Apartments')
-        ordering = ['-number']
+        ordering = ['house', 'number']
 
     def __str__(self):
         return str(self.number)

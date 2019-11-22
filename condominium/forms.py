@@ -1,6 +1,10 @@
+""" Forms for managing condominiums """
+
 from django import forms
-from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomTextarea, CustomNumberInput
-from .models import Apartment, House, Company
+from bootstrap_modal_forms.forms import BSModalForm
+
+from condominium.models import Apartment, House, Company
+from accounts.models import User
 
 
 class ApartmentForm(forms.ModelForm):
@@ -24,6 +28,12 @@ class ApartmentForm(forms.ModelForm):
         }
 
 
+class ResidentForm(BSModalForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+
+
 class HouseForm(forms.ModelForm):
     class Meta:
         model = House
@@ -44,8 +54,6 @@ class HouseForm(forms.ModelForm):
 
 
 class CompanyForm(forms.ModelForm):
-
-    # logo = ContentTypeRestrictedFileField()
 
     class Meta:
         model = Company
@@ -71,4 +79,3 @@ class CompanyForm(forms.ModelForm):
             'bank_requisites': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
             'requisites': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
         }
-    

@@ -2,9 +2,10 @@ from django.shortcuts import redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 from .models import Apartment, House, Company
-from .forms import ApartmentForm, HouseForm, CompanyForm
+from .forms import ApartmentForm, HouseForm, CompanyForm, ResidentForm
 
 
 class ApartmentListView(generic.ListView):
@@ -45,6 +46,11 @@ class ApartmentUpdateView(generic.UpdateView):
         context['text_submit'] = _('Save')
         return context
 
+
+class ResidentModalView(BSModalCreateView):
+    template_name = 'resident_modal.j2'
+    form_class = ResidentForm
+    success_url = reverse_lazy('condominium_Apartment_update')
 
 
 class ApartmentDeleteView(generic.DeleteView):
