@@ -17,7 +17,7 @@ class Company(models.Model):
     bank_requisites = models.CharField(_('Bank details'), max_length=255, blank=True)
     chief = models.CharField(_('Chief'), max_length=45, blank=True)
     phone = models.CharField(_('Phone'), max_length=13, blank=True)
-    logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg')
+    logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
 
     class Meta:
