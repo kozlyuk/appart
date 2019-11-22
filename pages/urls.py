@@ -6,6 +6,6 @@ from pages import views
 
 
 urlpatterns = (
-    path("Company/", views.CompanyView.as_view(), name='company_main'),
-    path("House/<int:pk>/", views.HouseView.as_view(), name='house_main'),
+    path("company/", views.CompanyView.as_view(), name='company_main'),
+    path("house/<int:pk>/", views.HouseView.as_view(), name='house_main'),
 )
