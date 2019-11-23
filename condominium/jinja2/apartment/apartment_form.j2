@@ -65,14 +65,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" onclick="saveChanges()" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 <script>
-function openModal ()
-{
+function openModal() {
     let xhr = new XMLHttpRequest();
     let wrapper = document.getElementById('modal-wrapper');
     xhr.open('GET', '/accounts/api/v1/users/', true);
@@ -82,14 +81,57 @@ function openModal ()
         if (xhr.readyState != 4) return;
         let array = xhr.response;
         array.forEach(element => {
-            console.log(element)
             wrapper.innerHTML += '<p> <td>email: ' + element.email + '</p<>';
         });
     }
 }
 
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
 
+function saveChanges() {
+    {
+        #
+        let xhr = new XMLHttpRequest();
+        let wrapper = document.getElementById('modal-wrapper');
+        xhr.open('POST')#
+    }
+
+
+    let csrftoken = getCookie('csrftoken');
+    let email = 'tes1t@mail.com';
+    let avatar = '';
+    let birth_date = '';
+    let mobile_number = '';
+    let theme = 'DK';
+
+
+    const request = new XMLHttpRequest();
+    const url = "/accounts/api/v1/users/";
+    const params = "email=" + email + "&theme=" + theme + "&csrfmiddlewaretoken=" + csrftoken;
+
+    request.responseType = "json";
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    request.addEventListener("readystatechange", () => {
+
+        if (request.readyState === 4 && request.status === 200) {
+            let obj = request.response;
+
+            console.log(obj);
+            console.log(obj.email);
+            console.log(obj.theme);
+        }
+    });
+
+    request.send(params);
+}
 
 </script>
 
