@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('condominium.urls')),
     path('', include('payments.urls')),
     path('', include('pages.urls')),
+    path('', include('api.urls')),
 
     url(r'^api-auth/', include('rest_framework.urls')),
 

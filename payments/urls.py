@@ -1,19 +1,10 @@
 """appart.payments URL Configuration"""
 
 from django.urls import path, include
-from rest_framework import routers
 
-from payments import api
 from payments import views
 
-
-router = routers.DefaultRouter()
-router.register("Payment", api.PaymentViewSet)
-router.register("Bill", api.BillViewSet)
-router.register("Service", api.ServiceViewSet)
-
 urlpatterns = (
-    path("api/v1/", include(router.urls)),
     path("payment/", views.PaymentListView.as_view(), name="payments_Payment_list"),
     path("payment/create/", views.PaymentCreateView.as_view(), name="payments_Payment_create"),
     path("payment/detail/<int:pk>/", views.PaymentDetailView.as_view(), name="payments_Payment_detail"),

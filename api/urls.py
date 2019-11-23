@@ -1,0 +1,20 @@
+from django.urls import path, include
+from rest_framework import routers
+
+from accounts import api as acounts_api
+from condominium import api as condominium_api
+from payments import api as payments_api
+
+router = routers.DefaultRouter()
+router.register("user", acounts_api.UserViewSet)
+router.register("apartment", condominium_api.ApartmentViewSet)
+router.register("house", condominium_api.HouseViewSet)
+router.register("company", condominium_api.CompanyViewSet)
+router.register("Payment", payments_api.PaymentViewSet)
+router.register("Bill", payments_api.BillViewSet)
+router.register("Service", payments_api.ServiceViewSet)
+
+
+urlpatterns = [
+    path("api/v1/", include(router.urls)),
+]

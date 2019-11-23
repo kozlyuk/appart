@@ -2,16 +2,10 @@
 
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth
-from rest_framework import routers
 
 from accounts import views
-from accounts import api
-
-router = routers.DefaultRouter()
-router.register("users", api.UserViewSet)
 
 urlpatterns = [
-    path("accounts/api/v1/", include(router.urls)),
 
     path('login/', views.EmailLoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),

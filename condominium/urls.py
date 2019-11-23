@@ -1,20 +1,11 @@
 """appart.condominium URL Configuration"""
 
 from django.urls import path, include
-from rest_framework import routers
 
-from condominium import api
 from condominium import views
 
 
-router = routers.DefaultRouter()
-router.register("Apartment", api.ApartmentViewSet)
-router.register("House", api.HouseViewSet)
-router.register("Company", api.CompanyViewSet)
-
 urlpatterns = (
-    path("api/v1/", include(router.urls)),
-
     path("apartment/list", views.ApartmentListView.as_view(), name="condominium_Apartment_list"),
     path("apartment/create/", views.ApartmentCreateView.as_view(), name="condominium_Apartment_create"),
     path("apartment/detail/<int:pk>/", views.ApartmentDetailView.as_view(),name="condominium_Apartment_detail"),
