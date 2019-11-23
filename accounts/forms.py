@@ -4,17 +4,17 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
 from PIL import Image
 
-from appart.custom_widgets import CustomInput, CustomFileInput, CustomSelect, CustomPasswordInput
 from .models import User
 
 
-class EmailLowerField(forms.EmailField):
-    def to_python(self, value):
-        return value.lower()
+#class EmailLowerField(forms.EmailField):
+#    def to_python(self, value):
+#        return value.lower()
 
 
-class EmailAuthenticationForm(AuthenticationForm):
-    username = EmailLowerField(required=True)
+class CustomAuthenticationForm(AuthenticationForm):
+    #username = EmailLowerField(required=True)
+    pass
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -48,7 +48,7 @@ class CustomUserChangeForm(UserChangeForm):
             'avatar': forms.FileInput(attrs={'class': 'custom-file-input'}),
             'theme': forms.Select(attrs={'class': 'form-control'})
         }
-        email = EmailLowerField(required=True)
+#        email = EmailLowerField(required=True)
 
 
 class CustomUserSelfUpdateForm(forms.ModelForm):
@@ -68,7 +68,6 @@ class CustomUserSelfUpdateForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': ' form-control'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
             'birth_date': forms.DateInput(attrs={'class': 'form-control'}),
-            'theme': CustomSelect(attrs={'label': 'Theme'}),
             'avatar': forms.FileInput(attrs={'class': 'custom-file-input'}),
             'theme': forms.Select(attrs={'class': 'form-control'})
         }

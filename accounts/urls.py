@@ -7,7 +7,7 @@ from accounts import views
 
 urlpatterns = [
 
-    path('login/', views.EmailLoginView.as_view(template_name='auth.html'), name='login'),
+    path('login/', views.CustomLoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
     path('password_change/', auth.PasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', auth.PasswordChangeDoneView.as_view(), name='password_change_done'),
