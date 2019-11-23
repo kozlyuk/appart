@@ -5,7 +5,6 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import django_userforeignkey.models.fields
 import payments.models
 
 
@@ -30,7 +29,7 @@ class Migration(migrations.Migration):
                 ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
                 ('date_updated', models.DateTimeField(auto_now=True, db_index=True, verbose_name='Date updated')),
                 ('apartment', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='condominium.Apartment', verbose_name='Apartment')),
-                ('created_by', django_userforeignkey.models.fields.UserForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
+#                ('created_by', django_userforeignkey.models.fields.UserForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
             ],
             options={
                 'verbose_name': 'Bill',
@@ -69,7 +68,7 @@ class Migration(migrations.Migration):
                 ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
                 ('date_updated', models.DateTimeField(auto_now=True, db_index=True, verbose_name='Date updated')),
                 ('bill', models.ManyToManyField(through='payments.BillPayment', to='payments.Bill', verbose_name='Bill')),
-                ('created_by', django_userforeignkey.models.fields.UserForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
+#                ('created_by', django_userforeignkey.models.fields.UserForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
             ],
             options={
                 'verbose_name': 'Payment',

@@ -3,10 +3,11 @@
 from datetime import datetime, date
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from django_userforeignkey.models.fields import UserForeignKey
-from condominium.models import Apartment
 from appart.formatChecker import ContentTypeRestrictedFileField
 from django.urls import reverse
+
+from accounts.models import User
+from condominium.models import Apartment
 
 
 def bills_directory_path(filename):
@@ -48,7 +49,7 @@ class Bill(models.Model):
                                               max_upload_size=10485760,
                                               blank=True, null=True)
     # Creator and Date information
-    created_by = UserForeignKey(auto_user_add=True, verbose_name=_('Created by'))
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'), on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
@@ -88,7 +89,7 @@ class Payment(models.Model):
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
 
     # Creator and Date information
-    created_by = UserForeignKey(auto_user_add=True, verbose_name=_('Created by'))
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'), on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 

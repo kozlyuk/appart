@@ -13,6 +13,10 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
     model = Payment
     form_class = PaymentForm
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
 
 class PaymentDetailView(LoginRequiredMixin, DetailView):
     model = Payment
@@ -33,6 +37,10 @@ class BillListView(LoginRequiredMixin, ListView):
 class BillCreateView(LoginRequiredMixin, CreateView):
     model = Bill
     form_class = BillForm
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 
 class BillDetailView(LoginRequiredMixin, DetailView):

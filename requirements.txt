@@ -8,5 +8,4 @@ django-bootstrap4 # https://pypi.org/project/django-bootstrap4/
 django-font-awesome # https://github.com/benbacardi/django-font-awesome
 django-widget-tweaks # https://github.com/jazzband/django-widget-tweaks
 Jinja2
-django_userforeignkey
 django-bootstrap-modal-forms

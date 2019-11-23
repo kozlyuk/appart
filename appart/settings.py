@@ -33,7 +33,6 @@ INSTALLED_APPS += [
     'rest_framework',
     'font_awesome',
     'widget_tweaks',
-    'django_userforeignkey',
     'bootstrap_modal_forms',
 ]
 
