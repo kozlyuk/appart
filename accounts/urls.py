@@ -8,10 +8,10 @@ from accounts import views
 from accounts import api
 
 router = routers.DefaultRouter()
-router.register("User", api.UserViewSet)
+router.register("users", api.UserViewSet)
 
 urlpatterns = [
-    path("api/v1/", include(router.urls)),
+    path("accounts/api/v1/", include(router.urls)),
 
     path('login/', views.EmailLoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
