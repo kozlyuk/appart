@@ -10,14 +10,14 @@ class Company(models.Model):
     """ Model contains managerial companies """
 
     #  Fields
-    name = models.CharField(_('Name'), max_length=45)
-    fullname = models.CharField(_('Full name'), max_length=255)
+    name = models.CharField(_('Name'), max_length=45, blank=True)
+    fullname = models.CharField(_('Full name'), max_length=255, blank=True)
     address = models.CharField(_('Legal address'), max_length=255, blank=True)
     requisites = models.CharField(_('Requisites'), max_length=255, blank=True)
     bank_requisites = models.CharField(_('Bank details'), max_length=255, blank=True)
     chief = models.CharField(_('Chief'), max_length=45, blank=True)
     phone = models.CharField(_('Phone'), max_length=13, blank=True)
-    logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg')
+    logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class House(models.Model):
     #  Fields
     name = models.CharField(_('Name'), max_length=255, unique=True)
     address = models.CharField(_('Address'), max_length=255, blank=True)
-    logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg')
+    logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
     apartments_count = models.PositiveSmallIntegerField(_('Apartments count'))
 
