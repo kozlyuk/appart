@@ -1,12 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 
 from condominium.models import Company, House
 
 
-@method_decorator(login_required, name='dispatch')
-class CompanyView(DetailView):
+class CompanyView(LoginRequiredMixin, DetailView):
     """ CompanyView - view for main company page """
     model = Company
     template_name = 'company_main.j2'
@@ -16,8 +14,7 @@ class CompanyView(DetailView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class HouseView(DetailView):
+class HouseView(LoginRequiredMixin, DetailView):
     """ HouseView - view for main house page """
     model = House
     template_name = 'house_main.j2'

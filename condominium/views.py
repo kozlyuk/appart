@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
-from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from bootstrap_modal_forms.generic import BSModalCreateView
@@ -8,14 +9,14 @@ from .models import Apartment, House, Company
 from .forms import ApartmentForm, HouseForm, CompanyForm, ResidentForm
 
 
-class ApartmentListView(generic.ListView):
+class ApartmentListView(LoginRequiredMixin, ListView):
     model = Apartment
     template_name = "apartment/apartment_list.j2"
     context_object_name = 'apartments'
     form_class = ApartmentForm
 
 
-class ApartmentCreateView(generic.CreateView):
+class ApartmentCreateView(LoginRequiredMixin, CreateView):
     model = Apartment
     template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
@@ -27,13 +28,13 @@ class ApartmentCreateView(generic.CreateView):
         return context
 
 
-class ApartmentDetailView(generic.DetailView):
+class ApartmentDetailView(LoginRequiredMixin, DetailView):
     model = Apartment
     template_name = "apartment/apartment_detail.j2"
     form_class = ApartmentForm
 
 
-class ApartmentUpdateView(generic.UpdateView):
+class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Apartment
     template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
@@ -47,26 +48,26 @@ class ApartmentUpdateView(generic.UpdateView):
         return context
 
 
-class ResidentModalView(BSModalCreateView):
+class ResidentModalView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'resident_modal.j2'
     form_class = ResidentForm
     success_url = reverse_lazy('condominium_Apartment_update')
 
 
-class ApartmentDeleteView(generic.DeleteView):
+class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Apartment
     template_name = 'apartment/apartment_delete.j2'
     success_url = reverse_lazy('condominium_Apartment_list')
 
 
-class HouseListView(generic.ListView):
+class HouseListView(LoginRequiredMixin, ListView):
     model = House
     template_name = "house/house_list.j2"
     context_object_name = 'houses'
     form_class = HouseForm
 
 
-class HouseCreateView(generic.CreateView):
+class HouseCreateView(CreateView):
     model = House
     template_name = "house/house_form.j2"
     form_class = HouseForm
@@ -84,13 +85,13 @@ class HouseCreateView(generic.CreateView):
         return redirect(self.get_success_url())
 
 
-class HouseDetailView(generic.DetailView):
+class HouseDetailView(DetailView):
     model = House
     template_name = "house/house_detail.j2"
     form_class = HouseForm
 
 
-class HouseUpdateView(generic.UpdateView):
+class HouseUpdateView(UpdateView):
     model = House
     template_name = "house/house_form.j2"
     form_class = HouseForm
@@ -104,7 +105,7 @@ class HouseUpdateView(generic.UpdateView):
         return context
 
 
-class HouseDeleteView(generic.DeleteView):
+class HouseDeleteView(DeleteView):
     model = House
     template_name = 'house/house_delete.j2'
     success_url = reverse_lazy('condominium_House_list')
@@ -117,7 +118,7 @@ class HouseDeleteView(generic.DeleteView):
         return context
 
 
-class CompanyUpdateView(generic.UpdateView):
+class CompanyUpdateView(UpdateView):
     model = Company
     template_name = "company/company_form.j2"
     form_class = CompanyForm
