@@ -40,7 +40,7 @@
                         {% endfor %}
                         <div class="btn-toolbar justify-content-between mt-2">
                             <button type="button" onclick="window.location.href = '{{url('condominium_Apartment_list')}}'" class="btn btn-info">{{ _('Back to list') }}</button>
-                            <button type="button" class="btn btn-warning">{{ _('Resident management') }}</button>
+                            <button type="button" onclick="openModal()"  class="btn btn-warning" data-toggle="modal" data-target="#residentModal">{{ _('Resident management') }}</button>
                             <button type="submit" class="btn btn-success">{{ text_submit }}</button>
                         </div>
                     </form>
@@ -49,4 +49,48 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="residentModal" tabindex="-1" role="dialog" aria-labelledby="residentModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="padding: 1rem" id="modal-wrapper" сlass="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function openModal ()
+{
+    let xhr = new XMLHttpRequest();
+    let wrapper = document.getElementById('modal-wrapper');
+    xhr.open('GET', '/accounts/api/v1/users/', true);
+    xhr.responseType = 'json';
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState != 4) return;
+        let array = xhr.response;
+        array.forEach(element => {
+            console.log(element)
+            wrapper.innerHTML += '<p> <td>email: ' + element.email + '</p<>';
+        });
+    }
+}
+
+
+
+
+</script>
+
 {% endblock content %}
