@@ -8,9 +8,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = [
-            "avatar",
-            "birth_date",
-            "theme",
             "mobile_number",
             "email",
+            "birth_date",
+            "avatar",
+            "theme",
         ]

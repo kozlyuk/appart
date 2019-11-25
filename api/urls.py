@@ -1,5 +1,4 @@
 from django.urls import path, include
-from django.conf.urls import url
 from rest_framework import routers
 
 from accounts import api as accounts_api
@@ -18,4 +17,6 @@ router.register("Service", payments_api.ServiceViewSet)
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),
+
+    path("user/get_by_number/<str:mobile_number>/", accounts_api.GetByNumber.as_view()),
 ]
