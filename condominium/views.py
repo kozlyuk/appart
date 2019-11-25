@@ -64,6 +64,7 @@ class HouseCreateView(CreateView):
     model = House
     template_name = "house/house_form.j2"
     form_class = HouseForm
+    success_url = reverse_lazy('condominium_House_list')
 
     def get_context_data(self, **kwargs):
         context = super(HouseCreateView, self).get_context_data(**kwargs)
@@ -73,9 +74,9 @@ class HouseCreateView(CreateView):
 
     def form_valid(self, form):
         house_obj = form.save()
-        for number in range(self.object.apartments_count):
+        for number in range(house_obj.apartments_count):
             Apartment.objects.create(house=house_obj, number=number+1)
-        return redirect(self.get_success_url())
+        return redirect(self.success_url)
 
 
 class HouseDetailView(DetailView):
