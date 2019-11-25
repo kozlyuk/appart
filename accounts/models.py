@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
+from django.core.validators import RegexValidator
 
 from .managers import CustomUserManager
 
@@ -20,13 +21,15 @@ def avatar_directory_path(instance, filename):
 
 class User(AbstractUser):
     """
-    Custom user model where email is the unique identifiers
+    Custom user model where mobile_number is the unique identifiers
     for authentication instead of usernames.
     Added fields mobile_number, birth_date, avatar, theme
     """
+    phone_regex = RegexValidator(regex=r'^\d{10}$', message=_("Mobile number must contain 10 digits."))
+
     #  Fields
     username = None
-    mobile_number = models.CharField(_('Mobile number'), max_length=13, unique=True)
+    mobile_number = models.CharField(_('Mobile number'), max_length=10, validators=[phone_regex], unique=True)
     email = models.EmailField(_('Email address'), unique=True, blank=True)
     birth_date = models.DateField(_('Birth date'), null=True, blank=True)
     avatar = models.ImageField(_('Photo'), upload_to=avatar_directory_path, default='avatars/no_image.jpg', blank=True)
