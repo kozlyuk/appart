@@ -23,7 +23,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password1', 'password2', 'is_active')
+        fields = ('mobile_number', 'email', 'birth_date', 'avatar', 'theme', 'password1', 'password2', 'is_active')
         widgets = {
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
@@ -33,17 +33,14 @@ class CustomUserCreationForm(UserCreationForm):
         }
 
 
-class CustomUserChangeForm(UserChangeForm):
-    password = forms.CharField(label=_("Password"), strip=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(label=_("Password"), strip=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput(attrs={'class': 'form-control'}), strip=False)
+class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'birth_date', 'avatar', 'theme', 'password', 'password1', 'password2', 'is_active')
+        fields = ('mobile_number', 'email', 'birth_date', 'avatar', 'theme', 'is_active')
         widgets = {
-            'email': forms.EmailInput(attrs={'class': ' form-control'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': ' form-control'}),
             'birth_date': forms.DateInput(attrs={'class': 'form-control'}),
             'avatar': forms.FileInput(attrs={'class': 'custom-file-input'}),
             'theme': forms.Select(attrs={'class': 'form-control'})
