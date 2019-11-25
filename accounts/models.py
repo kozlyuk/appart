@@ -33,7 +33,7 @@ class User(AbstractUser):
     theme = models.CharField(_('Theme'), max_length=2, choices=THEME_CHOICES, default='LT')
 
     USERNAME_FIELD = 'mobile_number'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
     objects = CustomUserManager()
 
