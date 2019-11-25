@@ -58,7 +58,7 @@
                             <input type="text" name="" id="searchByNumber" class="form-control">
                             <button id="trigger" class="btn btn-success">{{ _('Check resident') }}</button>
                         </div>
-                        <div id="wrapper" class="input-group"></div>
+                        <div id="app-wrapper" class="input-group"></div>
                     </div>
                 </div>
             </div>
@@ -94,15 +94,18 @@
 
     const pk = {{apartment.pk}};
     let trigger = document.querySelector("#trigger");
-    let wrapper = document.querySelector("#wrapper");
+    let wrapper = document.querySelector("#app-wrapper");
     let searchInput = document.querySelector("#searchByNumber");
     trigger.addEventListener("click", () => {
-        console.dir(searchInput)
-        let resident = new Resident(wrapper, pk);
-        let responce = resident.httpGet(pk).then(
-            response => console.log(response),
+        let url = '/api/v1/user/get_by_number/' + searchInput.value;
+        let resident = new Resident(wrapper);
+        let responce = resident.httpGet(url).then(
+            response => {
+                let user = JSON.parse(response)
+                wrapper.innerHTML = 'User with number ' + searchInput.value + ' exist. Email: ' + user[0].email;
+            },
             error => console.log(`Rejected: ${error}`)
-        );
+            );
     });
 </script>
 

@@ -1,13 +1,12 @@
 
 class Resident {
-    constructor(wrapper, pk) {
+    constructor(wrapper) {
         this.wrapper = wrapper;
-        this.pk = pk;
     }
-    httpGet(pk) {
+    httpGet(url) {
         return new Promise(function(resolve, reject) {
           var xhr = new XMLHttpRequest();
-          xhr.open('GET', 'http://127.0.0.1:8000/api/v1/apartment/' + pk, true);
+          xhr.open('GET', url, true);
           xhr.onload = function() {
             if (this.status == 200) {
               resolve(this.response);
