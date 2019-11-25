@@ -1,6 +1,6 @@
 """appart.condominium URL Configuration"""
 
-from django.urls import path, include
+from django.urls import path
 
 from condominium import views
 

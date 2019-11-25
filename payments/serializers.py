@@ -1,13 +1,15 @@
 from rest_framework import serializers
 
-from . import models
+from .models import Payment, Bill, Service
 
 
-class PaymentSerializer(serializers.ModelSerializer):
+class PaymentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.Payment
+        model = Payment
         fields = [
+            "bill",
+            "created_by",
             "date_created",
             "date_updated",
             "type",
@@ -17,11 +19,15 @@ class PaymentSerializer(serializers.ModelSerializer):
             "action",
         ]
 
-class BillSerializer(serializers.ModelSerializer):
+
+class BillSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.Bill
+        model = Bill
         fields = [
+            "service",
+            "apartment",
+            "created_by",
             "amount",
             "number",
             "date_updated",
@@ -30,10 +36,11 @@ class BillSerializer(serializers.ModelSerializer):
             "date_created",
         ]
 
+
 class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.Service
+        model = Service
         fields = [
             "description",
             "name",

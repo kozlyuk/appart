@@ -1,22 +1,26 @@
 from rest_framework import serializers
 
-from . import models
+from .models import Apartment, House, Company
 
 
-class ApartmentSerializer(serializers.ModelSerializer):
+class ApartmentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.Apartment
+        model = Apartment
         fields = [
+            "house",
+            "resident",
+            "number",
             "description",
             "area",
             "residents_count",
         ]
 
+
 class HouseSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.House
+        model = House
         fields = [
             "description",
             "address",
@@ -25,10 +29,11 @@ class HouseSerializer(serializers.ModelSerializer):
             "apartments_count"
         ]
 
+
 class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.Company
+        model = Company
         fields = [
             "fullname",
             "chief",
