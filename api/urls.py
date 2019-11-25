@@ -1,12 +1,13 @@
 from django.urls import path, include
+from django.conf.urls import url
 from rest_framework import routers
 
-from accounts import api as acounts_api
+from accounts import api as accounts_api
 from condominium import api as condominium_api
 from payments import api as payments_api
 
 router = routers.DefaultRouter()
-router.register("user", acounts_api.UserViewSet)
+router.register("user", accounts_api.UserViewSet)
 router.register("apartment", condominium_api.ApartmentViewSet)
 router.register("house", condominium_api.HouseViewSet)
 router.register("company", condominium_api.CompanyViewSet)

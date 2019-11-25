@@ -11,7 +11,6 @@ urlpatterns = (
     path("apartment/detail/<int:pk>/", views.ApartmentDetailView.as_view(),name="condominium_Apartment_detail"),
     path("apartment/update/<int:pk>/", views.ApartmentUpdateView.as_view(), name="condominium_Apartment_update"),
     path("apartment/delete/<int:pk>/", views.ApartmentDeleteView.as_view(), name="condominium_Apartment_delete"),
-    path('resident/create/', views.ResidentModalView.as_view(), name='create_book'),
 
     path("house/list", views.HouseListView.as_view(), name="condominium_House_list"),
     path("house/create/", views.HouseCreateView.as_view(), name="condominium_House_create"),

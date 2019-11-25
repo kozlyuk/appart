@@ -1,7 +1,6 @@
 """ Forms for managing condominiums """
 
 from django import forms
-from bootstrap_modal_forms.forms import BSModalForm
 
 from condominium.models import Apartment, House, Company
 from accounts.models import User
@@ -27,11 +26,6 @@ class ApartmentForm(forms.ModelForm):
             'number': forms.NumberInput(attrs={'class': 'form-control'})
         }
 
-
-class ResidentForm(BSModalForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name']
 
 
 class HouseForm(forms.ModelForm):

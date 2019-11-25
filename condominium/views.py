@@ -3,10 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from bootstrap_modal_forms.generic import BSModalCreateView
 
 from .models import Apartment, House, Company
-from .forms import ApartmentForm, HouseForm, CompanyForm, ResidentForm
+from .forms import ApartmentForm, HouseForm, CompanyForm
 
 
 class ApartmentListView(LoginRequiredMixin, ListView):
@@ -46,12 +45,6 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
         context['header'] = _('Edit apartment: ') + apartment
         context['text_submit'] = _('Save')
         return context
-
-
-class ResidentModalView(LoginRequiredMixin, BSModalCreateView):
-    template_name = 'resident_modal.j2'
-    form_class = ResidentForm
-    success_url = reverse_lazy('condominium_Apartment_update')
 
 
 class ApartmentDeleteView(LoginRequiredMixin, DeleteView):

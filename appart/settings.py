@@ -33,7 +33,6 @@ INSTALLED_APPS += [
     'rest_framework',
     'font_awesome',
     'widget_tweaks',
-    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [
