@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView
 
 from .models import User
@@ -23,7 +24,6 @@ class CustomLoginView(LoginView):
 class UserListView(LoginRequiredMixin, ListView):
     model = User
     context_object_name = 'users'
-    # success_url = reverse_lazy('manager_home')
     template_name = "user_list.j2"
 
     def get_queryset(self):
@@ -35,6 +35,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
     model = User
     form_class = CustomUserCreationForm
     template_name = "user_form.j2"
+    success_url = reverse_lazy('accounts_User_list')
 
     def get_context_data(self, **kwargs):
         context = super(UserCreateView, self).get_context_data(**kwargs)
@@ -58,6 +59,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "user_form.j2"
     form_class = CustomUserChangeForm
     pk_url_kwarg = "pk"
+    success_url = reverse_lazy('accounts_User_list')
 
     def get_context_data(self, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
@@ -71,7 +73,7 @@ class UserSelfUpdate(LoginRequiredMixin, UpdateView):
     """ PartnerSelfUpdate - view for partners self updating """
     template_name = 'user_form.j2'
     form_class = CustomUserSelfUpdateForm
-    # success_url = reverse_lazy('manager_home')
+    success_url = reverse_lazy('accounts_User_list')
 
     def get_object(self, queryset=None):
         return User.objects.get(email=self.request.user)
