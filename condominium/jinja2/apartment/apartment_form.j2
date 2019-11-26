@@ -86,27 +86,42 @@
     </div>
   </div>
 </div> #}
-<script type="module">
-    import {
-        Resident,
-        Cookie
-    } from '{{ static('components/components.js')}}'
+<!-- Load React. -->
+<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-    const pk = {{apartment.pk}};
-    let trigger = document.querySelector("#trigger");
-    let wrapper = document.querySelector("#app-wrapper");
-    let searchInput = document.querySelector("#searchByNumber");
-    trigger.addEventListener("click", () => {
-        let url = '/api/v1/user/get_by_number/' + searchInput.value;
-        let resident = new Resident(wrapper);
-        let responce = resident.httpGet(url).then(
-            response => {
-                let user = JSON.parse(response)
-                wrapper.innerHTML = 'User with number ' + searchInput.value + ' exist. Email: ' + user[0].email;
-            },
-            error => console.log(`Rejected: ${error}`)
+<script type="module">
+import {
+    Resident,
+    Cookie
+} from '{{ static('components/components.js')}}'
+
+const pk = {{apartment.pk}};
+let trigger = document.querySelector("#trigger");
+let wrapper = document.querySelector("#app-wrapper");
+let searchInput = document.querySelector("#searchByNumber");
+trigger.addEventListener("click", () => {
+    let url = '/api/v1/user/get_by_number/' + searchInput.value;
+    let resident = new Resident(wrapper);
+    let responce = resident.httpGet(url).then(
+        response => {
+            let user = JSON.parse(response);
+            class MessageBox extends React.Component {
+                render() {
+                    return React.createElement('span', null, this.props.message);
+                }
+            };
+
+            ReactDOM.render(
+                React.createElement(MessageBox, {
+                    message: user[0].email
+                }, null),
+                wrapper
             );
-    });
+        }
+    )
+});
 </script>
 
 {% endblock content %}
