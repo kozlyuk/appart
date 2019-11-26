@@ -40,16 +40,32 @@
                         {% endfor %}
                         <div class="btn-toolbar justify-content-between mt-2">
                             <button type="button" onclick="window.location.href = '{{url('condominium_Apartment_list')}}'" class="btn btn-info">{{ _('Back to list') }}</button>
-                            <button type="button" onclick="openModal()"  class="btn btn-warning" data-toggle="modal" data-target="#residentModal">{{ _('Resident management') }}</button>
+                            {# <button type="button" onclick="openModal()"  class="btn btn-warning" data-toggle="modal" data-target="#residentModal">{{ _('Resident management') }}</button> #}
                             <button type="submit" class="btn btn-success">{{ text_submit }}</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="app">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ _('Input phone number') }}</span>
+                            </div>
+                            <input type="text" name="" id="searchByNumber" class="form-control">
+                            <button id="trigger" class="btn btn-success">{{ _('Check resident') }}</button>
+                        </div>
+                        <div id="app-wrapper" class="input-group"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+{# 
 <!-- Modal -->
 <div class="modal fade" id="residentModal" tabindex="-1" role="dialog" aria-labelledby="residentModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -69,70 +85,70 @@
       </div>
     </div>
   </div>
-</div>
-<script>
-function openModal() {
-    let xhr = new XMLHttpRequest();
-    let wrapper = document.getElementById('modal-wrapper');
-    xhr.open('GET', '/accounts/api/v1/users/', true);
-    xhr.responseType = 'json';
-    xhr.send();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4) return;
-        let array = xhr.response;
-        array.forEach(element => {
-            wrapper.innerHTML += '<p> <td>email: ' + element.email + '</p<>';
-        });
+</div> #}
+<!-- Load React. -->
+<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+<script type="module">
+import {
+    Resident,
+    Cookie
+} from '{{ static('components/components.js')}}'
+const pk = {{apartment.pk}};
+let trigger = document.querySelector("#trigger");
+let wrapper = document.querySelector("#app-wrapper");
+let searchInput = document.querySelector("#searchByNumber");
+let e = React.createElement;
+let rootElement =
+    e('div', { className:"container-fluid" },
+        e('div', { className:"card-text text-center text-muted" }, "{{ _('Input phone number for search') }}"),
+            e('div', { id:"appOutput" },
+        )
+    )
+
+class Error extends React.Component {
+    render() {
+        return e('span', { className: 'mt-4 badge badge-danger' }, this.props.message)
     }
 }
 
-function getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-
-
-function saveChanges() {
-    {
-        #
-        let xhr = new XMLHttpRequest();
-        let wrapper = document.getElementById('modal-wrapper');
-        xhr.open('POST')#
+ReactDOM.render(rootElement, wrapper)
+trigger.addEventListener("click", () => {
+    if (searchInput.value == "") {
+        ReactDOM.render(
+            e(Error, { message: '{{ _("Please fill the field") }}'}),
+            document.getElementById("appOutput")
+        )
     }
-
-
-    let csrftoken = getCookie('csrftoken');
-    let email = 'tes1t@mail.com';
-    let avatar = '';
-    let birth_date = '';
-    let mobile_number = '';
-    let theme = 'DK';
-
-
-    const request = new XMLHttpRequest();
-    const url = "/accounts/api/v1/users/";
-    const params = "email=" + email + "&theme=" + theme + "&csrfmiddlewaretoken=" + csrftoken;
-
-    request.responseType = "json";
-    request.open("POST", url, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-    request.addEventListener("readystatechange", () => {
-
-        if (request.readyState === 4 && request.status === 200) {
-            let obj = request.response;
-
-            console.log(obj);
-            console.log(obj.email);
-            console.log(obj.theme);
-        }
-    });
-
-    request.send(params);
-}
-
+    let url = '/api/v1/user/get_by_number/' + searchInput.value;
+    let resident = new Resident(wrapper);
+    let responce = resident.httpGet(url).then(
+        response => {
+            let user = JSON.parse(response);
+            if (user[0] == undefined) {
+                ReactDOM.render(
+                    e(Error, { message: '{{ _("User not fiend") }}' }),
+                    document.getElementById("appOutput")
+                )
+            }
+            class Wrapper extends React.Component {
+                render() {
+                    return e('span', { className: 'mt-4' }, this.props.child, this.props.message);
+                }
+            };
+            
+            ReactDOM.render(
+                e(Wrapper, { message: '{{ _("Email: ")}}' + user[0].email, child: e('span', { className:"badge badge-success" }, '{{ _("User find") }}') },
+                ),
+                document.getElementById("appOutput")
+            )
+        },
+        error => {
+            console.log(`Rejected: ${error}`)
+            })
+});
 </script>
 
 {% endblock content %}

@@ -18,5 +18,5 @@ router.register("Service", payments_api.ServiceViewSet)
 urlpatterns = [
     path("api/v1/", include(router.urls)),
 
-    path("user/get_by_number/<str:mobile_number>/", accounts_api.GetByNumber.as_view()),
+    path("api/v1/user/get_by_number/<str:mobile_number>/", accounts_api.GetByNumber.as_view()),
 ]

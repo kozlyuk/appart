@@ -15,7 +15,7 @@ $(function(){
     toastr.options.closeButton = true;
     toastr.options.positionClass = 'toast-bottom-right';
     toastr.options.showDuration = 1000;
-    toastr['info']('Hello, welcome to Oculux, a unique admin Template.');
+    // toastr['info']('Hello, welcome to Oculux, a unique admin Template.');
 
 
     $('.knob').knob({
