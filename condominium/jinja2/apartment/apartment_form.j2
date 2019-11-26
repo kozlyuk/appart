@@ -107,19 +107,20 @@ trigger.addEventListener("click", () => {
     let responce = resident.httpGet(url).then(
         response => {
             let user = JSON.parse(response);
-            class MessageBox extends React.Component {
+            class Wrapper extends React.Component {
                 render() {
-                    return React.createElement('span', null, this.props.message);
+                    return React.createElement('span', { className: 'some-css-class' }, this.props.message);
                 }
             };
 
             ReactDOM.render(
-                React.createElement(MessageBox, {
+                React.createElement(Wrapper, {
                     message: user[0].email
                 }, null),
                 wrapper
             );
-        }
+        };
+        error => {console.log(`Rejected: ${error}`)}
     )
 });
 </script>
