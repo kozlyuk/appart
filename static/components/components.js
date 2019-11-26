@@ -1,17 +1,17 @@
 
-class Resident {
+class Ajax {
     constructor(wrapper) {
         this.wrapper = wrapper;
     }
-    httpGet(url) {
+    get(url) {
         return new Promise(function(resolve, reject) {
-          var xhr = new XMLHttpRequest();
+          const xhr = new XMLHttpRequest();
           xhr.open('GET', url, true);
           xhr.onload = function() {
             if (this.status == 200) {
               resolve(this.response);
             } else {
-              var error = new Error(this.statusText);
+              const error = new Error(this.statusText);
               error.code = this.status;
               reject(error);
             }
@@ -21,6 +21,29 @@ class Resident {
           };
           xhr.send();
         });
+    };
+    post(url, params, csrf) {
+        return new Promise(function(resolve, reject) {
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = "json";
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Cookie', csrf)
+            xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+            // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (this.status == 200) {
+                  resolve(this.response);
+                } else {
+                  const error = new Error(this.statusText);
+                  error.code = this.status;
+                  reject(error);
+                }
+            };
+            xhr.onerror = function() {
+                reject(new Error("Network Error"));
+            };
+            xhr.send(params);
+        })
     }
 }
 
@@ -40,28 +63,4 @@ class Cookie {
     }
 }
 
-
-class App {
-    constructor(content) {
-        this.content = content;
-    }
-    put(content) {
-        document.getElementById("app").innerHTML = content;
-    }
-}
-
-
-
-export {Resident, Cookie, App}
-// let xhr = new XMLHttpRequest();
-//     let wrapper = document.getElementById('modal-wrapper');
-//     xhr.open('GET', '/accounts/api/v1/users/', true);
-//     xhr.responseType = 'json';
-//     xhr.send();
-//     xhr.onreadystatechange = function () {
-//         if (xhr.readyState != 4) return;
-//         let array = xhr.response;
-//         array.forEach(element => {
-//             wrapper.innerHTML += '<p> <td>email: ' + element.email + '</p<>';
-//         });
-//     }
+export {Ajax, Cookie}
