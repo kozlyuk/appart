@@ -93,7 +93,7 @@
 
 <script type="module">
 import {
-    Resident,
+    Ajax,
     Cookie
 } from '{{ static('components/components.js')}}'
 const pk = {{apartment.pk}};
@@ -123,13 +123,13 @@ trigger.addEventListener("click", () => {
         )
     }
     let url = '/api/v1/user/get_by_number/' + searchInput.value;
-    let resident = new Resident(wrapper);
-    let responce = resident.httpGet(url).then(
+    let request = new Ajax(wrapper);
+    let responce = request.get(url).then(
         response => {
             let user = JSON.parse(response);
             if (user[0] == undefined) {
                 ReactDOM.render(
-                    e(Error, { message: '{{ _("User not fiend") }}' }),
+                    e(Error, { message: '{{ _("User not found") }}' }),
                     document.getElementById("appOutput")
                 )
             }

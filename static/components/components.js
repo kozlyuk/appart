@@ -1,9 +1,9 @@
 
-class Resident {
+class Ajax {
     constructor(wrapper) {
         this.wrapper = wrapper;
     }
-    httpGet(url) {
+    get(url) {
         return new Promise(function(resolve, reject) {
           var xhr = new XMLHttpRequest();
           xhr.open('GET', url, true);
@@ -40,28 +40,4 @@ class Cookie {
     }
 }
 
-
-class App {
-    constructor(content) {
-        this.content = content;
-    }
-    put(content) {
-        document.getElementById("app").innerHTML = content;
-    }
-}
-
-
-
-export {Resident, Cookie, App}
-// let xhr = new XMLHttpRequest();
-//     let wrapper = document.getElementById('modal-wrapper');
-//     xhr.open('GET', '/accounts/api/v1/users/', true);
-//     xhr.responseType = 'json';
-//     xhr.send();
-//     xhr.onreadystatechange = function () {
-//         if (xhr.readyState != 4) return;
-//         let array = xhr.response;
-//         array.forEach(element => {
-//             wrapper.innerHTML += '<p> <td>email: ' + element.email + '</p<>';
-//         });
-//     }
+export {Ajax, Cookie}
