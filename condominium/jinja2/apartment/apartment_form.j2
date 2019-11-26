@@ -51,7 +51,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="app">
-                        <div class="input-group">
+                        <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">{{ _('Input phone number') }}</span>
                             </div>
@@ -90,31 +90,30 @@
 <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
 <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-transition-group/dist/react-transition-group.js" crossorigin></script>
 
 <script type="module">
 import {
     Ajax,
     Cookie
-} from '{{ static('components/components.js')}}'
+} from '{{ static("components/components.js")}}'
+
 const pk = {{apartment.pk}};
 let trigger = document.querySelector("#trigger");
 let wrapper = document.querySelector("#app-wrapper");
 let searchInput = document.querySelector("#searchByNumber");
 let e = React.createElement;
 let rootElement =
-    e('div', { className:"container-fluid" },
-        e('div', { className:"card-text text-center text-muted" }, "{{ _('Input phone number for search') }}"),
-            e('div', { id:"appOutput" },
-        )
-    )
+    e('div', { className:"col pl-0 pr-0" },
+        e('div', { id:"appOutput" }))
+ReactDOM.render(rootElement, wrapper)
 
 class Error extends React.Component {
     render() {
-        return e('span', { className: 'mt-4 badge badge-danger' }, this.props.message)
+        return e('span', { className: 'mt-4 badge badge-danger' }, this.props.message, this.props.child)
     }
 }
 
-ReactDOM.render(rootElement, wrapper)
 trigger.addEventListener("click", () => {
     if (searchInput.value == "") {
         ReactDOM.render(
@@ -123,16 +122,67 @@ trigger.addEventListener("click", () => {
         )
     }
     let url = '/api/v1/user/get_by_number/' + searchInput.value;
+    let createUrl = '/api/v1/user/'
     let request = new Ajax(wrapper);
     let responce = request.get(url).then(
         response => {
             let user = JSON.parse(response);
             if (user[0] == undefined) {
-                ReactDOM.render(
-                    e(Error, { message: '{{ _("User not found") }}' }),
-                    document.getElementById("appOutput")
+                let createForm = e('form', { name: 'addResident' }, 
+                    e('div', { className: 'input-group mb-3' },
+                        e('div', { className: 'input-group-prepend' },
+                            e('span', { className: 'input-group-text' }, '{{ _("First name") }}'),
+                        ),
+                        e('input', { type: 'text', name: 'first_name', className: 'form-control' }),
+                    ),
+                    e('div', { className: 'input-group mb-3' },
+                        e('div', { className: 'input-group-prepend' },
+                            e('span', { className: 'input-group-text' }, '{{ _("Last name") }}'),
+                        ),
+                        e('input', { type: 'text', name: 'last_name', className: 'form-control' }),
+                    ),
+                    e('div', { className: 'input-group mb-3' },
+                        e('div', { className: 'input-group-prepend' },
+                            e('span', { className: 'input-group-text' }, '{{ _("Mobile number") }}'),
+                        ),
+                        e('input', { type: 'text', readOnly: true, name: 'mobile_number', defaultValue: searchInput.value, className: 'form-control' }),
+                    ),
+                    e('div', { className: 'input-group mb-3' },
+                        e('div', { className: 'input-group-prepend' },
+                            e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
+                        ),
+                        e('input', { type: 'text', name: 'email', className: 'form-control' }),
+                    ),
+                    e('div', { className: 'input-group mb-3' },
+                        e('div', { className: 'input-group-prepend' },
+                            e('span', { className: 'input-group-text' }, '{{ _("Birth day") }}'),
+                        ),
+                        e('input', { type: 'text', name: 'birth_date', className: 'form-control' }),
+                    ),
+                    e('div', { className: 'input-group bm-3' },
+                        //e('button', { type: 'button', className: 'btn btn-info' }, '{{ _("Add resident without email") }}'),
+                        e('button', { type: 'button', id: 'addResident', className: 'btn btn-warning ml-auto mr-auto' }, '{{ _("Add resident") }}')
+                    )
                 )
-            }
+                
+                ReactDOM.render(createForm, document.getElementById('appOutput'))
+                const addResidentTrigger = document.getElementById('addResident');
+                addResidentTrigger.addEventListener("click", () => {
+                    const cookie = new Cookie();
+                    //POST params
+                    //let postParams = { 
+                    //    csrftoken: cookie.get('csrftoken'),
+                    //    first_name: document.getElementById('first_name').value,
+                    //    last_name: document.getElementById('last_name').value,
+                    //    mobile_number: document.getElementById('mobile_number').value,
+                    //    email: document.getElementById('email').value,
+                    //    birth_date: document.getElementById('birth_date').value
+                    //};
+                    let formData = new FormData(document.forms.addResident);
+                    formData.append("csrfmiddlewaretoken", cookie.get('csrftoken'));
+                    request.post(createUrl, formData, document.cookie);
+                })
+            } else {
             class Wrapper extends React.Component {
                 render() {
                     return e('span', { className: 'mt-4' }, this.props.child, this.props.message);
@@ -144,11 +194,26 @@ trigger.addEventListener("click", () => {
                 ),
                 document.getElementById("appOutput")
             )
+            };
         },
         error => {
             console.log(`Rejected: ${error}`)
             })
 });
+
 </script>
 
 {% endblock content %}
+
+<script>
+var rootElement =
+  React.createElement('div', {},
+      React.createElement('li', {},
+      ),
+      React.createElement('li', {},
+      )
+    )
+  )
+
+
+</script>
