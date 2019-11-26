@@ -96,32 +96,58 @@ import {
     Resident,
     Cookie
 } from '{{ static('components/components.js')}}'
-
 const pk = {{apartment.pk}};
 let trigger = document.querySelector("#trigger");
 let wrapper = document.querySelector("#app-wrapper");
 let searchInput = document.querySelector("#searchByNumber");
+let e = React.createElement;
+let rootElement =
+    e('div', { className:"container-fluid" },
+        e('div', { className:"card-text text-center text-muted" }, "{{ _('Input phone number for search') }}"),
+            e('div', { id:"appOutput" },
+        )
+    )
+
+class Error extends React.Component {
+    render() {
+        return e('span', { className: 'mt-4 badge badge-danger' }, this.props.message)
+    }
+}
+
+ReactDOM.render(rootElement, wrapper)
 trigger.addEventListener("click", () => {
+    if (searchInput.value == "") {
+        ReactDOM.render(
+            e(Error, { message: '{{ _("Please fill the field") }}'}),
+            document.getElementById("appOutput")
+        )
+    }
     let url = '/api/v1/user/get_by_number/' + searchInput.value;
     let resident = new Resident(wrapper);
     let responce = resident.httpGet(url).then(
         response => {
             let user = JSON.parse(response);
+            if (user[0] == undefined) {
+                ReactDOM.render(
+                    e(Error, { message: '{{ _("User not fiend") }}' }),
+                    document.getElementById("appOutput")
+                )
+            }
             class Wrapper extends React.Component {
                 render() {
-                    return React.createElement('span', { className: 'some-css-class' }, this.props.message);
+                    return e('span', { className: 'mt-4' }, this.props.child, this.props.message);
                 }
             };
-
+            
             ReactDOM.render(
-                React.createElement(Wrapper, {
-                    message: user[0].email
-                }, null),
-                wrapper
-            );
-        };
-        error => {console.log(`Rejected: ${error}`)}
-    )
+                e(Wrapper, { message: '{{ _("Email: ")}}' + user[0].email, child: e('span', { className:"badge badge-success" }, '{{ _("User find") }}') },
+                ),
+                document.getElementById("appOutput")
+            )
+        },
+        error => {
+            console.log(`Rejected: ${error}`)
+            })
 });
 </script>
 
