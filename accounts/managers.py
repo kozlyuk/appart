@@ -4,6 +4,7 @@ Custom user model manager for accounts.
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from django.apps import apps
 
 
 class CustomUserManager(BaseUserManager):
@@ -19,6 +20,9 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Users must have an mobile number'))
         if not email:
             raise ValueError(_('Users must have an email address'))
+        model = apps.get_model(app_label='accounts', model_name='User')
+        if model.objects.filter(email=self.normalize_email(email)).exists():
+            raise ValueError(_("User with such email already exist"))
 
         user = self.model(
             mobile_number=mobile_number,

@@ -81,24 +81,6 @@ TEMPLATES = [
             ],
         },
     },
-    # {
-    #     'BACKEND': 'django.template.backends.jinja2.Jinja2',
-    #     'DIRS': [],
-    #     'APP_DIRS': True,
-    #     'OPTIONS': {
-    #         'environment': 'jinja2.Environment',
-    #         'autoescape': True,
-    #         'context_processors': [
-    #             'django.template.context_processors.debug',
-    #             'django.template.context_processors.request',
-    #             'django.contrib.auth.context_processors.auth',
-    #             'django.contrib.messages.context_processors.messages',
-    #         ],
-    #         # 'libraries':{
-    #         #     'ita_template_tags': 'templatetags.ita_template_tags',
-    #         # },
-    #     }
-    # },
 ]
 
 WSGI_APPLICATION = 'appart.wsgi.application'
@@ -155,10 +137,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "static_production")
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, "static"),
+#]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
