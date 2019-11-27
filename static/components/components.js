@@ -25,10 +25,10 @@ class Ajax {
     post(url, params, csrf) {
         return new Promise(function(resolve, reject) {
             const xhr = new XMLHttpRequest();
-            xhr.responseType = "json";
+            // xhr.responseType = "json";
             xhr.open('POST', url, true);
-            xhr.setRequestHeader('Cookie', csrf)
-            xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+            xhr.setRequestHeader('X-CSRFToken', csrf);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
             // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onload = function() {
                 if (this.status == 200) {

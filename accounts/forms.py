@@ -36,8 +36,8 @@ class CustomUserCreationForm(UserCreationForm):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
 
-        if User.objects.filter(email=email).exists():
-            self.add_error('email', _("User with such email already exist"))
+        # if User.objects.filter(email=email).exists():
+        #     self.add_error('email', _("User with such email already exist"))
         return cleaned_data
 
 
@@ -58,8 +58,8 @@ class CustomUserChangeForm(forms.ModelForm):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
 
-        if User.objects.filter(email=email).exists():
-            self.add_error('email', _("User with such email already exist"))
+        # if User.objects.filter(email=email).exists():
+        #     self.add_error('email', _("User with such email already exist"))
         return cleaned_data
 
 
