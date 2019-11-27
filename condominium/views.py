@@ -4,8 +4,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Apartment, House, Company
-from .forms import ApartmentForm, HouseForm, CompanyForm
+from condominium.models import Apartment, House, Company
+from condominium.forms import ApartmentForm, HouseForm, CompanyForm
 
 
 class ApartmentListView(LoginRequiredMixin, ListView):
@@ -19,6 +19,7 @@ class ApartmentCreateView(LoginRequiredMixin, CreateView):
     model = Apartment
     template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
+    success_url = reverse_lazy('condominium_Apartment_list')
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentCreateView, self).get_context_data(**kwargs)
@@ -37,7 +38,7 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Apartment
     template_name = "apartment/apartment_form.j2"
     form_class = ApartmentForm
-    pk_url_kwarg = "pk"
+    success_url = reverse_lazy('condominium_Apartment_list')
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentUpdateView, self).get_context_data(**kwargs)
@@ -45,6 +46,12 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
         context['header'] = _('Edit apartment: ') + apartment
         context['text_submit'] = _('Save')
         return context
+
+    def form_valid(self, form):
+        apartment = form.save(commit=False)
+        resident = form.resident_save()
+        apartment.resident = resident
+        return super().form_valid(form)
 
 
 class ApartmentDeleteView(LoginRequiredMixin, DeleteView):

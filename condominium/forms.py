@@ -11,7 +11,6 @@ class ApartmentForm(forms.ModelForm):
         model = Apartment
         fields = [
             "house",
-            "resident",
             "number",
             "area",
             "residents_count",
@@ -22,9 +21,12 @@ class ApartmentForm(forms.ModelForm):
             'area': forms.NumberInput(attrs={'class': 'form-control'}),
             'residents_count': forms.NumberInput(attrs={'class': 'form-control'}),
             'house': forms.Select(attrs={'class': 'form-control'}),
-            'resident': forms.Select(attrs={'class': 'form-control'}),
             'number': forms.NumberInput(attrs={'class': 'form-control'})
         }
+
+    def resident_save(self):
+        # save resident using the self.cleaned_data dictionary
+        pass
 
 
 
