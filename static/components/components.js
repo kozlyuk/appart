@@ -17,7 +17,7 @@ class Ajax {
             }
           };
           xhr.onerror = function() {
-            reject(new Error("Network Error"));
+            reject(new Error('Network Error'));
           };
           xhr.send();
         });
@@ -40,7 +40,28 @@ class Ajax {
                 }
             };
             xhr.onerror = function() {
-                reject(new Error("Network Error"));
+                reject(new Error('Network Error'));
+            };
+            xhr.send(params);
+        })
+    };
+    put(url, params, csrf) {
+        return new Promise(function(resolve, reject) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', url, true);
+            xhr.setRequestHeader('X-CSRFToken', csrf);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    resolve(this.response);
+                } else {
+                    const error = new Error(this.statusText);
+                    error.code = this.status;
+                    reject(error);
+                }
+            };
+            xhr.onerror = function() {
+                reject(new Error('Network Error'));
             };
             xhr.send(params);
         })
@@ -63,4 +84,12 @@ class Cookie {
     }
 }
 
-export {Ajax, Cookie}
+function nullCheck (input) {
+    if (input) {
+        return input;
+    } else {
+        return '';
+    };
+};
+
+export {Ajax, Cookie, nullCheck}

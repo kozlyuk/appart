@@ -95,7 +95,8 @@
 <script type="module">
 import {
     Ajax,
-    Cookie
+    Cookie,
+    nullCheck
 } from '{{ static("components/components.js")}}'
 
 const pk = {{apartment.pk}};
@@ -122,11 +123,11 @@ trigger.addEventListener("click", () => {
         )
     }
     let url = '/api/v1/user/get_by_number/' + searchInput.value;
-    let createUrl = '/api/v1/user/'
     let request = new Ajax(wrapper);
     let responce = request.get(url).then(
         response => {
             let user = JSON.parse(response);
+            let userPk = user.pk;
             if (user[0] == undefined) {
                 let createForm = e('form', { name: 'addResident' },
                 e('input', { type: 'hidden', id: 'csrfmiddlewaretoken', name: 'csrfmiddlewaretoken', value: '{{ csrf_token }}' }),
@@ -134,13 +135,13 @@ trigger.addEventListener("click", () => {
                         e('div', { className: 'input-group-prepend' },
                             e('span', { className: 'input-group-text' }, '{{ _("First name") }}'),
                         ),
-                        e('input', { type: 'text', id: 'first_name', name: 'first_name', className: 'form-control' }),
+                        e('input', { type: 'text', id: 'first_name', name: 'first_name', className: 'form-control', defaultValue: nullCheck(user.first_name) }),
                     ),
                     e('div', { className: 'input-group mb-3' },
                         e('div', { className: 'input-group-prepend' },
                             e('span', { className: 'input-group-text' }, '{{ _("Last name") }}'),
                         ),
-                        e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control' }),
+                        e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control', defaultValue: nullCheck(user.last_name) }),
                     ),
                     e('div', { className: 'input-group mb-3' },
                         e('div', { className: 'input-group-prepend' },
@@ -152,14 +153,14 @@ trigger.addEventListener("click", () => {
                         e('div', { className: 'input-group-prepend' },
                             e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
                         ),
-                        e('input', { type: 'text', id: 'email', name: 'email', className: 'form-control' }),
+                        e('input', { type: 'text', id: 'email', name: 'email', className: 'form-control', defaultValue: nullCheck(user.email) }),
                     ),
-                    e('div', { className: 'input-group mb-3' },
-                        e('div', { className: 'input-group-prepend' },
-                            e('span', { className: 'input-group-text' }, '{{ _("Birth day") }}'),
-                        ),
-                        e('input', { type: 'text', id: 'birth_date', name: 'birth_date', className: 'form-control' }),
-                    ),
+                    // e('div', { className: 'input-group mb-3' },
+                    //     e('div', { className: 'input-group-prepend' },
+                    //         e('span', { className: 'input-group-text' }, '{{ _("Birth day") }}'),
+                    //     ),
+                    //     e('input', { type: 'text', id: 'birth_date', name: 'birth_date', className: 'form-control', if(user.birth_date) {defaultValue: nullCheck(user.birth_date)} }),
+                    // ),
                     e('div', { className: 'input-group bm-3' },
                         //e('button', { type: 'button', className: 'btn btn-info' }, '{{ _("Add resident without email") }}'),
                         e('button', { type: 'button', id: 'addResident', className: 'btn btn-warning ml-auto mr-auto' }, '{{ _("Add resident") }}')
@@ -169,22 +170,23 @@ trigger.addEventListener("click", () => {
                 ReactDOM.render(createForm, document.getElementById('appOutput'))
                 const addResidentTrigger = document.getElementById('addResident');
                 addResidentTrigger.addEventListener("click", () => {
+                    let createUrl = '/api/v1/user/' + userPk + '/';
                     const cookie = new Cookie();
-                    //POST params
+                    //PUT params
                     let postParams = JSON.stringify({
                         csrftoken: cookie.get('csrftoken'),
                         first_name: document.getElementById('first_name').value,
                         last_name: document.getElementById('last_name').value,
                         mobile_number: document.getElementById('mobile_number').value,
                         email: document.getElementById('email').value,
-                        birth_date: document.getElementById('birth_date').value
+                        // birth_date: document.getElementById('birth_date').value
                     });
                     console.log('postParams')
                     {# let formData = new FormData(document.forms.addResident); #}
                     // formData.append("csrfmiddlewaretoken", cookie.get('csrftoken'));
                     let csrf = cookie.get('csrftoken');
                     console.log(csrf)
-                    request.post(createUrl, postParams, csrf);
+                    request.put(createUrl, postParams, csrf);
                 })
             } else {
             class Wrapper extends React.Component {
