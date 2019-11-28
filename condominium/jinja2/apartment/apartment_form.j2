@@ -31,10 +31,13 @@
                                         <label class="custom-file-label" for="id_logo">Choose file</label>
                                     </div>
                                 {% else %}
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">{{ field.label }}</span>
-                                    </div>
-                                    {{field}}
+                                    {% if field.is_hidden != True %}
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">{{ field.label }}</span>
+                                        </div>
+                                    {% else %}
+                                    {% endif %}
+                                        {{field}}
                                 {% endif %}
                             </div>
                         {% endfor %}
