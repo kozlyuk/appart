@@ -100,10 +100,7 @@ class Error extends React.Component {
 
 trigger.addEventListener("click", () => {
     if (searchInput.value == "") {
-        ReactDOM.render(
-            e(Error, { message: '{{ _("Please fill the field") }}'}),
-            document.getElementById("appOutput")
-        )
+        toastr["error"]('{{ _("Please fill phone field") }}')
     }
     let url = '/api/v1/user/get_by_number/' + searchInput.value;
     let request = new Ajax(wrapper);
@@ -156,11 +153,12 @@ trigger.addEventListener("click", () => {
                         mobile_number: document.getElementById('mobile_number').value,
                         email: document.getElementById('email').value,
                     });
-                    console.log('postParams')
+                    //console.log('postParams')
                     let csrf = cookie.get('csrftoken');
-                    console.log(csrf)
+                    //console.log(csrf)
                     request.put(createUrl, postParams, csrf);
                     outputPkInput.value = userPk;
+                    toastr["success"]('{{ _("You have added a resident") }}')
                 })
             } else {
             class Wrapper extends React.Component {
@@ -177,23 +175,11 @@ trigger.addEventListener("click", () => {
             };
         },
         error => {
-            console.log(`Rejected: ${error}`)
+            toastr["error"](error)
+            //console.log(`Rejected: ${error}`)
             })
 });
 
 </script>
 
 {% endblock content %}
-
-<script>
-var rootElement =
-  React.createElement('div', {},
-      React.createElement('li', {},
-      ),
-      React.createElement('li', {},
-      )
-    )
-  )
-
-
-</script>
