@@ -25,7 +25,7 @@ class User(AbstractUser):
     for authentication instead of usernames.
     Added fields mobile_number, birth_date, avatar, theme
     """
-    phone_regex = RegexValidator(regex=r'^\d{10}$', message=_("Mobile number must contain 10 digits."))
+    phone_regex = RegexValidator(regex=r'^\d{10}$', message=_("Mobile number must contain 10 digits"))
 
     #  Fields
     username = None
@@ -41,7 +41,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return str(self.mobile_number) + ' ' + str(self.first_name) + ' ' + str(self.last_name)
 
     def get_absolute_url(self):
         return reverse("accounts_User_detail", args=(self.pk,))

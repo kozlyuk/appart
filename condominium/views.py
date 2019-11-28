@@ -47,12 +47,6 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
         context['text_submit'] = _('Save')
         return context
 
-    def form_valid(self, form):
-        apartment = form.save(commit=False)
-        resident = form.resident_save()
-        apartment.resident = resident
-        return super().form_valid(form)
-
 
 class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Apartment

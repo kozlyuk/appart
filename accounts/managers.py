@@ -21,8 +21,8 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_('Users must have an email address'))
         model = apps.get_model(app_label='accounts', model_name='User')
-        # if model.objects.filter(email=self.normalize_email(email)).exists():
-        #     raise ValueError(_("User with such email already exist"))
+        if model.objects.filter(email=self.normalize_email(email)).exists():
+            raise ValueError(_("User with such email already exist"))
 
         user = self.model(
             mobile_number=mobile_number,

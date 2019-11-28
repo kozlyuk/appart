@@ -26,11 +26,6 @@ class ApartmentForm(forms.ModelForm):
             'resident': forms.HiddenInput
         }
 
-    def resident_save(self):
-        # save resident using the self.cleaned_data dictionary
-        pass
-
-
 
 class HouseForm(forms.ModelForm):
     class Meta:
