@@ -118,32 +118,62 @@ if (apartmentPk != undefined) {
             let residentUrl = user.resident;
             if (residentUrl) {
                 //has resident
-                let basicForm = e('form', { name: 'addResident' },
-                    e('input', { type: 'hidden', id: 'csrfmiddlewaretoken', name: 'csrfmiddlewaretoken', value: '{{ csrf_token }}' }),
-                        e('div', { className: 'input-group mb-3' },
-                            e('div', { className: 'input-group-prepend' },
-                                e('span', { className: 'input-group-text' }, '{{ _("First name") }}'),
+                let getResident = new Ajax();
+                let getUserData = getResident.get(residentUrl).then(
+                    responce => {
+                        let userData = JSON.parse(responce);
+                        let basicForm = e('form', { name: 'addResident' },
+                        e('input', { type: 'hidden', id: 'csrfmiddlewaretoken', name: 'csrfmiddlewaretoken', value: '{{ csrf_token }}' }),
+                            e('div', { className: 'input-group mb-3' },
+                                e('div', { className: 'input-group-prepend' },
+                                    e('span', { className: 'input-group-text' }, '{{ _("First name") }}'),
+                                ),
+                                e('input', { type: 'text', id: 'first_name', name: 'first_name', className: 'form-control', defaultValue: nullCheck(userData.first_name) }),
                             ),
-                            e('input', { type: 'text', id: 'first_name', name: 'first_name', className: 'form-control', defaultValue: nullCheck(user.first_name) }),
-                        ),
-                        e('div', { className: 'input-group mb-3' },
-                            e('div', { className: 'input-group-prepend' },
-                                e('span', { className: 'input-group-text' }, '{{ _("Last name") }}'),
+                            e('div', { className: 'input-group mb-3' },
+                                e('div', { className: 'input-group-prepend' },
+                                    e('span', { className: 'input-group-text' }, '{{ _("Last name") }}'),
+                                ),
+                                e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control', defaultValue: nullCheck(userData.last_name) }),
                             ),
-                            e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control', defaultValue: nullCheck(user.last_name) }),
-                        ),
-                        e('input', { type: 'hidden', id: 'mobile_number', readOnly: true, name: 'mobile_number', defaultValue: searchInput.value, className: 'form-control' }),
-                        e('div', { className: 'input-group mb-3' },
-                            e('div', { className: 'input-group-prepend' },
-                                e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
-                            ),
-                            e('input', { type: 'text', id: 'email', name: 'email', className: 'form-control', defaultValue: nullCheck(user.email) }),
+                            e('input', { type: 'hidden', id: 'mobile_number', readOnly: true, name: 'mobile_number', defaultValue: nullCheck(userData.mobile_number), className: 'form-control' }),
+                            e('div', { className: 'input-group mb-3' },
+                                e('div', { className: 'input-group-prepend' },
+                                    e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
+                                ),
+                                e('input', { type: 'text', id: 'email', name: 'email', className: 'form-control', defaultValue: nullCheck(userData.email) }),
+                            )
                         )
-                    )
-            ReactDOM.render(basicForm, app)
+                        ReactDOM.render(basicForm, app)
+                        const addResidentTrigger = document.getElementById('addResident');
+                        addResidentTrigger.addEventListener("click", () => {
+                            let updateUrl = '/api/v1/user/' + userData.pk + '/';
+                            const cookie = new Cookie();
+                            //PUT params
+                            let postParams = JSON.stringify({
+                                csrftoken: cookie.get('csrftoken'),
+                                first_name: document.getElementById('first_name').value,
+                                last_name: document.getElementById('last_name').value,
+                                mobile_number: document.getElementById('mobile_number').value,
+                                email: document.getElementById('email').value,
+                            });
+                            //console.log('postParams')
+                            let csrf = cookie.get('csrftoken');
+                            //console.log(csrf)
+                            getResident.put(updateUrl, postParams, csrf);
+                            outputPkInput.value = userData.pk;
+                            //toastr["success"]('{{ _("You have added a resident") }}');
+                            let form = document.getElementById('mainForm');
+                            form.submit();
+                        })
+                    },
+                    error => {
+                        toastr["error"](error.message)
+                    }
+                )
+
             } else {
                 //withiout resident
-
             }
         },
         error => {
