@@ -24,6 +24,7 @@ class ApartmentCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ApartmentCreateView, self).get_context_data(**kwargs)
         context['header'] = _('Add new apartment')
+        context['apartment_id'] = 'undefined'
         context['text_submit'] = _('Add')
         return context
 
@@ -44,6 +45,7 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
         context = super(ApartmentUpdateView, self).get_context_data(**kwargs)
         apartment = str(context['apartment'])
         context['header'] = _('Edit apartment: ') + apartment
+        context['apartment_id'] = self.object.pk
         context['text_submit'] = _('Save')
         return context
 

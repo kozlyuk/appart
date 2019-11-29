@@ -54,7 +54,11 @@
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="app">
+                    <div id="app">
+
+
+
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">{{ _('Input phone number') }}</span>
@@ -63,6 +67,9 @@
                             <button id="trigger" class="btn btn-success">{{ _('Check resident') }}</button>
                         </div>
                         <div id="app-wrapper" class="input-group"></div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -82,7 +89,7 @@ import {
     nullCheck
 } from '{{ static("components/components.js")}}'
 
-const pk = {{apartment.pk}};
+let app = document.getElementById("app");
 let trigger = document.querySelector("#trigger");
 let wrapper = document.querySelector("#app-wrapper");
 let searchInput = document.querySelector("#searchByNumber");
@@ -98,6 +105,56 @@ class Error extends React.Component {
         return e('span', { className: 'mt-4 badge badge-danger' }, this.props.message, this.props.child)
     }
 }
+
+
+let apartmentPk = {{apartment_id}};
+if (apartmentPk != undefined) {
+    document.addEventListener("DOMContentLoaded", () => {
+    let checkResidentUrl = '/api/v1/apartment/' + apartmentPk + '/';
+    let checkResidentAvailability = new Ajax();
+    let check = checkResidentAvailability.get(checkResidentUrl).then(
+        response => {
+            let user = JSON.parse(response);
+            let residentUrl = user.resident;
+            if (residentUrl) {
+                //has resident
+                let basicForm = e('form', { name: 'addResident' },
+                    e('input', { type: 'hidden', id: 'csrfmiddlewaretoken', name: 'csrfmiddlewaretoken', value: '{{ csrf_token }}' }),
+                        e('div', { className: 'input-group mb-3' },
+                            e('div', { className: 'input-group-prepend' },
+                                e('span', { className: 'input-group-text' }, '{{ _("First name") }}'),
+                            ),
+                            e('input', { type: 'text', id: 'first_name', name: 'first_name', className: 'form-control', defaultValue: nullCheck(user.first_name) }),
+                        ),
+                        e('div', { className: 'input-group mb-3' },
+                            e('div', { className: 'input-group-prepend' },
+                                e('span', { className: 'input-group-text' }, '{{ _("Last name") }}'),
+                            ),
+                            e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control', defaultValue: nullCheck(user.last_name) }),
+                        ),
+                        e('input', { type: 'hidden', id: 'mobile_number', readOnly: true, name: 'mobile_number', defaultValue: searchInput.value, className: 'form-control' }),
+                        e('div', { className: 'input-group mb-3' },
+                            e('div', { className: 'input-group-prepend' },
+                                e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
+                            ),
+                            e('input', { type: 'text', id: 'email', name: 'email', className: 'form-control', defaultValue: nullCheck(user.email) }),
+                        )
+                    )
+            ReactDOM.render(basicForm, app)
+            } else {
+                //withiout resident
+
+            }
+        },
+        error => {
+            toastr["error"](error.message)
+        }
+    )
+});
+}
+
+
+
 
 trigger.addEventListener("click", () => {
     if (searchInput.value == "") {
@@ -123,12 +180,7 @@ trigger.addEventListener("click", () => {
                     ),
                     e('input', { type: 'text', id: 'last_name', name: 'last_name', className: 'form-control', defaultValue: nullCheck(user.last_name) }),
                 ),
-                e('div', { className: 'input-group mb-3' },
-                    e('div', { className: 'input-group-prepend' },
-                        e('span', { className: 'input-group-text' }, '{{ _("Mobile number") }}'),
-                    ),
-                    e('input', { type: 'text', id: 'mobile_number', readOnly: true, name: 'mobile_number', defaultValue: searchInput.value, className: 'form-control' }),
-                ),
+                e('input', { type: 'hidden', id: 'mobile_number', readOnly: true, name: 'mobile_number', defaultValue: searchInput.value, className: 'form-control' }),
                 e('div', { className: 'input-group mb-3' },
                     e('div', { className: 'input-group-prepend' },
                         e('span', { className: 'input-group-text' }, '{{ _("Email") }}'),
@@ -140,7 +192,7 @@ trigger.addEventListener("click", () => {
             ReactDOM.render(createForm, document.getElementById('appOutput'))
             const addResidentTrigger = document.getElementById('addResident');
             addResidentTrigger.addEventListener("click", () => {
-                let createUrl = '/api/v1/user/' + userPk + '/';
+                let updateUrl = '/api/v1/user/' + userPk + '/';
                 const cookie = new Cookie();
                 //PUT params
                 let postParams = JSON.stringify({
@@ -153,7 +205,7 @@ trigger.addEventListener("click", () => {
                 //console.log('postParams')
                 let csrf = cookie.get('csrftoken');
                 //console.log(csrf)
-                request.put(createUrl, postParams, csrf);
+                request.put(updateUrl, postParams, csrf);
                 outputPkInput.value = userPk;
                 //toastr["success"]('{{ _("You have added a resident") }}');
                 let form = document.getElementById('mainForm');
@@ -161,7 +213,7 @@ trigger.addEventListener("click", () => {
             })
         },
         error => {
-            toastr["error"](error)
+            toastr["error"](error.message)
             //console.log(`Rejected: ${error}`)
             })
 });
