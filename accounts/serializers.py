@@ -23,10 +23,11 @@ class UserSerializer(serializers.ModelSerializer):
         """
         Check that start is before finish.
         """
+        message = _("User with such email already exist")
         if self.instance:
             if User.objects.filter(email=value.lower()).exclude(pk=self.instance.pk).exists():
-                raise serializers.ValidationError(_("User with such email already exist"))
+                raise serializers.ValidationError(message)
         else:
             if User.objects.filter(email=value.lower()).exists():
-                raise serializers.ValidationError(_("User with such email already exist"))
+                raise serializers.ValidationError(message)
         return value
