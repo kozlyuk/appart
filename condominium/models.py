@@ -35,7 +35,7 @@ class House(models.Model):
     """ Model contains Houses of managerial company """
 
     #  Fields
-    name = models.CharField(_('Name'), max_length=255, unique=True)
+    name = models.CharField(_('Name'), max_length=255)
     address = models.CharField(_('Address'), max_length=255, blank=True)
     logo = models.ImageField(_('Photo'), upload_to='company/pictures/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
@@ -47,7 +47,7 @@ class House(models.Model):
         ordering = ['-name']
 
     def __str__(self):
-        return self.name
+        return self.name if self.name else self.address
 
     def get_absolute_url(self):
         return reverse("condominium_House_detail", args=(self.pk,))
