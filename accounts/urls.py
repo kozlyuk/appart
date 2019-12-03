@@ -1,6 +1,6 @@
 """appart.account URL Configuration"""
 
-from django.urls import path, include, reverse_lazy
+from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth
 
 from accounts import views
