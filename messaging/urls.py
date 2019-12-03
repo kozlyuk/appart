@@ -7,4 +7,5 @@ from messaging import views
 
 urlpatterns = (
     path("viber_send/", views.ViberSentView.as_view(), name='viber_send'),
+    path("webhook/", views.webhook, name='webhook'),
 )
