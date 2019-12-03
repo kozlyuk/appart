@@ -21,7 +21,6 @@
                         <table class="table table-hover table-custom spacing8">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th class="w100">{{ _('Apartment number') }}</th>
                                     <th class="w200">{{ _('House') }}</th>
                                     <th>{{ _('Area') }}</th>
@@ -32,7 +31,6 @@
                             <tbody>
                                 {% for apartment in apartments.all() %}
                                 <tr>
-                                    <td>{{ loop.index }}</td>
                                     <td>
                                         <a href="{{url('condominium_Apartment_detail', kwargs={'pk':apartment.pk})}}">
                                             <h6 class="mb-0">{{ apartment }}</h6>

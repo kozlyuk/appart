@@ -8,7 +8,7 @@ class Ajax {
           const xhr = new XMLHttpRequest();
           xhr.open('GET', url, true);
           xhr.onload = function() {
-            if (this.status == 200) {
+            if (this.status == 200 || this.status == 201) {
               resolve(this.response);
             } else {
               const error = new Error(this.statusText);

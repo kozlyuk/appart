@@ -14,30 +14,42 @@
                     <h2 class="text-center">{{ _('Appartment: ') }} {{ object }}</h2>
                 </div>
                 <ul class="list-group row">
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('House: ') }}</small>
-                        <p class="mb-0">{{ object.house }}</p>
-                    </li>
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('Resident: ') }}</small>
-                        <p class="mb-0">{{ object.resident }}</p>
-                    </li>
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('Appartment number: ') }}</small>
-                        <p class="mb-0">{{ object }}</p>
-                    </li>
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('Area: ') }}</small>
-                        <p class="mb-0">{{ object.area }}</p>
-                    </li>
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('Residents count: ') }}</small>
-                        <p class="mb-0">{{ object.residents_count }}</p>
-                    </li>
-                    <li class="list-group-item">
-                        <small class="text-muted">{{ _('Description: ') }}</small>
-                        <p class="mb-0">{{ object.description }}</p>
-                    </li>
+                    {% if object.house %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('House: ') }}</small>
+                            <p class="mb-0">{{ object.house }}</p>
+                        </li>
+                    {% endif %}
+                    {% if object.resident %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('Resident: ') }}</small>
+                            <p class="mb-0">{{ object.resident }}</p>
+                        </li>
+                    {% endif %}
+                    {% if object %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('Appartment number: ') }}</small>
+                            <p class="mb-0">{{ object }}</p>
+                        </li>
+                    {% endif %}
+                    {% if object.area %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('Area: ') }}</small>
+                            <p class="mb-0">{{ object.area }}</p>
+                        </li>
+                    {% endif %}
+                    {% if object.residents_count %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('Residents count: ') }}</small>
+                            <p class="mb-0">{{ object.residents_count }}</p>
+                        </li>
+                    {% endif %}
+                    {% if object.description %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ _('Description: ') }}</small>
+                            <p class="mb-0">{{ object.description }}</p>
+                        </li>
+                    {% endif %}
                 </ul>
 
             </div>
