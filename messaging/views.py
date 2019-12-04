@@ -7,17 +7,18 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.conf import settings
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 
 from messaging.forms import ViberSentForm
 
-bot_configuration = BotConfiguration(
-    name='PythonSampleBot',
-    avatar='https://bnbkeepers.com/assets/uploads/pic1-1490178768.jpg',
-    auth_token='4aad892000a7d6f9-80aecfcf7028b55f-39b5e6f03ba8a278'
+BOT_CONFIGURATION = BotConfiguration(
+    name=settings.VIBER_BOT_NAME,
+    avatar=settings.VIBER_AVATAR,
+    auth_token=settings.VIBER_AUTH_TOKEN
 )
-viber = Api(bot_configuration)
+VIBER = Api(BOT_CONFIGURATION)
 
 
 @csrf_exempt
