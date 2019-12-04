@@ -14,6 +14,9 @@ class CompanyView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
+    def get_object(self, queryset=None):
+        return Company.objects.first()
+
 
 class HouseView(LoginRequiredMixin, DetailView):
     """ HouseView - view for main house page """
@@ -21,7 +24,6 @@ class HouseView(LoginRequiredMixin, DetailView):
     template_name = 'house_main.j2'
     login_url = reverse_lazy('company_main')
     redirect_field_name = ''
-    raise_exception = False
 
     def get_object(self, queryset=None):
         apartment = Apartment.objects.filter(resident=self.request.user)
