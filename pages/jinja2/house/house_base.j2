@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ua">
+    <head>
+        <!--Required meta tags-->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>House page</title>
+
+        <link rel="shortcut icon" href="{{ static ('favicon.ico') }}" type="image/x-icon">
+        <!--core css files-->
+        <link rel="stylesheet" href="{{ static ('house/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/fonts/line-icons.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/css/animate.css') }}">
+        <!--plugin css files-->
+        <link rel="stylesheet" href="{{ static ('house/css/slicknav.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/css/owl.theme.css') }}">
+        <!--project css with responive-->
+        <link rel="stylesheet" href="{{ static ('house/css/main.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/css/responsive.css') }}">
+        <link rel="stylesheet" href="{{ static ('house/css/custom.css') }}">
+    </head>
+    <body>
+        <!--header-->
+        {% include "house/plugins/header.j2" %}
+        <!--header end-->
+        <div style="background: transparent" class="hero-area-bg particles_js">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                    {% block content %}
+
+                    {% endblock content %}
+                </div>
+                </div>
+            </div>
+
+            <div style="z-index: -10" id="particles-js"></div>
+        </div>
+        <!--footer-->
+        {% include "house/plugins/footer.j2" %}
+        <!--footer end-->
+        <!--copyright-->
+        {% include "house/plugins/copyright.j2" %}
+        <!--copyright end-->
+
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="{{ static ('house/js/jquery-min.js') }}"></script>
+        <script src="{{ static ('house/js/popper.min.js') }}"></script>
+        <script src="{{ static ('house/js/bootstrap.min.js') }}"></script>
+
+        <script src="{{ static ('house/js/wow.js') }}"></script>
+        <script src="{{ static ('house/js/scrolling-nav.js') }}"></script>
+        <script src="{{ static ('house/js/owl.carousel.min.js') }}"></script>
+        <script src="{{ static ('house/js/jquery.nav.js') }}"></script>
+        <script src="{{ static ('house/js/jquery.easing.min.js') }}"></script>
+        <script src="{{ static ('house/js/jquery.slicknav.js') }}"></script>
+        <script src="{{ static ('house/js/particles.min.js') }}"></script>
+
+        <script src="{{ static ('house/js/main.js') }}"></script>
+        <script src="{{ static ('house/js/form-validator.min.js') }}"></script>
+        <script src="{{ static ('house/js/contact-form-script.min.js') }}"></script>
+        <script src="{{ static ('house/js/particlesjs.js') }}"></script>
+    </body>
+
+
+</html>

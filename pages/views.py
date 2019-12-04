@@ -21,7 +21,7 @@ class CompanyView(DetailView):
 class HouseView(LoginRequiredMixin, DetailView):
     """ HouseView - view for main house page """
     model = House
-    template_name = 'house_main.j2'
+    template_name = 'house/house_main.j2'
     login_url = reverse_lazy('company_main')
     redirect_field_name = ''
 

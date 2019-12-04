@@ -1,0 +1,62 @@
+{% extends "house/house_base.j2" %}
+
+{% block content %}
+<div class="container-flex">
+    <div style="margin-top: 100px" class="row">
+        <div class="col-4">
+            <div class="card">
+                <img src="{{ static ('house/img/hero-1.png') }}" class="card-img-top" alt="{{ _('House image') }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ house.name }}</h5>
+                    <p class="card-text mb-2">{{ _('House address') }} : {{ house.address }}</p>
+                    <p class="card-text mb-2">{{ _('House description') }} : {{ house.description }}</p>
+                    <a href="#" class="btn btn-common">{{ _('Go to personal cabinet') }}</a>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ _('Voting about some shit') }}</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Agree
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                        <label class="form-check-label" for="defaultCheck2">
+                            Disagree
+                        </label>
+                    </div>
+                    <button class="btn btn-sm btn-common mt-2">{{ _('Submit') }}</button>
+                    {# <a href="#" class="btn btn-primary">Go somewhere</a> #}
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card mb-3">
+                <div class="card-header">News #1</div>
+                <div class="card-body">
+                    <h5 class="card-title">News title</h5>
+                    <p class="card-text">{{ lipsum(2, html=False) }}</p>
+                    <div class="footer mt-4">
+                        <small class="text-muted">{{ _('Publish date: ') }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">News #2</div>
+                <div class="card-body">
+                    <h5 class="card-title">News title</h5>
+                    <p class="card-text">{{ lipsum(3, html=False) }}</p>
+                    <div class="footer mt-4">
+                        <small class="text-muted">{{ _('Publish date: ') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -29,6 +29,7 @@ INSTALLED_APPS += [
     'payments.apps.PaymentsConfig',
     'messaging.apps.MessagingConfig',
     'appart',
+    'pages',
     'templatetags',
     'bootstrap4',
     'rest_framework',
