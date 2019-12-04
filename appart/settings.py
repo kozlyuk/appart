@@ -28,6 +28,7 @@ INSTALLED_APPS += [
     'condominium.apps.CondominiumConfig',
     'payments.apps.PaymentsConfig',
     'appart',
+    'pages',
     'templatetags',
     'bootstrap4',
     'rest_framework',

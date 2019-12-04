@@ -17,7 +17,7 @@ class CompanyView(LoginRequiredMixin, DetailView):
 class HouseView(LoginRequiredMixin, DetailView):
     """ HouseView - view for main house page """
     model = House
-    template_name = 'house_main.j2'
+    template_name = 'house/house_main.j2'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
