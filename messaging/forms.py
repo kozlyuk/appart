@@ -4,4 +4,6 @@ from django import forms
 
 
 class ViberSentForm(forms.ModelForm):
-    pass
+
+    phone_number = forms.CharField(max_length=10, min_length=10)
+    text_message = forms.CharField(max_length=254)
