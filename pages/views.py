@@ -8,7 +8,7 @@ from condominium.models import Company, House, Apartment
 class CompanyView(DetailView):
     """ CompanyView - view for main company page """
     model = Company
-    template_name = 'company_main.j2'
+    template_name = 'company/company_main.j2'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
