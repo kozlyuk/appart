@@ -1,11 +1,15 @@
 {% extends "house_base.j2" %}
 
+{% block title %}
+House page
+{% endblock title %}
+
 {% block content %}
 <div class="container-flex">
     <div class="row">
         <div class="col-4">
             <div class="card">
-                <img src="{{ static ('house/img/hero-1.png') }}" class="card-img-top" alt="{{ _('House image') }}">
+                <img src="{{ house.logo.url }}" class="card-img-top" alt="{{ _('House image') }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ house.name }}</h5>
                     <p class="card-text mb-2">{{ _('House address') }} : {{ house.address }}</p>
