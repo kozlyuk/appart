@@ -10,6 +10,7 @@ from datetime import datetime
 
 from condominium import models as condominium_models
 from payments import models as payments_models
+from notice import models as notice_models
 from accounts import models as accounts_models
 
 
@@ -136,6 +137,45 @@ def create_payments_Service(**kwargs):
     defaults["name"] = ""
     defaults.update(**kwargs)
     return payments_models.Service.objects.create(**defaults)
+def create_notice_Choice(**kwargs):
+    defaults = {}
+    defaults["votes"] = ""
+    defaults["choice_text"] = ""
+    if "user" not in kwargs:
+        defaults["user"] = create_User()
+    if "question" not in kwargs:
+        defaults["question"] = create_Question()
+    defaults.update(**kwargs)
+    return notice_models.Choice.objects.create(**defaults)
+def create_notice_Notice(**kwargs):
+    defaults = {}
+    defaults["actual_to"] = datetime.now()
+    defaults["actual_from"] = datetime.now()
+    defaults["picture"] = ""
+    defaults["title"] = ""
+    defaults["notice_type"] = ""
+    defaults["date_updated"] = datetime.now()
+    defaults["date_created"] = datetime.now()
+    defaults["text"] = ""
+    if "apartment" not in kwargs:
+        defaults["apartment"] = create_model_Apartment()
+    if "created_by" not in kwargs:
+        defaults["created_by"] = create_User()
+    if "house" not in kwargs:
+        defaults["house"] = create_model_House()
+    defaults.update(**kwargs)
+    return notice_models.Notice.objects.create(**defaults)
+def create_notice_Question(**kwargs):
+    defaults = {}
+    defaults["actual_from"] = datetime.now()
+    defaults["actual_to"] = datetime.now()
+    defaults["question_text"] = ""
+    defaults["date_updated"] = datetime.now()
+    defaults["date_created"] = datetime.now()
+    if "created_by" not in kwargs:
+        defaults["created_by"] = create_User()
+    defaults.update(**kwargs)
+    return notice_models.Question.objects.create(**defaults)
 def create_accounts_User(**kwargs):
     defaults = {}
     defaults["avatar"] = ""

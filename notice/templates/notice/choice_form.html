@@ -1,0 +1,25 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'notice_Choice_list' %}">
+    Choice Listing
+    </a>
+</p>
+    
+<form method="post">
+{% csrf_token %}
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="votes">votes: </label>
+  <input class="form-control col-sm-10" id="votes" type="number" name="votes" value="{{ object.votes }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="choice_text">choice_text: </label>
+  <input class="form-control col-sm-10" id="choice_text" type="text" name="choice_text" value="{{ object.choice_text }}">
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}

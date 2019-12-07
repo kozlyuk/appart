@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'notice_Choice_list' %}">
+    Choice Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>votes</td><td>{{ object.votes }}</td></tr>
+    <tr><td>choice_text</td><td>{{ object.choice_text }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}

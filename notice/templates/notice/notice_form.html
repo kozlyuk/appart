@@ -1,0 +1,49 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'notice_Notice_list' %}">
+    Notice Listing
+    </a>
+</p>
+    
+<form method="post">
+{% csrf_token %}
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="actual_to">actual_to: </label>
+  <input class="form-control col-sm-10" id="actual_to" type="text" name="actual_to" value="{{ object.actual_to }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="actual_from">actual_from: </label>
+  <input class="form-control col-sm-10" id="actual_from" type="text" name="actual_from" value="{{ object.actual_from }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="picture">picture: </label>
+  <input class="form-control col-sm-10" id="picture" type="text" name="picture" value="{{ object.picture }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="title">title: </label>
+  <input class="form-control col-sm-10" id="title" type="text" name="title" value="{{ object.title }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="notice_type">notice_type: </label>
+  <input class="form-control col-sm-10" id="notice_type" type="text" name="notice_type" value="{{ object.notice_type }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="date_updated">date_updated: </label>
+  <input class="form-control col-sm-10" id="date_updated" type="date" name="date_updated" value="{{ object.date_updated }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="date_created">date_created: </label>
+  <input class="form-control col-sm-10" id="date_created" type="date" name="date_created" value="{{ object.date_created }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="text">text: </label>
+  <input class="form-control col-sm-10" id="text" type="text" name="text" value="{{ object.text }}">
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}
