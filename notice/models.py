@@ -36,9 +36,50 @@ class Notice(models.Model):
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
     class Meta:
-        verbose_name = 'Новина'
-        verbose_name_plural = 'Новини'
-        ordering = ['-created']
+        verbose_name = _('News')
+        ordering = ['-date_created']
 
     def __str__(self):
         return self.title
+
+
+class Question(models.Model):
+    """ Model contains Poll questions """
+
+    #  Fields
+    question_text = models.CharField(_("Question text"), max_length=254)
+    actual_from = models.DateField(_('Actual from'), blank=True, null=True)
+    actual_to = models.DateField(_('Actual to'), blank=True, null=True)
+
+    # Creator and Date information
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'), on_delete=models.CASCADE)
+    date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
+    date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
+
+    class Meta:
+        verbose_name = _('Poll')
+        verbose_name_plural = _('Polls')
+        ordering = ['-date_created']
+
+    def __str__(self):
+        return self.question_text
+
+
+class Choice(models.Model):
+    """ Model contains Poll choices """
+
+    #  Relationships
+    question = models.ForeignKey(Question, verbose_name=_('Question'), on_delete=models.CASCADE)
+    user = models.ManyToManyField(User, verbose_name=_('Users'))
+
+    #  Fields
+    choice_text = models.CharField(_("Choise text"), max_length=200)
+    votes = models.IntegerField(_("Votes"), default=0)
+
+    class Meta:
+        verbose_name = _('Choice')
+        verbose_name_plural = _('Choices')
+
+
+    def __str__(self):
+        return self.choice_text

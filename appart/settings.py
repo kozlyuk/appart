@@ -28,6 +28,7 @@ INSTALLED_APPS += [
     'condominium.apps.CondominiumConfig',
     'payments.apps.PaymentsConfig',
     'messaging.apps.MessagingConfig',
+    'notice.apps.NoticeConfig',
     'appart',
     'pages',
     'templatetags',
