@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from notice.models import Choice, Notice, Question
 
 class ChoiceListView(LoginRequiredMixin, ListView):
@@ -18,6 +18,11 @@ class ChoiceDetailView(DetailView):
 class ChoiceUpdateView(UpdateView):
     model = Choice
     template_name = "choice/choice_update.j2"
+
+class ChoiceDeleteView(DeleteView):
+    model = Choice
+    template_name = "choice/choice_delete.j2"
+
 
 class NoticeListView(ListView):
     model = Notice
