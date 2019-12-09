@@ -1,66 +1,52 @@
-from django.views import generic
-from . import models
-from . import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from notice.models import Choice, Notice, Question
 
+class ChoiceListView(LoginRequiredMixin, ListView):
+    model = Choice
+    template_name = "choice/choice_list.j2"
+    context_object_name = 'choices'
 
-class ChoiceListView(generic.ListView):
-    model = models.Choice
-    form_class = forms.ChoiceForm
+class ChoiceCreateView(CreateView):
+    model = Choice
+    template_name = "choice/choice_create.j2"
 
+class ChoiceDetailView(DetailView):
+    model = Choice
+    template_name = "choice/choice_detail.j2"
 
-class ChoiceCreateView(generic.CreateView):
-    model = models.Choice
-    form_class = forms.ChoiceForm
+class ChoiceUpdateView(UpdateView):
+    model = Choice
+    template_name = "choice/choice_update.j2"
 
+class NoticeListView(ListView):
+    model = Notice
+    template_name = "notice/notice_list.j2"
 
-class ChoiceDetailView(generic.DetailView):
-    model = models.Choice
-    form_class = forms.ChoiceForm
+class NoticeCreateView(CreateView):
+    model = Notice
+    template_name = "notice/notice_create.j2"
 
+class NoticeDetailView(DetailView):
+    model = Notice
+    template_name = "notice/notice_detail.j2"
 
-class ChoiceUpdateView(generic.UpdateView):
-    model = models.Choice
-    form_class = forms.ChoiceForm
-    pk_url_kwarg = "pk"
+class NoticeUpdateView(UpdateView):
+    model = Notice
+    template_name = "notice/notice_update.j2"
 
+class QuestionListView(ListView):
+    model = Question
+    template_name = "question/question_list.j2"
 
-class NoticeListView(generic.ListView):
-    model = models.Notice
-    form_class = forms.NoticeForm
+class QuestionCreateView(CreateView):
+    model = Question
+    template_name = "question/question_list.j2"
 
+class QuestionDetailView(DetailView):
+    model = Question
+    template_name = "question/question_detail.j2"
 
-class NoticeCreateView(generic.CreateView):
-    model = models.Notice
-    form_class = forms.NoticeForm
-
-
-class NoticeDetailView(generic.DetailView):
-    model = models.Notice
-    form_class = forms.NoticeForm
-
-
-class NoticeUpdateView(generic.UpdateView):
-    model = models.Notice
-    form_class = forms.NoticeForm
-    pk_url_kwarg = "pk"
-
-
-class QuestionListView(generic.ListView):
-    model = models.Question
-    form_class = forms.QuestionForm
-
-
-class QuestionCreateView(generic.CreateView):
-    model = models.Question
-    form_class = forms.QuestionForm
-
-
-class QuestionDetailView(generic.DetailView):
-    model = models.Question
-    form_class = forms.QuestionForm
-
-
-class QuestionUpdateView(generic.UpdateView):
-    model = models.Question
-    form_class = forms.QuestionForm
-    pk_url_kwarg = "pk"
+class QuestionUpdateView(UpdateView):
+    model = Question
+    template_name = "question/question_update.j2"
