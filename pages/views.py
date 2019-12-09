@@ -38,7 +38,7 @@ class HouseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['notices'] = Notice.objects.filter(
+        context['notices'] = self.object.notice_set.filter(
             actual_from__gte=date.today(), actual_to__lte=date.today()) \
             .order_by('notice_status', 'notice_type')
         return context
