@@ -3,9 +3,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+from datetime import date
 
 from condominium.models import Apartment, House, Company
 from condominium.forms import ApartmentForm, HouseForm, CompanyForm
+from notice.models import Notice
 
 
 class ApartmentListView(LoginRequiredMixin, ListView):
@@ -22,7 +24,7 @@ class ApartmentCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('condominium_Apartment_list')
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = _('Add new apartment')
         context['apartment_id'] = 'undefined'
         context['text_submit'] = _('Add')
@@ -42,7 +44,7 @@ class ApartmentUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('condominium_Apartment_list')
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         apartment = str(context['apartment'])
         context['header'] = _('Edit apartment: ') + apartment
         context['apartment_id'] = self.object.pk
@@ -70,7 +72,7 @@ class HouseCreateView(CreateView):
     success_url = reverse_lazy('condominium_House_list')
 
     def get_context_data(self, **kwargs):
-        context = super(HouseCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = _('Add new house')
         context['text_submit'] = _('Add')
         return context
@@ -87,6 +89,12 @@ class HouseDetailView(DetailView):
     template_name = "house/house_detail.j2"
     form_class = HouseForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notices'] = self.object.notice_set.filter(
+            actual_from__gte=date.today(), actual_to__lte=date.today()) \
+            .order_by('notice_status')
+        return context
 
 class HouseUpdateView(UpdateView):
     model = House
@@ -95,7 +103,7 @@ class HouseUpdateView(UpdateView):
     pk_url_kwarg = "pk"
 
     def get_context_data(self, **kwargs):
-        context = super(HouseUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         house = str(context['house'])
         context['header'] = _('Edit house: ') + house
         context['text_submit'] = _('Save')
@@ -124,6 +132,5 @@ class CompanyUpdateView(UpdateView):
     def get_object(self, queryset=None):
         if Company.objects.exists():
             return Company.objects.last()
-        else:
-            company = Company.objects.create()
-            return company
+        company = Company.objects.create()
+        return company
