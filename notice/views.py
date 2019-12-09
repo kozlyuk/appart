@@ -1,6 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from notice.models import Choice, Notice, Question
+from notice.forms import ChoiceForm
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.translation import ugettext_lazy as _
 
 class ChoiceListView(LoginRequiredMixin, ListView):
     model = Choice
@@ -9,7 +12,15 @@ class ChoiceListView(LoginRequiredMixin, ListView):
 
 class ChoiceCreateView(CreateView):
     model = Choice
-    template_name = "choice/choice_create.j2"
+    template_name = "choice/choice_form.j2"
+    form_class = ChoiceForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = _("Choice create")
+        context["text_submit"] = _("Submit")
+        return context
+
 
 class ChoiceDetailView(DetailView):
     model = Choice

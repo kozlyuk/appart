@@ -11,6 +11,12 @@ class ChoiceForm(forms.ModelForm):
             "user",
             "question",
         ]
+        widgets = {
+            "votes": forms.Select(attrs={'class': 'form-control'}),
+            "choice_text": forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            "user": forms.SelectMultiple(attrs={'class': 'form-control'}),
+            "question": forms.Select(attrs={'class': 'form-control'}),
+        }
 
 
 class NoticeForm(forms.ModelForm):
