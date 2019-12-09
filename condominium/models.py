@@ -17,8 +17,12 @@ class Company(models.Model):
     bank_requisites = models.CharField(_('Bank details'), max_length=255, blank=True)
     chief = models.CharField(_('Chief'), max_length=45, blank=True)
     phone = models.CharField(_('Phone'), max_length=13, blank=True)
+    email = models.EmailField(_('Email address'), blank=True)
+    official_site = models.URLField(_('Official site'), blank=True)
     logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg', blank=True)
+    photo = models.ImageField(_('Photo'), upload_to='company/photo/', default='company/no_image.jpg', blank=True)
     description = models.TextField(_('Description'), blank=True)
+    service_numbers = models.TextField(_('Service numbers'), blank=True)
 
     class Meta:
         verbose_name = _('Company')
