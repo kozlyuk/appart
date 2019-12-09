@@ -39,8 +39,8 @@
                         <li {% if request.resolver_match.url_name == "condominium_Apartment_list" %} class="active" {% endif %}><a href="{{ url ('condominium_Apartment_list') }}">{{ _('Apartment') }}</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a {% if request.resolver_match.url_name == "notice_Choice_list" or request.resolver_match.url_name == "notice_Notice_list" or request.resolver_match.url_name == "notice_Question_list" %}class="active"{% endif %} href="">
+                <li {% if request.resolver_match.url_name == "notice_Choice_list" or request.resolver_match.url_name == "notice_Notice_list" or request.resolver_match.url_name == "notice_Question_list" %}class="active"{% endif %}>
+                    <a href="">
                         <i class="fab fa-blogger-b"></i>
                         <span>{{ _('Notice') }}</span>
                     </a>
