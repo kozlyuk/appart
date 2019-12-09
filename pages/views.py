@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 from django.urls import reverse, reverse_lazy
+from datetime import date
 
 from condominium.models import Company, House, Apartment
+from notice.models import Notice
 
 
 class CompanyView(DetailView):
@@ -12,6 +14,9 @@ class CompanyView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['notices'] = Notice.objects.filter(
+            actual_from__gte=date.today(), actual_to__lte=date.today(),
+            notice_type=Notice.Company).order_by('notice_status', 'notice_type')
         return context
 
     def get_object(self, queryset=None):
@@ -33,4 +38,7 @@ class HouseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['notices'] = Notice.objects.filter(
+            actual_from__gte=date.today(), actual_to__lte=date.today()) \
+            .order_by('notice_status', 'notice_type')
         return context
