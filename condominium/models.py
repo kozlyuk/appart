@@ -69,7 +69,8 @@ class Apartment(models.Model):
                                  null=True, on_delete=models.SET_NULL)
 
     #  Fields
-    number = models.PositiveSmallIntegerField(_('Apartment Number'))    #todo ask about deal_number
+    number = models.PositiveSmallIntegerField(_('Apartment Number'))
+    deal_number = models.CharField(_('Deal number'), max_length=30, blank=True)
     area = models.PositiveSmallIntegerField(_('Area'), blank=True, null=True)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True, null=True)
     description = models.TextField(_('Description'), blank=True)
