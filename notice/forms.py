@@ -22,8 +22,6 @@ class NoticeForm(forms.ModelForm):
             "picture",
             "title",
             "notice_type",
-            "date_updated",
-            "date_created",
             "text",
             "apartment",
             "created_by",
@@ -38,7 +36,5 @@ class QuestionForm(forms.ModelForm):
             "actual_from",
             "actual_to",
             "question_text",
-            "date_updated",
-            "date_created",
             "created_by",
         ]

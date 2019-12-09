@@ -30,6 +30,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('', include('api.urls')),
     path('', include('messaging.urls')),
+    path('', include('notice.urls')),
 
     url(r'^api-auth/', include('rest_framework.urls')),
 
