@@ -61,7 +61,7 @@ class Question(models.Model):
     """ Model contains Poll questions """
 
     #  Fields
-    question_text = models.CharField(_("Question text"), max_length=254)
+    question_text = models.TextField(_("Question text"))
     actual_from = models.DateField(_('Actual from'), blank=True, null=True)
     actual_to = models.DateField(_('Actual to'), blank=True, null=True)
 
@@ -90,7 +90,7 @@ class Choice(models.Model):
     user = models.ManyToManyField(User, verbose_name=_('Users'))
 
     #  Fields
-    choice_text = models.CharField(_("Choise text"), max_length=200)
+    choice_text = models.CharField(_("Choise text"), max_length=255)
     votes = models.IntegerField(_("Votes"), default=0)
 
     class Meta:
