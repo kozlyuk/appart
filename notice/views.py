@@ -4,6 +4,7 @@ from notice.forms import ChoiceForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse_lazy
 
 class ChoiceListView(LoginRequiredMixin, ListView):
     model = Choice
@@ -14,6 +15,7 @@ class ChoiceCreateView(CreateView):
     model = Choice
     template_name = "choice/choice_form.j2"
     form_class = ChoiceForm
+    success_url = reverse_lazy('notice_Choice_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,7 +30,15 @@ class ChoiceDetailView(DetailView):
 
 class ChoiceUpdateView(UpdateView):
     model = Choice
-    template_name = "choice/choice_update.j2"
+    template_name = "choice/choice_form.j2"
+    form_class = ChoiceForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = "Choice edit"
+        context["text_submit"] = "Submit"
+        return context
+
 
 class ChoiceDeleteView(DeleteView):
     model = Choice

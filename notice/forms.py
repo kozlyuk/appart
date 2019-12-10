@@ -1,19 +1,20 @@
 from django import forms
 from . import models
 
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = models.Choice
         fields = [
-            "votes",
-            "choice_text",
-            "user",
+            "user", #TODO: make select2 widget
             "question",
+            "votes", #TODO:add hidden input
+            "choice_text",
         ]
         widgets = {
-            "votes": forms.Select(attrs={'class': 'form-control'}),
-            "choice_text": forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            "votes": forms.NumberInput(attrs={'class': 'form-control'}),
+            "choice_text": SummernoteWidget(attrs={'class': 'form-control'}),
             "user": forms.SelectMultiple(attrs={'class': 'form-control'}),
             "question": forms.Select(attrs={'class': 'form-control'}),
         }
