@@ -9,3 +9,4 @@ django-font-awesome # https://github.com/benbacardi/django-font-awesome
 django-widget-tweaks # https://github.com/jazzband/django-widget-tweaks
 Jinja2
 viberbot
+git+https://github.com/summernote/django-summernote
