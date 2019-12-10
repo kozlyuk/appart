@@ -30,7 +30,15 @@ class ChoiceDetailView(DetailView):
 
 class ChoiceUpdateView(UpdateView):
     model = Choice
-    template_name = "choice/choice_update.j2"
+    template_name = "choice/choice_form.j2"
+    form_class = ChoiceForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = "Choice edit"
+        context["text_submit"] = "Submit"
+        return context
+
 
 class ChoiceDeleteView(DeleteView):
     model = Choice
