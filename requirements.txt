@@ -1,4 +1,4 @@
-Django
+Django == 2.2.8
 djangorestframework
 psycopg2
 pytz

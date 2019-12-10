@@ -1,6 +1,7 @@
 from django import forms
 from . import models
 
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
@@ -12,8 +13,8 @@ class ChoiceForm(forms.ModelForm):
             "question",
         ]
         widgets = {
-            "votes": forms.Select(attrs={'class': 'form-control'}),
-            "choice_text": forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            "votes": forms.NumberInput(attrs={'class': 'form-control'}),
+            "choice_text": SummernoteWidget(attrs={'class': 'form-control'}),
             "user": forms.SelectMultiple(attrs={'class': 'form-control'}),
             "question": forms.Select(attrs={'class': 'form-control'}),
         }

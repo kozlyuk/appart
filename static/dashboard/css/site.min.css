@@ -13196,3 +13196,9 @@ ul.gallery li a {
 .light_version .team-info li img {
     border-color: #fff
 }
+
+.summernote-div {
+    display: flex;
+    flex: 1 0;
+    width: 1%;
+}
