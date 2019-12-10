@@ -44,6 +44,7 @@ class ChoiceUpdateView(UpdateView):
 class ChoiceDeleteView(DeleteView):
     model = Choice
     template_name = "choice/choice_delete.j2"
+    success_url = reverse_lazy('notice_Choice_list')
 
 
 class NoticeListView(ListView):
