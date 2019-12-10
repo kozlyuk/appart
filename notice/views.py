@@ -32,6 +32,7 @@ class ChoiceUpdateView(UpdateView):
     model = Choice
     template_name = "choice/choice_form.j2"
     form_class = ChoiceForm
+    success_url = reverse_lazy('notice_Choice_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
