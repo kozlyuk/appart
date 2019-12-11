@@ -56,6 +56,7 @@ class NoticeCreateView(CreateView):
     model = Notice
     template_name = "notice/notice_form.j2"
     form_class = NoticeForm
+    success_url = reverse_lazy('notice_Notice_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -71,6 +72,15 @@ class NoticeDetailView(DetailView):
 class NoticeUpdateView(UpdateView):
     model = Notice
     template_name = "notice/notice_form.j2"
+    form_class = NoticeForm
+    success_url = reverse_lazy('notice_Notice_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = _("Update news: ") + str(self.object.title)
+        context["text_submit"] = _("Submit")
+        return context
+
 
 class QuestionListView(ListView):
     model = Question
