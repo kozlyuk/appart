@@ -50,6 +50,7 @@ class ChoiceDeleteView(DeleteView):
 class NoticeListView(ListView):
     model = Notice
     template_name = "notice/notice_list.j2"
+    context_object_name = 'notices'
 
 class NoticeCreateView(CreateView):
     model = Notice

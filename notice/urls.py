@@ -13,6 +13,7 @@ urlpatterns = (
     path("notice/notice/create/", views.NoticeCreateView.as_view(), name="notice_Notice_create"),
     path("notice/notice/detail/<int:pk>/", views.NoticeDetailView.as_view(), name="notice_Notice_detail"),
     path("notice/notice/update/<int:pk>/", views.NoticeUpdateView.as_view(), name="notice_Notice_update"),
+    path("notice/notice/delete/<int:pk>/", views.NoticeUpdateView.as_view(), name="notice_Notice_delete"),
     path("notice/question/", views.QuestionListView.as_view(), name="notice_Question_list"),
     path("notice/question/create/", views.QuestionCreateView.as_view(), name="notice_Question_create"),
     path("notice/question/detail/<int:pk>/", views.QuestionDetailView.as_view(), name="notice_Question_detail"),
