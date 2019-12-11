@@ -47,6 +47,10 @@ class NoticeUpdateView(UpdateView):
         context["text_submit"] = _("Submit")
         return context
 
+class NoticeDeleteView(DeleteView):
+    model = Notice
+    template_name = "notice/notice_delete.j2"
+    success_url = reverse_lazy("notice_Notice_list")
 
 class QuestionListView(ListView):
     model = Question
