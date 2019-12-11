@@ -6,10 +6,60 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
+
+class NoticeListView(ListView):
+    model = Notice
+    template_name = "notice/notice_list.j2"
+
+
+class NoticeCreateView(CreateView):
+    model = Notice
+    template_name = "notice/notice_create.j2"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class NoticeDetailView(DetailView):
+    model = Notice
+    template_name = "notice/notice_detail.j2"
+
+
+class NoticeUpdateView(UpdateView):
+    model = Notice
+    template_name = "notice/notice_update.j2"
+
+
+class QuestionListView(ListView):
+    model = Question
+    template_name = "question/question_list.j2"
+
+
+class QuestionCreateView(CreateView):
+    model = Question
+    template_name = "question/question_list.j2"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class QuestionDetailView(DetailView):
+    model = Question
+    template_name = "question/question_detail.j2"
+
+
+class QuestionUpdateView(UpdateView):
+    model = Question
+    template_name = "question/question_update.j2"
+
+
 class ChoiceListView(LoginRequiredMixin, ListView):
     model = Choice
     template_name = "choice/choice_list.j2"
     context_object_name = 'choices'
+
 
 class ChoiceCreateView(CreateView):
     model = Choice
@@ -28,6 +78,7 @@ class ChoiceDetailView(DetailView):
     model = Choice
     template_name = "choice/choice_detail.j2"
 
+
 class ChoiceUpdateView(UpdateView):
     model = Choice
     template_name = "choice/choice_form.j2"
@@ -43,36 +94,3 @@ class ChoiceUpdateView(UpdateView):
 class ChoiceDeleteView(DeleteView):
     model = Choice
     template_name = "choice/choice_delete.j2"
-
-
-class NoticeListView(ListView):
-    model = Notice
-    template_name = "notice/notice_list.j2"
-
-class NoticeCreateView(CreateView):
-    model = Notice
-    template_name = "notice/notice_create.j2"
-
-class NoticeDetailView(DetailView):
-    model = Notice
-    template_name = "notice/notice_detail.j2"
-
-class NoticeUpdateView(UpdateView):
-    model = Notice
-    template_name = "notice/notice_update.j2"
-
-class QuestionListView(ListView):
-    model = Question
-    template_name = "question/question_list.j2"
-
-class QuestionCreateView(CreateView):
-    model = Question
-    template_name = "question/question_list.j2"
-
-class QuestionDetailView(DetailView):
-    model = Question
-    template_name = "question/question_detail.j2"
-
-class QuestionUpdateView(UpdateView):
-    model = Question
-    template_name = "question/question_update.j2"

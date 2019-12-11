@@ -1,13 +1,12 @@
+from datetime import date
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from datetime import date
 
 from condominium.models import Apartment, House, Company
 from condominium.forms import ApartmentForm, HouseForm, CompanyForm
-from notice.models import Notice
 
 
 class ApartmentListView(LoginRequiredMixin, ListView):
@@ -117,9 +116,7 @@ class HouseDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        obj = self.get_object()
-        if obj.apartment_set.exists():
-            context['apartments'] = obj.apartment_set.all()
+        context['apartments'] = self.object.apartment_set.all()
         return context
 
 
