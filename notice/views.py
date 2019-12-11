@@ -1,6 +1,6 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from notice.models import Choice, Notice, Question
-from notice.forms import ChoiceForm
+from notice.forms import ChoiceForm, NoticeForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
@@ -54,7 +54,15 @@ class NoticeListView(ListView):
 
 class NoticeCreateView(CreateView):
     model = Notice
-    template_name = "notice/notice_create.j2"
+    template_name = "notice/notice_form.j2"
+    form_class = NoticeForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = _("Create news")
+        context["text_submit"] = _("Submit")
+        return context
+
 
 class NoticeDetailView(DetailView):
     model = Notice
@@ -62,7 +70,7 @@ class NoticeDetailView(DetailView):
 
 class NoticeUpdateView(UpdateView):
     model = Notice
-    template_name = "notice/notice_update.j2"
+    template_name = "notice/notice_form.j2"
 
 class QuestionListView(ListView):
     model = Question
