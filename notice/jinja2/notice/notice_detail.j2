@@ -1,0 +1,83 @@
+{% extends "main.j2" %}
+
+{% block title %}
+{{ object.title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2 class="text-center">{{ _('News: ') }} {{ object.title }}</h2>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ object.picture.url }}" class="card-img" alt="house logo">
+                    </div>
+                    <div class="col-md-8">
+                        <ul class="list-group">
+                            {% if object.notice_type %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('News type:') }}</small>
+                                <p class="mb-0">{{ object.get_notice_type_display() }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.title %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Title:') }}</small>
+                                <p class="mb-0">{{ object.title }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.text %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Notice:') }}</small>
+                                <p class="mb-0">{{ object.text|safe }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.actual_from %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Actual from:') }}</small>
+                                <p class="mb-0">{{ object.actual_from }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.actual_to %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Actual to:') }}</small>
+                                <p class="mb-0">{{ object.actual_to }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.apartment %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Apartment:') }}</small>
+                                <p class="mb-0">{{ object.apartment }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.house %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('House:') }}</small>
+                                <p class="mb-0">{{ object.house }}</p>
+                            </li>
+                            {% endif %}
+                            {% if object.created_by %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ _('Created by:') }}</small>
+                                <p class="mb-0">{{ object.created_by }}</p>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-toolbar justify-content-between mt-2">
+                <button type="submit" onclick="window.location.href = '{{ url('notice_Notice_list') }}'"
+                    class="btn btn-info text-right">{{ _('Return') }}</button>
+                <button type="submit"
+                    onclick="window.location.href = '{{ url('notice_Notice_update', kwargs={'pk':object.pk}) }}'"
+                    class="btn btn-warning text-right">{{ _('Edit') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

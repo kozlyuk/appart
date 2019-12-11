@@ -24,12 +24,12 @@ class NoticeForm(forms.ModelForm):
     class Meta:
         model = models.Notice
         fields = [
-            "actual_to",
-            "actual_from",
-            "picture",
-            "title",
             "notice_type",
+            "title",
             "text",
+            "picture",
+            "actual_from",
+            "actual_to",
             "apartment",
             "created_by",
             "house",
