@@ -34,6 +34,17 @@ class NoticeForm(forms.ModelForm):
             "created_by",
             "house",
         ]
+        widgets = {
+            "actual_to": forms.DateInput(attrs={'class': 'form-control'}),
+            "actual_from": forms.DateInput(attrs={'class': 'form-control'}),
+            "picture": forms.FileInput(attrs={'class': 'custom-file-input'}),
+            "title": forms.TextInput(attrs={'class': 'form-control'}),
+            "notice_type": forms.Select(attrs={'class': 'form-control'}),
+            "text": SummernoteWidget(attrs={'class': 'form-control'}),
+            "apartment": forms.Select(attrs={'class': 'form-control'}),
+            "created_by": forms.HiddenInput(),
+            "house": forms.Select(attrs={'class': 'form-control'})
+        }
 
 
 class QuestionForm(forms.ModelForm):
