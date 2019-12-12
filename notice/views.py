@@ -94,6 +94,11 @@ class QuestionUpdateView(UpdateView):
         return context
 
 
+class QuestionDeleteView(DeleteView):
+    model = Question
+    template_name = "question/question_delete.j2"
+    success_url = reverse_lazy("notice_Question_list")
+
 
 class ChoiceListView(LoginRequiredMixin, ListView):
     model = Choice
