@@ -55,6 +55,7 @@ class NoticeDeleteView(DeleteView):
 class QuestionListView(ListView):
     model = Question
     template_name = "question/question_list.j2"
+    context_object_name = "questions"
 
 
 class QuestionCreateView(CreateView):

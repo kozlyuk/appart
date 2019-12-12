@@ -18,4 +18,5 @@ urlpatterns = (
     path("notice/question/create/", views.QuestionCreateView.as_view(), name="notice_Question_create"),
     path("notice/question/detail/<int:pk>/", views.QuestionDetailView.as_view(), name="notice_Question_detail"),
     path("notice/question/update/<int:pk>/", views.QuestionUpdateView.as_view(), name="notice_Question_update"),
+    path("notice/question/delete/<int:pk>/", views.QuestionUpdateView.as_view(), name="notice_Question_delete"),
 )
