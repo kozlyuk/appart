@@ -1,6 +1,6 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from notice.models import Choice, Notice, Question
-from notice.forms import ChoiceForm, NoticeForm
+from notice.forms import ChoiceForm, NoticeForm, QuestionForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
@@ -60,7 +60,15 @@ class QuestionListView(ListView):
 
 class QuestionCreateView(CreateView):
     model = Question
-    template_name = "question/question_list.j2"
+    template_name = "question/question_form.j2"
+    form_class = QuestionForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = _("Create question")
+        context["text_submit"] = _("Submit")
+        return context
+
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user

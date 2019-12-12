@@ -51,8 +51,14 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = models.Question
         fields = [
+            "question_text",
             "actual_from",
             "actual_to",
-            "question_text",
             "created_by",
         ]
+        widgets = {
+            "actual_from": forms.DateInput(attrs={'class': 'form-control'}),
+            "actual_to": forms.DateInput(attrs={'class': 'form-control'}),
+            "question_text": SummernoteWidget(attrs={'class': 'form-control'}),
+            "created_by": forms.HiddenInput(),
+        }
