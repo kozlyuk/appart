@@ -30,7 +30,7 @@
                                 {% for question in questions.all() %}
                                 <tr>
                                     <td>
-                                        <a href="">
+                                        <a href="{{ url('notice_Question_detail', kwargs={'pk': question.pk}) }}">
                                             <h6 class="mb-0">{{ question.question_text|safe }}</h6>
                                         </a>
                                     </td>
