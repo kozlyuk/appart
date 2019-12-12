@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>
                                         <a href="{{url('notice_Choice_detail', kwargs={'pk':choice.pk})}}">
-                                            <h6 class="mb-0">{{ choice.question }}</h6>
+                                            <h6 class="mb-0">{{ choice.question|safe }}</h6>
                                         </a>
                                         <span>{{ _('Votes: ') }}{{ choice.votes }}</span>
                                     </td>
