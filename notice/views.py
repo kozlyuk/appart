@@ -58,10 +58,16 @@ class QuestionListView(ListView):
     context_object_name = "questions"
 
 
+class QuestionDetailView(DetailView):
+    model = Question
+    template_name = "question/question_detail.j2"
+
+
 class QuestionCreateView(CreateView):
     model = Question
     template_name = "question/question_form.j2"
     form_class = QuestionForm
+    success_url = reverse_lazy('notice_Question_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,14 +81,18 @@ class QuestionCreateView(CreateView):
         return super().form_valid(form)
 
 
-class QuestionDetailView(DetailView):
-    model = Question
-    template_name = "question/question_detail.j2"
-
-
 class QuestionUpdateView(UpdateView):
     model = Question
-    template_name = "question/question_update.j2"
+    template_name = "question/question_form.j2"
+    form_class = QuestionForm
+    success_url = reverse_lazy('notice_Question_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = _("Update question") + str(self.object.question_text)
+        context["text_submit"] = _("Submit")
+        return context
+
 
 
 class ChoiceListView(LoginRequiredMixin, ListView):

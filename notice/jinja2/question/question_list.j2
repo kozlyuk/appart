@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>
                                         <a href="">
-                                            <h6 class="mb-0">{{ question.question_text }}</h6>
+                                            <h6 class="mb-0">{{ question.question_text|safe }}</h6>
                                         </a>
                                     </td>
                                     <td>{{ _('From ') }}{{ question.actual_from }}{{ _(' to ') }}{{ question.actual_to }}</td>
