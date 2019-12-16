@@ -46,35 +46,7 @@ House page
                 </div>
             </div>
         </div>
-        <div class="col-8">
-            <div class="alert alert-danger" role="alert">
-                You have 123 arrears, please pay on time, sucker!
-            </div>
-            <div class="card mb-3">
-                <img src="https://picsum.photos/600/200" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a class="link" href="#">
-                        <h5 class="card-title mt-1">News title</h5>
-                    </a>
-                    <p class="card-text">{{ lipsum(2, html=False) }}</p>
-                    <div class="footer mt-4">
-                        <small class="text-muted">{{ _('Publish date: some data') }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <img src="https://picsum.photos/600/200" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a class="link" href="#">
-                        <h5 class="card-title mt-1">News title</h5>
-                    </a>
-                    <p class="card-text">{{ lipsum(2, html=False) }}</p>
-                    <div class="footer mt-4">
-                        <small class="text-muted">{{ _('Publish date: some data') }}</small>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include "house/widgets/news_list.j2" %}
     </div>
 </div>
 
