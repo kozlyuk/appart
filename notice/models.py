@@ -13,15 +13,15 @@ class Notice(models.Model):
     House = 'HO'
     Apartment = 'AP'
     TYPE_CHOICES = (
-        (Company, _('Company')),
-        (House, _('House')),
-        (Apartment, _('Apartment')),
+        (Company, _('About company')),
+        (House, _('About house')),
+        (Apartment, _('About apartment')),
     )
     Warn = 'WA'
     Info = 'IN'
     STATUS_CHOICES = (
-        (Warn, _('Company')),
-        (Info, _('House')),
+        (Warn, _('Warning')),
+        (Info, _('Info')),
     )
 
     #  Relationships
@@ -31,20 +31,20 @@ class Notice(models.Model):
         'Apartment'), on_delete=models.PROTECT, blank=True, null=True)
 
     #  Fields
-    title = models.CharField(_('Notice name'), max_length=100)
-    text = models.TextField(_('Notice'))
+    title = models.CharField(_('News title'), max_length=100)
+    text = models.TextField(_('News text'))
     notice_type = models.CharField(
-        _('Notice type'), max_length=2, choices=TYPE_CHOICES, default=House)
+        _('News type'), max_length=2, choices=TYPE_CHOICES, default=House)
     notice_status = models.CharField(
-        _('Notice status'), max_length=2, choices=STATUS_CHOICES, default=Info)
+        _('News status'), max_length=2, choices=STATUS_CHOICES, default=Info)
     actual_from = models.DateField(_('Actual from'), blank=True, null=True)
     actual_to = models.DateField(_('Actual to'), blank=True, null=True)
     picture = models.ImageField(
         _('Picture'), upload_to='notice/', blank=True, null=True)
 
     # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_(
-        'Created by'), on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+        blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(
         _("Date updated"), auto_now=True, db_index=True)
@@ -66,8 +66,8 @@ class Question(models.Model):
     actual_to = models.DateField(_('Actual to'), blank=True, null=True)
 
     # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_(
-        'Created by'), on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+        blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(
         _("Date updated"), auto_now=True, db_index=True)

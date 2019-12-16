@@ -24,7 +24,7 @@ class Service(models.Model):
     class Meta:
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
-        
+
     def __str__(self):
         return str(self.name)
 
@@ -49,7 +49,8 @@ class Bill(models.Model):
                                               max_upload_size=10485760,
                                               blank=True, null=True)
     # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_('Created by'), on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+        blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
@@ -67,7 +68,7 @@ class Bill(models.Model):
     def get_update_url(self):
         return reverse("payments_Bill_update", args=(self.pk,))
 
-    
+
 class Payment(models.Model):
     """ Model contains Payments for Bills """
     BankPayment = 'BP'
@@ -89,7 +90,8 @@ class Payment(models.Model):
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
 
     # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_('Created by'), on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+        blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
