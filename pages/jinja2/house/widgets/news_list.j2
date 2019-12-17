@@ -1,63 +1,31 @@
-{# <div class="col-8">
-    <div class="alert alert-danger" role="alert">
-        You have 123 arrears, please pay on time, sucker!
-    </div>
-    <div class="card mb-3">
-        <img src="https://picsum.photos/600/200" class="card-img-top" alt="...">
-        <div class="card-body">
-            <a class="link" href="#">
-                <h5 class="card-title mt-1">News title</h5>
-            </a>
-            <p class="card-text">{{ lipsum(2, html=False) }}</p>
-            <div class="footer mt-4">
-                <small class="text-muted">{{ _('Publish date: some data') }}</small>
-            </div>
-        </div>
-    </div>
-    <div class="card mb-3">
-        <img src="https://picsum.photos/600/200" class="card-img-top" alt="...">
-        <div class="card-body">
-            <a class="link" href="#">
-                <h5 class="card-title mt-1">News title</h5>
-            </a>
-            <p class="card-text">{{ lipsum(2, html=False) }}</p>
-            <div class="footer mt-4">
-                <small class="text-muted">{{ _('Publish date: some data') }}</small>
-            </div>
-        </div>
-    </div>
-</div> #}
 <div class="col-8">
-{% for notice in notices %}
-    {% if notice.notice_status == 'WA' %}
-        {% if notice.picture %}
-            <img src="{{ notice.picture.url }}" class="card-img-top" alt="...">
-        {% endif %}
-        <div class="alert alert-danger" role="alert">
-            <h5 class="card-title mt-1">{{ notice.title }}</h5>
-            <p class="card-text">{{ notice.text }}</p>
-        </div>
-    {% else %}
-        <div class="card mb-3">
+    {% for notice in notices %}
+        {% if notice.notice_status == 'WA' %}
             {% if notice.picture %}
                 <img src="{{ notice.picture.url }}" class="card-img-top" alt="...">
             {% endif %}
-            <div class="card-body">
-                <a class="link" href="#">
-                    <h5 class="card-title mt-1">{{ notice.title }}</h5>
-                </a>
+            <div class="alert alert-danger" role="alert">
+                <h5 class="card-title mt-1">{{ notice.title }}</h5>
                 <p class="card-text">{{ notice.text }}</p>
-                <div class="footer mt-4">
-                    <small class="text-muted">{{ _('Publish date: ') }}{{ notice.date_created }}</small>
-                    {% if notice.date_updated %}
-                        <small class="text-muted ml-2">{{ _('Update date: ') }}{{ notice.date_updated }}</small>
-                    {% endif %}
+            </div>
+        {% else %}
+            <div class="card mb-3">
+                {% if notice.picture %}
+                    <img src="{{ notice.picture.url }}" class="card-img-top" alt="...">
+                {% endif %}
+                <div class="card-body">
+                    <a class="link" href="#">
+                        <h5 class="card-title mt-1">{{ notice.title }}</h5>
+                    </a>
+                    <p class="card-text">{{ notice.text }}</p>
+                    <div class="footer mt-4">
+                        <small class="text-muted">{{ _('Publish date: ') }}{{ notice.date_created }}</small>
+                        {% if notice.date_updated %}
+                            <small class="text-muted ml-2">{{ _('Update date: ') }}{{ notice.date_updated }}</small>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
-{% endfor %}
-
-
-
+        {% endif %}
+    {% endfor %}
 </div>

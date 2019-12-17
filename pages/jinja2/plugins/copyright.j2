@@ -1,6 +1,32 @@
 <section id="copyright">
     <div class="container">
         <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-12">
+                <div class="contact-right-area wow fadeIn animated" style="visibility: visible;">
+                    <h2>{{ _('Contacts') }}</h2>
+                    <div class="contact-right">
+                        <div class="single-contact">
+                            <div class="contact-icon">
+                                <i class="lni-map-marker"></i>
+                            </div>
+                            <p>{{ company.address }}</p>
+                        </div>
+                        <div class="single-contact">
+                            <div class="contact-icon">
+                                <i class="lni-envelope"></i>
+                            </div>
+                            <p><a href="#">info@gmail.com</a></p>
+                            <p><a href="#">circle@gmail.com</a></p>
+                        </div>
+                        <div class="single-contact">
+                            <div class="contact-icon">
+                                <i class="lni-phone-handset"></i>
+                            </div>
+                            <p><a href="#">{{ company.phone }}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <p>Copyright © 2020 Itel-Service All Right Reserved</p>
             </div>
