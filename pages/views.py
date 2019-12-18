@@ -4,7 +4,7 @@ from django.urls import reverse, reverse_lazy
 from datetime import date
 
 from condominium.models import Company, House, Apartment
-from notice.models import Notice
+from notice.models import News
 
 
 class CompanyView(DetailView):
@@ -14,9 +14,8 @@ class CompanyView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['notices'] = Notice.objects.filter(
-            actual_from__lte=date.today(), actual_to__gte=date.today(),
-            notice_type=Notice.Company).order_by('-notice_status', 'notice_type')
+        context['news'] = News.objects.filter(
+            actual_from__lte=date.today(), actual_to__gte=date.today())
         return context
 
     def get_object(self, queryset=None):
@@ -38,7 +37,6 @@ class HouseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['notices'] = self.object.notice_set.filter(
-            actual_from__lte=date.today(), actual_to__gte=date.today()) \
-            .order_by('-notice_status', 'notice_type')
+        context['news'] = self.object.news_set.filter(
+            actual_from__lte=date.today(), actual_to__gte=date.today())
         return context

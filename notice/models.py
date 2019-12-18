@@ -76,7 +76,7 @@ class News(models.Model):
 
     class Meta:
         verbose_name = _('News')
-        ordering = ['-date_created']
+        ordering = ['-news_status', '-date_created']
 
     def __str__(self):
         return self.title
