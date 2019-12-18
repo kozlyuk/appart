@@ -25,8 +25,8 @@ class CabinetView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = User.objects.filter(pk=self.request.user.pk)
-        apartments = user.apartment_set.filter(resident=self.request.user)
+        user = User.objects.get(pk=self.request.user.pk)
+        apartments = user.apartment_set.all()
         notices = user.notice_set.filter(
             actual_from__lte=date.today(), actual_to__gte=date.today())
         if apartments.count() == 1:
@@ -35,7 +35,6 @@ class CabinetView(LoginRequiredMixin, TemplateView):
             context['apartment'] = apartments.first()
             context['apartments'] = apartments
         context['notices'] = notices
-        context['news'] = news
 
         return context
 
