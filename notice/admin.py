@@ -18,7 +18,6 @@ class NewsAdmin(admin.ModelAdmin):
         "actual_from",
         "picture",
         "title",
-        "news_type",
         "news_status",
         "date_updated",
         "date_created",

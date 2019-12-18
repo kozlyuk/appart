@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import User
-from condominium import models as model
+from condominium.models import Apartment, House
 
 
 class Notice(models.Model):
@@ -17,7 +17,7 @@ class Notice(models.Model):
     )
 
     #  Relationships
-    apartment = models.ForeignKey(model.Apartment, verbose_name=_(
+    apartment = models.ForeignKey(Apartment, verbose_name=_(
         'Apartment'), on_delete=models.PROTECT, blank=True, null=True)
 
     #  Fields
@@ -47,12 +47,6 @@ class Notice(models.Model):
 class News(models.Model):
     """ Model contains News """
 
-    Company = 'CO'
-    House = 'HO'
-    TYPE_CHOICES = (
-        (Company, _('About company')),
-        (House, _('About house')),
-    )
     Warn = 'WA'
     Info = 'IN'
     STATUS_CHOICES = (
@@ -61,15 +55,12 @@ class News(models.Model):
     )
 
     #  Relationships
-    house = models.ForeignKey(model.House, verbose_name=_(
-        'House'), on_delete=models.CASCADE, blank=True, null=True)
+    houses = models.ManyToManyField(House, verbose_name=_('Houses'), blank=True)
 
     #  Fields
     title = models.CharField(_('News title'), max_length=100)
     text = models.TextField(_('News text'))
-    notice_type = models.CharField(
-        _('News type'), max_length=2, choices=TYPE_CHOICES, default=House)
-    notice_status = models.CharField(
+    news_status = models.CharField(
         _('News status'), max_length=2, choices=STATUS_CHOICES, default=Info)
     actual_from = models.DateField(_('Actual from'), blank=True, null=True)
     actual_to = models.DateField(_('Actual to'), blank=True, null=True)

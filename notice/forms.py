@@ -1,7 +1,8 @@
+from django_summernote.widgets import SummernoteWidget
 from django import forms
+
 from . import models
 
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
@@ -20,11 +21,10 @@ class ChoiceForm(forms.ModelForm):
         }
 
 
-class NoticeForm(forms.ModelForm):
+class NewsForm(forms.ModelForm):
     class Meta:
         model = models.News
         fields = [
-            "news_type",
             "news_status",
             "title",
             "text",
@@ -32,18 +32,17 @@ class NoticeForm(forms.ModelForm):
             "actual_from",
             "actual_to",
             "created_by",
-            "house",
+            "houses",
         ]
         widgets = {
             "actual_to": forms.DateInput(attrs={'class': 'form-control'}),
             "actual_from": forms.DateInput(attrs={'class': 'form-control'}),
             "picture": forms.FileInput(attrs={'class': 'custom-file-input'}),
             "title": forms.TextInput(attrs={'class': 'form-control'}),
-            "news_type": forms.Select(attrs={'class': 'form-control'}),
             "news_status": forms.Select(attrs={'class': 'form-control'}),
             "text": SummernoteWidget(attrs={'class': 'form-control'}),
             "created_by": forms.HiddenInput(),
-            "house": forms.Select(attrs={'class': 'form-control'})
+            "houses": forms.Select(attrs={'class': 'form-control'})
         }
 
 

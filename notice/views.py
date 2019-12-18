@@ -1,23 +1,23 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from notice.models import Choice, Notice, Question
-from notice.forms import ChoiceForm, NoticeForm, QuestionForm
+from notice.models import Choice, News, Question
+from notice.forms import ChoiceForm, NewsForm, QuestionForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
 
-class NoticeListView(ListView):
-    model = Notice
+class NewsListView(ListView):
+    model = News
     template_name = "notice/notice_list.j2"
     context_object_name = 'notices'
 
 
-class NoticeCreateView(CreateView):
-    model = Notice
+class NewsCreateView(CreateView):
+    model = News
     template_name = "notice/notice_form.j2"
-    form_class = NoticeForm
-    success_url = reverse_lazy('notice_Notice_list')
+    form_class = NewsForm
+    success_url = reverse_lazy('notice_News_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,16 +30,16 @@ class NoticeCreateView(CreateView):
         return super().form_valid(form)
 
 
-class NoticeDetailView(DetailView):
-    model = Notice
+class NewsDetailView(DetailView):
+    model = News
     template_name = "notice/notice_detail.j2"
 
 
-class NoticeUpdateView(UpdateView):
-    model = Notice
+class NewsUpdateView(UpdateView):
+    model = News
     template_name = "notice/notice_form.j2"
-    form_class = NoticeForm
-    success_url = reverse_lazy('notice_Notice_list')
+    form_class = NewsForm
+    success_url = reverse_lazy('notice_News_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,10 +47,10 @@ class NoticeUpdateView(UpdateView):
         context["text_submit"] = _("Submit")
         return context
 
-class NoticeDeleteView(DeleteView):
-    model = Notice
+class NewsDeleteView(DeleteView):
+    model = News
     template_name = "notice/notice_delete.j2"
-    success_url = reverse_lazy("notice_Notice_list")
+    success_url = reverse_lazy("notice_News_list")
 
 class QuestionListView(ListView):
     model = Question

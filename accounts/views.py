@@ -1,9 +1,9 @@
+from datetime import date
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView
-from datetime import date
 
 from accounts.models import User
 from notice.models import News
@@ -28,8 +28,6 @@ class CabinetView(LoginRequiredMixin, TemplateView):
         user = User.objects.filter(pk=self.request.user.pk)
         apartments = user.apartment_set.filter(resident=self.request.user)
         notices = user.notice_set.filter(
-            actual_from__lte=date.today(), actual_to__gte=date.today())
-        news = News.objects.filter(
             actual_from__lte=date.today(), actual_to__gte=date.today())
         if apartments.count() == 1:
             context['apartment'] = apartments.first()
