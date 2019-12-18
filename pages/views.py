@@ -15,8 +15,8 @@ class CompanyView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['notices'] = Notice.objects.filter(
-            actual_from__gte=date.today(), actual_to__lte=date.today(),
-            notice_type=Notice.Company).order_by('notice_status', 'notice_type')
+            actual_from__lte=date.today(), actual_to__gte=date.today(),
+            notice_type=Notice.Company).order_by('-notice_status', 'notice_type')
         return context
 
     def get_object(self, queryset=None):
@@ -39,6 +39,6 @@ class HouseView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['notices'] = self.object.notice_set.filter(
-            actual_from__gte=date.today(), actual_to__lte=date.today()) \
+            actual_from__lte=date.today(), actual_to__gte=date.today()) \
             .order_by('-notice_status', 'notice_type')
         return context

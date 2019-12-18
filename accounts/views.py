@@ -3,8 +3,10 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView
+from datetime import date
 
-from .models import User
+from accounts.models import User
+from notice.models import News
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomUserSelfUpdateForm
 
 
@@ -23,6 +25,20 @@ class CabinetView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = User.objects.filter(pk=self.request.user.pk)
+        apartments = user.apartment_set.filter(resident=self.request.user)
+        notices = user.notice_set.filter(
+            actual_from__lte=date.today(), actual_to__gte=date.today())
+        news = News.objects.filter(
+            actual_from__lte=date.today(), actual_to__gte=date.today())
+        if apartments.count() == 1:
+            context['apartment'] = apartments.first()
+        elif apartments.count() > 1:
+            context['apartment'] = apartments.first()
+            context['apartments'] = apartments
+        context['notices'] = notices
+        context['news'] = news
+
         return context
 
 
@@ -47,7 +63,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('accounts_User_list')
 
     def get_context_data(self, **kwargs):
-        context = super(UserCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = _('Add user')
         context['text_submit'] = _('Add user')
         return context

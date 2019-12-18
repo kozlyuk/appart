@@ -22,7 +22,7 @@ class ChoiceForm(forms.ModelForm):
 
 class NoticeForm(forms.ModelForm):
     class Meta:
-        model = models.Notice
+        model = models.News
         fields = [
             "notice_type",
             "title",
@@ -30,7 +30,6 @@ class NoticeForm(forms.ModelForm):
             "picture",
             "actual_from",
             "actual_to",
-            "apartment",
             "created_by",
             "house",
         ]
@@ -41,7 +40,6 @@ class NoticeForm(forms.ModelForm):
             "title": forms.TextInput(attrs={'class': 'form-control'}),
             "notice_type": forms.Select(attrs={'class': 'form-control'}),
             "text": SummernoteWidget(attrs={'class': 'form-control'}),
-            "apartment": forms.Select(attrs={'class': 'form-control'}),
             "created_by": forms.HiddenInput(),
             "house": forms.Select(attrs={'class': 'form-control'})
         }
