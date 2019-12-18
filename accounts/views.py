@@ -17,6 +17,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
+class CabinetView(LoginRequiredMixin, TemplateView):
+    """ CabinetView - view for resident personal cabinet template """
+    template_name = 'cabinet.j2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
 class CustomLoginView(LoginView):
     form_class = CustomAuthenticationForm
 
