@@ -24,7 +24,8 @@ class NoticeForm(forms.ModelForm):
     class Meta:
         model = models.News
         fields = [
-            "notice_type",
+            "news_type",
+            "news_status",
             "title",
             "text",
             "picture",
@@ -38,7 +39,8 @@ class NoticeForm(forms.ModelForm):
             "actual_from": forms.DateInput(attrs={'class': 'form-control'}),
             "picture": forms.FileInput(attrs={'class': 'custom-file-input'}),
             "title": forms.TextInput(attrs={'class': 'form-control'}),
-            "notice_type": forms.Select(attrs={'class': 'form-control'}),
+            "news_type": forms.Select(attrs={'class': 'form-control'}),
+            "news_status": forms.Select(attrs={'class': 'form-control'}),
             "text": SummernoteWidget(attrs={'class': 'form-control'}),
             "created_by": forms.HiddenInput(),
             "house": forms.Select(attrs={'class': 'form-control'})
