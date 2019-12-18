@@ -13,17 +13,15 @@
                     <h2 class="text-center">{{ _('News: ') }} {{ object.title }}</h2>
                 </div>
                 <div class="row no-gutters">
+                    {% if object.picture %}
                     <div class="col-md-4">
                         <img src="{{ object.picture.url }}" class="card-img" alt="house logo">
                     </div>
                     <div class="col-md-8">
+                    {% else %}
+                    <div class="col-md-12">
+                    {% endif %}
                         <ul class="list-group">
-                            {% if object.notice_type %}
-                            <li class="list-group-item">
-                                <small class="text-muted">{{ _('News type:') }}</small>
-                                <p class="mb-0">{{ object.get_notice_type_display() }}</p>
-                            </li>
-                            {% endif %}
                             {% if object.title %}
                             <li class="list-group-item">
                                 <small class="text-muted">{{ _('Title:') }}</small>
@@ -32,7 +30,7 @@
                             {% endif %}
                             {% if object.text %}
                             <li class="list-group-item">
-                                <small class="text-muted">{{ _('Notice:') }}</small>
+                                <small class="text-muted">{{ _('News text:') }}</small>
                                 <p class="mb-0">{{ object.text|safe }}</p>
                             </li>
                             {% endif %}
@@ -71,10 +69,10 @@
                 </div>
             </div>
             <div class="btn-toolbar justify-content-between mt-2">
-                <button type="submit" onclick="window.location.href = '{{ url('notice_Notice_list') }}'"
+                <button type="submit" onclick="window.location.href = '{{ url('notice_News_list') }}'"
                     class="btn btn-info text-right">{{ _('Return') }}</button>
                 <button type="submit"
-                    onclick="window.location.href = '{{ url('notice_Notice_update', kwargs={'pk':object.pk}) }}'"
+                    onclick="window.location.href = '{{ url('notice_News_update', kwargs={'pk':object.pk}) }}'"
                     class="btn btn-warning text-right">{{ _('Edit') }}</button>
             </div>
         </div>

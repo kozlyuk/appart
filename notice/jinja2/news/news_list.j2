@@ -7,7 +7,7 @@
 <div class="block-header">
     <div class="row clearfix">
         <div class="col-md-6 col-sm-12 text-right hidden-xs">
-            <a href="{{ url('notice_Notice_create') }}" class="btn btn-sm btn-primary btn-round" title=""> {{ _('Add New news') }}</a>
+            <a href="{{ url('notice_News_create') }}" class="btn btn-sm btn-primary btn-round" title=""> {{ _('Add New news') }}</a>
         </div>
     </div>
 </div>
@@ -21,22 +21,20 @@
                             <thead>
                                 <tr>
                                     <th>{{ _('Title') }}</th>
-                                    <th>{{ _('Notice type') }}</th>
-                                    <th>{{ _('Notice status') }}</th>
+                                    <th>{{ _('News status') }}</th>
                                     <th>{{ _('Actual time') }}</td>
                                     <th class="w100">{{ _('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for notice in notices.all() %}
+                                {% for news in news_list.all() %}
                                 <tr>
-                                    <td><a href="{{ url('notice_Notice_detail', kwargs={'pk': notice.pk}) }}">{{ notice.title }}</a></td>
-                                    <td>{{ notice.get_notice_type_display() }}</td>
-                                    <td>{{ notice.get_notice_status_display() }}</td>
-                                    <td>{{ _('From ') }}{{ notice.actual_from }}{{ _(' to ') }}{{ notice.actual_to }}</td>
+                                    <td><a href="{{ url('notice_News_detail', kwargs={'pk': news.pk}) }}">{{ news.title }}</a></td>
+                                    <td>{{ news.get_news_status_display() }}</td>
+                                    <td>{{ _('From ') }}{{ news.actual_from }}{{ _(' to ') }}{{ news.actual_to }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('notice_Notice_update', kwargs={'pk':notice.pk})}}'"><i class="fa fa-edit"></i></button>
-                                        <button type="button" class="btn btn-sm btn-danger" title="{{ _('Delete') }}" onclick="window.location.href = '{{url('notice_Notice_delete', kwargs={'pk':notice.pk})}}'"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="btn btn-sm btn-warning" title="{{ _('Edit') }}" onclick="window.location.href = '{{url('notice_News_update', kwargs={'pk':news.pk})}}'"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger" title="{{ _('Delete') }}" onclick="window.location.href = '{{url('notice_News_delete', kwargs={'pk':news.pk})}}'"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 {% endfor %}

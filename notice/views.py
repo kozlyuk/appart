@@ -9,13 +9,13 @@ from django.urls import reverse_lazy
 
 class NewsListView(ListView):
     model = News
-    template_name = "notice/notice_list.j2"
-    context_object_name = 'notices'
+    template_name = "news/news_list.j2"
+    context_object_name = 'news_list'
 
 
 class NewsCreateView(CreateView):
     model = News
-    template_name = "notice/notice_form.j2"
+    template_name = "news/news_form.j2"
     form_class = NewsForm
     success_url = reverse_lazy('notice_News_list')
 
@@ -32,12 +32,12 @@ class NewsCreateView(CreateView):
 
 class NewsDetailView(DetailView):
     model = News
-    template_name = "notice/notice_detail.j2"
+    template_name = "news/news_detail.j2"
 
 
 class NewsUpdateView(UpdateView):
     model = News
-    template_name = "notice/notice_form.j2"
+    template_name = "news/news_form.j2"
     form_class = NewsForm
     success_url = reverse_lazy('notice_News_list')
 
@@ -49,7 +49,7 @@ class NewsUpdateView(UpdateView):
 
 class NewsDeleteView(DeleteView):
     model = News
-    template_name = "notice/notice_delete.j2"
+    template_name = "news/news_delete.j2"
     success_url = reverse_lazy("notice_News_list")
 
 class QuestionListView(ListView):
