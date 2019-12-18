@@ -2,9 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 from django.urls import reverse, reverse_lazy
 from datetime import date
+from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
 
 from condominium.models import Company, House, Apartment
 from notice.models import News
+
 
 
 class CompanyView(DetailView):
@@ -15,11 +18,15 @@ class CompanyView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['news_list'] = News.objects.filter(
+            houses=None,
             actual_from__lte=date.today(), actual_to__gte=date.today())
         return context
 
     def get_object(self, queryset=None):
-        return Company.objects.first()
+        try:
+            return Company.objects.get(pk=1)
+        except self.model.DoesNotExist:
+            raise PermissionDenied
 
 
 class HouseView(LoginRequiredMixin, DetailView):
@@ -29,11 +36,13 @@ class HouseView(LoginRequiredMixin, DetailView):
     login_url = reverse_lazy('company_main')
     redirect_field_name = ''
 
+    def dispatch(self, request, *args, **kwargs):
+        if Apartment.objects.filter(resident=self.request.user).exists():
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('company_main')
+
     def get_object(self, queryset=None):
-        apartment = Apartment.objects.filter(resident=self.request.user)
-        if apartment.exists():
-            return apartment.first().house
-        return reverse('company_main')
+        return Apartment.objects.first().house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

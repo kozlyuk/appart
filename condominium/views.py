@@ -127,7 +127,5 @@ class CompanyUpdateView(UpdateView):
     success_url = reverse_lazy('dashboard_main')
 
     def get_object(self, queryset=None):
-        if Company.objects.exists():
-            return Company.objects.last()
-        company = Company.objects.create()
+        company, created = Company.objects.get_or_create(pk=1)
         return company
