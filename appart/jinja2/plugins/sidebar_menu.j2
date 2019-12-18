@@ -39,14 +39,14 @@
                         <li {% if request.resolver_match.url_name == "condominium_Apartment_list" %} class="active" {% endif %}><a href="{{ url ('condominium_Apartment_list') }}">{{ _('Apartment') }}</a></li>
                     </ul>
                 </li>
-                <li {% if request.resolver_match.url_name == "notice_Choice_list" or request.resolver_match.url_name == "notice_Notice_list" or request.resolver_match.url_name == "notice_Question_list" %}class="active"{% endif %}>
+                <li {% if request.resolver_match.url_name == "notice_Choice_list" or request.resolver_match.url_name == "notice_News_list" or request.resolver_match.url_name == "notice_Question_list" %}class="active"{% endif %}>
                     <a href="">
                         <i class="fab fa-blogger-b"></i>
                         <span>{{ _('Notice') }}</span>
                     </a>
                     <ul>
                         <li {% if request.resolver_match.url_name == "notice_Choice_list" %} class="active" {% endif %}><a href="{{ url ('notice_Choice_list') }}">{{ _('Choices') }}</a></li>
-                        <li {% if request.resolver_match.url_name == "notice_Notice_list" %} class="active" {% endif %}><a href="{{ url ('notice_Notice_list') }}">{{ _('News') }}</a></li>
+                        <li {% if request.resolver_match.url_name == "notice_News_list" %} class="active" {% endif %}><a href="{{ url ('notice_News_list') }}">{{ _('News') }}</a></li>
                         <li {% if request.resolver_match.url_name == "notice_Question_list" %} class="active" {% endif %}><a href="{{ url ('notice_Question_list') }}">{{ _('Questions') }}</a></li>
                     </ul>
                 </li>
