@@ -23,4 +23,6 @@ urlpatterns = [
     path('user/self_update/', views.UserSelfUpdate.as_view(), name='user_self_update'),
 
     path("dashboard/", views.DashboardView.as_view(), name='dashboard_main'),
+
+    path("cabinet/", views.CabinetView.as_view(), name="personal_cabinet"),
 ]

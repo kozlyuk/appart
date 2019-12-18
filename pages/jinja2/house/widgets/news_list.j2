@@ -1,27 +1,27 @@
 <div class="col-8">
-    {% for notice in notices %}
-        {% if notice.notice_status == 'WA' %}
-            {% if notice.picture %}
-                <img src="{{ notice.picture.url }}" class="card-img-top" alt="...">
+    {% for news in news_list %}
+        {% if news.news_status == 'WA' %}
+            {% if news.picture %}
+                <img src="{{ news.picture.url }}" class="card-img-top" alt="...">
             {% endif %}
             <div class="alert alert-danger" role="alert">
-                <h5 class="card-title mt-1">{{ notice.title }}</h5>
-                <p class="card-text">{{ notice.text }}</p>
+                <h5 class="card-title mt-1">{{ news.title }}</h5>
+                <p class="card-text">{{ news.text }}</p>
             </div>
         {% else %}
             <div class="card mb-3">
-                {% if notice.picture %}
-                    <img src="{{ notice.picture.url }}" class="card-img-top" alt="...">
+                {% if news.picture %}
+                    <img src="{{ news.picture.url }}" class="card-img-top" alt="...">
                 {% endif %}
                 <div class="card-body">
                     <a class="link" href="#">
-                        <h5 class="card-title mt-1">{{ notice.title }}</h5>
+                        <h5 class="card-title mt-1">{{ news.title }}</h5>
                     </a>
-                    <p class="card-text">{{ notice.text }}</p>
+                    <p class="card-text">{{ news.text }}</p>
                     <div class="footer mt-4">
-                        <small class="text-muted">{{ _('Publish date: ') }}{{ notice.date_created }}</small>
-                        {% if notice.date_updated %}
-                            <small class="text-muted ml-2">{{ _('Update date: ') }}{{ notice.date_updated }}</small>
+                        <small class="text-muted">{{ _('Publish date: ') }}{{ news.date_created }}</small>
+                        {% if news.date_updated %}
+                            <small class="text-muted ml-2">{{ _('Update date: ') }}{{ news.date_updated }}</small>
                         {% endif %}
                     </div>
                 </div>

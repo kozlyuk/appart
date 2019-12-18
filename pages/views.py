@@ -14,7 +14,7 @@ class CompanyView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['news'] = News.objects.filter(
+        context['news_list'] = News.objects.filter(
             actual_from__lte=date.today(), actual_to__gte=date.today())
         return context
 
@@ -37,6 +37,6 @@ class HouseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['news'] = self.object.news_set.filter(
+        context['news_list'] = self.object.news_set.filter(
             actual_from__lte=date.today(), actual_to__gte=date.today())
         return context

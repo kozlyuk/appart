@@ -14,7 +14,7 @@ House page
                     <h5 class="card-title">{{ house.name }}</h5>
                     <p class="card-text mb-2">{{ _('House address') }} : {{ house.address }}</p>
                     <p class="card-text mb-2">{{ _('House description') }} : {{ house.description }}</p>
-                    <a href="#" class="btn btn-common">{{ _('Go to personal cabinet') }}</a> <!-- TODO: add url to cabinet -->
+                    <a href="{{ url('personal_cabinet') }}" class="btn btn-common">{{ _('Go to personal cabinet') }}</a>
                 </div>
             </div>
             <div class="card mt-2">
