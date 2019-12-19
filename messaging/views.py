@@ -37,7 +37,7 @@ VIBER = Api(BOT_CONFIGURATION)
 @require_POST
 def webhook(request):
     """ Set Webhook for viber responces """
-    logger.debug('received request. post data: %s', request.get_data())
+    logger.debug('received request. post data: %s', request.POST)
     # handle the request here
     return HttpResponse(status=200)
 
