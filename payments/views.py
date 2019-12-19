@@ -6,7 +6,8 @@ from .forms import PaymentForm, BillForm, ServiceForm
 
 class PaymentListView(LoginRequiredMixin, ListView):
     model = Payment
-    form_class = PaymentForm
+    template_name = "payment/payment_list.j2"
+    context_object_name = 'payments'
 
 
 class PaymentCreateView(LoginRequiredMixin, CreateView):

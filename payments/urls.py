@@ -9,6 +9,7 @@ urlpatterns = (
     path("payment/create/", views.PaymentCreateView.as_view(), name="payments_Payment_create"),
     path("payment/detail/<int:pk>/", views.PaymentDetailView.as_view(), name="payments_Payment_detail"),
     path("payment/update/<int:pk>/", views.PaymentUpdateView.as_view(), name="payments_Payment_update"),
+    path("payment/delete/<int:pk>/", views.PaymentUpdateView.as_view(), name="payments_Payment_delete"),
     path("bill/", views.BillListView.as_view(), name="payments_Bill_list"),
     path("bill/create/", views.BillCreateView.as_view(), name="payments_Bill_create"),
     path("bill/detail/<int:pk>/", views.BillDetailView.as_view(), name="payments_Bill_detail"),
