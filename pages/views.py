@@ -29,16 +29,15 @@ class CompanyView(DetailView):
             raise PermissionDenied
 
 
-class HouseView(LoginRequiredMixin, DetailView):
+class HouseView(DetailView):
     """ HouseView - view for main house page """
     model = House
     template_name = 'house/house_main.j2'
-    login_url = reverse_lazy('company_main')
-    redirect_field_name = ''
 
     def dispatch(self, request, *args, **kwargs):
-        if Apartment.objects.filter(resident=self.request.user).exists():
-            return super().dispatch(request, *args, **kwargs)
+        if self.request.user.is_authenticated:
+            if Apartment.objects.filter(resident=self.request.user).exists():
+                return super().dispatch(request, *args, **kwargs)
         return redirect('company_main')
 
     def get_object(self, queryset=None):
