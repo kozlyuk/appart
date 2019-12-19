@@ -35,7 +35,7 @@ class HouseView(DetailView):
     template_name = 'house/house_main.j2'
 
     def dispatch(self, request, *args, **kwargs):
-        if self.request.user:
+        if self.request.user.is_authenticated:
             if Apartment.objects.filter(resident=self.request.user).exists():
                 return super().dispatch(request, *args, **kwargs)
         return redirect('company_main')
