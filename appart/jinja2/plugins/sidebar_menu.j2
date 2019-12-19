@@ -50,6 +50,17 @@
                         <li {% if request.resolver_match.url_name == "notice_Question_list" %} class="active" {% endif %}><a href="{{ url ('notice_Question_list') }}">{{ _('Questions') }}</a></li>
                     </ul>
                 </li>
+                <li {% if request.resolver_match.url_name == "payments_Payment_list" or request.resolver_match.url_name == "payments_Bill_list" or request.resolver_match.url_name == "payments_Service_list" %}class="active"{% endif %}>
+                    <a href="">
+                        <i class="fas fa-money-check-alt"></i>
+                        <span>{{ _('Payment') }}</span>
+                    </a>
+                    <ul>
+                        <li {% if request.resolver_match.url_name == "payments_Payment_list" %} class="active" {% endif %}><a href="{{ url ('payments_Payment_list') }}">{{ _('Payments') }}</a></li>
+                        <li {% if request.resolver_match.url_name == "payments_Bill_list" %} class="active" {% endif %}><a href="{{ url ('payments_Bill_list') }}">{{ _('Bills') }}</a></li>
+                        <li {% if request.resolver_match.url_name == "payments_Service_list" %} class="active" {% endif %}><a href="{{ url ('payments_Service_list') }}">{{ _('Services') }}</a></li>
+                    </ul>
+                </li>
                 <li {% if request.resolver_match.url_name == "user_self_update" %}class="active"{% endif %}>
                     <a href="{{ url ('user_self_update') }}">
                         <i class="fas fa-user-circle"></i>
