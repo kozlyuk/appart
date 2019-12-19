@@ -8,24 +8,44 @@
 <div class="container-flex">
     <div class="row">
         <div class="col-4">
-        {% for apartment in apartments %}
-            <div class="card mt-2">
-                {# <img src="" class="card-img-top" alt="{{ _('House image') }}"> #}
-                <div class="card-body">
-                    <h5 class="card-title">{{ _('Apartment number') }} : {{ apartment.number }}</h5>
-                    {% if apartment.area %}
-                    <p class="card-text mb-2">{{ _('Apartment area') }} : {{ apartment.area }}</p>
-                    {% endif %}
-                    {% if apartment.description %}
-                    <p class="card-text mb-2">{{ _('House description') }} : {{ apartment.description }}</p>
-                    {% endif %}
-                    {% if apartment.residents_count %}
-                        <p class="card-text mb-2">{{ _('Resident count') }} : {{ apartment.residents_count }}</p>
-                    {% endif %}
-                    {# <a href="{{ url('personal_cabinet') }}" class="btn btn-common">{{ _('Go to personal cabinet') }}</a> #}
+        {% if apartments %}
+            {% for apartment in apartments %}
+                <div class="card mt-2">
+                    {# <img src="" class="card-img-top" alt="{{ _('House image') }}"> #}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ _('Apartment number') }} : {{ apartment.number }}</h5>
+                        {% if apartment.area %}
+                        <p class="card-text mb-2">{{ _('Apartment area') }} : {{ apartment.area }}</p>
+                        {% endif %}
+                        {% if apartment.description %}
+                        <p class="card-text mb-2">{{ _('House description') }} : {{ apartment.description }}</p>
+                        {% endif %}
+                        {% if apartment.residents_count %}
+                            <p class="card-text mb-2">{{ _('Resident count') }} : {{ apartment.residents_count }}</p>
+                        {% endif %}
+                        {# <a href="{{ url('personal_cabinet') }}" class="btn btn-common">{{ _('Go to personal cabinet') }}</a> #}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="card mt-2">
+                    {# <img src="" class="card-img-top" alt="{{ _('House image') }}"> #}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ _('Apartment number') }} : {{ apartment.number }}</h5>
+                        {% if apartment.area %}
+                        <p class="card-text mb-2">{{ _('Apartment area') }} : {{ apartment.area }}</p>
+                        {% endif %}
+                        {% if apartment.description %}
+                        <p class="card-text mb-2">{{ _('House description') }} : {{ apartment.description }}</p>
+                        {% endif %}
+                        {% if apartment.residents_count %}
+                            <p class="card-text mb-2">{{ _('Resident count') }} : {{ apartment.residents_count }}</p>
+                        {% endif %}
+                        {# <a href="{{ url('personal_cabinet') }}" class="btn btn-common">{{ _('Go to personal cabinet') }}</a> #}
+                    </div>
+                </div>
+        {% endif %}
+
             <div class="text-center">
                 <div class="btn-group">
                     <a href="" class="btn btn-common mt-2">{{ _('Repayment of debts') }}</a>
