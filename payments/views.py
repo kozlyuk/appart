@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.dates imort YearArchiveView
 from .models import Payment, Bill, Service
 from .forms import PaymentForm, BillForm, ServiceForm
 
@@ -30,9 +31,11 @@ class PaymentUpdateView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = "pk"
 
 
-class BillListView(LoginRequiredMixin, ListView):
-    model = Bill
-    form_class = BillForm
+class BillListView(LoginRequiredMixin, YearArchiveView):
+    queryset = Bill.objects.all()
+    date_field = "date"
+    make_object_list = True
+    allow_future = True
 
 
 class BillCreateView(LoginRequiredMixin, CreateView):
