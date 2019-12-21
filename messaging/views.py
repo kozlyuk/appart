@@ -7,11 +7,17 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.conf import settings
 
+from django.conf import settings
 from viberbot import Api
+
 from viberbot.api.bot_configuration import BotConfiguration
-from viberbot.api.messages import TextMessage
+from viberbot.api.viber_requests import ViberConversationStartedRequest
+from viberbot.api.viber_requests import ViberFailedRequest
+from viberbot.api.viber_requests import ViberMessageRequest
+from viberbot.api.viber_requests import ViberSubscribedRequest
+from viberbot.api.viber_requests import ViberUnsubscribedRequest
+from viberbot.api.messages.text_message import TextMessage
 
 from messaging.forms import ViberSentForm
 
@@ -32,13 +38,27 @@ BOT_CONFIGURATION = BotConfiguration(
 )
 VIBER = Api(BOT_CONFIGURATION)
 
-
 @csrf_exempt
 @require_POST
 def webhook(request):
     """ Set Webhook for viber responces """
-    logger.debug('received request. post data: %s', request.get_data())
-    # handle the request here
+    logger.debug('received request. post data: %s', request.POST)
+
+    viber_request = VIBER.parse_request(request.body)
+
+    if isinstance(viber_request, ViberMessageRequest):
+        message = viber_request.message
+        # lets echo back
+        VIBER.send_messages(viber_request.sender.id, [
+            TextMessage(text="Так звичайно!")
+        ])
+    elif isinstance(viber_request, ViberSubscribedRequest):
+        VIBER.send_messages(viber_request.user.id, [
+            TextMessage(text="Дякую за підписку!")
+        ])
+    elif isinstance(viber_request, ViberFailedRequest):
+        logger.warn("client failed receiving message. failure: {0}".format(viber_request))
+
     return HttpResponse(status=200)
 
 
