@@ -1,23 +1,31 @@
+import logging
 from django.conf import settings
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 
-# Viber authentification
-
-VIBER_AUTH_TOKEN = '4aad892000a7d6f9-80aecfcf7028b55f-39b5e6f03ba8a278'
-VIBER_BOT_NAME = 'PythonSampleBot'
-VIBER_AVATAR = 'https://bnbkeepers.com/assets/uploads/pic1-1490178768.jpg'
 
 # Set Viber bot configuration
-BOT_CONFIGURATION = BotConfiguration(
-    name=VIBER_BOT_NAME,
-    avatar=VIBER_AVATAR,
-    auth_token=VIBER_AUTH_TOKEN
+bot_configuration = BotConfiguration(
+    name=settings.VIBER_BOT_NAME,
+    avatar=settings.VIBER_AVATAR,
+    auth_token=settings.VIBER_AUTH_TOKEN
 )
-VIBER = Api(BOT_CONFIGURATION)
+viber = Api(bot_configuration)
 
-def set_webhook():
-    VIBER.set_webhook('https://appart.itel.rv.ua/webhook/:443')
+# Get an instance of a logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
+def set_webhook(url):
+    logger.debug('Setting webhook')
+    viber.set_webhook(url + ':443/webhook/')
+
 
 def unset_webhook():
-    VIBER.unset_webhook()
+    logger.debug('Unsetting webhook')
+    viber.unset_webhook()
