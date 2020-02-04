@@ -6,62 +6,22 @@ import {
 	Form, FormGroup, FormText, Input, Label
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
-import axios from 'axios'
 import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
+import AbstractFormView from "../../generics/formViews/abstractFormView";
 
-export default class UserUpdate extends React.Component {
+export default class UserUpdate extends AbstractFormView {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			isLoaded: false,
-			user: null,
-			modal: false,
-			modal_backdrop: false,
-			modal_nested_parent: false,
-			modal_nested: false,
-			backdrop: true,
-		}
-	}
-
-	loadData(url) {
-		axios(url, {
-			// headers: {
-			// 	"Authorization": "Token " + this.authToken
-			// }
-		})
-			.then(
-				result => {
-					this.setState({
-						isLoaded: true,
-						user: result.data,
-					});
-				},
-				error => {
-					this.setState({
-						isLoaded: true,
-						error
-					});
-				}
-			);
-	}
-
-	handleSubmit(){
-		console.log("test") // TODO!
-	}
-
-	componentDidMount() {
-		const {REACT_APP_USERS_URL} = process.env;
-		this.loadData(REACT_APP_USERS_URL + this.props.match.params.id + "/");
-		return void 0;
+		this.dataUrl = process.env.REACT_APP_USERS_URL
 	}
 
 	content() {
 		return (
 			<Fragment>
-				<CardHeader><Text text="userForm.title" />: {this.state.user.first_name} {this.state.user.last_name}</CardHeader>
+				<CardHeader><Text text="userForm.title" />: {this.state.data.first_name} {this.state.data.last_name}</CardHeader>
 				<CardBody>
 					<Form>
 						<FormGroup>
@@ -69,7 +29,7 @@ export default class UserUpdate extends React.Component {
 							<Input
 								name="mobileNumber"
 								plaintext
-								value={this.state.user.mobile_number}
+								value={this.state.data.mobile_number}
 								readOnly
 							/>
 						</FormGroup>
@@ -78,7 +38,7 @@ export default class UserUpdate extends React.Component {
 							<Input
 								type="text"
 								name="firstName"
-								defaultValue={this.state.user.first_name}
+								defaultValue={this.state.data.first_name}
 							/>
 						</FormGroup>
 						<FormGroup>
@@ -86,7 +46,7 @@ export default class UserUpdate extends React.Component {
 							<Input
 								type="text"
 								name="lastName"
-								defaultValue={this.state.user.last_name}
+								defaultValue={this.state.data.last_name}
 							/>
 						</FormGroup>
 						<FormGroup>
@@ -94,7 +54,7 @@ export default class UserUpdate extends React.Component {
 							<Input
 								type="email"
 								name="email"
-								defaultValue={this.state.user.email}
+								defaultValue={this.state.data.email}
 							/>
 						</FormGroup>
 						<FormGroup>
@@ -102,7 +62,7 @@ export default class UserUpdate extends React.Component {
 							<Input
 								type="datetime"
 								name="birthday"
-								defaultValue={this.state.user.birth_date}
+								defaultValue={this.state.data.birth_date}
 							/>
 						</FormGroup>
 						<FormGroup>
@@ -113,19 +73,19 @@ export default class UserUpdate extends React.Component {
 								{/*input. It's a bit lighter and easily wraps to a new line.*/}
 							</FormText>
 						</FormGroup>
-						<FormGroup>
-							<Label for="theme"><Text text="userForm.theme"/></Label>
-							<Input type="select" name="theme">
-								<option value="LT">Light</option>
-								<option value="DK">Dark</option>
-							</Input>
-						</FormGroup>
+						{/*<FormGroup>*/}
+						{/*	<Label for="theme"><Text text="userForm.theme"/></Label>*/}
+						{/*	<Input type="select" name="theme">*/}
+						{/*		<option value="LT">Light</option>*/}
+						{/*		<option value="DK">Dark</option>*/}
+						{/*	</Input>*/}
+						{/*</FormGroup>*/}
 						<Link to="/user">
-							<Button>
+							<Button color="warning">
 								Return
 							</Button>
 						</Link>
-						<Button onClick={this.handleSubmit}>Submit</Button>
+						<Button className="float-right" onClick={this.handleSubmit}>Submit</Button>
 					</Form>
 				</CardBody>
 			</Fragment>
