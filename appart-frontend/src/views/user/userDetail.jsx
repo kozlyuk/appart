@@ -1,66 +1,20 @@
-import Page from 'components/Page';
 import React from 'react';
 import {
-	Badge,
-	Button,
-	Card,
 	CardBody,
-	CardHeader, CardImg, CardText, CardTitle,
+	CardText,
 	Col,
-	Modal,
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-	Row,
-	Table
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
-import axios from 'axios'
 import {withRouter} from "react-router";
 import UserCard from "../../components/Card/UserCard";
 import Container from "reactstrap/es/Container";
+import AbstractDetailView from "../../generics/detailViews/abstractDetailView";
 
-class UserDetail extends React.Component {
+class UserDetail extends AbstractDetailView {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			isLoaded: false,
-			data: null,
-			modal: false,
-			modal_backdrop: false,
-			modal_nested_parent: false,
-			modal_nested: false,
-			backdrop: true,
-		}
-	}
-
-	loadData(url) {
-		axios(url, {
-			// headers: {
-			// 	"Authorization": "Token " + this.authToken
-			// }
-		})
-			.then(
-				result => {
-					this.setState({
-						isLoaded: true,
-						data: result.data,
-					});
-				},
-				error => {
-					this.setState({
-						isLoaded: true,
-						error
-					});
-				}
-			);
-	}
-
-	componentDidMount() {
-		const {REACT_APP_USERS_URL} = process.env;
-		this.loadData(REACT_APP_USERS_URL + this.props.match.params.id + "/");
-		return void 0;
+		this.dataUrl = process.env.REACT_APP_USERS_URL
 	}
 
 	Content() {

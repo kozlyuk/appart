@@ -44,7 +44,8 @@ registerLang('en',{
 	},
 	buttons: {
 		submitBtn: "Save",
-		returnBtn: "Return"
+		returnBtn: "Return",
+		closeBtn: "Close",
 	},
 	user: 'User'
 });
@@ -92,7 +93,8 @@ registerLang('ua', {
 	},
 	buttons: {
 		submitBtn: "Зберегти",
-		returnBtn: "Назад"
+		returnBtn: "Назад",
+		closeBtn: "Закрити",
 	}
 });
 

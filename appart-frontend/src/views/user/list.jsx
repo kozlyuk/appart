@@ -86,7 +86,7 @@ export default class UserList extends AbstractListView {
 							</ModalBody>
 							<ModalFooter>
 								<Button color="secondary" onClick={this.toggle()}>
-									Закрити
+									<Text text="buttons.closeBtn"/>
 								</Button>
 							</ModalFooter>
 						</Modal>
@@ -100,11 +100,11 @@ export default class UserList extends AbstractListView {
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {
-			return <div>Помилка: {error.message}</div>;
+			return <div><Text text="global.error" />: {error.message}</div>;
 		} else if (!isLoaded) {
 			return (
 				<div className="loaderWrapper text-center mt-4">
-					<h3 className="text-center text-muted">Завантаження...</h3>
+					<h3 className="text-center text-muted"><Text text="global.loading" />...</h3>
 				</div>)
 				;
 		} else {
