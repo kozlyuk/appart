@@ -35,7 +35,7 @@ export default class AbstractFormView extends React.Component {
 	}
 
 	handleSubmit(){
-		console.log("test") // TODO!
+			console.log("update user") // TODO!
 	}
 
 	componentDidMount() {

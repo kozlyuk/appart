@@ -35,9 +35,16 @@ registerLang('en',{
 		birthDate: "Birth date",
 		avatar: "Avatar image",
 		theme: "Theme",
+		newUser: {
+			title: "New user",
+		}
 	},
 	userDetail: {
 		mobileNumber: "Mobile number"
+	},
+	buttons: {
+		submitBtn: "Save",
+		returnBtn: "Return"
 	},
 	user: 'User'
 });
@@ -76,10 +83,17 @@ registerLang('ua', {
 		birthDate: "Дата народження",
 		avatar: "Аватар",
 		theme: "Тема",
+		newUser: {
+			title: "Новий користувач",
+		}
 	},
 	userDetail: {
 		mobileNumber: "Номер телефону"
 	},
+	buttons: {
+		submitBtn: "Зберегти",
+		returnBtn: "Назад"
+	}
 });
 
 setCurrentLocale('ua');
