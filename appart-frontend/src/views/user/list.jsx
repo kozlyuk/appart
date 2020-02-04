@@ -1,3 +1,4 @@
+import AbstractListView from "../../generics/listViews/abstractListView";
 import Page from 'components/Page';
 import React from 'react';
 import {
@@ -5,7 +6,7 @@ import {
 	Button,
 	Card,
 	CardBody,
-	CardHeader, CardImg, CardText,
+	CardHeader, CardText,
 	Col,
 	Modal,
 	ModalBody,
@@ -15,63 +16,14 @@ import {
 	Table
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
-import axios from 'axios'
 import UserCard from "../../components/Card/UserCard";
 import {Link} from "react-router-dom";
 
-export default class UserList extends React.Component {
 
+export default class UserList extends AbstractListView {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isLoaded: false,
-			users: null,
-			modal: false,
-			modal_backdrop: false,
-			modal_nested_parent: false,
-			modal_nested: false,
-			backdrop: true,
-		}
-	}
-
-	loadData(url) {
-		axios(url, {
-			// headers: {
-			// 	"Authorization": "Token " + this.authToken
-			// }
-		})
-			.then(
-				result => {
-					this.setState({
-						isLoaded: true,
-						users: result.data,
-					});
-				},
-				error => {
-					this.setState({
-						isLoaded: true,
-						error
-					});
-				}
-			);
-	}
-
-	toggle = modalType => () => {
-		if (!modalType) {
-			return this.setState({
-				modal: !this.state.modal,
-			});
-		}
-
-		this.setState({
-			[`modal_${modalType}`]: !this.state[`modal_${modalType}`],
-		});
-	};
-
-	componentDidMount() {
-		const {REACT_APP_USERS_URL} = process.env;
-		this.loadData(REACT_APP_USERS_URL);
-		return void 0;
+		this.dataUrl = process.env.REACT_APP_USERS_URL
 	}
 
 	content() {
@@ -88,17 +40,17 @@ export default class UserList extends React.Component {
 				</tr>
 				</thead>
 				<tbody>
-				{this.state.users.map((user) => (
+				{this.state.data.map((user) => (
 					<tr align="center">
 						<td width="2%" scope="row">{user.pk}</td>
 						<td width="2%" scope="row">
-							<img onClick={this.toggle()} style={{height: "30px", cursor: "pointer"}} src={user.avatar}></img>
+							<img onClick={this.toggle()} style={{height: "30px", cursor: "pointer"}} src={user.avatar} alt="avatar"/>
 						</td>
 						<td scope="row">{user.first_name}</td>
 						<td scope="row">{user.last_name}</td>
 						<td scope="row">{user.birth_date}</td>
 						<td width="15%">
-							<Link to={`user/${user.pk}/edit/`}>
+							<Link to={`user/${user.pk}/edit`}>
 								<Badge color="warning" className="mr-1">
 									<Text text="userList.tableHeader.editBtn"/>
 								</Badge>
@@ -125,7 +77,8 @@ export default class UserList extends React.Component {
 										}}
 									>
 										<CardBody className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-											{user.mobile_number ? <CardText><Text text="userDetail.mobileNumber"/> : {user.mobile_number}</CardText>: <></> }
+											{user.mobile_number ?
+												<CardText><Text text="userDetail.mobileNumber"/> : {user.mobile_number}</CardText> : <></>}
 
 										</CardBody>
 									</UserCard>
@@ -166,6 +119,11 @@ export default class UserList extends React.Component {
 							<Card className="mb-3">
 								<CardHeader>
 									<Text text="sidebar.user"/>
+									<Link to="/user/new">
+										<Button size="sm" className="float-right" color="success">
+											<Text text="userList.addBtn"/>
+										</Button>
+									</Link>
 								</CardHeader>
 								<CardBody>
 									{this.content()}
@@ -174,7 +132,7 @@ export default class UserList extends React.Component {
 						</Col>
 					</Row>
 				</Page>
-			);
+			)
 		}
 	}
-};
+}

@@ -11,6 +11,7 @@ import { Text } from 'react-easy-i18n';
 import UserList from "./views/user/list";
 import UserDetail from "./views/user/userDetail";
 import UserUpdate from "./views/user/userUpdate";
+import UserNew from "./views/user/userNew";
 
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
 const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
@@ -60,9 +61,16 @@ class App extends React.Component {
               <React.Suspense fallback={<PageSpinner />}>
                 <Route exact path="/" component={DashboardPage} />
                 <Route exact path="/login-modal" component={AuthModalPage} />
+                <Switch>
+                  <Route exact path="/user/new" component={UserNew} />
+                  <Route exact path="/user/:id/edit" component={UserUpdate} />
+                  <Route exact path="/user/:id" component={UserDetail} />
+                </Switch>
+
+
+
+
                 <Route exact path="/user" component={UserList} />
-                <Route exact path="/user/:id/" component={UserDetail} />
-                <Route path="/user/:id/edit" component={UserUpdate} />
                 <Route
                   exact
                   path="/button-groups"

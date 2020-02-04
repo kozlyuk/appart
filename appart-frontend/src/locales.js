@@ -15,6 +15,7 @@ registerLang('en',{
 		profile: 'profile'
 	},
 	userList: {
+		addBtn: "Add new user",
 		tableHeader: {
 			firstName: "First name",
 			lastName: "Last name",
@@ -55,6 +56,7 @@ registerLang('ua', {
 		profile: 'профіль'
 	},
 	userList: {
+		addBtn: "Додати нового користувача",
 		tableHeader: {
 			firstName: "Ім'я",
 			lastName: "Прізвище",
