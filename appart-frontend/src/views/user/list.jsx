@@ -42,22 +42,24 @@ export default class UserList extends AbstractListView {
 				<tbody>
 				{this.state.data.map((user) => (
 					<tr align="center">
-						<td width="2%" scope="row">{user.pk}</td>
-						<td width="2%" scope="row">
+						<td width="2%">{user.pk}</td>
+						<td width="2%">
 							<img onClick={this.toggle()} style={{height: "30px", cursor: "pointer"}} src={user.avatar} alt="avatar"/>
 						</td>
-						<td scope="row">{user.first_name}</td>
-						<td scope="row">{user.last_name}</td>
-						<td scope="row">{user.birth_date}</td>
+						<td>{user.first_name}</td>
+						<td>{user.last_name}</td>
+						<td>{user.birth_date}</td>
 						<td width="15%">
 							<Link to={`user/${user.pk}/edit`}>
 								<Badge color="warning" className="mr-1">
 									<Text text="userList.tableHeader.editBtn"/>
 								</Badge>
 							</Link>
-							<Badge to="#" color="danger" className="mr-1">
-								<Text text="userList.tableHeader.deleteBtn"/>
-							</Badge>
+							<Link to={`user/${user.pk}/delete`}>
+								<Badge color="danger" className="mr-1">
+									<Text text="userList.tableHeader.deleteBtn"/>
+								</Badge>
+							</Link>
 						</td>
 
 						<Modal
@@ -104,7 +106,7 @@ export default class UserList extends AbstractListView {
 		} else if (!isLoaded) {
 			return (
 				<div className="loaderWrapper text-center mt-4">
-					<h3 className="text-center text-muted"><Text text="global.loading" />...</h3>
+					<h3 className="text-center text-muted"><Text text="global.loading" /></h3>
 				</div>)
 				;
 		} else {

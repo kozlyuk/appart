@@ -12,6 +12,7 @@ import UserList from "./views/user/list";
 import UserDetail from "./views/user/userDetail";
 import UserUpdate from "./views/user/userUpdate";
 import UserNew from "./views/user/userNew";
+import UserDelete from "./views/user/userDelete";
 
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
 const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
@@ -64,6 +65,7 @@ class App extends React.Component {
                 <Switch>
                   <Route exact path="/user/new" component={UserNew} />
                   <Route exact path="/user/:id/edit" component={UserUpdate} />
+                  <Route exact path="/user/:id/delete" component={UserDelete} />
                   <Route exact path="/user/:id" component={UserDetail} />
                 </Switch>
 
