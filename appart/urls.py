@@ -33,7 +33,7 @@ urlpatterns = [
     path('', include('notice.urls')),
 
     path('summernote/', include('django_summernote.urls')),
-    url(r'^api-auth/', include('rest_framework.urls')),
+    path('rest-auth/', include('rest_auth.urls'))
 
 ]
 
