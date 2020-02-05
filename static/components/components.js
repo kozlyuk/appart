@@ -55,7 +55,7 @@ class Ajax {
                 if (this.status == 200) {
                     resolve(this.response);
                 } else {
-                    const error = new Error(this.statusText);
+                    const error'en' = new Error(this.statusText);
                     error.code = this.status;
                     reject(error);
                 }
