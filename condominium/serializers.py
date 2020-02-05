@@ -8,6 +8,7 @@ class ApartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Apartment
         fields = [
+            "pk"
             "house",
             "resident",
             "number",
@@ -22,6 +23,7 @@ class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
         fields = [
+            "pk"
             "description",
             "address",
             "name",
