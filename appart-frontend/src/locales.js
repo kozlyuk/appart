@@ -10,6 +10,8 @@ registerLang('en',{
 		user: 'users',
 		company: 'company',
 		condominium: 'condominium',
+		house: 'house',
+		apartment: 'apartment',
 		notice: 'notice',
 		payment: 'payment',
 		profile: 'profile'
@@ -21,6 +23,18 @@ registerLang('en',{
 			lastName: "Last name",
 			avatar: "Avatar image",
 			birthDate: "Birth date",
+			actions: "Actions",
+			editBtn: "Edit",
+			deleteBtn: "Delete"
+		}
+	},
+	houseList: {
+		addBtn: "Add new house",
+		tableHeader: {
+			housePhoto: "House photo",
+			houseName: "House name",
+			houseAddress: "House address",
+			apartmentsCount: "Apartments count",
 			actions: "Actions",
 			editBtn: "Edit",
 			deleteBtn: "Delete"
@@ -59,6 +73,8 @@ registerLang('ua', {
 		user: 'користувачі',
 		company: 'компанія',
 		condominium: 'кондомініум',
+		house: 'будинок',
+		apartment: 'апартаменти',
 		notice: 'оголошення',
 		payment: 'платежі',
 		profile: 'профіль'
@@ -70,6 +86,18 @@ registerLang('ua', {
 			lastName: "Прізвище",
 			avatar: "Аватар",
 			birthDate: "Дата народження",
+			actions: "Дії",
+			editBtn: "Редагувати",
+			deleteBtn: "Видалити"
+		}
+	},
+	houseList: {
+		addBtn: "Додати новий будинок",
+		tableHeader: {
+			housePhoto: "Фото будинку",
+			houseName: "Ім'я будинку",
+			houseAddress: "Адреса будинку",
+			apartmentsCount: "Кількість апартаментів",
 			actions: "Дії",
 			editBtn: "Редагувати",
 			deleteBtn: "Видалити"

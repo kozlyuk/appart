@@ -17,7 +17,7 @@ class HouseViewSet(viewsets.ModelViewSet):
 
     queryset = models.House.objects.all()
     serializer_class = serializers.HouseSerializer
-    permission_classes = [permissions.IsAuthenticated]
+#     permission_classes = [permissions.IsAuthenticated]
 
 
 class CompanyViewSet(viewsets.ModelViewSet):

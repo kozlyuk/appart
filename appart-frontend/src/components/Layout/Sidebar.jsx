@@ -44,26 +44,9 @@ const sidebarBackground = {
   backgroundRepeat: 'no-repeat',
 };
 
-const navComponents = [
-  { to: '/buttons', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
-  {
-    to: '/button-groups',
-    name: 'button groups',
-    exact: false,
-    Icon: MdGroupWork,
-  },
-  { to: '/forms', name: 'forms', exact: false, Icon: MdChromeReaderMode },
-  { to: '/input-groups', name: 'input groups', exact: false, Icon: MdViewList },
-  {
-    to: '/dropdowns',
-    name: 'dropdowns',
-    exact: false,
-    Icon: MdArrowDropDownCircle,
-  },
-  { to: '/badges', name: 'badges', exact: false, Icon: MdStar },
-  { to: '/alerts', name: 'alerts', exact: false, Icon: MdNotificationsActive },
-  { to: '/progress', name: 'progress', exact: false, Icon: MdBrush },
-  { to: '/modals', name: 'modals', exact: false, Icon: MdViewDay },
+const condominiumComponents = [
+  { to: '/house', name: <Text text="sidebar.house"/>, exact: false, Icon: MdWidgets },
+  { to: '/apartment', name: <Text text="sidebar.apartment"/>, exact: false, Icon: MdWidgets },
 ];
 
 const navContents = [
@@ -85,17 +68,17 @@ const navItems = [
   { to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard },
   { to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb },
   { to: '/company', name: <Text text="sidebar.company"/>, exact: false, Icon: MdInsertChart },
-  { to: '/condominium', name: <Text text="sidebar.condominium"/>, exact: false, Icon: MdWidgets },
-  { to: '/notice', name: <Text text="sidebar.notice"/>, exact: false, Icon: MdWidgets },
-  { to: '/payment', name: <Text text="sidebar.payment"/>, exact: false, Icon: MdWidgets },
-  { to: '/profile', name: <Text text="sidebar.profile"/>, exact: false, Icon: MdWidgets },
+  // { to: '/condominium', name: <Text text="sidebar.condominium"/>, exact: false, Icon: MdWidgets },
+  // { to: '/notice', name: <Text text="sidebar.notice"/>, exact: false, Icon: MdWidgets },
+  // { to: '/payment', name: <Text text="sidebar.payment"/>, exact: false, Icon: MdWidgets },
+  // { to: '/profile', name: <Text text="sidebar.profile"/>, exact: false, Icon: MdWidgets },
 ];
 
 const bem = bn.create('sidebar');
 
 class Sidebar extends React.Component {
   state = {
-    isOpenComponents: true,
+    isOpenComponents: false,
     isOpenContents: true,
     isOpenPages: true,
   };
@@ -109,7 +92,7 @@ class Sidebar extends React.Component {
       };
     });
   };
-debugger;
+
   render() {
     return (
       <aside className={bem.b()} data-image={sidebarBgImage}>
@@ -146,45 +129,45 @@ debugger;
               </NavItem>
             ))}
 
-            {/*<NavItem*/}
-            {/*  className={bem.e('nav-item')}*/}
-            {/*  onClick={this.handleClick('Components')}*/}
-            {/*>*/}
-            {/*  <BSNavLink className={bem.e('nav-item-collapse')}>*/}
-            {/*    <div className="d-flex">*/}
-            {/*      <MdExtension className={bem.e('nav-item-icon')} />*/}
-            {/*      <span className=" align-self-start">Components</span>*/}
-            {/*    </div>*/}
-            {/*    <MdKeyboardArrowDown*/}
-            {/*      className={bem.e('nav-item-icon')}*/}
-            {/*      style={{*/}
-            {/*        padding: 0,*/}
-            {/*        transform: this.state.isOpenComponents*/}
-            {/*          ? 'rotate(0deg)'*/}
-            {/*          : 'rotate(-90deg)',*/}
-            {/*        transitionDuration: '0.3s',*/}
-            {/*        transitionProperty: 'transform',*/}
-            {/*      }}*/}
-            {/*    />*/}
-            {/*  </BSNavLink>*/}
-            {/*</NavItem>*/}
-            {/*<Collapse isOpen={this.state.isOpenComponents}>*/}
-            {/*  {navComponents.map(({ to, name, exact, Icon }, index) => (*/}
-            {/*    <NavItem key={index} className={bem.e('nav-item')}>*/}
-            {/*      <BSNavLink*/}
-            {/*        id={`navItem-${name}-${index}`}*/}
-            {/*        className="text-uppercase"*/}
-            {/*        tag={NavLink}*/}
-            {/*        to={to}*/}
-            {/*        activeClassName="active"*/}
-            {/*        exact={exact}*/}
-            {/*      >*/}
-            {/*        <Icon className={bem.e('nav-item-icon')} />*/}
-            {/*        <span className="">{name}</span>*/}
-            {/*      </BSNavLink>*/}
-            {/*    </NavItem>*/}
-            {/*  ))}*/}
-            {/*</Collapse>*/}
+            <NavItem
+              className={bem.e('nav-item')}
+              onClick={this.handleClick('Components')}
+            >
+              <BSNavLink className={bem.e('nav-item-collapse')}>
+                <div className="d-flex">
+                  <MdExtension className={bem.e('nav-item-icon')} />
+                  <span className="align-self-start text-uppercase"><Text text="sidebar.condominium"/></span>
+                </div>
+                <MdKeyboardArrowDown
+                  className={bem.e('nav-item-icon')}
+                  style={{
+                    padding: 0,
+                    transform: this.state.isOpenComponents
+                      ? 'rotate(0deg)'
+                      : 'rotate(-90deg)',
+                    transitionDuration: '0.3s',
+                    transitionProperty: 'transform',
+                  }}
+                />
+              </BSNavLink>
+            </NavItem>
+            <Collapse isOpen={this.state.isOpenComponents}>
+              {condominiumComponents.map(({ to, name, exact, Icon }, index) => (
+                <NavItem key={index} className={bem.e('nav-item')}>
+                  <BSNavLink
+                    id={`navItem-${name}-${index}`}
+                    className="text-uppercase"
+                    tag={NavLink}
+                    to={to}
+                    activeClassName="active"
+                    exact={exact}
+                  >
+                    <Icon className={bem.e('nav-item-icon')} />
+                    <span className="">{name}</span>
+                  </BSNavLink>
+                </NavItem>
+              ))}
+            </Collapse>
 
             {/*<NavItem*/}
             {/*  className={bem.e('nav-item')}*/}

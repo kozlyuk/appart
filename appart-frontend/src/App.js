@@ -13,7 +13,9 @@ import UserDetail from "./views/user/userDetail";
 import UserUpdate from "./views/user/userUpdate";
 import UserNew from "./views/user/userNew";
 import UserDelete from "./views/user/userDelete";
+import HouseList from "./views/house/houseList";
 
+//TODO!!! add lazy imports
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
 const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
 const BadgePage = React.lazy(() => import('pages/BadgePage'));
@@ -62,6 +64,14 @@ class App extends React.Component {
               <React.Suspense fallback={<PageSpinner />}>
                 <Route exact path="/" component={DashboardPage} />
                 <Route exact path="/login-modal" component={AuthModalPage} />
+                <Route exact path="/user" component={UserList} />
+                <Switch>
+                  <Route exact path="/user/new" component={UserNew} />
+                  <Route exact path="/user/:id/edit" component={UserUpdate} />
+                  <Route exact path="/user/:id/delete" component={UserDelete} />
+                  <Route exact path="/user/:id" component={UserDetail} />
+                </Switch>
+                <Route exact path="/house" component={HouseList} />
                 <Switch>
                   <Route exact path="/user/new" component={UserNew} />
                   <Route exact path="/user/:id/edit" component={UserUpdate} />
@@ -72,7 +82,7 @@ class App extends React.Component {
 
 
 
-                <Route exact path="/user" component={UserList} />
+
                 <Route
                   exact
                   path="/button-groups"
