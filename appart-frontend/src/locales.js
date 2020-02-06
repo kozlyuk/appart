@@ -82,6 +82,16 @@ registerLang('en',{
 			deleteBtn: "Delete"
 		}
 	},
+	apartmentForm: {
+		house: "House",
+		number: "Apartment number",
+		area: "Area",
+		residentCount: "Resident count",
+		description: "description",
+		newApartment: {
+			title: "New apartment",
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -170,6 +180,16 @@ registerLang('ua', {
 			actions: "Дії",
 			editBtn: "Редагувати",
 			deleteBtn: "Видалити"
+		}
+	},
+	apartmentForm: {
+		house: "Будинок",
+		number: "Номер апартаментів",
+		area: "Площа",
+		residentCount: "Кількість жителів",
+		description: "Описання",
+		newApartment: {
+			title: "Нові апартаменти",
 		}
 	},
 	buttons: {
