@@ -43,6 +43,7 @@ class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.News
         fields = [
+            "pk",
             "houses",
             "title",
             "text",

@@ -25,6 +25,10 @@ import ChoiceList from "./views/choice/choiceList";
 import ChoiceNew from "./views/choice/choiceNew";
 import ChoiceUpdate from "./views/choice/choiceUpdate";
 import ChoiceDelete from "./views/choice/choiceDelete";
+import NewsList from "./views/news/newsList";
+import NewsNew from "./views/news/newsNew";
+import NewsUpdate from "./views/news/newsUpdate";
+import NewsDelete from "./views/news/newsDelete";
 
 //TODO!!! add lazy imports
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
@@ -99,6 +103,12 @@ class App extends React.Component {
                   <Route exact path="/choice/new" component={ChoiceNew} />
                   <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
                   <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
+                </Switch>
+                <Route exact path="/news" component={NewsList} />
+                <Switch>
+                  <Route exact path="/news/new" component={NewsNew} />
+                  <Route exact path="/news/:id/edit" component={NewsUpdate} />
+                  <Route exact path="/news/:id/delete" component={NewsDelete} />
                 </Switch>
 
 

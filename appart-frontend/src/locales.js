@@ -119,6 +119,17 @@ registerLang('en',{
 			title: "New choice",
 		}
 	},
+	newsList: {
+		addBtn: "Add news",
+		tableHeader: {
+			title: "Title",
+			status: "Status",
+			actualTime: "Actual time",
+			actions: "Actions",
+			editBtn: "Edit",
+			deleteBtn: "Delete"
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -244,6 +255,17 @@ registerLang('ua', {
 		choiceText: "Текст",
 		newChoice: {
 			title: "Новий варіант вибору",
+		}
+	},
+	newsList: {
+		addBtn: "Додати новину",
+		tableHeader: {
+			title: "Заголовок",
+			status: "Статус",
+			actualTime: "Актуальний час",
+			actions: "Дії",
+			editBtn: "Редагувати",
+			deleteBtn: "Видалити"
 		}
 	},
 	buttons: {
