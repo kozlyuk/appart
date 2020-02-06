@@ -41,7 +41,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     class Meta:
-        ordering = ['pk']
+        ordering = ['last_name', 'first_name']
 
     def __str__(self):
         return str(self.mobile_number) + ' ' + str(self.first_name) + ' ' + str(self.last_name)

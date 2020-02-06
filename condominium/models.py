@@ -48,7 +48,7 @@ class House(models.Model):
     class Meta:
         verbose_name = _('House')
         verbose_name_plural = _('Houses')
-        ordering = ['-name']
+        ordering = ['name']
 
     def __str__(self):
         return self.name if self.name else self.address

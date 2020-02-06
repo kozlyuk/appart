@@ -12,18 +12,17 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('mobile_number', 'email', 'is_staff', 'is_active',)
     list_filter = ('mobile_number', 'email', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'mobile_number', 'email', 'birth_date', 'avatar', 'theme')}),
+        (None, {'fields': ('first_name', 'last_name', 'email', 'birth_date', 'avatar', 'theme')}),
         ('Permissions', {'fields': ('user_permissions', 'is_staff', 'is_active')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active',
-                       'mobile_number', 'birth_date', 'avatar', 'theme')
+            'fields': ('mobile_number', 'password1', 'password2')
         }),
     )
     search_fields = ('mobile_number', 'email',)
-    ordering = ('-date_joined',)
+    ordering = ('last_name', 'first_name',)
 
 
 admin.site.register(User, CustomUserAdmin)
