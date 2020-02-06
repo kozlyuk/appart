@@ -83,6 +83,7 @@ registerLang('en',{
 		}
 	},
 	apartmentForm: {
+		title: "Apartment",
 		house: "House",
 		number: "Apartment number",
 		area: "Area",
@@ -183,6 +184,7 @@ registerLang('ua', {
 		}
 	},
 	apartmentForm: {
+		title: "Апартаменти",
 		house: "Будинок",
 		number: "Номер апартаментів",
 		area: "Площа",

@@ -11,59 +11,61 @@ import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
 
-export default class HouseUpdate extends AbstractFormView {
+export default class ApartmentUpdate extends AbstractFormView {
 
 	constructor(props) {
 		super(props);
-		this.dataUrl = process.env.REACT_APP_HOUSES_URL
+		this.dataUrl = process.env.REACT_APP_APARTMENTS_URL
 	}
 
 	content() {
 		return (
 			<Fragment>
-				<CardHeader><Text text="houseForm.title" />: {this.state.data.name}</CardHeader>
+				<CardHeader><Text text="apartmentForm.title" />: {this.state.data.number}</CardHeader>
 				<CardBody>
 					<Form>
 						<FormGroup>
-							<Label for="name"><Text text="houseForm.name"/></Label>
+							<Label for="house"><Text text="apartmentForm.house"/></Label>
 							<Input
 								type="text"
-								name="name"
-								defaultValue={this.state.data.name}
+								name="house"
+								defaultValue={this.state.data.house}
 							/>
 						</FormGroup>
 						<FormGroup>
-							<Label for="address"><Text text="houseForm.address"/></Label>
+							<Label for="number"><Text text="apartmentForm.number"/></Label>
 							<Input
-								type="text"
-								name="address"
-								defaultValue={this.state.data.address}
+								type="number"
+								name="number"
+								defaultValue={this.state.data.number}
 							/>
 						</FormGroup>
 						<FormGroup>
-							<Label for="photo"><Text text="houseForm.photo"/></Label>
-							<Input type="file" name="file" />
-							<FormText color="muted" />
+							<Label for="area"><Text text="apartmentForm.area"/></Label>
+							<Input
+								type="number"
+								name="area"
+								defaultValue={this.state.data.area}
+							/>
 						</FormGroup>
 						<FormGroup>
-							<Label for="description"><Text text="houseForm.description"/></Label>
+							<Label for="residentCount"><Text text="apartmentForm.residentCount"/></Label>
+							<Input
+								type="number"
+								name="residentCount"
+								defaultValue={this.state.data.residents_count}
+							/>
+						</FormGroup>
+						<FormGroup>
+							<Label for="description"><Text text="apartmentForm.description"/></Label>
 							<Input
 								type="textarea"
 								name="description"
 								defaultValue={this.state.data.description}
 							/>
 						</FormGroup>
-						<FormGroup>
-							<Label for="apartmentCount"><Text text="houseForm.apartmentCount"/></Label>
-							<Input
-								type="number"
-								name="apartmentCount"
-								min="0"
-								defaultValue={this.state.data.apartments_count}
-							/>
-						</FormGroup>
 
-						<Link to="/house">
+						<Link to="/apartment">
 							<Button color="warning">
 								<Text text="buttons.returnBtn"/>
 							</Button>
