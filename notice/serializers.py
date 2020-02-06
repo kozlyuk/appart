@@ -20,9 +20,7 @@ class NoticeSerializer(serializers.ModelSerializer):
         fields = [
             "actual_to",
             "actual_from",
-            "picture",
             "title",
-            "notice_type",
             "date_updated",
             "date_created",
             "text",
@@ -38,4 +36,21 @@ class QuestionSerializer(serializers.ModelSerializer):
             "question_text",
             "date_updated",
             "date_created",
+        ]
+
+class NewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.News
+        fields = [
+            "houses",
+            "title",
+            "text",
+            "news_status",
+            "actual_from",
+            "actual_to",
+            "picture",
+            "created_by",
+            "date_created",
+            "date_updated"
         ]

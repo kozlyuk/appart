@@ -17,7 +17,14 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
     queryset = models.Notice.objects.all()
     serializer_class = serializers.NoticeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+#     permission_classes = [permissions.IsAuthenticated]
+
+class NewsViewSet(viewsets.ModelViewSet):
+    """ViewSet for the News class"""
+
+    queryset = models.News.objects.all()
+    serializer_class = serializers.NewsSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

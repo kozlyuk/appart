@@ -16,6 +16,7 @@ router.register("Bill", payments_api.BillViewSet)
 router.register("Service", payments_api.ServiceViewSet)
 router.register("Choice", notice_api.ChoiceViewSet)
 router.register("Notice", notice_api.NoticeViewSet)
+router.register("News", notice_api.NewsViewSet)
 router.register("Question", notice_api.QuestionViewSet)
 
 
