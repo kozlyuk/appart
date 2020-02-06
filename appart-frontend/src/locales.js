@@ -70,6 +70,18 @@ registerLang('en',{
 	userDetail: {
 		mobileNumber: "Mobile number"
 	},
+	apartmentList: {
+		addBtn: "Add new apartment",
+		tableHeader: {
+			number: "Apartment number",
+			house: "House",
+			area: "Area",
+			resident: "Resident",
+			actions: "Actions",
+			editBtn: "Edit",
+			deleteBtn: "Delete"
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -147,6 +159,18 @@ registerLang('ua', {
 	},
 	userDetail: {
 		mobileNumber: "Номер телефону"
+	},
+	apartmentList: {
+		addBtn: "Додати апартаменти",
+		tableHeader: {
+			number: "Номер апартаментів",
+			house: "Будинок",
+			area: "Площа",
+			resident: "Житель",
+			actions: "Дії",
+			editBtn: "Редагувати",
+			deleteBtn: "Видалити"
+		}
 	},
 	buttons: {
 		submitBtn: "Зберегти",

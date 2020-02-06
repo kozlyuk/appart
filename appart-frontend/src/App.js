@@ -17,6 +17,10 @@ import HouseList from "./views/house/houseList";
 import HouseNew from "./views/house/houseNew";
 import HouseUpdate from "./views/house/houseUpdate";
 import HouseDelete from "./views/house/houseDelete";
+import ApartmentList from "./views/apartment/apartmentList";
+import ApartmentNew from "./views/apartment/apartmentNew";
+import ApartmentUpdate from "./views/apartment/apartmentUpdate";
+import ApartmentDelete from "./views/apartment/apartmentDelete";
 
 //TODO!!! add lazy imports
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
@@ -79,6 +83,12 @@ class App extends React.Component {
                   <Route exact path="/house/new" component={HouseNew} />
                   <Route exact path="/house/:id/edit" component={HouseUpdate} />
                   <Route exact path="/house/:id/delete" component={HouseDelete} />
+                </Switch>
+                <Route exact path="/apartment" component={ApartmentList} />
+                <Switch>
+                  <Route exact path="/apartment/new" component={ApartmentNew} />
+                  <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
+                  <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
                 </Switch>
 
 

@@ -9,7 +9,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     queryset = models.Apartment.objects.all()
     serializer_class = serializers.ApartmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+#     permission_classes = [permissions.IsAuthenticated]
 
 
 class HouseViewSet(viewsets.ModelViewSet):
