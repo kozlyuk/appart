@@ -13,6 +13,9 @@ registerLang('en',{
 		house: 'house',
 		apartment: 'apartment',
 		notice: 'notice',
+		choice: 'choice',
+		news: 'news',
+		question: 'question',
 		payment: 'payment',
 		profile: 'profile'
 	},
@@ -117,6 +120,9 @@ registerLang('ua', {
 		house: 'будинок',
 		apartment: 'апартаменти',
 		notice: 'оголошення',
+		choice: 'варіанти вибору',
+		news: 'новини',
+		question: 'запитання',
 		payment: 'платежі',
 		profile: 'профіль'
 	},
