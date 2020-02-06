@@ -99,6 +99,16 @@ registerLang('en',{
 	apartmentDelete: {
 		text: "Are you sure you want to remove apartment"
 	},
+	choiceList: {
+		addBtn: "Add new choice ",
+		tableHeader: {
+			choiceText: "Choice text",
+			votes: "Votes",
+			actions: "Actions",
+			editBtn: "Edit",
+			deleteBtn: "Delete"
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -205,6 +215,16 @@ registerLang('ua', {
 	},
 	apartmentDelete: {
 		text: "Дійсно бажаєте видалити апартаменти"
+	},
+	choiceList: {
+		addBtn: "Додати варіант вибору ",
+		tableHeader: {
+			choiceText: "Текст запитання",
+			votes: "Кількість голосів",
+			actions: "Дії",
+			editBtn: "Редагувати",
+			deleteBtn: "Видалити"
+		}
 	},
 	buttons: {
 		submitBtn: "Зберегти",

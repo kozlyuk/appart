@@ -8,6 +8,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Choice
         fields = [
+            "pk",
             "votes",
             "choice_text",
         ]

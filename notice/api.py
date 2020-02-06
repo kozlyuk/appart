@@ -9,7 +9,7 @@ class ChoiceViewSet(viewsets.ModelViewSet):
 
     queryset = models.Choice.objects.all()
     serializer_class = serializers.ChoiceSerializer
-    permission_classes = [permissions.IsAuthenticated]
+#     permission_classes = [permissions.IsAuthenticated]
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
