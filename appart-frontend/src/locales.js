@@ -109,6 +109,9 @@ registerLang('en',{
 			deleteBtn: "Delete"
 		}
 	},
+	choiceDelete: {
+		text: "Are you sure you want to remove choice"
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -225,6 +228,9 @@ registerLang('ua', {
 			editBtn: "Редагувати",
 			deleteBtn: "Видалити"
 		}
+	},
+	choiceDelete: {
+		text: "Дійсно бажаєте видалити варіант вибору"
 	},
 	buttons: {
 		submitBtn: "Зберегти",
