@@ -93,6 +93,9 @@ registerLang('en',{
 			title: "New apartment",
 		}
 	},
+	apartmentDelete: {
+		text: "Are you sure you want to remove apartment"
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -193,6 +196,9 @@ registerLang('ua', {
 		newApartment: {
 			title: "Нові апартаменти",
 		}
+	},
+	apartmentDelete: {
+		text: "Дійсно бажаєте видалити апартаменти"
 	},
 	buttons: {
 		submitBtn: "Зберегти",
