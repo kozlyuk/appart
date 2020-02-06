@@ -112,6 +112,13 @@ registerLang('en',{
 	choiceDelete: {
 		text: "Are you sure you want to remove choice"
 	},
+	choiceForm: {
+		title: "Choice",
+		choiceText: "Text",
+		newChoice: {
+			title: "New choice",
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -231,6 +238,13 @@ registerLang('ua', {
 	},
 	choiceDelete: {
 		text: "Дійсно бажаєте видалити варіант вибору"
+	},
+	choiceForm: {
+		title: "Варіант вибору",
+		choiceText: "Текст",
+		newChoice: {
+			title: "Новий варіант вибору",
+		}
 	},
 	buttons: {
 		submitBtn: "Зберегти",
