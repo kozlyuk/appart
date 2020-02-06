@@ -40,6 +40,20 @@ registerLang('en',{
 			deleteBtn: "Delete"
 		}
 	},
+	houseDelete: {
+		text: "Are you sure you want to remove house"
+	},
+	houseForm: {
+		title: "House",
+		name: "Name",
+		address: "Address",
+		photo: "Photo",
+		description: "Description",
+		apartmentCount: "Apartments count",
+		newHouse: {
+			title: "Новий будинок",
+		}
+	},
 	userForm: {
 		title: "User",
 		firstName: "First Name",
@@ -60,6 +74,7 @@ registerLang('en',{
 		submitBtn: "Save",
 		returnBtn: "Return",
 		closeBtn: "Close",
+		deleteBtn: "Delete",
 	},
 	user: 'User'
 });
@@ -103,6 +118,20 @@ registerLang('ua', {
 			deleteBtn: "Видалити"
 		}
 	},
+	houseForm: {
+		title: "Будинок",
+		name: "Ім'я",
+		address: "Адреса",
+		photo: "Фото",
+		description: "Опис",
+		apartmentCount: "Кількість апартаментів",
+		newHouse: {
+			title: "Новий будинок",
+		}
+	},
+	houseDelete: {
+		text: "Дійсно бажаєте видалити будинок"
+	},
 	userForm: {
 		title: "Користувач",
 		firstName: "Ім'я",
@@ -123,6 +152,7 @@ registerLang('ua', {
 		submitBtn: "Зберегти",
 		returnBtn: "Назад",
 		closeBtn: "Закрити",
+		deleteBtn: "Видалити",
 	}
 });
 

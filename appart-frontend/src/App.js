@@ -14,6 +14,9 @@ import UserUpdate from "./views/user/userUpdate";
 import UserNew from "./views/user/userNew";
 import UserDelete from "./views/user/userDelete";
 import HouseList from "./views/house/houseList";
+import HouseNew from "./views/house/houseNew";
+import HouseUpdate from "./views/house/houseUpdate";
+import HouseDelete from "./views/house/houseDelete";
 
 //TODO!!! add lazy imports
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
@@ -73,10 +76,9 @@ class App extends React.Component {
                 </Switch>
                 <Route exact path="/house" component={HouseList} />
                 <Switch>
-                  <Route exact path="/user/new" component={UserNew} />
-                  <Route exact path="/user/:id/edit" component={UserUpdate} />
-                  <Route exact path="/user/:id/delete" component={UserDelete} />
-                  <Route exact path="/user/:id" component={UserDetail} />
+                  <Route exact path="/house/new" component={HouseNew} />
+                  <Route exact path="/house/:id/edit" component={HouseUpdate} />
+                  <Route exact path="/house/:id/delete" component={HouseDelete} />
                 </Switch>
 
 
