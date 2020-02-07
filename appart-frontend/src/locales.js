@@ -130,6 +130,18 @@ registerLang('en',{
 			deleteBtn: "Delete"
 		}
 	},
+	newsForm: {
+		title: "News title",
+		houses: "Houses",
+		status: "News status",
+		text: "News text",
+		actualFrom: "Actual from",
+		actualTo: "Actual to",
+		picture: "Picture",
+		newNews: {
+			title: "New news"
+		}
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -266,6 +278,18 @@ registerLang('ua', {
 			actions: "Дії",
 			editBtn: "Редагувати",
 			deleteBtn: "Видалити"
+		}
+	},
+	newsForm: {
+		title: "Заголовок новини",
+		houses: "Будинок",
+		status: "Статус новини",
+		text: "Текст новини",
+		actualFrom: "Актуальна з",
+		actualTo: "Актуальна до",
+		picture: "Картинка",
+		newNews: {
+			title: "Нова новина"
 		}
 	},
 	buttons: {
