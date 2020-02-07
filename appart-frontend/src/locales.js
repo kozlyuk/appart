@@ -142,6 +142,9 @@ registerLang('en',{
 			title: "New news"
 		}
 	},
+	newsDelete: {
+		text: "Are you sure you want to remove news"
+	},
 	buttons: {
 		submitBtn: "Save",
 		returnBtn: "Return",
@@ -291,6 +294,9 @@ registerLang('ua', {
 		newNews: {
 			title: "Нова новина"
 		}
+	},
+	newsDelete: {
+		text: "Дійсно бажаєте видалити новину"
 	},
 	buttons: {
 		submitBtn: "Зберегти",
