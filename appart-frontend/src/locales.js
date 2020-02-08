@@ -162,7 +162,7 @@ registerLang('ua', {
 		home: 'головна',
 		user: 'користувачі',
 		company: 'компанія',
-		condominium: 'кондомініум',
+		condominium: 'домогосподарство',
 		house: 'будинок',
 		apartment: 'апартаменти',
 		notice: 'оголошення',
