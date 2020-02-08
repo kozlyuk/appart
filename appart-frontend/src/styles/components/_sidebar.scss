@@ -38,9 +38,15 @@
 
   &::after {
     z-index: 3;
-    // sublime light
-    background: #fc5c7d; /* fallback for old browsers */
-    background: linear-gradient(to bottom, #6a82fb, #fc5c7d);
+    //// sublime light
+    //background: #4caf50; /* fallback for old browsers */
+    //background: linear-gradient(to bottom, #6a82fb, #4caf50);
+
+
+
+    // for stograd
+    background: #4caf50; /* fallback for old browsers */
+    background: linear-gradient(to bottom, #6a82fb, #4caf50);
     opacity: 1;
   }
 
