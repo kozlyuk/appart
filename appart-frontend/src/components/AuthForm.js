@@ -2,8 +2,32 @@ import logo200Image from 'assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import Auth from "../auth/auth";
+import FormText from "reactstrap/es/FormText";
+
+const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
+const validateForm = (errors) => {
+  let valid = true;
+  Object.values(errors).forEach(
+    (val) => val.length > 0 && (valid = false)
+  );
+  return valid;
+};
 
 class AuthForm extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      password: '',
+      mobileNumber: '',
+      errors: {
+        mobileNumber: '',
+        password: '',
+      }
+    }
+  }
+
   get isLogin() {
     return this.props.authState === STATE_LOGIN;
   }
@@ -20,6 +44,43 @@ class AuthForm extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    let user = new Auth();
+    const target = event.target;
+    console.log(target.mobileNumber.value)
+    const mobileNumber = target.mobileNumber.value;
+    const password = target.password.value;
+    this.setState({
+      password: password,
+      mobileNumber: mobileNumber
+    });
+    user.login(mobileNumber, password).then(r => {
+      return r;
+    })
+  };
+
+  handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+
+    switch (name) {
+      case 'mobileNumber':
+        errors.mobileNumber =
+          validPhoneRegex.test(value)
+            ? ''
+            : 'Mobile number is not valid!';
+        break;
+      case 'password':
+        errors.password =
+          value.length < 6
+            ? 'Password must be 6 characters long!'
+            : '';
+        break;
+      default:
+        break;
+    }
+
+    this.setState({errors, [name]: value});
   };
 
   renderButtonText() {
@@ -43,8 +104,8 @@ class AuthForm extends React.Component {
       usernameInputProps,
       passwordLabel,
       passwordInputProps,
-      confirmPasswordLabel,
-      confirmPasswordInputProps,
+      // confirmPasswordLabel,
+      // confirmPasswordInputProps,
       children,
       onLogoClick,
     } = this.props;
@@ -64,18 +125,22 @@ class AuthForm extends React.Component {
         )}
         <FormGroup>
           <Label for={usernameLabel}>{usernameLabel}</Label>
-          <Input {...usernameInputProps} />
+          {this.state.errors.mobileNumber.length > 0 &&
+          <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+          <Input name="mobileNumber" {...usernameInputProps} onChange={this.handleChange} autocomplete="off"/>
         </FormGroup>
         <FormGroup>
           <Label for={passwordLabel}>{passwordLabel}</Label>
-          <Input {...passwordInputProps} />
+          {this.state.errors.password.length > 0 &&
+          <FormText color="danger">{this.state.errors.password}</FormText>}
+          <Input name="password" {...passwordInputProps} onChange={this.handleChange} autocomplete="off"/>
         </FormGroup>
-        {this.isSignup && (
-          <FormGroup>
-            <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>
-            <Input {...confirmPasswordInputProps} />
-          </FormGroup>
-        )}
+        {/*{this.isSignup && (*/}
+        {/*  <FormGroup>*/}
+        {/*    <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>*/}
+        {/*    <Input {...confirmPasswordInputProps} />*/}
+        {/*  </FormGroup>*/}
+        {/*)}*/}
         <FormGroup check>
           <Label check>
             <Input type="checkbox" />{' '}
@@ -83,28 +148,35 @@ class AuthForm extends React.Component {
           </Label>
         </FormGroup>
         <hr />
+        {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
         <Button
           size="lg"
           className="bg-gradient-theme-left border-0"
           block
-          onClick={this.handleSubmit}>
+          disabled>
+          The data is incorrect
+        </Button>:<Button
+          size="lg"
+          className="bg-gradient-theme-left border-0"
+          block
+          type="submit">
           {this.renderButtonText()}
-        </Button>
+        </Button>}
 
-        <div className="text-center pt-1">
-          <h6>or</h6>
-          <h6>
-            {this.isSignup ? (
-              <a href="#login" onClick={this.changeAuthState(STATE_LOGIN)}>
-                Login
-              </a>
-            ) : (
-              <a href="#signup" onClick={this.changeAuthState(STATE_SIGNUP)}>
-                Signup
-              </a>
-            )}
-          </h6>
-        </div>
+        {/*<div className="text-center pt-1">*/}
+        {/*  <h6>or</h6>*/}
+        {/*  <h6>*/}
+        {/*    {this.isSignup ? (*/}
+        {/*      <a href="#login" onClick={this.changeAuthState(STATE_LOGIN)}>*/}
+        {/*        Login*/}
+        {/*      </a>*/}
+        {/*    ) : (*/}
+        {/*      <a href="#signup" onClick={this.changeAuthState(STATE_SIGNUP)}>*/}
+        {/*        Signup*/}
+        {/*      </a>*/}
+        {/*    )}*/}
+        {/*  </h6>*/}
+        {/*</div>*/}
 
         {children}
       </Form>
@@ -130,10 +202,10 @@ AuthForm.propTypes = {
 AuthForm.defaultProps = {
   authState: 'LOGIN',
   showLogo: true,
-  usernameLabel: 'Email',
+  usernameLabel: 'Mobile number',
   usernameInputProps: {
-    type: 'email',
-    placeholder: 'your@email.com',
+    type: 'text',
+    placeholder: '+38**********',
   },
   passwordLabel: 'Password',
   passwordInputProps: {

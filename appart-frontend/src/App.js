@@ -3,7 +3,7 @@ import GAListener from 'components/GAListener';
 import { EmptyLayout, LayoutRoute, MainLayout } from 'components/Layout';
 import PageSpinner from 'components/PageSpinner';
 import AuthPage from 'pages/AuthPage';
-import React from 'react';
+import React, {Fragment} from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
@@ -29,6 +29,8 @@ import NewsList from "./views/news/newsList";
 import NewsNew from "./views/news/newsNew";
 import NewsUpdate from "./views/news/newsUpdate";
 import NewsDelete from "./views/news/newsDelete";
+import Auth from "./auth/auth"
+import axios from "axios"
 
 //TODO!!! add lazy imports
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
@@ -52,83 +54,115 @@ const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
 
+
+
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuthenticate: false,
+      user: null
+    };
+    this.user = new Auth();
+  }
+
+  componentDidMount() {
+    axios(process.env.REACT_APP_USER_DATA, {
+      headers: {
+        "Authorization": "Token " + this.user.getAuthToken(),
+      }
+    })
+      .then(
+        (response) => {
+          if (response.status >= 400) {
+            this.setState({
+              isAuthenticate: false,
+            })
+
+          } else if (response.status < 400) {
+            this.setState({
+              isAuthenticate: true,
+              user: response.data
+            })
+          }
+        });
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      })
+    }, 1000)
+  }
+
   render() {
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-            <LayoutRoute
-              exact
-              path="/login"
-              layout={EmptyLayout}
-              component={props => (
-                <AuthPage {...props} authState={STATE_LOGIN} />
-              )}
-            />
-            <LayoutRoute
-              exact
-              path="/signup"
-              layout={EmptyLayout}
-              component={props => (
-                <AuthPage {...props} authState={STATE_SIGNUP} />
-              )}
-            />
 
-            <MainLayout breakpoint={this.props.breakpoint}>
-              <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/" component={DashboardPage} />
-                <Route exact path="/login-modal" component={AuthModalPage} />
-                <Route exact path="/user" component={UserList} />
-                <Switch>
-                  <Route exact path="/user/new" component={UserNew} />
-                  <Route exact path="/user/:id/edit" component={UserUpdate} />
-                  <Route exact path="/user/:id/delete" component={UserDelete} />
-                  <Route exact path="/user/:id" component={UserDetail} />
-                </Switch>
-                <Route exact path="/house" component={HouseList} />
-                <Switch>
-                  <Route exact path="/house/new" component={HouseNew} />
-                  <Route exact path="/house/:id/edit" component={HouseUpdate} />
-                  <Route exact path="/house/:id/delete" component={HouseDelete} />
-                </Switch>
-                <Route exact path="/apartment" component={ApartmentList} />
-                <Switch>
-                  <Route exact path="/apartment/new" component={ApartmentNew} />
-                  <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
-                  <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
-                </Switch>
-                <Route exact path="/choice" component={ChoiceList} />
-                <Switch>
-                  <Route exact path="/choice/new" component={ChoiceNew} />
-                  <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
-                  <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
-                </Switch>
-                <Route exact path="/news" component={NewsList} />
-                <Switch>
-                  <Route exact path="/news/new" component={NewsNew} />
-                  <Route exact path="/news/:id/edit" component={NewsUpdate} />
-                  <Route exact path="/news/:id/delete" component={NewsDelete} />
-                </Switch>
-
-
-
-
-
-                <Route
+                <LayoutRoute
                   exact
-                  path="/button-groups"
-                  component={ButtonGroupPage}
+                  path="/login"
+                  layout={EmptyLayout}
+                  component={props => (
+                    <AuthPage {...props} authState={STATE_LOGIN} />
+                  )}
                 />
-                <Route exact path="/dropdowns" component={DropdownPage} />
-                <Route exact path="/progress" component={ProgressPage} />
-                <Route exact path="/modals" component={ModalPage} />
-                <Route exact path="/forms" component={FormPage} />
-                <Route exact path="/input-groups" component={InputGroupPage} />
-                <Route exact path="/charts" component={ChartPage} />
-              </React.Suspense>
-            </MainLayout>
-            <Redirect to="/" />
+                <LayoutRoute exact path="/signup" layout={EmptyLayout} component={props => (
+                    <AuthPage {...props} authState={STATE_SIGNUP} />
+                  )}/>
+                {this.state.isAuthenticate ?
+                  <Fragment>
+                    <MainLayout breakpoint={this.props.breakpoint}>
+                      <React.Suspense fallback={<PageSpinner />}>
+                        <Route exact path="/" component={DashboardPage} />
+                        <Route exact path="/login-modal" component={AuthModalPage} />
+                        <Route exact path="/user" component={UserList} />
+                        <Switch>
+                          <Route exact path="/user/new" component={UserNew} />
+                          <Route exact path="/user/:id/edit" component={UserUpdate} />
+                          <Route exact path="/user/:id/delete" component={UserDelete} />
+                          <Route exact path="/user/:id" component={UserDetail} />
+                        </Switch>
+                        <Route exact path="/house" component={HouseList} />
+                        <Switch>
+                          <Route exact path="/house/new" component={HouseNew} />
+                          <Route exact path="/house/:id/edit" component={HouseUpdate} />
+                          <Route exact path="/house/:id/delete" component={HouseDelete} />
+                        </Switch>
+                        <Route exact path="/apartment" component={ApartmentList} />
+                        <Switch>
+                          <Route exact path="/apartment/new" component={ApartmentNew} />
+                          <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
+                          <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
+                        </Switch>
+                        <Route exact path="/choice" component={ChoiceList} />
+                        <Switch>
+                          <Route exact path="/choice/new" component={ChoiceNew} />
+                          <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
+                          <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
+                        </Switch>
+                        <Route exact path="/news" component={NewsList} />
+                        <Switch>
+                          <Route exact path="/news/new" component={NewsNew} />
+                          <Route exact path="/news/:id/edit" component={NewsUpdate} />
+                          <Route exact path="/news/:id/delete" component={NewsDelete} />
+                        </Switch>
+                        <Route
+                          exact
+                          path="/button-groups"
+                          component={ButtonGroupPage}
+                        />
+                        <Route exact path="/dropdowns" component={DropdownPage} />
+                        <Route exact path="/progress" component={ProgressPage} />
+                        <Route exact path="/modals" component={ModalPage} />
+                        <Route exact path="/forms" component={FormPage} />
+                        <Route exact path="/input-groups" component={InputGroupPage} />
+                        <Route exact path="/charts" component={ChartPage} />
+                      </React.Suspense>
+                    </MainLayout>
+                    <Redirect to="/" />
+                  </Fragment>
+                    : <Redirect to="/login" />}
           </Switch>
         </GAListener>
       </BrowserRouter>
