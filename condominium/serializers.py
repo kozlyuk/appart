@@ -1,9 +1,22 @@
 from rest_framework import serializers
 
-from .models import Apartment, House, Company
+from condominium.models import Apartment, House, Company
+from accounts.serializers import UserNameSerializer
+
+
+class HouseNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = House
+        fields = [
+            "pk",
+            "name",
+        ]
 
 
 class ApartmentSerializer(serializers.HyperlinkedModelSerializer):
+    house = HouseNameSerializer()
+    resident = UserNameSerializer()
 
     class Meta:
         model = Apartment

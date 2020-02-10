@@ -45,5 +45,17 @@ class GetUserSerializer(serializers.ModelSerializer):
         ]
 
 
+class UserNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "pk",
+            "first_name",
+            "last_name",
+            "mobile_number",
+        ]
+
+
 class CustomLoginSerializer(LoginSerializer):
     email = None
