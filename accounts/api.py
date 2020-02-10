@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, views, status
+from rest_framework import viewsets, views, status
 from rest_framework.response import Response
 import re
 
@@ -11,7 +11,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
 
 
 class GetByNumber(views.APIView):
@@ -19,7 +18,6 @@ class GetByNumber(views.APIView):
     This view return User object by given in URL mobile_number
     or if it isn`t exist create ones.
     """
-    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, mobile_number):
         message = "Mobile number must contain 10 digits"

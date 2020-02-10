@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 
 from . import serializers
 from . import models
@@ -9,7 +9,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
     queryset = models.Payment.objects.all()
     serializer_class = serializers.PaymentSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class BillViewSet(viewsets.ModelViewSet):
@@ -17,7 +16,6 @@ class BillViewSet(viewsets.ModelViewSet):
 
     queryset = models.Bill.objects.all()
     serializer_class = serializers.BillSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -25,4 +23,3 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
     queryset = models.Service.objects.all()
     serializer_class = serializers.ServiceSerializer
-    permission_classes = [permissions.IsAuthenticated]

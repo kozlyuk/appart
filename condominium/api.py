@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 
 from . import serializers
 from . import models
@@ -9,7 +9,6 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     queryset = models.Apartment.objects.all()
     serializer_class = serializers.ApartmentSerializer
-#     permission_classes = [permissions.IsAuthenticated]
 
 
 class HouseViewSet(viewsets.ModelViewSet):
@@ -17,7 +16,6 @@ class HouseViewSet(viewsets.ModelViewSet):
 
     queryset = models.House.objects.all()
     serializer_class = serializers.HouseSerializer
-#     permission_classes = [permissions.IsAuthenticated]
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -25,4 +23,3 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     queryset = models.Company.objects.all()
     serializer_class = serializers.CompanySerializer
-    permission_classes = [permissions.IsAuthenticated]

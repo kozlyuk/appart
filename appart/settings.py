@@ -29,13 +29,13 @@ INSTALLED_APPS += [
     'payments.apps.PaymentsConfig',
     'messaging.apps.MessagingConfig',
     'notice.apps.NoticeConfig',
-    'appart',
     'pages.apps.PagesConfig',
-    'corsheaders',
     'templatetags',
     'bootstrap4',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_auth',
+    'corsheaders',
     'font_awesome',
     'widget_tweaks',
     'django_summernote',
@@ -44,10 +44,9 @@ INSTALLED_APPS += [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -118,6 +117,31 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (                               # TODO uncomment om production
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'accounts.serializers.LoginSerializer',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

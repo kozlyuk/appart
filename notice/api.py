@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 
 from . import serializers
 from . import models
@@ -9,7 +9,6 @@ class ChoiceViewSet(viewsets.ModelViewSet):
 
     queryset = models.Choice.objects.all()
     serializer_class = serializers.ChoiceSerializer
-#     permission_classes = [permissions.IsAuthenticated]
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
@@ -17,14 +16,12 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
     queryset = models.Notice.objects.all()
     serializer_class = serializers.NoticeSerializer
-#     permission_classes = [permissions.IsAuthenticated]
 
 class NewsViewSet(viewsets.ModelViewSet):
     """ViewSet for the News class"""
 
     queryset = models.News.objects.all()
     serializer_class = serializers.NewsSerializer
-#     permission_classes = [permissions.IsAuthenticated]
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -32,4 +29,3 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     queryset = models.Question.objects.all()
     serializer_class = serializers.QuestionSerializer
-    permission_classes = [permissions.IsAuthenticated]

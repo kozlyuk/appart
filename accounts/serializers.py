@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User
+from accounts.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,3 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             if User.objects.filter(email=value.lower()).exists():
                 raise serializers.ValidationError(message)
         return value
+
+
+class LoginSerializer(LoginSerializer):
+    email = None
