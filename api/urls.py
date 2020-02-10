@@ -23,5 +23,6 @@ router.register("Question", notice_api.QuestionViewSet)
 urlpatterns = [
     path("api/v1/", include(router.urls)),
 
-    path("api/v1/user/get_by_number/<str:mobile_number>/", accounts_api.GetByNumber.as_view()),
+    path("api/v1/get_user/", accounts_api.GetUser.as_view()),
+    path("api/v1/get_by_number/<str:mobile_number>/", accounts_api.GetByNumber.as_view()),
 ]

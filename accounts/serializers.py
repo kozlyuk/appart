@@ -35,5 +35,15 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
 
-class LoginSerializer(LoginSerializer):
+class GetUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "pk",
+            "is_staff",
+        ]
+
+
+class CustomLoginSerializer(LoginSerializer):
     email = None

@@ -140,7 +140,7 @@ REST_FRAMEWORK = {
 }
 
 REST_AUTH_SERIALIZERS = {
-    'LOGIN_SERIALIZER': 'accounts.serializers.LoginSerializer',
+    'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
 }
 
 # Internationalization
@@ -190,11 +190,11 @@ SUMMERNOTE_CONFIG = {
         'height': '480',
         'toolbar': [
             ['style', ['bold', 'italic', 'underline', 'clear']],
-             ['font', ['strikethrough', 'superscript', 'subscript']],
-             ['fontsize', ['fontsize']],
-             ['color', ['color']],
-             ['para', ['ul', 'ol', 'paragraph']],
-             ['height', ['height']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
         ],
         'lazy': True,
 

@@ -1,9 +1,9 @@
+import re
 from rest_framework import viewsets, views, status
 from rest_framework.response import Response
-import re
 
-from .serializers import UserSerializer
-from .models import User
+from accounts.serializers import UserSerializer, GetUserSerializer
+from accounts.models import User
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -13,10 +13,20 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+class GetUser(views.APIView):
+    """
+    Return current authentificated User pk and is_staff fields
+    """
+
+    def get(self, request):
+        serializer = GetUserSerializer(request.user)
+        return Response(serializer.data)
+
+
 class GetByNumber(views.APIView):
     """
-    This view return User object by given in URL mobile_number
-    or if it isn`t exist create ones.
+    Return User object by given in URL mobile_number
+    or create ones if it isn`t exist.
     """
 
     def get(self, request, mobile_number):
