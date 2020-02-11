@@ -3,7 +3,14 @@ import {registerLang, setCurrentLocale} from 'react-easy-i18n';
 registerLang('en',{
 	global: {
 		loading: 'Loading...',
-		error: 'Error'
+		error: 'Error',
+		validateErrors: {
+			mobileNumber: "Please enter more then 10 numbers!",
+			password: "Password must be 6 characters long!",
+			first_name: "The field cannot be empty!",
+			last_name: "The field cannot be empty!",
+			email: "Email is invalid!",
+		}
 	},
 	sidebar: {
 		home: 'home',
@@ -156,7 +163,14 @@ registerLang('en',{
 registerLang('ua', {
 	global: {
 		loading: 'Завантаження...',
-		error: 'Помилка'
+		error: 'Помилка',
+		validateErrors: {
+			mobileNumber: "Введіть будь ласка більше 10 символів",
+			password: "Пароль повинен бути довшим за 6 символів!",
+			first_name: "Поле не може бути пустим",
+			last_name: "Поле не може бути пустим",
+			email: "Введіть вірний формат електронної пошти"
+		}
 	},
 	sidebar: {
 		home: 'головна',

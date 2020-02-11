@@ -5,6 +5,7 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import Auth from "../auth/auth";
 import FormText from "reactstrap/es/FormText";
 
+// ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
 const validateForm = (errors) => {
   let valid = true;
@@ -19,6 +20,7 @@ class AuthForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // validation fields
       password: '',
       mobileNumber: '',
       errors: {
@@ -58,6 +60,13 @@ class AuthForm extends React.Component {
     })
   };
 
+  /*
+   * Form field validation
+   * handleChange(event): void
+   *
+   * check field valid and
+   * set errors str to state
+  **/
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -126,12 +135,14 @@ class AuthForm extends React.Component {
         <FormGroup>
           <Label for={usernameLabel}>{usernameLabel}</Label>
           {this.state.errors.mobileNumber.length > 0 &&
+          // error field
           <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
           <Input name="mobileNumber" {...usernameInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
         <FormGroup>
           <Label for={passwordLabel}>{passwordLabel}</Label>
           {this.state.errors.password.length > 0 &&
+          // error field
           <FormText color="danger">{this.state.errors.password}</FormText>}
           <Input name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
@@ -148,6 +159,7 @@ class AuthForm extends React.Component {
           </Label>
         </FormGroup>
         <hr />
+        {/*display inactive button when error length > 0 and active when error == 0*/}
         {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
         <Button
           size="lg"
