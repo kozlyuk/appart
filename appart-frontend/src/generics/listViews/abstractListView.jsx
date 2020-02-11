@@ -1,5 +1,6 @@
 import React from "react"
 import axios from 'axios'
+import Auth from "../../auth/auth";
 
 export default class AbstractListView extends React.Component{
 	dataUrl;
@@ -15,13 +16,14 @@ export default class AbstractListView extends React.Component{
 			backdrop: true,
 		};
 		dataUrl = this.dataUrl
+		this.user = new Auth();
 	}
 
 	loadData(dataUrl) {
 		axios(dataUrl, {
-			// headers: {
-			// 	"Authorization": "Token " + this.authToken
-			// }
+			headers: {
+				"Authorization": "Token " + this.user.getAuthToken()
+			}
 		})
 			.then(
 				result => {

@@ -106,7 +106,7 @@ export default class Auth {
 				headers: {
 					"Content-type": "application/json; charset=UTF-8"
 				},
-				body: JSON.stringify({email: email, password: password})
+				body: JSON.stringify({username: email, password: password})
 			});
 			return resp
 		} catch (err) {

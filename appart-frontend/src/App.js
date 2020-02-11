@@ -74,6 +74,7 @@ class App extends React.Component {
     })
       .then(
         (response) => {
+          console.log(response.status)
           if (response.status >= 400) {
             this.setState({
               isAuthenticate: false,
@@ -94,11 +95,11 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthenticate) {
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-
                 <LayoutRoute
                   exact
                   path="/login"
@@ -110,7 +111,6 @@ class App extends React.Component {
                 <LayoutRoute exact path="/signup" layout={EmptyLayout} component={props => (
                     <AuthPage {...props} authState={STATE_SIGNUP} />
                   )}/>
-                {this.state.isAuthenticate ?
                   <Fragment>
                     <MainLayout breakpoint={this.props.breakpoint}>
                       <React.Suspense fallback={<PageSpinner />}>
@@ -160,13 +160,30 @@ class App extends React.Component {
                         <Route exact path="/charts" component={ChartPage} />
                       </React.Suspense>
                     </MainLayout>
-                    <Redirect to="/" />
+                    {/*<Redirect to="/" />*/}
                   </Fragment>
-                    : <Redirect to="/login" />}
+
           </Switch>
         </GAListener>
       </BrowserRouter>
-    );
+    );} else {
+      return (
+        <BrowserRouter basename={getBasename()}>
+          <GAListener>
+            <Switch>
+              <LayoutRoute
+                exact
+                path="/"
+                layout={EmptyLayout}
+                component={props => (
+                  <AuthPage {...props} authState={STATE_LOGIN} />
+                )}
+              />
+            </Switch>
+          </GAListener>
+        </BrowserRouter>
+      )
+    }
   }
 }
 

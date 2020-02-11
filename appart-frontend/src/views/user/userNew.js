@@ -9,7 +9,21 @@ import Container from "reactstrap/es/Container";
 export default class UserNew extends AbstractFormView{
 	constructor(props) {
 		super(props);
-		this.dataUrl = undefined
+		this.dataUrl = undefined;
+		this.postUrl = process.env.REACT_APP_USERS_URL;
+		this.requestType = "post"
+	}
+
+	submitData(target){
+		const userFormData = new FormData();
+		// dict of all elements
+		userFormData.append("mobile_number", target.mobileNumber.value);
+		userFormData.append("first_name", target.firstName.value);
+		userFormData.append("last_name", target.lastName.value);
+		userFormData.append("email", target.email.value);
+		userFormData.append("birthday", target.birthday.value);
+		userFormData.append("avatar", target.file.files[0]);
+		return userFormData;
 	}
 
 	handleSubmit(){
@@ -21,7 +35,7 @@ export default class UserNew extends AbstractFormView{
 			<Fragment>
 				<CardHeader><Text text="userForm.newUser.title" /></CardHeader>
 				<CardBody>
-					<Form>
+					<Form onSubmit={this.handleSubmit}>
 						<FormGroup>
 							<Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
 							<Input
@@ -68,7 +82,7 @@ export default class UserNew extends AbstractFormView{
 								<Text text="buttons.returnBtn"/>
 							</Button>
 						</Link>
-						<Button className="float-right" onClick={this.handleSubmit}>
+						<Button className="float-right" type="submit">
 							<Text text="buttons.submitBtn"/>
 						</Button>
 					</Form>

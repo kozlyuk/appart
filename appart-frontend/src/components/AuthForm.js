@@ -127,13 +127,13 @@ class AuthForm extends React.Component {
           <Label for={usernameLabel}>{usernameLabel}</Label>
           {this.state.errors.mobileNumber.length > 0 &&
           <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-          <Input name="mobileNumber" {...usernameInputProps} onChange={this.handleChange} autocomplete="off"/>
+          <Input name="mobileNumber" {...usernameInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
         <FormGroup>
           <Label for={passwordLabel}>{passwordLabel}</Label>
           {this.state.errors.password.length > 0 &&
           <FormText color="danger">{this.state.errors.password}</FormText>}
-          <Input name="password" {...passwordInputProps} onChange={this.handleChange} autocomplete="off"/>
+          <Input name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
         {/*{this.isSignup && (*/}
         {/*  <FormGroup>*/}
@@ -205,7 +205,7 @@ AuthForm.defaultProps = {
   usernameLabel: 'Mobile number',
   usernameInputProps: {
     type: 'text',
-    placeholder: '+38**********',
+    placeholder: '0**********',
   },
   passwordLabel: 'Password',
   passwordInputProps: {

@@ -1,10 +1,5 @@
 import React, {Fragment} from 'react';
-import {
-	Card,
-	CardBody,
-	CardHeader,
-	Form, FormGroup, FormText, Input, Label
-} from 'reactstrap';
+import {Card, CardBody, CardHeader, Form, FormGroup, FormText, Input, Label} from 'reactstrap';
 import {Text} from "react-easy-i18n";
 import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
@@ -15,7 +10,20 @@ export default class UserUpdate extends AbstractFormView {
 
 	constructor(props) {
 		super(props);
-		this.dataUrl = process.env.REACT_APP_USERS_URL
+		this.dataUrl = process.env.REACT_APP_USERS_URL;
+		this.requestType = "put"
+	}
+
+	submitData(target){
+		const userFormData = new FormData();
+		// dict of all elements
+		userFormData.append("mobile_number", target.mobileNumber.value);
+		userFormData.append("first_name", target.firstName.value);
+		userFormData.append("last_name", target.lastName.value);
+		userFormData.append("email", target.email.value);
+		userFormData.append("birthday", target.birthday.value);
+		userFormData.append("avatar", target.file.files[0]);
+		return userFormData;
 	}
 
 	content() {
@@ -23,7 +31,7 @@ export default class UserUpdate extends AbstractFormView {
 			<Fragment>
 				<CardHeader><Text text="userForm.title" />: {this.state.data.first_name} {this.state.data.last_name}</CardHeader>
 				<CardBody>
-					<Form>
+					<Form onSubmit={this.handleSubmit}>
 						<FormGroup>
 							<Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
 							<Input
@@ -85,7 +93,7 @@ export default class UserUpdate extends AbstractFormView {
 								Return
 							</Button>
 						</Link>
-						<Button className="float-right" onClick={this.handleSubmit}>Submit</Button>
+						<Button className="float-right" type="submit">Submit</Button>
 					</Form>
 				</CardBody>
 			</Fragment>
