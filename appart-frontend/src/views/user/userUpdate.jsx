@@ -28,10 +28,10 @@ export default class UserUpdate extends AbstractFormView {
 			mobileNumber: '',
 			// defaultInactiveBtn: true,
 			errors: {
-				mobileNumber: true,
+				mobileNumber: '',
 				first_name: '',
 				last_name: '',
-				email: true,
+				email: '',
 				birthday: '',
 				avatar: '',
 			}
@@ -194,7 +194,19 @@ export default class UserUpdate extends AbstractFormView {
 								Return
 							</Button>
 						</Link>
-						<Button className="float-right" type="submit">Submit</Button>
+						{ this.state.defaultInactiveBtn ||
+						this.state.errors.mobileNumber ||
+						this.state.errors.first_name ||
+						this.state.errors.last_name ||
+						this.state.errors.email ||
+						this.state.errors.birthday ||
+						this.state.errors.avatar ?
+							<Button disabled className="float-right">
+								<Text text="buttons.submitBtn"/>
+							</Button>:<Button className="float-right" type="submit">
+								<Text text="buttons.submitBtn"/>
+							</Button>
+						}
 					</Form>
 				</CardBody>
 			</Fragment>
