@@ -48,7 +48,9 @@ export default class UserUpdate extends AbstractFormView {
 		userFormData.append("last_name", target.lastName.value);
 		userFormData.append("email", target.email.value);
 		userFormData.append("birthday", target.birthday.value);
-		userFormData.append("avatar", target.file.files[0]);
+		if (target.file.files[0]) {
+			userFormData.append("avatar", target.file.files[0]);
+		}
 		return userFormData;
 	}
 

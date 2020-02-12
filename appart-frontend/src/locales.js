@@ -5,6 +5,7 @@ registerLang('en',{
 		loading: 'Loading...',
 		error: 'Error',
 		validateErrors: {
+			emptyField: "The field can not be empty!",
 			mobileNumber: "Phone number should be 10 digits long!",
 			password: "Password must be 6 characters long!",
 			first_name: "The field cannot be empty!",
@@ -165,11 +166,13 @@ registerLang('ua', {
 		loading: 'Завантаження...',
 		error: 'Помилка',
 		validateErrors: {
+			emptyField: "Поле не може бути пустим!",
 			mobileNumber: "Номер телефону повинен складатися з 10 символів!",
 			password: "Пароль повинен бути довшим за 6 символів!",
-			first_name: "Поле не може бути пустим",
-			last_name: "Поле не може бути пустим",
-			email: "Введіть вірний формат електронної пошти"
+			first_name: "Поле не може бути пустим!",
+			last_name: "Поле не може бути пустим!",
+			email: "Введіть вірний формат електронної пошти!",
+			houseApartmentsCount: "Вкажіть вірну кількість!"
 		}
 	},
 	sidebar: {

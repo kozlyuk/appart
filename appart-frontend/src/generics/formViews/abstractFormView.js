@@ -45,7 +45,6 @@ export default class AbstractFormView extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(event.target.file.files[0]);
 			axios({
 				method: this.requestType,
 				url: this.state.url,

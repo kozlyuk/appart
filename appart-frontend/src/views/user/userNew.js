@@ -10,13 +10,6 @@ import Container from "reactstrap/es/Container";
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
 // ugly regular expression for validate email
 const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-const validateForm = (errors) => {
-	let valid = true;
-	Object.values(errors).forEach(
-		(val) => val.length > 0 && (valid = false)
-	);
-	return valid;
-};
 
 export default class UserNew extends AbstractFormView{
 	constructor(props) {
@@ -25,7 +18,6 @@ export default class UserNew extends AbstractFormView{
 			// validation fields
 			password: '',
 			mobileNumber: '',
-			// defaultInactiveBtn: true,
 			errors: {
 				mobileNumber: true,
 				first_name: '',
@@ -48,7 +40,9 @@ export default class UserNew extends AbstractFormView{
 		userFormData.append("last_name", target.lastName.value);
 		userFormData.append("email", target.email.value);
 		userFormData.append("birthday", target.birthday.value);
-		userFormData.append("avatar", target.file.files[0]);
+		if (target.file.files[0]) {
+			userFormData.append("avatar", target.file.files[0]);
+		}
 		return userFormData;
 	}
 
@@ -67,8 +61,6 @@ export default class UserNew extends AbstractFormView{
 		event.preventDefault();
 		const { name, value } = event.target;
 		let errors = this.state.errors;
-		this.setState({errors, ['defaultInactiveBtn']: false});
-		console.log(event)
 		switch (name) {
 			case 'mobileNumber':
 				errors.mobileNumber =
