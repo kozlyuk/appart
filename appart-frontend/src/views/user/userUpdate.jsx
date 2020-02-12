@@ -68,7 +68,7 @@ export default class UserUpdate extends AbstractFormView {
 		switch (name) {
 			case 'mobileNumber':
 				errors.mobileNumber =
-					validPhoneRegex.test(value)
+					(validPhoneRegex.test(value) && value.length === 10)
 						? ''
 						: [<Text text="global.validateErrors.mobileNumber"/>];
 				break;

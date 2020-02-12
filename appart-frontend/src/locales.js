@@ -5,7 +5,7 @@ registerLang('en',{
 		loading: 'Loading...',
 		error: 'Error',
 		validateErrors: {
-			mobileNumber: "Please enter more then 10 numbers!",
+			mobileNumber: "Phone number should be 10 digits long!",
 			password: "Password must be 6 characters long!",
 			first_name: "The field cannot be empty!",
 			last_name: "The field cannot be empty!",
@@ -165,7 +165,7 @@ registerLang('ua', {
 		loading: 'Завантаження...',
 		error: 'Помилка',
 		validateErrors: {
-			mobileNumber: "Введіть будь ласка більше 10 символів",
+			mobileNumber: "Номер телефону повинен складатися з 10 символів!",
 			password: "Пароль повинен бути довшим за 6 символів!",
 			first_name: "Поле не може бути пустим",
 			last_name: "Поле не може бути пустим",
