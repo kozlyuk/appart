@@ -6,11 +6,16 @@ registerLang('en',{
 		error: 'Error',
 		validateErrors: {
 			emptyField: "The field can not be empty!",
+			incorrectNumber: "Please enter the correct quantity!",
 			mobileNumber: "Phone number should be 10 digits long!",
 			password: "Password must be 6 characters long!",
 			first_name: "The field cannot be empty!",
 			last_name: "The field cannot be empty!",
+			house: "The field cannot be empty!",
 			email: "Email is invalid!",
+			houseApartmentsCount: "Please enter the correct quantity!",
+			apartmentNumber: "Please enter the correct number!",
+			apartmentArea: "The area should be different from 0!"
 		}
 	},
 	sidebar: {
@@ -167,12 +172,16 @@ registerLang('ua', {
 		error: 'Помилка',
 		validateErrors: {
 			emptyField: "Поле не може бути пустим!",
+			incorrectNumber: "Вкажіть вірну кількість!",
 			mobileNumber: "Номер телефону повинен складатися з 10 символів!",
 			password: "Пароль повинен бути довшим за 6 символів!",
 			first_name: "Поле не може бути пустим!",
 			last_name: "Поле не може бути пустим!",
+			house: "Поле не може бути пустим!",
 			email: "Введіть вірний формат електронної пошти!",
-			houseApartmentsCount: "Вкажіть вірну кількість!"
+			houseApartmentsCount: "Вкажіть вірну кількість!",
+			apartmentNumber: "Вкажіть корректний номер!",
+			apartmentArea: "Площа має бути відмінною від 0!"
 		}
 	},
 	sidebar: {

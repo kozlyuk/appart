@@ -42,9 +42,9 @@ export default class ApartmentList extends AbstractListView {
                 {this.state.data.map((apartment) => (
                     <tr align="center">
                         <td width="2%">{apartment.number}</td>
-                        <td>{apartment.house}</td>
+                        <td>{apartment.house.name}</td>
                         <td>{apartment.area}</td>
-                        <td>{apartment.resident}</td>
+                        <td>{apartment.resident.first_name} {apartment.resident.last_name}</td>
                         <td width="15%">
                             <Link to={`apartment/${apartment.pk}/edit`}>
                                 <Badge color="warning" className="mr-1">
