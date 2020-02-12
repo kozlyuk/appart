@@ -14,7 +14,7 @@ class HouseNameSerializer(serializers.ModelSerializer):
         ]
 
 
-class ApartmentSerializer(serializers.HyperlinkedModelSerializer):
+class ApartmentSerializer(serializers.ModelSerializer):
     house = HouseNameSerializer()
     resident = UserNameSerializer()
 
