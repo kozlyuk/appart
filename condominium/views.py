@@ -76,12 +76,6 @@ class HouseCreateView(CreateView):
         context['text_submit'] = _('Add')
         return context
 
-    def form_valid(self, form):
-        house_obj = form.save()
-        for number in range(house_obj.apartments_count):
-            Apartment.objects.create(house=house_obj, number=number+1)
-        return redirect(self.success_url)
-
 
 class HouseDetailView(DetailView):
     model = House
@@ -91,6 +85,7 @@ class HouseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
 
 class HouseUpdateView(UpdateView):
     model = House

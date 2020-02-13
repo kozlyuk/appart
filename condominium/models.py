@@ -5,6 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.urls import reverse
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from condominium.services import bulk_create_apartments
 
 class Company(models.Model):
     """ Model contains managerial companies """
@@ -58,6 +61,10 @@ class House(models.Model):
 
     def get_update_url(self):
         return reverse("condominium_House_update", args=(self.pk,))
+
+@receiver(post_save, sender=House, dispatch_uid="bulk_create_apartments")
+def create_apartments(sender, instance, **kwargs):
+    bulk_create_apartments(instance)
 
 
 class Apartment(models.Model):
