@@ -63,8 +63,9 @@ class House(models.Model):
         return reverse("condominium_House_update", args=(self.pk,))
 
 @receiver(post_save, sender=House, dispatch_uid="bulk_create_apartments")
-def create_apartments(sender, instance, **kwargs):
-    bulk_create_apartments(instance)
+def create_apartments(sender, instance, created, **kwargs):
+    if created:
+        bulk_create_apartments(instance)
 
 
 class Apartment(models.Model):
