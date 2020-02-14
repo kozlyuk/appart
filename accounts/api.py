@@ -1,4 +1,5 @@
 import re
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import viewsets, views, status
 from rest_framework.response import Response
 
@@ -30,11 +31,18 @@ class GetByNumber(views.APIView):
     """
 
     def get(self, request, mobile_number):
-        message = "Mobile number must contain 10 digits"
+        # check if number is valid
+        message = _("Mobile number must contain 10 digits")
         if not re.match(r'^\d{10}$', mobile_number):
+            # except return status.HTTP_404_NOT_FOUND
             return Response(message, status=status.HTTP_404_NOT_FOUND)
-        user, created = User.objects.get_or_create(mobile_number=mobile_number, defaults={'is_staff': False})
-        serializer = UserSerializer(user)
-        if created:
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # try if Resident with such email exists
+        try:
+            user = User.objects.get(mobile_number=mobile_number)
+            serializer = UserSerializer(user)
+        # except return status.HTTP_404_NOT_FOUND
+        except User.DoesNotExist:
+            message = _("Resident with such email doesn`t exists")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        # return user serialized data
         return Response(serializer.data, status=status.HTTP_200_OK)
