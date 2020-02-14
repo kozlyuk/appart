@@ -143,8 +143,7 @@ export default class HouseNew extends AbstractFormView{
 								<Text text="buttons.returnBtn"/>
 							</Button>
 						</Link>
-						{this.state.description ||
-						this.state.errors.address ||
+						{this.state.errors.address ||
 						this.state.errors.name ||
 						this.state.errors.photo ||
 						this.state.errors.apartmentCount ?

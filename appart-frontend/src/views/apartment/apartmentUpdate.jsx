@@ -10,6 +10,7 @@ import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
+import ApartmentPhoneChecker from "./apartmentPhoneChecker";
 
 export default class ApartmentUpdate extends AbstractFormView {
 
@@ -26,7 +27,8 @@ export default class ApartmentUpdate extends AbstractFormView {
 				description: '',
 				area: '',
 				resident_count: '',
-			}
+			},
+			houseWithResident: false,
 		};
 		this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
 		this.requestType = "put"
@@ -156,6 +158,10 @@ export default class ApartmentUpdate extends AbstractFormView {
 								defaultValue={this.state.data.description}
 							/>
 						</FormGroup>
+
+						<ApartmentPhoneChecker
+							data={this.state.data}
+						/>
 
 						<Link to="/apartment">
 							<Button color="warning">

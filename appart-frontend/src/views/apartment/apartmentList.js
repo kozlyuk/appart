@@ -44,7 +44,9 @@ export default class ApartmentList extends AbstractListView {
                         <td width="2%">{apartment.number}</td>
                         <td>{apartment.house.name}</td>
                         <td>{apartment.area}</td>
-                        <td>{apartment.resident.first_name} {apartment.resident.last_name}</td>
+                        {apartment.resident ? <td>{apartment.resident.first_name} {apartment.resident.last_name}</td>
+                          : <td><Text text="apartmentList.emptyApartment"/></td> }
+
                         <td width="15%">
                             <Link to={`apartment/${apartment.pk}/edit`}>
                                 <Badge color="warning" className="mr-1">

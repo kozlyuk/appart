@@ -88,6 +88,7 @@ registerLang('en',{
 	},
 	apartmentList: {
 		addBtn: "Add new apartment",
+		emptyApartment: "Apartment empty",
 		tableHeader: {
 			number: "Apartment number",
 			house: "House",
@@ -254,6 +255,7 @@ registerLang('ua', {
 	},
 	apartmentList: {
 		addBtn: "Додати апартаменти",
+		emptyApartment: "Житель відсутній",
 		tableHeader: {
 			number: "Номер апартаментів",
 			house: "Будинок",
