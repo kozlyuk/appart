@@ -5,13 +5,29 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React from "react"
-import {CardBody, CardImg, CardText, CardTitle, FormGroup, FormText, Input, Label} from "reactstrap";
+import React, {Fragment} from "react"
+import {
+	Alert,
+	CardBody,
+	CardImg,
+	CardText,
+	CardTitle, Col,
+	FormGroup,
+	FormText,
+	Input,
+	Label, Modal,
+	ModalBody, ModalFooter,
+	ModalHeader
+} from "reactstrap";
 import {Text} from "react-easy-i18n";
 import axios from "axios";
 import Auth from "../../auth/auth";
 import Button from "reactstrap/es/Button";
 import Card from "reactstrap/es/Card";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import {Link} from "react-router-dom";
+import UserCard from "../../components/Card/UserCard";
+import UserNew from "../user/userNew";
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
@@ -20,16 +36,35 @@ export default class ApartmentPhoneChecker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			checkMobileNumber: '',
 			mobileNumber: '',
 			responseData: '',
+			modal: false,
+			modal_backdrop: false,
+			modal_nested_parent: false,
+			modal_nested: false,
+			backdrop: true,
+			userDoesNotExist: '',
 			errors: {
 				mobileNumber: '',
 			}
 		};
 		this.user = new Auth();
 		this.checkByNumberUrl = process.env.REACT_APP_CHECK_BY_NUMBER_URL;
-		this.getUserById.bind(this)
+		this.getUserById.bind(this);
 	}
+
+	toggle = modalType => () => {
+		if (!modalType) {
+			return this.setState({
+				modal: !this.state.modal,
+			});
+		}
+
+		this.setState({
+			[`modal_${modalType}`]: !this.state[`modal_${modalType}`],
+		});
+	};
 
 	getUserById = (event) => {
 		event.preventDefault();
@@ -41,11 +76,18 @@ export default class ApartmentPhoneChecker extends React.Component {
 			}
 		}).then((response) => {
 			this.setState({
-				responseData: response.data
+				responseData: response.data,
+				userDoesNotExist: false
 			})
+			console.log(this)
 			console.log(response.data);
+		}).catch(()=> {
+			this.setState({
+				responseData: '',
+				userDoesNotExist: true
+			})
 		})
-	}
+	};
 
 	handleChange = (event) => {
 		event.preventDefault();
@@ -65,6 +107,33 @@ export default class ApartmentPhoneChecker extends React.Component {
 	};
 
 	render() {
+		let responseData;
+		if (this.state.responseData) {
+			responseData = (
+				<Card className="flex-row mt-2">
+					<CardImg
+						className="card-img-left"
+						src={process.env.REACT_APP_BACKEND_URL + this.state.responseData.avatar}
+						style={{ width: 'auto', height: 150 }}
+					/>
+					<CardBody>
+						<CardTitle>{this.state.responseData.first_name} {this.state.responseData.last_name}
+							<Link to={`/user/${this.state.responseData.pk}/edit`}><FaExternalLinkAlt className="ml-2"/></Link>
+						</CardTitle>
+						<CardText>
+							<p>email: <strong>{this.state.responseData.email}</strong></p>
+							<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
+						</CardText>
+					</CardBody>
+				</Card>
+			)
+		} else if (this.state.userDoesNotExist) {
+			responseData = (
+				<Alert className="mt-2" color="danger">
+					Користувач з номером {this.state.mobileNumber} відсутній в базі.
+				</Alert>
+			)
+		}
 
 		let buttonText = "Введіть номер телефону для перевірки корисутвача";
 		let ifButtonDisabled = true;
@@ -112,18 +181,34 @@ export default class ApartmentPhoneChecker extends React.Component {
 			);
 		} else {
 			return (
-				<FormGroup>
-					<Label for="phoneNumber">Введіть номер телефону жителя, щоб підв'язати його до апартаментів</Label>
-					{this.state.errors.mobileNumber.length > 0 &&
-					// error field
-					<FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-					<Input
-						type="tel"
-						maxLength="10"
-						name="phoneNumber"
-						onChange={this.handleChange}
-					/>
-				</FormGroup>
+				<Fragment>
+					<FormGroup>
+						<Label for="phoneNumber">Введіть номер телефону жителя, щоб підв'язати його до апартаментів</Label>
+						{this.state.errors.mobileNumber.length > 0 &&
+						// error field
+						<FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+						<div>
+							<Input
+								style={{width: "120px", display: "inline-block"}}
+								type="tel"
+								maxLength="10"
+								name="phoneNumber"
+								onChange={this.handleChange}
+							/>
+							{this.state.userDoesNotExist &&
+								<Button color="success" onClick={this.toggle()} style={{display: "inline-block", marginLeft: "10px"}}>Створити користувача</Button>
+							}
+							<Button onClick={this.getUserById} disabled={ifButtonDisabled} style={{display: "inline-block", marginLeft: "10px"}}>{buttonText}</Button>
+						</div>
+						{responseData}
+					</FormGroup>
+					<Modal
+						isOpen={this.state.modal}
+						toggle={this.toggle()}
+						className={this.props.className}>
+							<UserNew hasCloseBtn={this.toggle()} containerDisable/>
+					</Modal>
+				</Fragment>
 			);
 		}
 	}

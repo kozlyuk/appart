@@ -169,11 +169,17 @@ export default class UserNew extends AbstractFormView{
 							<FormText color="muted">
 							</FormText>
 						</FormGroup>
-						<Link to="/user">
-							<Button color="warning">
-								<Text text="buttons.returnBtn"/>
+						{ this.props.hasCloseBtn ?
+							<Button color="warning" onClick={this.props.hasCloseBtn}>
+								<Text text="buttons.closeBtn"/>
 							</Button>
-						</Link>
+						:
+							<Link to="/user">
+								<Button color="warning">
+									<Text text="buttons.returnBtn"/>
+								</Button>
+							</Link>
+						}
 						{ this.state.defaultInactiveBtn ||
 							this.state.errors.mobileNumber ||
 						  this.state.errors.first_name ||
@@ -195,11 +201,19 @@ export default class UserNew extends AbstractFormView{
 
 	render() {
 		return (
-			<Container>
-				<Card>
-					{this.content()}
-				</Card>
-			</Container>
+			<Fragment>
+			{this.props.containerDisable?
+						<Card>
+							{this.content()}
+						</Card>
+			:
+				<Container>
+					<Card>
+						{this.content()}
+					</Card>
+				</Container>
+			}
+			</Fragment>
 		);
 	}
 }

@@ -193,7 +193,7 @@ export default class UserUpdate extends AbstractFormView {
 						{/*</FormGroup>*/}
 						<Link to="/user">
 							<Button color="warning">
-								Return
+								<Text text="buttons.returnBtn"/>
 							</Button>
 						</Link>
 						{ this.state.defaultInactiveBtn ||

@@ -55,7 +55,7 @@ class Ajax {
                 if (this.status == 200) {
                     resolve(this.response);
                 } else {
-                    const error'en' = new Error(this.statusText);
+                    const error = new Error(this.statusText);
                     error.code = this.status;
                     reject(error);
                 }
@@ -89,7 +89,7 @@ function nullCheck (input) {
         return input;
     } else {
         return '';
-    };
-};
+    }
+}
 
 export {Ajax, Cookie, nullCheck}
