@@ -82,6 +82,8 @@ class Apartment(models.Model):
     area = models.PositiveSmallIntegerField(_('Area'), blank=True, null=True)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True, null=True)
     description = models.TextField(_('Description'), blank=True)
+    is_active = models.BooleanField(_('Is active'), default=True)
+    debt = models.DecimalField(_('Total debt'), max_digits=8, decimal_places=2, default=0)
 
     class Meta:
         unique_together = ('house', 'number')
