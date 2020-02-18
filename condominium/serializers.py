@@ -30,7 +30,10 @@ class ApartmentSerializer(serializers.ModelSerializer):
         return obj.house.name
 
     def get_resident_name(self, obj):
-        return f"{obj.resident.first_name} {obj.resident.last_name}"
+        if obj.resident:
+            return f"{obj.resident.first_name} {obj.resident.last_name}"
+        else:
+            return
 
 
 class HouseSerializer(serializers.ModelSerializer):
