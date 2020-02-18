@@ -31,24 +31,33 @@ import NewsUpdate from "./views/news/newsUpdate";
 import NewsDelete from "./views/news/newsDelete";
 import Auth from "./auth/auth"
 import axios from "axios"
+import DashboardPage from "./pages/DashboardPage";
+import AuthModalPage from "./pages/AuthModalPage";
+import DropdownPage from "./pages/DropdownPage";
+import ProgressPage from "./pages/ProgressPage";
+import ModalPage from "./pages/ModalPage";
+import FormPage from "./pages/FormPage";
+import InputGroupPage from "./pages/InputGroupPage";
+import ChartPage from "./pages/ChartPage";
+import ButtonGroupPage from "./pages/ButtonGroupPage";
 
 //TODO!!! add lazy imports
-const AlertPage = React.lazy(() => import('pages/AlertPage'));
-const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
-const BadgePage = React.lazy(() => import('pages/BadgePage'));
-const ButtonGroupPage = React.lazy(() => import('pages/ButtonGroupPage'));
-const ButtonPage = React.lazy(() => import('pages/ButtonPage'));
-const CardPage = React.lazy(() => import('pages/CardPage'));
-const ChartPage = React.lazy(() => import('pages/ChartPage'));
-const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
-const DropdownPage = React.lazy(() => import('pages/DropdownPage'));
-const FormPage = React.lazy(() => import('pages/FormPage'));
-const InputGroupPage = React.lazy(() => import('pages/InputGroupPage'));
-const ModalPage = React.lazy(() => import('pages/ModalPage'));
-const ProgressPage = React.lazy(() => import('pages/ProgressPage'));
-const TablePage = React.lazy(() => import('pages/TablePage'));
-const TypographyPage = React.lazy(() => import('pages/TypographyPage'));
-const WidgetPage = React.lazy(() => import('pages/WidgetPage'));
+// const AlertPage = React.lazy(() => import('./pages/AlertPage'));
+// const AuthModalPage = React.lazy(() => import('./pages/AuthModalPage'));
+// const BadgePage = React.lazy(() => import('./pages/BadgePage'));
+// const ButtonGroupPage = React.lazy(() => import('./pages/ButtonGroupPage'));
+// const ButtonPage = React.lazy(() => import('./pages/ButtonPage'));
+// const CardPage = React.lazy(() => import('./pages/CardPage'));
+// const ChartPage = React.lazy(() => import('./pages/ChartPage'));
+// const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+// const DropdownPage = React.lazy(() => import('./pages/DropdownPage'));
+// const FormPage = React.lazy(() => import('./pages/FormPage'));
+// const InputGroupPage = React.lazy(() => import('./pages/InputGroupPage'));
+// const ModalPage = React.lazy(() => import('./pages/ModalPage'));
+// const ProgressPage = React.lazy(() => import('./pages/ProgressPage'));
+// const TablePage = React.lazy(() => import('./pages/TablePage'));
+// const TypographyPage = React.lazy(() => import('./pages/TypographyPage'));
+// const WidgetPage = React.lazy(() => import('./pages/WidgetPage'));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -74,7 +83,7 @@ class App extends React.Component {
     })
       .then(
         (response) => {
-          console.log(response.status)
+          console.log(response.status);
           if (response.status >= 400) {
             this.setState({
               isAuthenticate: false,
