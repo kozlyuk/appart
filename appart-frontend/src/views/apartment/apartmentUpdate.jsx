@@ -104,7 +104,7 @@ export default class ApartmentUpdate extends AbstractFormView {
 								type="text"
 								name="house"
 								onChange={this.handleChange}
-								defaultValue={this.state.data.house.name}
+								defaultValue={this.state.data.house_name}
 							/>
 						</FormGroup>
 						<FormGroup>

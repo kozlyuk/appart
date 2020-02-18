@@ -35,7 +35,7 @@ export default class UserList extends AbstractListView {
 					<th><Text text="userList.tableHeader.avatar"/></th>
 					<th><Text text="userList.tableHeader.firstName"/></th>
 					<th><Text text="userList.tableHeader.lastName"/></th>
-					<th><Text text="userList.tableHeader.birthDate"/></th>
+					{/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
 					<th><Text text="userList.tableHeader.actions"/></th>
 				</tr>
 				</thead>
@@ -48,7 +48,7 @@ export default class UserList extends AbstractListView {
 						</td>
 						<td>{user.first_name}</td>
 						<td>{user.last_name}</td>
-						<td>{user.birth_date}</td>
+						{/*<td>{user.birth_date}</td>*/}
 						<td width="15%">
 							<Link to={`user/${user.pk}/edit`}>
 								<Badge color="warning" className="mr-1">

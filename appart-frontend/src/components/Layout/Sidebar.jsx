@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/312.png';
+import logo200Image from 'assets/img/logo/logo_200.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
@@ -73,7 +73,7 @@ const pageContents = [
 const navItems = [
   { to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard },
   { to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb },
-  { to: '/company', name: <Text text="sidebar.company"/>, exact: false, Icon: MdInsertChart },
+  // { to: '/company', name: <Text text="sidebar.company"/>, exact: false, Icon: MdInsertChart },
 ];
 
 const bem = bn.create('sidebar');

@@ -5,6 +5,7 @@ import {Text} from "react-easy-i18n";
 import {Link} from "react-router-dom";
 import Button from "reactstrap/es/Button";
 import Container from "reactstrap/es/Container";
+import ApartmentPhoneChecker from "./apartmentPhoneChecker";
 
 export default class ApartmentNew extends AbstractFormView{
 	constructor(props) {
