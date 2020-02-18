@@ -74,7 +74,7 @@ class Apartment(models.Model):
     #  Relationships
     house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
     resident = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Resident'),
-                                 null=True, on_delete=models.SET_NULL)
+                                 blank = True, null=True, on_delete=models.SET_NULL)
 
     #  Fields
     number = models.PositiveSmallIntegerField(_('Apartment Number'))
