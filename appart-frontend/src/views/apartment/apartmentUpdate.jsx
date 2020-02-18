@@ -20,13 +20,14 @@ export default class ApartmentUpdate extends AbstractFormView {
 			// validation fields
 			password: '',
 			mobileNumber: '',
+			residentData: '',
 			errors: {
 				house: '',
 				resident: '',
 				number: '',
 				description: '',
-				area: '',
-				resident_count: '',
+				area: true,
+				resident_count: true,
 			},
 			houseWithResident: false,
 		};
@@ -37,13 +38,26 @@ export default class ApartmentUpdate extends AbstractFormView {
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
-		userFormData.append("house", target.house.value);
-		userFormData.append("resident", target.resident.value);
+		// userFormData.append("house.name", target.house.value);
 		userFormData.append("number", target.number.value);
 		userFormData.append("description", target.description.value);
 		userFormData.append("area", target.area.value);
-		userFormData.append("resident_count", target.resident_count.value);
+		userFormData.append("resident_count", target.residentCount.value);
+		if (this.state.residentData) {
+			userFormData.append("resident", this.state.residentData.pk);
+		}
 		return userFormData;
+	}
+
+	getResidentData = (value) => {
+		this.setState({
+			residentData: {
+				pk: value["pk"],
+				first_name: value["first_name"],
+				last_name: value["last_name"],
+				mobile_number: value["mobile_number"]
+			}
+		})
 	}
 
 	/*
@@ -103,6 +117,7 @@ export default class ApartmentUpdate extends AbstractFormView {
 							<Input
 								type="text"
 								name="house"
+								readOnly
 								onChange={this.handleChange}
 								defaultValue={this.state.data.house.name}
 							/>
@@ -161,6 +176,7 @@ export default class ApartmentUpdate extends AbstractFormView {
 
 						<ApartmentPhoneChecker
 							data={this.state.data}
+							getResidentData={this.getResidentData}
 						/>
 
 						<Link to="/apartment">

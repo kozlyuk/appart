@@ -45,6 +45,7 @@ export default class ApartmentPhoneChecker extends React.Component {
 			modal_nested: false,
 			backdrop: true,
 			userDoesNotExist: '',
+			addedUserToForm: false,
 			errors: {
 				mobileNumber: '',
 			}
@@ -79,14 +80,17 @@ export default class ApartmentPhoneChecker extends React.Component {
 				responseData: response.data,
 				userDoesNotExist: false
 			})
-			console.log(this)
-			console.log(response.data);
 		}).catch(()=> {
 			this.setState({
 				responseData: '',
 				userDoesNotExist: true
 			})
 		})
+	};
+
+	addUserPkToForm = (event) => {
+		event.preventDefault();
+		this.props.getResidentData(this.state.responseData)
 	};
 
 	handleChange = (event) => {
@@ -110,22 +114,30 @@ export default class ApartmentPhoneChecker extends React.Component {
 		let responseData;
 		if (this.state.responseData) {
 			responseData = (
-				<Card className="flex-row mt-2">
-					<CardImg
-						className="card-img-left"
-						src={process.env.REACT_APP_BACKEND_URL + this.state.responseData.avatar}
-						style={{ width: 'auto', height: 150 }}
-					/>
-					<CardBody>
-						<CardTitle>{this.state.responseData.first_name} {this.state.responseData.last_name}
-							<Link to={`/user/${this.state.responseData.pk}/edit`}><FaExternalLinkAlt className="ml-2"/></Link>
-						</CardTitle>
-						<CardText>
-							<p>email: <strong>{this.state.responseData.email}</strong></p>
-							<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
-						</CardText>
-					</CardBody>
-				</Card>
+				<Fragment>
+					<Card className="flex-row mt-2">
+						<CardImg
+							className="card-img-left"
+							src={process.env.REACT_APP_BACKEND_URL + this.state.responseData.avatar}
+							style={{ width: 'auto', height: 150 }}
+						/>
+						<CardBody>
+							<CardTitle>{this.state.responseData.first_name} {this.state.responseData.last_name}
+								<Link to={`/user/${this.state.responseData.pk}/edit`}><FaExternalLinkAlt className="ml-2"/></Link>
+							</CardTitle>
+							<CardText>
+								<p>email: <strong>{this.state.responseData.email}</strong></p>
+								<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
+								<Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
+							</CardText>
+						</CardBody>
+					</Card>
+					{this.state.addedUserToForm &&
+						<Alert className="mt-2" color="success">
+							При збереженні форми, користувача з номером {this.state.mobileNumber} буде додано до апартаментів.
+						</Alert>
+					}
+				</Fragment>
 			)
 		} else if (this.state.userDoesNotExist) {
 			responseData = (
