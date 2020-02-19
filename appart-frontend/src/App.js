@@ -61,10 +61,6 @@ import { createBrowserHistory } from "history";
 // const TypographyPage = React.lazy(() => import('./pages/TypographyPage'));
 // const WidgetPage = React.lazy(() => import('./pages/WidgetPage'));
 
-const getBasename = () => {
-  return `/${process.env.PUBLIC_URL.split('/').pop()}`;
-};
-
 const history = createBrowserHistory();
 
 
@@ -110,7 +106,7 @@ class App extends React.Component {
   render() {
     if (this.state.isAuthenticate) {
     return (
-      <BrowserRouter basename={getBasename()}>
+      <BrowserRouter>
         <GAListener>
           <Switch>
                 <LayoutRoute
@@ -181,7 +177,7 @@ class App extends React.Component {
       </BrowserRouter>
     );} else {
       return (
-        <BrowserRouter basename={getBasename()}>
+        <BrowserRouter>
           <GAListener>
             <Switch>
               <LayoutRoute
