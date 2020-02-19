@@ -110,7 +110,7 @@ class App extends React.Component {
   render() {
     if (this.state.isAuthenticate) {
     return (
-      <BrowserRouter history={history} basename={getBasename()}>
+      <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
                 <LayoutRoute
