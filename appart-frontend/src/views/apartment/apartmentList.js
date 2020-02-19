@@ -33,7 +33,6 @@ export default class ApartmentList extends AbstractListView {
                 <tr align="center">
                     <th><Text text="apartmentList.tableHeader.number"/></th>
                     <th><Text text="apartmentList.tableHeader.house"/></th>
-                    <th><Text text="apartmentList.tableHeader.area"/></th>
                     <th><Text text="apartmentList.tableHeader.resident"/></th>
                     <th><Text text="apartmentList.tableHeader.actions"/></th>
                 </tr>
@@ -42,8 +41,7 @@ export default class ApartmentList extends AbstractListView {
                 {this.state.data.map((apartment) => (
                     <tr align="center">
                         <td width="2%">{apartment.number}</td>
-                        <td>{apartment.house.name}</td>
-                        <td>{apartment.area}</td>
+                        <td>{apartment.house_name}</td>
                         {apartment.resident ? <td>{apartment.resident.first_name} {apartment.resident.last_name}</td>
                           : <td><Text text="apartmentList.emptyApartment"/></td> }
 
