@@ -174,7 +174,7 @@ class Sidebar extends React.Component {
               <BSNavLink className={bem.e('nav-item-collapse')}>
                 <div className="d-flex">
                   <MdExtension className={bem.e('nav-item-icon')} />
-                  <span className="align-self-start text-uppercase"><Text text="sidebar.notice"/></span>
+                  <span className="">Contents</span>
                 </div>
                 <MdKeyboardArrowDown
                     className={bem.e('nav-item-icon')}

@@ -5,6 +5,7 @@ import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
+import Page from "../../components/Page";
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
@@ -230,11 +231,17 @@ export default class UserUpdate extends AbstractFormView {
 		} else {
 
 			return (
-				<Container>
-					<Card>
-						{this.content()}
-					</Card>
-				</Container>
+				<Page
+					breadcrumbs={[{name: <Text text="sidebar.user"/>, active: false},
+						{name: this.state.data.first_name + ' ' + this.state.data.last_name, active: true}]}
+					className="TablePage"
+				>
+					<Container>
+						<Card>
+							{this.content()}
+						</Card>
+					</Container>
+				</Page>
 			);
 		}
 	}

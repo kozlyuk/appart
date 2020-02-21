@@ -41,6 +41,8 @@ import InputGroupPage from "./pages/InputGroupPage";
 import ChartPage from "./pages/ChartPage";
 import ButtonGroupPage from "./pages/ButtonGroupPage";
 
+import { createBrowserHistory } from "history";
+
 //TODO!!! add lazy imports
 // const AlertPage = React.lazy(() => import('./pages/AlertPage'));
 // const AuthModalPage = React.lazy(() => import('./pages/AuthModalPage'));
@@ -59,10 +61,7 @@ import ButtonGroupPage from "./pages/ButtonGroupPage";
 // const TypographyPage = React.lazy(() => import('./pages/TypographyPage'));
 // const WidgetPage = React.lazy(() => import('./pages/WidgetPage'));
 
-const getBasename = () => {
-  return `/${process.env.PUBLIC_URL.split('/').pop()}`;
-};
-
+const history = createBrowserHistory();
 
 
 class App extends React.Component {
@@ -73,6 +72,7 @@ class App extends React.Component {
       user: null
     };
     this.user = new Auth();
+    const history = createBrowserHistory();
   }
 
   componentDidMount() {
@@ -106,7 +106,7 @@ class App extends React.Component {
   render() {
     if (this.state.isAuthenticate) {
     return (
-      <BrowserRouter basename={getBasename()}>
+      <BrowserRouter>
         <GAListener>
           <Switch>
                 <LayoutRoute
@@ -177,7 +177,7 @@ class App extends React.Component {
       </BrowserRouter>
     );} else {
       return (
-        <BrowserRouter basename={getBasename()}>
+        <BrowserRouter>
           <GAListener>
             <Switch>
               <LayoutRoute

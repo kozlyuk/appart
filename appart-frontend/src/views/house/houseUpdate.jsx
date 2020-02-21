@@ -10,6 +10,7 @@ import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
+import Page from "../../components/Page";
 
 export default class HouseUpdate extends AbstractFormView {
 
@@ -182,11 +183,17 @@ export default class HouseUpdate extends AbstractFormView {
 		} else {
 
 			return (
-				<Container>
-					<Card>
-						{this.content()}
-					</Card>
-				</Container>
+				<Page
+					breadcrumbs={[{name: <Text text="sidebar.house"/>, active: false},
+						{name: this.state.data.name, active: true}]}
+					className="TablePage"
+				>
+					<Container>
+						<Card>
+							{this.content()}
+						</Card>
+					</Container>
+				</Page>
 			);
 		}
 	}

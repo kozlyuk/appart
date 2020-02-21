@@ -4,7 +4,6 @@ import Notifications from 'components/Notifications';
 import SearchInput from 'components/SearchInput';
 import { notificationsData } from 'demos/header';
 import withBadge from 'hocs/withBadge';
-import {setCurrentLocale} from 'react-easy-i18n';
 import React from 'react';
 import {
   MdClearAll,
@@ -43,7 +42,7 @@ const MdNotificationsActiveWithBadge = withBadge({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  children: <small>1</small>,
+  children: <small>5</small>,
 })(MdNotificationsActive);
 
 class Header extends React.Component {
@@ -88,8 +87,6 @@ class Header extends React.Component {
         </Nav>
         <Nav navbar>
           <SearchInput />
-          {/*<button onClick={()=>{setCurrentLocale('ua')}}>ua</button>*/}
-          {/*<button onClick={()=>{setCurrentLocale('en')}}>en</button>*/}
         </Nav>
 
         <Nav navbar className={bem.e('nav-right')}>

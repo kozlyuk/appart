@@ -21,13 +21,12 @@ import {
 } from "reactstrap";
 import {Text} from "react-easy-i18n";
 import axios from "axios";
-import Auth from "../../auth/auth";
+import Auth from "../auth/auth";
 import Button from "reactstrap/es/Button";
 import Card from "reactstrap/es/Card";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import {Link} from "react-router-dom";
-import UserCard from "../../components/Card/UserCard";
-import UserNew from "../user/userNew";
+import UserNew from "../views/user/userNew";
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
