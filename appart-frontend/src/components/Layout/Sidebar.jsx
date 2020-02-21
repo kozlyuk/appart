@@ -167,7 +167,7 @@ class Sidebar extends React.Component {
               ))}
             </Collapse>
 
-            <NavItem
+            {/* <NavItem
                 className={bem.e('nav-item')}
                 onClick={this.handleClick('ComponentNotice')}
             >
@@ -188,8 +188,8 @@ class Sidebar extends React.Component {
                     }}
                 />
               </BSNavLink>
-            </NavItem>
-            <Collapse isOpen={this.state.isOpenComponentNotice}>
+            </NavItem> */}
+            {/* <Collapse isOpen={this.state.isOpenComponentNotice}>
               {noticeComponents.map(({ to, name, exact, Icon }, index) => (
                   <NavItem key={index} className={bem.e('nav-item')}>
                     <BSNavLink
@@ -205,7 +205,7 @@ class Sidebar extends React.Component {
                     </BSNavLink>
                   </NavItem>
               ))}
-            </Collapse>
+            </Collapse> */}
 
             {/*<NavItem*/}
             {/*  className={bem.e('nav-item')}*/}
