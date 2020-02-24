@@ -6,11 +6,13 @@ import {Link} from "react-router-dom";
 import Button from "reactstrap/es/Button";
 import Container from "reactstrap/es/Container";
 import Page from "../../components/Page";
+import ApartmentPhoneChecker from "../../utils/apartmentPhoneChecker";
 
 export default class ApartmentNew extends AbstractFormView{
 	constructor(props) {
 		super(props);
 		this.state = {
+			resident: '',
 			errors: {
 				house: '',
 				resident: '',
@@ -39,6 +41,12 @@ export default class ApartmentNew extends AbstractFormView{
 
 	handleSubmit(){
 		console.log("new apartment")
+	}
+
+	addResidentToState(id) {
+		this.setState({
+			resident: id
+		})
 	}
 
 	/*
@@ -136,6 +144,10 @@ export default class ApartmentNew extends AbstractFormView{
 								onChange={this.handleChange}
 							/>
 						</FormGroup>
+
+						<ApartmentPhoneChecker
+							callback={this.addResidentToState}
+						/>
 
 						<Link to="/apartment">
 							<Button color="warning">
