@@ -21,6 +21,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "house_name",
             "resident",
             "resident_name",
+            "resident_phone",
             "number",
             "description",
             "area",
