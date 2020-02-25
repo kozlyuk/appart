@@ -11,6 +11,7 @@ from accounts.serializers import UserSerializer
 class ApartmentSerializer(serializers.ModelSerializer):
     house_name = serializers.SerializerMethodField()
     resident_name = serializers.SerializerMethodField()
+    resident_phone = serializers.SerializerMethodField()
 
     class Meta:
         model = Apartment
@@ -32,8 +33,10 @@ class ApartmentSerializer(serializers.ModelSerializer):
     def get_resident_name(self, obj):
         if obj.resident:
             return f"{obj.resident.first_name} {obj.resident.last_name}"
-        else:
-            return
+
+    def get_resident_phone(self, obj):
+        if obj.resident:
+            return obj.resident.mobile_number
 
 
 class HouseSerializer(serializers.ModelSerializer):
