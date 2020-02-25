@@ -1,6 +1,6 @@
 import React, {Fragment} from "react"
 import AbstractFormView from "../../generics/formViews/abstractFormView";
-import {Card, CardBody, CardHeader, Form, FormGroup, FormText, Input, Label} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col, Form, FormGroup, FormText, Input, Label, Row} from "reactstrap";
 import {Text} from "react-easy-i18n";
 import {Link} from "react-router-dom";
 import Button from "reactstrap/es/Button";
@@ -13,6 +13,10 @@ export default class ApartmentNew extends AbstractFormView{
 		super(props);
 		this.state = {
 			resident: '',
+			residentIsPinned: '',
+			residentIdIsPinned: '',
+			addedUserToForm: '',
+			enableNativeMobileInput: true,
 			errors: {
 				house: '',
 				resident: '',
@@ -30,12 +34,14 @@ export default class ApartmentNew extends AbstractFormView{
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
-		userFormData.append("house", target.house.value);
-		// userFormData.append("resident", target.resident.value);
+		userFormData.append("house", this.state.data.house);
 		userFormData.append("number", target.apartmentNumber.value);
 		userFormData.append("description", target.description.value);
 		userFormData.append("area", target.area.value);
-		userFormData.append("resident_count", target.resident_count.value);
+		userFormData.append("residents_count", target.residentCount.value);
+		if (this.state.residentIsPinned) {
+			userFormData.append("resident", this.state.residentIdIsPinned);
+		}
 		return userFormData;
 	}
 
@@ -48,6 +54,15 @@ export default class ApartmentNew extends AbstractFormView{
 			resident: id
 		})
 	}
+
+	addResidentToAppartment= (resident_phone, id) => {
+		this.setState({
+			residentIsPinned: resident_phone,
+			residentIdIsPinned: id,
+			addedUserToForm: resident_phone,
+			enableNativeMobileInput: false,
+		})
+	};
 
 	/*
 	 * Form field validation
@@ -97,6 +112,22 @@ export default class ApartmentNew extends AbstractFormView{
 								onChange={this.handleChange}
 							/>
 						</FormGroup>
+						{this.state.residentIsPinned &&
+						<FormGroup>
+							<Label for="resident"><Text text="apartmentForm.resident"/></Label>
+							<Input
+								type="tel"
+								name="resident"
+								readOnly
+								defaultValue={this.state.residentIsPinned}
+							/>
+						</FormGroup>
+						}
+						{this.state.addedUserToForm &&
+						<Alert className="mt-2" color="success">
+							При збереженні форми, користувача з номером {this.state.residentIsPinned} буде додано до апартаментів.
+						</Alert>
+						}
 						<FormGroup>
 							<Label for="number"><Text text="apartmentForm.number"/></Label>
 							{this.state.errors.number.length > 0 &&
@@ -145,10 +176,6 @@ export default class ApartmentNew extends AbstractFormView{
 							/>
 						</FormGroup>
 
-						<ApartmentPhoneChecker
-							callback={this.addResidentToState}
-						/>
-
 						<Link to="/apartment">
 							<Button color="warning">
 								<Text text="buttons.returnBtn"/>
@@ -162,7 +189,9 @@ export default class ApartmentNew extends AbstractFormView{
 						this.state.errors.resident_count ?
 							<Button disabled className="float-right">
 								<Text text="buttons.submitBtn"/>
-							</Button>:<Button className="float-right" type="submit">
+							</Button>
+							:
+							<Button className="float-right" type="submit">
 								<Text text="buttons.submitBtn"/>
 							</Button>
 						}
@@ -179,11 +208,27 @@ export default class ApartmentNew extends AbstractFormView{
 					{name: <Text text="apartmentForm.newApartment.title" />, active: true}]}
 				className="TablePage"
 			>
-				<Container>
-					<Card>
-						{this.content()}
-					</Card>
-				</Container>
+				<Row>
+					<Col xl={7}>
+						<Card>
+							{this.content()}
+						</Card>
+					</Col>
+					<Col xl={5}>
+						<Card>
+							<CardBody>
+								<Form>
+									<FormGroup>
+										<ApartmentPhoneChecker
+											data={this.state.data}
+											addResidentToAppartment={this.addResidentToAppartment}
+										/>
+									</FormGroup>
+								</Form>
+							</CardBody>
+						</Card>
+					</Col>
+				</Row>
 			</Page>
 		);
 	}

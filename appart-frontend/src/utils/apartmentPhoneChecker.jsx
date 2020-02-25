@@ -87,7 +87,7 @@ export default class ApartmentPhoneChecker extends React.Component {
 
 	addUserPkToForm = (event) => {
 		event.preventDefault();
-		this.props.getResidentData(this.state.responseData)
+		this.props.addResidentToAppartment(this.state.responseData.mobile_number, this.state.responseData.pk)
 	};
 
 	handleChange = (event) => {
@@ -129,11 +129,6 @@ export default class ApartmentPhoneChecker extends React.Component {
 							</CardText>
 						</CardBody>
 					</Card>
-					{this.state.addedUserToForm &&
-						<Alert className="mt-2" color="success">
-							При збереженні форми, користувача з номером {this.state.mobileNumber} буде додано до апартаментів.
-						</Alert>
-					}
 				</Fragment>
 			)
 		} else if (this.state.userDoesNotExist) {
@@ -154,7 +149,14 @@ export default class ApartmentPhoneChecker extends React.Component {
 						style={{ width: 'auto', height: 150 }}
 					/>
 					<CardBody>
-						<CardTitle>{this.props.resident_name}</CardTitle>
+						<CardTitle>{this.state.responseData.first_name} {this.state.responseData.last_name}
+							<Link to={`/user/${this.state.responseData.pk}/edit`}><FaExternalLinkAlt className="ml-2"/></Link>
+						</CardTitle>
+						<CardText>
+							<p>email: <strong>{this.state.responseData.email}</strong></p>
+							<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
+							<Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
+						</CardText>
 					</CardBody>
 				</Card>
 			)
@@ -164,19 +166,11 @@ export default class ApartmentPhoneChecker extends React.Component {
 					Користувач з номером {this.state.mobileNumber} відсутній в базі.
 				</Alert>
 			)
-		} else if (this.props.data) {
-			userInfo = (
-				<Card className="flex-row mt-2">
-					<CardBody>
-						<CardTitle>Житель: {this.props.data.resident_name}</CardTitle>
-					</CardBody>
-				</Card>
-			)
 		} else {
 			userInfo = ("")
 		}
 
-		let buttonText = "Введіть номер телефону для перевірки корисутвача";
+		let buttonText = "Введіть номер телефону для перевірки користувача";
 		let ifButtonDisabled = true;
 		if (this.state.errors.mobileNumber.length === 0) {
 			buttonText = "Перевірити наявність в базі";
@@ -209,7 +203,7 @@ export default class ApartmentPhoneChecker extends React.Component {
 					isOpen={this.state.modal}
 					toggle={this.toggle()}
 					className={this.props.className}>
-					<UserNew hasCloseBtn={this.toggle()} containerDisable/>
+					<UserNew mobileNumber={this.state.mobileNumber} hasCloseBtn={this.toggle()} containerDisable/>
 				</Modal>
 			</Fragment>
 		);
@@ -244,7 +238,7 @@ export default class ApartmentPhoneChecker extends React.Component {
 						isOpen={this.state.modal}
 						toggle={this.toggle()}
 						className={this.props.className}>
-						<UserNew hasCloseBtn={this.toggle()} containerDisable/>
+						<UserNew mobileNumber={this.state.mobileNumber} hasCloseBtn={this.toggle()} containerDisable/>
 					</Modal>
 			</Fragment>
 			);

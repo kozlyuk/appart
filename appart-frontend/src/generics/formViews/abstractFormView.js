@@ -60,6 +60,10 @@ export default class AbstractFormView extends React.Component {
 				});
 	};
 
+	update() {
+		return void 0
+	}
+
 	componentDidMount() {
 		if (this.dataUrl) {
 			this.loadData(this.dataUrl + this.props.match.params.id + "/");
@@ -74,5 +78,6 @@ export default class AbstractFormView extends React.Component {
 				url: this.postUrl
 			})
 		}
+		this.update()
 	}
 };

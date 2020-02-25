@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
 import {
+	Alert,
 	Card,
 	CardBody,
-	CardHeader,
-	Form, FormGroup, FormText, Input, Label
+	CardHeader, Col,
+	Form, FormGroup, FormText, Input, Label, Row
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
 import Container from "reactstrap/es/Container";
@@ -22,30 +23,35 @@ export default class ApartmentUpdate extends AbstractFormView {
 			password: '',
 			mobileNumber: '',
 			residentData: '',
+			residentIsPinned: '',
+			residentIdIsPinned: '',
+			addedUserToForm: '',
+			enableNativeMobileInput: true,
 			errors: {
 				house: '',
 				resident: '',
 				number: '',
 				description: '',
-				area: true,
+				area: '',
 				resident_count: true,
 			},
 			houseWithResident: false,
 		};
 		this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
-		this.requestType = "put"
+		this.requestType = "put";
+		this.addResidentToAppartment.bind(this)
 	}
 
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
-		// userFormData.append("house.name", target.house.value);
+		userFormData.append("house", this.state.data.house);
 		userFormData.append("number", target.number.value);
 		userFormData.append("description", target.description.value);
 		userFormData.append("area", target.area.value);
-		userFormData.append("resident_count", target.residentCount.value);
-		if (this.state.residentData) {
-			userFormData.append("resident", this.state.residentData.pk);
+		userFormData.append("residents_count", target.residentCount.value);
+		if (this.state.residentIsPinned) {
+			userFormData.append("resident", this.state.residentIdIsPinned);
 		}
 		return userFormData;
 	}
@@ -58,6 +64,15 @@ export default class ApartmentUpdate extends AbstractFormView {
 				last_name: value["last_name"],
 				mobile_number: value["mobile_number"]
 			}
+		})
+	};
+
+	addResidentToAppartment= (resident_phone, id) => {
+		this.setState({
+			residentIsPinned: resident_phone,
+			residentIdIsPinned: id,
+			addedUserToForm: resident_phone,
+			enableNativeMobileInput: false,
 		})
 	}
 
@@ -109,7 +124,7 @@ export default class ApartmentUpdate extends AbstractFormView {
 			<Fragment>
 				<CardHeader><Text text="apartmentForm.title" /> №{this.state.data.number}</CardHeader>
 				<CardBody>
-					<Form onSubmit={this.handleSubmit}>
+					<Form id="apartmentForm" onSubmit={this.handleSubmit}>
 						<FormGroup>
 							<Label for="house"><Text text="apartmentForm.house"/></Label>
 							{this.state.errors.house.length > 0 &&
@@ -123,6 +138,33 @@ export default class ApartmentUpdate extends AbstractFormView {
 								defaultValue={this.state.data.house_name}
 							/>
 						</FormGroup>
+						{this.state.residentIsPinned &&
+						<FormGroup>
+							<Label for="resident"><Text text="apartmentForm.resident"/></Label>
+							<Input
+								type="tel"
+								name="resident"
+								readOnly
+								defaultValue={this.state.residentIsPinned}
+							/>
+						</FormGroup>
+						}
+						{this.state.enableNativeMobileInput &&
+						<FormGroup>
+							<Label for="resident"><Text text="apartmentForm.resident"/></Label>
+							<Input
+								type="tel"
+								name="resident"
+								readOnly
+								defaultValue={this.state.data.resident_phone}
+							/>
+						</FormGroup>
+						}
+						{this.state.addedUserToForm &&
+						<Alert className="mt-2" color="success">
+							При збереженні форми, користувача з номером {this.state.residentIsPinned} буде додано до апартаментів.
+						</Alert>
+						}
 						<FormGroup>
 							<Label for="number"><Text text="apartmentForm.number"/></Label>
 							{this.state.errors.number.length > 0 &&
@@ -175,11 +217,6 @@ export default class ApartmentUpdate extends AbstractFormView {
 							/>
 						</FormGroup>
 
-						<ApartmentPhoneChecker
-							data={this.state.data}
-							getResidentData={this.getResidentData}
-						/>
-
 						<Link to="/apartment">
 							<Button color="warning">
 								<Text text="buttons.returnBtn"/>
@@ -223,11 +260,27 @@ export default class ApartmentUpdate extends AbstractFormView {
 						{name: this.state.data.pk, active: true}]}
 					className="TablePage"
 				>
-					<Container>
-						<Card>
-							{this.content()}
-						</Card>
-					</Container>
+					<Row>
+						<Col xl={7}>
+							<Card>
+								{this.content()}
+							</Card>
+						</Col>
+						<Col xl={5}>
+							<Card>
+								<CardBody>
+									<Form>
+										<FormGroup>
+											<ApartmentPhoneChecker
+												data={this.state.data}
+												addResidentToAppartment={this.addResidentToAppartment}
+											/>
+										</FormGroup>
+									</Form>
+								</CardBody>
+							</Card>
+						</Col>
+					</Row>
 				</Page>
 			);
 		}
