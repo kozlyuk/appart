@@ -100,23 +100,54 @@ export default class UserNew extends AbstractFormView{
 		this.setState({errors, [name]: value});
 	};
 
+	update() {
+		if (this.props.mobileNumber) {
+			this.setState({
+				mobileNumber: this.props.mobileNumber,
+				errors: {
+					mobileNumber: '',
+					first_name: '',
+					last_name: '',
+					email: true,
+					birthday: '',
+					avatar: '',
+				}
+			})
+		}
+	}
+
 	content() {
 		return (
 			<Fragment>
 				<CardHeader><Text text="userForm.newUser.title" /></CardHeader>
 				<CardBody>
 					<Form onSubmit={this.handleSubmit}>
-						<FormGroup>
-							<Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
-							{this.state.errors.mobileNumber.length > 0 &&
-							// error field
-							<FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-							<Input
-								name="mobileNumber"
-								type="number"
-								onChange={this.handleChange}
-							/>
-						</FormGroup>
+						{this.props.mobileNumber ?
+							<FormGroup>
+								<Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
+								{this.state.errors.mobileNumber.length > 0 &&
+								// error field
+								<FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+								<Input
+									name="mobileNumber"
+									type="number"
+									defaultValue={this.props.mobileNumber}
+									onChange={this.handleChange}
+								/>
+							</FormGroup>
+							:
+							<FormGroup>
+								<Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
+								{this.state.errors.mobileNumber.length > 0 &&
+								// error field
+								<FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+								<Input
+									name="mobileNumber"
+									type="number"
+									onChange={this.handleChange}
+								/>
+							</FormGroup>
+						}
 						<FormGroup>
 							<Label for="firstName"><Text text="userForm.firstName"/></Label>
 							{this.state.errors.first_name.length > 0 &&
