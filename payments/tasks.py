@@ -11,7 +11,7 @@ logger = get_task_logger(__name__)
 
 
 @app.task
-def create_area_bills(date):
+def create_area_bills(bill_date):
     """ create bills by area of apartments """
 
     # filter active apartments
@@ -24,10 +24,10 @@ def create_area_bills(date):
     for apartment in apartments:
         bill = Bill.objects.create(apartment=apartment,
                                    number=bill_number_generate(apartment, bill_date),
-                                   date=date)
+                                   date=bill_date)
         # create bill_line for every service
         for service in services:
-            BillLine.create(bill=bill,
+            BillLine.objects.create(bill=bill,
                             service=service,
-                            previous_debt=debt_for_service(apartment, service, date),
+                            previous_debt=debt_for_service(apartment, service, bill_date),
                             value=debt_for_month(apartment, service))

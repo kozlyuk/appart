@@ -1,7 +1,9 @@
 """ Create initial database """
+from datetime import date
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from payments.models import Service
+from payments.tasks import create_area_bills
 
 
 # Cteare superuser
@@ -62,6 +64,8 @@ for resident in RESIDENTS:
 index = 0
 for apartment in apartments:
     apartment.resident = residents_list[index]
+    apartment.is_active = True
+    apartment.area = 50
     apartment.save()
     index += 1
 
@@ -84,3 +88,5 @@ for service in SERVICES:
                            uom=service[4])
 
 print("Initial Services created")
+
+create_area_bills(date.today())
