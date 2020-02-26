@@ -34,9 +34,6 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
-    def get_update_url(self):
-        return reverse("condominium_Company_update", args=(self.pk,))
-
 
 class House(models.Model):
     """ Model contains Houses of managerial company """
@@ -56,11 +53,6 @@ class House(models.Model):
     def __str__(self):
         return self.name if self.name else self.address
 
-    def get_absolute_url(self):
-        return reverse("condominium_House_detail", args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse("condominium_House_update", args=(self.pk,))
 
 @receiver(post_save, sender=House, dispatch_uid="bulk_create_apartments")
 def create_apartments(sender, instance, created, **kwargs):
@@ -93,9 +85,3 @@ class Apartment(models.Model):
 
     def __str__(self):
         return str(self.number)
-
-    def get_absolute_url(self):
-        return reverse("condominium_Apartment_detail", args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse("condominium_Apartment_update", args=(self.pk,))

@@ -1,6 +1,8 @@
 """ Create initial database """
 from accounts.models import User
 from condominium.models import Company, House, Apartment
+from payments.models import Service
+
 
 # Cteare superuser
 User.objects.create_superuser('0673607460', 'sergey.kozlyuk@gmail.com', '100Grad')
@@ -64,3 +66,21 @@ for apartment in apartments:
     index += 1
 
 print("Initial residents created")
+
+
+SERVICES = [['Управління будинком', 'Внески на управління багатоквартирним будинком',
+             'BA', 3.55, 'sq.m.'],
+            ['Утримання будинку', 'Внески на утримання багатоквартирного будинку',
+             'BA', 0.95, 'sq.m.'],
+            ['Теплова енергія', 'Внески на теплову енергію',
+             'BC', 1497.0, 'Gcal']
+            ]
+
+for service in SERVICES:
+    Service.objects.create(name=service[0],
+                           description=service[1],
+                           uom_type=service[2],
+                           rate=service[3],
+                           uom=service[4])
+
+print("Initial Services created")

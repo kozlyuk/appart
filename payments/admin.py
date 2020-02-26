@@ -14,9 +14,7 @@ class PaymentAdminForm(forms.ModelForm):
 class PaymentAdmin(admin.ModelAdmin):
     form = PaymentAdminForm
     list_display = [
-        "date_created",
-        "date_updated",
-        "type",
+        "payment_type",
         "amount",
         "description",
         "date",
@@ -36,10 +34,7 @@ class BillAdmin(admin.ModelAdmin):
     list_display = [
         "amount",
         "number",
-        "date_updated",
-        "pdf_copy",
         "date",
-        "date_created",
     ]
 
 

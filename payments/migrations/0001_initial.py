@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('number', models.CharField(max_length=32, verbose_name='Bill number')),
                 ('amount', models.DecimalField(decimal_places=2, max_digits=8, verbose_name='Bill amount')),
                 ('date', models.DateField(default=datetime.date.today, verbose_name='Bill date')),
-                ('pdf_copy', appart.formatChecker.ContentTypeRestrictedFileField(blank=True, null=True, upload_to=payments.models.bills_directory_path, verbose_name='Electronic copy')),
+                ('pdf_copy', appart.formatChecker.ContentTypeRestrictedFileField(blank=True, null=True, verbose_name='Electronic copy')),
                 ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
                 ('date_updated', models.DateTimeField(auto_now=True, db_index=True, verbose_name='Date updated')),
                 ('apartment', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='condominium.Apartment', verbose_name='Apartment')),
