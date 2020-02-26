@@ -32,7 +32,7 @@ class BillAdminForm(forms.ModelForm):
 class BillAdmin(admin.ModelAdmin):
     form = BillAdminForm
     list_display = [
-        "amount",
+        "total_value",
         "number",
         "date",
     ]
@@ -48,10 +48,7 @@ class BillPaymentAdminForm(forms.ModelForm):
 class BillPaymentAdmin(admin.ModelAdmin):
     form = BillPaymentAdminForm
     list_display = [
-        "amount",
-    ]
-    readonly_fields = [
-        "amount",
+        "value",
     ]
 
 

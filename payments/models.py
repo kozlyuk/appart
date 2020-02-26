@@ -44,6 +44,7 @@ class Meter(models.Model):
     #  Fields
     meter_type = models.CharField(_('Meter type'), max_length=2, choices=METER_CHOICES, default='EM')
     serial_number = models.CharField(_('Serial number'), max_length=64, unique=True)
+    is_active = models.BooleanField(_('Is active'), default=True)
 
     class Meta:
         verbose_name = _('Meter')
@@ -60,7 +61,6 @@ class MeterRecord(models.Model):
     #  Fields
     value = models.DecimalField(_('Value'), max_digits=8, decimal_places=2, default=0)
     date = models.DateField(_('Date'), default=date.today)
-    is_active = models.BooleanField(_('Is active'), default=True)
 
 
     class Meta:
@@ -68,31 +68,44 @@ class MeterRecord(models.Model):
         verbose_name_plural = _('Meters')
 
     def __str__(self):
-        return str(self.serial_number)
+        return str(self.value)
 
 
 class Bill(models.Model):
     """ Model contains bills for apartments """
     #  Relationships
-    service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
     apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'), on_delete=models.PROTECT)
     #  Fields
-    number = models.CharField(_('Bill number'), max_length=32)
-    amount = models.DecimalField(_('Bill amount'), max_digits=8, decimal_places=2)
+    number = models.CharField(_('Bill number'), unique=True, max_length=32)
+    total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
     date = models.DateField(_('Bill date'), default=date.today)
-    # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
-        blank=True, null=True, on_delete=models.CASCADE)
+    #  Date information
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
-    date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
     class Meta:
-        unique_together = ['service', 'apartment', 'number']
         verbose_name = _('Bill')
         verbose_name_plural = _('Bills')
 
     def __str__(self):
         return self.number
+
+
+class BillLine(models.Model):
+    """ Model contains BillLines for Bill model """
+    bill = models.ForeignKey(Bill, verbose_name=_('Bill'), on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
+    previous_debt = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
+    value = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
+
+    class Meta:
+        verbose_name = _('BillLine')
+        verbose_name_plural = _('BillLines')
+
+    def __str__(self):
+        return str(self.value)
+
+    def total_debt(self):
+        return str(self.previous_debt + self.value)
 
 
 class Payment(models.Model):
@@ -135,4 +148,4 @@ class BillPayment(models.Model):
     bill = models.ForeignKey(Bill, verbose_name=_('Bill'), on_delete=models.PROTECT)
     payment = models.ForeignKey(Payment, verbose_name=_('Payment'), on_delete=models.PROTECT)
     #  Fields
-    amount = models.DecimalField(_('Payment amount'), max_digits=8, decimal_places=2)
+    value = models.DecimalField(_('Payment amount'), max_digits=8, decimal_places=2)

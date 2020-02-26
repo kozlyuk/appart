@@ -1,4 +1,4 @@
-from django.core.exceptions import PermissionDenied
+""" Business logic for condominium app """
 
 from django.apps import apps
 
