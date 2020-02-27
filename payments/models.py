@@ -7,7 +7,7 @@ from appart.formatChecker import ContentTypeRestrictedFileField
 from django.urls import reverse
 
 from accounts.models import User
-from condominium.models import Apartment
+from condominium.models import Apartment, House
 
 
 class Service(models.Model):
@@ -18,14 +18,17 @@ class Service(models.Model):
         (ByArea, _('By square metre')),
         (ByCounter, _('By counter'))
     )
+    #  Relationships
+    house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
     #  Fields
-    name = models.CharField(_('Name'), max_length=255, unique=True)
+    name = models.CharField(_('Name'), max_length=255)
     description = models.CharField(_('Description'), max_length=255, blank=True)
     uom_type = models.CharField(_('Measurement type'), max_length=2, choices=UOM_CHOICES, default='BA')
     rate = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
     uom = models.CharField(_('Default units of measurement'), max_length=8, default=_('sq.m.'))
 
     class Meta:
+        unique_together = ('house', 'name')
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
 
@@ -120,14 +123,16 @@ class Payment(models.Model):
         ('PY', 'pay'),
     )
     #  Relationships
-    bill = models.ManyToManyField(Bill, through='BillPayment', verbose_name=_('Bill'))
+    apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'),
+                                  on_delete=models.PROTECT, blank=True, null=True)
+    service = models.ManyToManyField(Service, through='PaymentService',
+                                     verbose_name=_('Services'), blank=True)
     #  Fields
     payment_type = models.CharField(_('Payment type'), max_length=2, choices=PAYMENT_TYPE_CHOICES, default='BP')
     action = models.CharField(_('Payment action'), max_length=2, choices=PAYMENT_ACTION_CHOICES, default='PY')
     date = models.DateField(_('Payment date'), default=date.today)
-    amount = models.DecimalField(_('Payment amount'), max_digits=8, decimal_places=2)
+    value = models.DecimalField(_('Payment value'), max_digits=8, decimal_places=2, default=0)
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
-
     # Creator and Date information
     created_by = models.ForeignKey(User, verbose_name=_('Created by'),
         blank=True, null=True, on_delete=models.CASCADE)
@@ -142,10 +147,10 @@ class Payment(models.Model):
         return self.description
 
 
-class BillPayment(models.Model):
-    """ Model describes ManyToMany throw table between Bill and Payment """
+class PaymentService(models.Model):
+    """ Model describes ManyToMany throw table between Payment and Services """
     #  Relationships
-    bill = models.ForeignKey(Bill, verbose_name=_('Bill'), on_delete=models.PROTECT)
     payment = models.ForeignKey(Payment, verbose_name=_('Payment'), on_delete=models.PROTECT)
+    service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
     #  Fields
-    value = models.DecimalField(_('Payment amount'), max_digits=8, decimal_places=2)
+    value = models.DecimalField(_('Payment value'), max_digits=8, decimal_places=2, default=0)

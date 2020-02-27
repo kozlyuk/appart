@@ -81,7 +81,8 @@ SERVICES = [['Управління будинком', 'Внески на упр�
             ]
 
 for service in SERVICES:
-    Service.objects.create(name=service[0],
+    Service.objects.create(house=house,
+                           name=service[0],
                            description=service[1],
                            uom_type=service[2],
                            rate=service[3],
@@ -90,3 +91,5 @@ for service in SERVICES:
 print("Initial Services created")
 
 create_area_bills(date.today())
+
+print("Initial Bills created")

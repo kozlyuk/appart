@@ -15,7 +15,7 @@ class PaymentAdmin(admin.ModelAdmin):
     form = PaymentAdminForm
     list_display = [
         "payment_type",
-        "amount",
+        "value",
         "description",
         "date",
         "action",
@@ -38,15 +38,15 @@ class BillAdmin(admin.ModelAdmin):
     ]
 
 
-class BillPaymentAdminForm(forms.ModelForm):
+class PaymentServiceAdminForm(forms.ModelForm):
 
     class Meta:
-        model = models.BillPayment
+        model = models.PaymentService
         fields = "__all__"
 
 
-class BillPaymentAdmin(admin.ModelAdmin):
-    form = BillPaymentAdminForm
+class PaymentServiceAdmin(admin.ModelAdmin):
+    form = PaymentServiceAdminForm
     list_display = [
         "value",
     ]
@@ -69,5 +69,5 @@ class ServiceAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Payment, PaymentAdmin)
 admin.site.register(models.Bill, BillAdmin)
-admin.site.register(models.BillPayment, BillPaymentAdmin)
+admin.site.register(models.PaymentService, PaymentServiceAdmin)
 admin.site.register(models.Service, ServiceAdmin)
