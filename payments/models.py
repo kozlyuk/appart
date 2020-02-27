@@ -83,7 +83,10 @@ class Bill(models.Model):
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
     date = models.DateField(_('Bill date'), default=date.today)
     #  Date information
+    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+        blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
+    date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
     class Meta:
         verbose_name = _('Bill')
