@@ -24,13 +24,12 @@ from appart.settings_local import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
-    path('', include('condominium.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('condominium/', include('condominium.urls')),
     path('payments/', include('payments.urls')),
     path('', include('pages.urls')),
-    path('', include('api.urls')),
     path('', include('messaging.urls')),
-    path('', include('notice.urls')),
+    path('notice/', include('notice.urls')),
 
     path('summernote/', include('django_summernote.urls')),
     path('rest-auth/', include('rest_auth.urls'))

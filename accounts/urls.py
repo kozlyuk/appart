@@ -1,11 +1,20 @@
 """appart.account URL Configuration"""
 
-from django.urls import path, reverse_lazy
+from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth
+from rest_framework import routers
 
 from accounts import views
+from accounts.api import UserViewSet, GetUser, GetByNumber
+
+router = routers.DefaultRouter()
+router.register("user", UserViewSet)
 
 urlpatterns = [
+
+    path("api/v1/", include(router.urls)),
+    path("api/v1/get_user/", GetUser.as_view()),
+    path("api/v1/get_by_number/<str:mobile_number>/", GetByNumber.as_view()),
 
     path('login/', views.CustomLoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),

@@ -1,9 +1,21 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from . import views
+from notice import api
+
+router = routers.DefaultRouter()
+router.register("Choice", api.ChoiceViewSet)
+router.register("Notice", api.NoticeViewSet)
+router.register("News", api.NewsViewSet)
+router.register("Question", api.QuestionViewSet)
+
+from notice import views
 
 
 urlpatterns = (
+
+    path("api/v1/", include(router.urls)),
+
     path("notice/choice/", views.ChoiceListView.as_view(), name="notice_Choice_list"),
     path("notice/choice/create/", views.ChoiceCreateView.as_view(), name="notice_Choice_create"),
     path("notice/choice/detail/<int:pk>/", views.ChoiceDetailView.as_view(), name="notice_Choice_detail"),
