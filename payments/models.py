@@ -81,7 +81,7 @@ class Bill(models.Model):
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
-    date = models.DateField(_('Bill date'), default=date.today)
+    period = models.DateField(_('Bill date'), default=date.today)
     #  Date information
     created_by = models.ForeignKey(User, verbose_name=_('Created by'),
         blank=True, null=True, on_delete=models.CASCADE)
