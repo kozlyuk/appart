@@ -8,15 +8,16 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Payment
         fields = [
-            "bill",
+            "apartment",
+            "service",
+            "payment_type",
+            "action",
+            "date",
+            "value",
+            "description",
             "created_by",
             "date_created",
-            "date_updated",
-            "type",
-            "amount",
-            "description",
-            "date",
-            "action",
+            "date_created"
         ]
 
 
@@ -25,15 +26,13 @@ class BillSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bill
         fields = [
-            "service",
             "apartment",
-            "created_by",
-            "amount",
             "number",
-            "date_updated",
-            "pdf_copy",
-            "date",
+            "total_value",
+            "period",
+            "created_by",
             "date_created",
+            "date_updated",
         ]
 
 
@@ -42,6 +41,10 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = [
-            "description",
+            "house",
             "name",
+            "description",
+            "uom_type",
+            "rate",
+            "uom"
         ]

@@ -1,25 +1,16 @@
-from rest_framework import viewsets
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
 
-from . import serializers
-from . import models
+from payments.serializers import BillSerializer
+from payments.models import Bill
 
+class BillListView(ListAPIView):
+    """
+    View to list all users in the system.
 
-class PaymentViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Payment class"""
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
 
-    queryset = models.Payment.objects.all()
-    serializer_class = serializers.PaymentSerializer
-
-
-class BillViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Bill class"""
-
-    queryset = models.Bill.objects.all()
-    serializer_class = serializers.BillSerializer
-
-
-class ServiceViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Service class"""
-
-    queryset = models.Service.objects.all()
-    serializer_class = serializers.ServiceSerializer
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer

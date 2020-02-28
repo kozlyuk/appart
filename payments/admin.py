@@ -34,7 +34,7 @@ class BillAdmin(admin.ModelAdmin):
     list_display = [
         "total_value",
         "number",
-        "date",
+        "period",
     ]
 
 

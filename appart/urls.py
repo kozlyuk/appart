@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('', include('condominium.urls')),
-    path('', include('payments.urls')),
+    path('payments/', include('payments.urls')),
     path('', include('pages.urls')),
     path('', include('api.urls')),
     path('', include('messaging.urls')),
