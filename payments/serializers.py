@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from .models import Payment, Bill, Service
+from .models import Payment, Bill, Service, BillLine
 
 
-class PaymentSerializer(serializers.HyperlinkedModelSerializer):
+class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
@@ -15,13 +15,22 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
             "date",
             "value",
             "description",
-            "created_by",
-            "date_created",
-            "date_created"
         ]
 
 
-class BillSerializer(serializers.HyperlinkedModelSerializer):
+class BillLineSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BillLine
+        fields = [
+            "previous_debt",
+            "value",
+        ]
+
+
+class BillSerializer(serializers.ModelSerializer):
+    bill_lines = BillLineSerializer(source='billline_set', many=True)
+
 
     class Meta:
         model = Bill
@@ -30,10 +39,14 @@ class BillSerializer(serializers.HyperlinkedModelSerializer):
             "number",
             "total_value",
             "period",
-            "created_by",
-            "date_created",
-            "date_updated",
+            "bill_lines"
         ]
+
+    @staticmethod
+    # optimizing 'to-many' relationships with prefetch_related
+    def setup_eager_loading(queryset):
+        queryset = queryset.prefetch_related('billline_set')
+        return queryset
 
 
 class ServiceSerializer(serializers.ModelSerializer):

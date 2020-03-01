@@ -1,10 +1,11 @@
 from rest_framework import viewsets
+from django_auto_prefetching import AutoPrefetchViewSetMixin
 
 from . import serializers
 from . import models
 
 
-class ApartmentViewSet(viewsets.ModelViewSet):
+class ApartmentViewSet(AutoPrefetchViewSetMixin, viewsets.ModelViewSet):
     """ViewSet for the Apartment class"""
 
     queryset = models.Apartment.objects.all()

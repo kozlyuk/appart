@@ -3,6 +3,7 @@
 from datetime import datetime, date
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from django.db.models import F, FloatField, Sum
 from appart.formatChecker import ContentTypeRestrictedFileField
 from django.urls import reverse
 
@@ -82,9 +83,10 @@ class Bill(models.Model):
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
     period = models.DateField(_('Bill date'), default=date.today)
+    is_active = models.BooleanField(_('Is active'), default=True)
     #  Date information
     created_by = models.ForeignKey(User, verbose_name=_('Created by'),
-        blank=True, null=True, on_delete=models.CASCADE)
+                                   blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
@@ -95,12 +97,18 @@ class Bill(models.Model):
     def __str__(self):
         return self.number
 
+    def calc_total_value(self):
+        """ return calculated total_value from bill_lines """
+        return self.billline_set.aggregate(total_value=Sum(F('previous_debt')+F('value'),
+                                                            output_field=FloatField())) \
+                                            ['total_value'] or 0
+
 
 class BillLine(models.Model):
     """ Model contains BillLines for Bill model """
     bill = models.ForeignKey(Bill, verbose_name=_('Bill'), on_delete=models.CASCADE)
     service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
-    previous_debt = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
+    previous_debt = models.DecimalField(_('Debt value'), max_digits=8, decimal_places=2, default=0)
     value = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
 
     class Meta:

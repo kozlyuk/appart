@@ -4,10 +4,10 @@ from rest_framework import routers
 from notice import api
 
 router = routers.DefaultRouter()
-router.register("Choice", api.ChoiceViewSet)
-router.register("Notice", api.NoticeViewSet)
-router.register("News", api.NewsViewSet)
-router.register("Question", api.QuestionViewSet)
+router.register("choice", api.ChoiceViewSet)
+router.register("notice", api.NoticeViewSet)
+router.register("news", api.NewsViewSet)
+router.register("question", api.QuestionViewSet)
 
 from notice import views
 

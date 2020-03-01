@@ -40,6 +40,7 @@ INSTALLED_APPS += [
     'widget_tweaks',
     'django_summernote',
     'django_celery_results',
+    'silk'
 
 ]
 
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'appart.urls'

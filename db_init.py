@@ -66,6 +66,7 @@ for apartment in apartments:
     apartment.resident = residents_list[index]
     apartment.is_active = True
     apartment.area = 50
+    apartment.deal_number = residents_list[index].pk
     apartment.save()
     index += 1
 

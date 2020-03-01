@@ -66,6 +66,16 @@ class ServiceAdmin(admin.ModelAdmin):
         "name",
     ]
 
+@admin.register(models.BillLine)
+class BIllLineAdmin(admin.ModelAdmin):
+    """ Admin settings for BillLine table """
+    list_display = [
+        "bill",
+        "service",
+        "previous_debt",
+        "value",
+    ]
+    summernote_fields = '__all__'
 
 admin.site.register(models.Payment, PaymentAdmin)
 admin.site.register(models.Bill, BillAdmin)
