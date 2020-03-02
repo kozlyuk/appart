@@ -4,20 +4,15 @@ import React from 'react';
 import {
 	Badge,
 	Button,
-	Card,
-	CardBody,
-	CardHeader, CardText,
-	Col,
-	Modal,
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-	Row,
+	Card, CardBody, CardHeader, CardText,
+	Col, Row,
+	Modal, ModalBody, ModalFooter, ModalHeader,
 	Table
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
 import UserCard from "../../components/Card/UserCard";
 import {Link} from "react-router-dom";
+import Pagination from "react-js-pagination";
 
 
 export default class UserList extends AbstractListView {
@@ -127,6 +122,20 @@ export default class UserList extends AbstractListView {
 								</CardHeader>
 								<CardBody>
 									{this.content()}
+									<Row>
+										<Pagination
+											innerClass="pagination pagination-sm ml-auto mr-auto"
+											itemClass="page-item"
+											linkClass="page-link"
+											pageRangeDisplayed={this.state.pageRangeDisplayed}
+											activePage={this.state.activePage}
+											itemsCountPerPage={this.state.itemsCountPerPage}
+											totalItemsCount={this.state.paginationCount}
+											onChange={
+												this.handlePageChange.bind(this)
+											}
+										/>
+									</Row>
 								</CardBody>
 							</Card>
 						</Col>
