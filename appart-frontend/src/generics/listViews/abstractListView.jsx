@@ -13,8 +13,8 @@ export default class AbstractListView extends React.Component{
 			paginationNext: null,
 			paginationPrevious: null,
 			//paginator settings
-			itemsCountPerPage: 20,
-			pageRangeDisplayed: 10,
+			itemsCountPerPage: process.env.REACT_APP_ITEMS_COUNT_PER_PAGE,
+			pageRangeDisplayed: process.env.REACT_APP_PAGE_RANGE_DISPLAYED,
 			//paginator settings end
 			modal: false,
 			modal_backdrop: false,
