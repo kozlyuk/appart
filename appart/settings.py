@@ -162,7 +162,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),  # or your custom path
@@ -220,3 +220,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_BACKEND = 'django-db'
+
+# VARIABLES
+CURRENCY = 'грн.'

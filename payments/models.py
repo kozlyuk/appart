@@ -100,7 +100,7 @@ class Bill(models.Model):
     def calc_total_value(self):
         """ return calculated total_value from bill_lines """
         return self.billline_set.aggregate(total_value=Sum(F('previous_debt')+F('value'))) \
-                                            ['total_value'] or 0
+                                           ['total_value'] or 0
 
 
 class BillLine(models.Model):

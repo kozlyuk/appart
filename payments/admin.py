@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django import forms
 
-from . import models
+from payments import models
 
 
 @admin.register(models.Service)
