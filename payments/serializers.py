@@ -43,8 +43,8 @@ class BillSerializer(serializers.ModelSerializer):
         ]
 
     @staticmethod
-    # optimizing 'to-many' relationships with prefetch_related
     def setup_eager_loading(queryset):
+        """ optimizing 'to-many' relationships with prefetch_related """
         queryset = queryset.prefetch_related('billline_set')
         return queryset
 

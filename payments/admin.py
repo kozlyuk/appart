@@ -4,67 +4,50 @@ from django import forms
 from . import models
 
 
-class PaymentAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = models.Payment
-        fields = "__all__"
-
-
-class PaymentAdmin(admin.ModelAdmin):
-    form = PaymentAdminForm
-    list_display = [
-        "payment_type",
-        "value",
-        "description",
-        "date",
-        "action",
-    ]
-
-
-class BillAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = models.Bill
-        fields = "__all__"
-
-
-class BillAdmin(admin.ModelAdmin):
-    form = BillAdminForm
-    list_display = [
-        "total_value",
-        "number",
-        "period",
-    ]
-
-
-class PaymentServiceAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = models.PaymentService
-        fields = "__all__"
-
-
-class PaymentServiceAdmin(admin.ModelAdmin):
-    form = PaymentServiceAdminForm
-    list_display = [
-        "value",
-    ]
-
-
-class ServiceAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = models.Service
-        fields = "__all__"
-
-
+@admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
-    form = ServiceAdminForm
+    """ Admin settings for Service table """
     list_display = [
-        "description",
         "name",
+        "house",
+        "uom_type",
+        "rate",
+        "uom"
     ]
+
+
+@admin.register(models.Meter)
+class MeterAdmin(admin.ModelAdmin):
+    """ Admin settings for Meter table """
+    list_display = [
+        "apartment",
+        "meter_type",
+        "serial_number",
+        "is_active"
+    ]
+
+
+@admin.register(models.MeterRecord)
+class MeterRecordAdmin(admin.ModelAdmin):
+    """ Admin settings for MeterRecord table """
+    list_display = [
+        "meter",
+        "value",
+        "date",
+    ]
+
+
+@admin.register(models.Bill)
+class BillAdmin(admin.ModelAdmin):
+    """ Admin settings for Bill table """
+    list_display = [
+        "number",
+        "apartment",
+        "total_value",
+        "period",
+        "is_active",
+    ]
+
 
 @admin.register(models.BillLine)
 class BIllLineAdmin(admin.ModelAdmin):
@@ -75,9 +58,23 @@ class BIllLineAdmin(admin.ModelAdmin):
         "previous_debt",
         "value",
     ]
-    summernote_fields = '__all__'
 
-admin.site.register(models.Payment, PaymentAdmin)
-admin.site.register(models.Bill, BillAdmin)
-admin.site.register(models.PaymentService, PaymentServiceAdmin)
-admin.site.register(models.Service, ServiceAdmin)
+
+@admin.register(models.Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = [
+        "apartment",
+        "payment_type",
+        "action",
+        "date",
+        "value",
+    ]
+
+
+@admin.register(models.PaymentService)
+class PaymentServiceAdmin(admin.ModelAdmin):
+    list_display = [
+        "payment",
+        "service",
+        "value",
+    ]

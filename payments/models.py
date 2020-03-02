@@ -100,7 +100,7 @@ class Bill(models.Model):
     def calc_total_value(self):
         """ return calculated total_value from bill_lines """
         return self.billline_set.aggregate(total_value=Sum(F('previous_debt')+F('value'))) \
-                                           ['total_value'] or 0
+                                            ['total_value'] or 0
 
 
 class BillLine(models.Model):
@@ -145,7 +145,7 @@ class Payment(models.Model):
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
     # Creator and Date information
     created_by = models.ForeignKey(User, verbose_name=_('Created by'),
-        blank=True, null=True, on_delete=models.CASCADE)
+                                   blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_created = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
 
