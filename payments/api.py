@@ -6,7 +6,7 @@ from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
 
-from payments.serializers import BillSerializer
+from payments.serializers import BillSerializer, PaymentSerializer
 from condominium.models import Apartment
 
 
@@ -31,7 +31,7 @@ class GetTotalDebt(APIView):
         total_debt = apartment.bill_set.filter(is_active=True) \
                                        .aggregate(total_debt=Sum('total_value')) \
                                        ['total_debt'] or 0
-        return Response(total_debt, status=status.HTTP_200_OK)
+        return Response(str(total_debt), status=status.HTTP_200_OK)
 
 
 class BillListView(ListAPIView):
@@ -44,7 +44,6 @@ class BillListView(ListAPIView):
     """
 
     serializer_class = BillSerializer
-    paginate_by = 100
 
     def get_queryset(self):
         apartment_pk = self.kwargs['apartment']
@@ -53,7 +52,7 @@ class BillListView(ListAPIView):
             apartment = Apartment.objects.get(pk=apartment_pk)
         # return error HTTP_400_BAD_REQUEST if apartment does not exist
         except Apartment.DoesNotExist:
-            raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
+            raise ValidationError({'error': [_('Apartment with such id does not exist')]})
         # get bills for apartment
         queryset = apartment.bill_set.filter(is_active=True)
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
@@ -65,12 +64,11 @@ class PaymentsListView(ListAPIView):
     View all payments for apartment.
 
     * Requires parameters: apartment.
-    * Only apartment owner has permission to bills.
+    * Only apartment owner has permission to payments.
     * Return error HTTP_400_BAD_REQUEST if apartment does not exist
     """
 
-    serializer_class = BillSerializer
-    paginate_by = 100
+    serializer_class = PaymentSerializer
 
     def get_queryset(self):
         apartment_pk = self.kwargs['apartment']
@@ -79,8 +77,7 @@ class PaymentsListView(ListAPIView):
             apartment = Apartment.objects.get(pk=apartment_pk)
         # return error HTTP_400_BAD_REQUEST if apartment does not exist
         except Apartment.DoesNotExist:
-            raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
-        # get bills for apartment
-        queryset = apartment.bill_set.filter(is_active=True)
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
-        return queryset.order_by('period')
+            raise ValidationError({'error': [_('Apartment with such id does not exist')]})
+        # get payments for apartment
+        queryset = apartment.payment_set.all()
+        return queryset.order_by('-date')
