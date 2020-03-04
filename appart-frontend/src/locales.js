@@ -13,6 +13,8 @@ registerLang('en',{
 			last_name: "The field cannot be empty!",
 			house: "The field cannot be empty!",
 			email: "Email is invalid!",
+			pictureExtension: "Valid file extension: JPG, JPEG or PNG!",
+			pictureSize: "Please choose file less 5Mb",
 			houseApartmentsCount: "Please enter the correct quantity!",
 			apartmentNumber: "Please enter the correct number!",
 			apartmentArea: "The area should be different from 0!"
@@ -179,6 +181,8 @@ registerLang('ua', {
 			first_name: "Поле не може бути пустим!",
 			last_name: "Поле не може бути пустим!",
 			house: "Поле не може бути пустим!",
+			pictureExtension: "Допустимі розширення файлу: JPG, JPEG or PNG!",
+			pictureSize: "Будь ласка виберіть файл менше 5Mb",
 			email: "Введіть вірний формат електронної пошти!",
 			houseApartmentsCount: "Вкажіть вірну кількість!",
 			apartmentNumber: "Вкажіть корректний номер!",

@@ -24,12 +24,21 @@ export default class HouseUpdate extends AbstractFormView {
 				description: '',
 				address: '',
 				name: '',
-				photo: '',
+				photoFormat: '',
+				photoSize: '',
 				apartmentCount: '',
 			}
 		};
 		this.dataUrl = process.env.REACT_APP_HOUSES_URL
 		this.requestType = "put"
+	}
+
+	uploadFileValidationFormat(event) {
+		return event.target.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)
+	}
+
+	uploadFileValidationSize(event) {
+		return Math.round((event.target.files[0].size / 1000)) < 5000;
 	}
 
 	submitData(target){
@@ -75,6 +84,16 @@ export default class HouseUpdate extends AbstractFormView {
 						? [<Text text="global.validateErrors.houseApartmentsCount"/>]
 						: '';
 				break;
+			case 'photo':
+				errors.photoFormat =
+					this.uploadFileValidationFormat(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureExtension"/>];
+				errors.photoSize =
+					this.uploadFileValidationSize(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureSize"/>];
+				break;
 			default:
 				break;
 		}
@@ -114,11 +133,16 @@ export default class HouseUpdate extends AbstractFormView {
 						</FormGroup>
 						<FormGroup>
 							<Label for="photo"><Text text="houseForm.photo"/></Label>
-							{this.state.errors.photo.length > 0 &&
+							{this.state.errors.photoFormat.length > 0 &&
 							// error field
-							<FormText color="danger">{this.state.errors.photo}</FormText>}
-							<Input type="file" name="file" onChange={this.handleChange}/>
-							<FormText color="muted" />
+							<FormText color="danger">{this.state.errors.photoFormat}</FormText>}
+							{this.state.errors.photoSize.length > 0 &&
+							// error field
+							<FormText color="danger">{this.state.errors.photoSize}</FormText>}
+							<Input
+								type="file"
+								name="photo"
+								onChange={this.handleChange}/>
 						</FormGroup>
 						<FormGroup>
 							<Label for="description"><Text text="houseForm.description"/></Label>
@@ -154,7 +178,8 @@ export default class HouseUpdate extends AbstractFormView {
 						{this.state.description ||
 						this.state.errors.address ||
 						this.state.errors.name ||
-						this.state.errors.photo ||
+						this.state.errors.photoSize ||
+						this.state.errors.photoFormat ||
 						this.state.errors.apartmentCount ?
 							<Button disabled className="float-right">
 								<Text text="buttons.submitBtn"/>

@@ -34,11 +34,20 @@ export default class UserUpdate extends AbstractFormView {
 				last_name: '',
 				email: '',
 				birthday: '',
-				avatar: '',
+				avatarFormat: '',
+				avatarSize: ''
 			}
 		};
 		this.dataUrl = process.env.REACT_APP_USERS_URL;
 		this.requestType = "put"
+	}
+
+	uploadFileValidationFormat(event) {
+		return event.target.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)
+	}
+
+	uploadFileValidationSize(event) {
+		return Math.round((event.target.files[0].size / 1000)) < 5000;
 	}
 
 	submitData(target){
@@ -49,8 +58,8 @@ export default class UserUpdate extends AbstractFormView {
 		userFormData.append("last_name", target.lastName.value);
 		userFormData.append("email", target.email.value);
 		userFormData.append("birthday", target.birthday.value);
-		if (target.file.files[0]) {
-			userFormData.append("avatar", target.file.files[0]);
+		if (target.avatar.files[0]) {
+			userFormData.append("avatar", target.avatar.files[0]);
 		}
 		return userFormData;
 	}
@@ -67,7 +76,6 @@ export default class UserUpdate extends AbstractFormView {
 		const { name, value } = event.target;
 		let errors = this.state.errors;
 		this.setState({errors, ['defaultInactiveBtn']: false});
-		console.log(event)
 		switch (name) {
 			case 'mobileNumber':
 				errors.mobileNumber =
@@ -98,6 +106,16 @@ export default class UserUpdate extends AbstractFormView {
 					validEmailRegex.test(value)
 						? ''
 						: [<Text text="global.validateErrors.email"/>];
+				break;
+			case 'avatar':
+				errors.avatarFormat =
+					this.uploadFileValidationFormat(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureExtension"/>];
+				errors.avatarSize =
+					this.uploadFileValidationSize(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureSize"/>];
 				break;
 			default:
 				break;
@@ -175,11 +193,18 @@ export default class UserUpdate extends AbstractFormView {
 							/>
 						</FormGroup>
 						<FormGroup>
-							<Label for="exampleFile"><Text text="userForm.avatar"/></Label>
-							{this.state.errors.avatar.length > 0 &&
+							<Label for="avatar"><Text text="userForm.avatar"/></Label>
+							{this.state.errors.avatarFormat.length > 0 &&
 							// error field
-							<FormText color="danger">{this.state.errors.avatar}</FormText>}
-							<Input type="file" name="file" />
+							<FormText color="danger">{this.state.errors.avatarFormat}</FormText>}
+							{this.state.errors.avatarSize.length > 0 &&
+							// error field
+							<FormText color="danger">{this.state.errors.avatarSize}</FormText>}
+							<Input
+								type="file"
+								name="avatar"
+								onChange={this.handleChange}
+							/>
 							<FormText color="muted">
 								{/*This is some placeholder block-level help text for the above*/}
 								{/*input. It's a bit lighter and easily wraps to a new line.*/}
@@ -203,7 +228,8 @@ export default class UserUpdate extends AbstractFormView {
 						this.state.errors.last_name ||
 						this.state.errors.email ||
 						this.state.errors.birthday ||
-						this.state.errors.avatar ?
+						this.state.errors.avatarSize ||
+						this.state.errors.avatarFormat ?
 							<Button disabled className="float-right">
 								<Text text="buttons.submitBtn"/>
 							</Button>:<Button className="float-right" type="submit">

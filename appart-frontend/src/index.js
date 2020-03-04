@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import './locales'
+import register from "./registerServiceWorker";
 
 
 ReactDOM.render(
 		<App />,document.getElementById('root'));
+
+register();

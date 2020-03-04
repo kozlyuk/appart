@@ -19,7 +19,8 @@ export default class HouseNew extends AbstractFormView{
 				description: '',
 				address: true,
 				name: true,
-				photo: '',
+				photoFormat: '',
+				photoSize: '',
 				apartmentCount: true,
 			}
 		};
@@ -27,6 +28,15 @@ export default class HouseNew extends AbstractFormView{
 		this.postUrl = process.env.REACT_APP_HOUSES_URL;
 		this.requestType = "post"
 	}
+
+	uploadFileValidationFormat(event) {
+		return event.target.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)
+	}
+
+	uploadFileValidationSize(event) {
+		return Math.round((event.target.files[0].size / 1000)) < 5000;
+	}
+
 
 	submitData(target){
 		const userFormData = new FormData();
@@ -72,6 +82,16 @@ export default class HouseNew extends AbstractFormView{
 						? [<Text text="global.validateErrors.houseApartmentsCount"/>]
 						: '';
 				break;
+			case 'photo':
+				errors.photoFormat =
+					this.uploadFileValidationFormat(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureExtension"/>];
+				errors.photoSize =
+					this.uploadFileValidationSize(event)
+						? ''
+						: [<Text text="global.validateErrors.pictureSize"/>];
+				break;
 			default:
 				break;
 		}
@@ -109,11 +129,17 @@ export default class HouseNew extends AbstractFormView{
 						</FormGroup>
 						<FormGroup>
 							<Label for="photo"><Text text="houseForm.photo"/></Label>
-							{this.state.errors.photo.length > 0 &&
+							{this.state.errors.photoFormat.length > 0 &&
 							// error field
-							<FormText color="danger">{this.state.errors.photo}</FormText>}
-							<Input type="file" name="photo" onChange={this.handleChange}/>
-							<FormText color="muted" />
+							<FormText color="danger">{this.state.errors.photoFormat}</FormText>}
+							{this.state.errors.photoSize.length > 0 &&
+							// error field
+							<FormText color="danger">{this.state.errors.photoSize}</FormText>}
+							<Input
+								type="file"
+								name="photo"
+								onChange={this.handleChange}
+							/>
 						</FormGroup>
 						<FormGroup>
 							<Label for="description"><Text text="houseForm.description"/></Label>
@@ -146,7 +172,8 @@ export default class HouseNew extends AbstractFormView{
 						</Link>
 						{this.state.errors.address ||
 						this.state.errors.name ||
-						this.state.errors.photo ||
+						this.state.errors.photoSize ||
+						this.state.errors.photoFormat ||
 						this.state.errors.apartmentCount ?
 							<Button disabled className="float-right">
 								<Text text="buttons.submitBtn"/>
