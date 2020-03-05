@@ -1,26 +1,51 @@
+from django.db.models import Q
 from rest_framework import viewsets
 from django_auto_prefetching import AutoPrefetchViewSetMixin
 
-from . import serializers
-from . import models
+from condominium.models import Company, House, Apartment
+from condominium.serializers import CompanySerializer, HouseSerializer, ApartmentSerializer
 
 
 class ApartmentViewSet(AutoPrefetchViewSetMixin, viewsets.ModelViewSet):
-    """ViewSet for the Apartment class"""
+    """ViewSet for the Apartment class
+    Filter queryset by search string ('filter' get parameter)
+    Filter queryset by house and is_active fields ('house', 'is_active' get parameters)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = models.Apartment.objects.all()
-    serializer_class = serializers.ApartmentSerializer
+    serializer_class = ApartmentSerializer
+
+    def get_queryset(self):
+            queryset = Apartment.objects.all()
+            search_string = self.request.GET.get('filter').split()
+            house = self.request.GET.get('house')
+            is_active = self.request.GET.get('is_active', 'n')
+            order = self.request.GET.get('order')
+            for word in search_string:
+                queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
+                                           Q(resident__first_name__icontains=word) |
+                                           Q(resident__last_name__icontains=word) |
+                                           Q(number__contains=word) |
+                                           Q(account_number__contains=word))
+
+            if house:
+                queryset = queryset.filter(house=house)
+            if is_active != 'n':
+                queryset = queryset.filter(is_active=is_active)
+            if order:
+                queryset = queryset.order_by(order)
+            return queryset
 
 
 class HouseViewSet(viewsets.ModelViewSet):
     """ViewSet for the House class"""
 
-    queryset = models.House.objects.all()
-    serializer_class = serializers.HouseSerializer
+    queryset = House.objects.all()
+    serializer_class = HouseSerializer
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
     """ViewSet for the Company class"""
 
-    queryset = models.Company.objects.all()
-    serializer_class = serializers.CompanySerializer
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer

@@ -44,10 +44,4 @@ class User(AbstractUser):
         ordering = ['last_name', 'first_name']
 
     def __str__(self):
-        return str(self.mobile_number) + ' ' + str(self.first_name) + ' ' + str(self.last_name)
-
-    def get_absolute_url(self):
-        return reverse("accounts_User_detail", args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse("accounts_User_update", args=(self.pk,))
+        return f"{self.first_name} {self.last_name}"

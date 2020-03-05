@@ -24,6 +24,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "resident_phone",
             "number",
             "description",
+            "is_active",
             "area",
             "residents_count",
         ]
