@@ -36,13 +36,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class GetUserSerializer(serializers.ModelSerializer):
+    apartments = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             "pk",
             "is_staff",
+            "apartments"
         ]
+
+    def get_apartments(self, obj):
+        return obj.apartment_set.values_list('pk', flat=True)
 
 
 class CustomLoginSerializer(LoginSerializer):
