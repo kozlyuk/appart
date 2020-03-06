@@ -30,6 +30,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('', include('messaging.urls')),
     path('notice/', include('notice.urls')),
+    path('dimservice/', include('dimservice.urls')),
 
     path('summernote/', include('django_summernote.urls')),
     path('rest-auth/', include('rest_auth.urls'))
