@@ -1,13 +1,13 @@
 """  Models for Payments application  """
 
 from datetime import datetime, date
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import F, FloatField, Sum
 from appart.formatChecker import ContentTypeRestrictedFileField
 from django.urls import reverse
 
-from accounts.models import User
 from condominium.models import Apartment, House
 
 
@@ -85,7 +85,7 @@ class Bill(models.Model):
     period = models.DateField(_('Bill date'), default=date.today)
     is_active = models.BooleanField(_('Is active'), default=True)
     #  Date information
-    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Created by'),
                                    blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
@@ -144,7 +144,7 @@ class Payment(models.Model):
     value = models.DecimalField(_('Payment value'), max_digits=8, decimal_places=2, default=0)
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
     # Creator and Date information
-    created_by = models.ForeignKey(User, verbose_name=_('Created by'),
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Created by'),
                                    blank=True, null=True, on_delete=models.CASCADE)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
     date_created = models.DateTimeField(_("Date updated"), auto_now=True, db_index=True)
