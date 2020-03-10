@@ -26,10 +26,18 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import {Link} from "react-router-dom";
 import UserNew from "../views/user/userNew";
 
-// ugly regular expression for validate length of phone number
+/**
+ * ugly regular expression for validate length of phone number
+ *
+ * @type {RegExp}
+ */
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
 
 export default class ApartmentPhoneChecker extends React.Component {
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -52,6 +60,11 @@ export default class ApartmentPhoneChecker extends React.Component {
 		this.getUserById.bind(this);
 	}
 
+	/**
+	 *
+	 * @param modalType
+	 * @returns {function(...[*]=)}
+	 */
 	toggle = modalType => () => {
 		if (!modalType) {
 			return this.setState({
@@ -64,6 +77,10 @@ export default class ApartmentPhoneChecker extends React.Component {
 		});
 	};
 
+	/**
+	 *
+	 * @param event
+	 */
 	getUserById = (event) => {
 		event.preventDefault();
 		axios({
@@ -85,11 +102,19 @@ export default class ApartmentPhoneChecker extends React.Component {
 		})
 	};
 
+	/**
+	 *
+	 * @param event
+	 */
 	addUserPkToForm = (event) => {
 		event.preventDefault();
 		this.props.addResidentToAppartment(this.state.responseData.mobile_number, this.state.responseData.pk)
 	};
 
+	/**
+	 *
+	 * @param event
+	 */
 	handleChange = (event) => {
 		event.preventDefault();
 		const { value } = event.target;
@@ -107,6 +132,10 @@ export default class ApartmentPhoneChecker extends React.Component {
 		}
 	};
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		let responseData;
 		if (this.state.responseData) {

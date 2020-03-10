@@ -11,12 +11,20 @@ import Container from "reactstrap/es/Container";
 import AbstractDetailView from "../../generics/detailViews/abstractDetailView";
 
 class UserDetail extends AbstractDetailView {
-
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.dataUrl = process.env.REACT_APP_USERS_URL
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 * @constructor
+	 */
 	Content() {
 		return (
 			<Col md={12}>
@@ -38,6 +46,10 @@ class UserDetail extends AbstractDetailView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

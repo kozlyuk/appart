@@ -7,6 +7,10 @@ import Button from "reactstrap/es/Button";
 import Container from "reactstrap/es/Container";
 
 export default class ChoiceNew extends AbstractFormView{
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.dataUrl = undefined
@@ -16,6 +20,10 @@ export default class ChoiceNew extends AbstractFormView{
 		console.log("new choice")
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Fragment>
@@ -44,6 +52,10 @@ export default class ChoiceNew extends AbstractFormView{
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		return (
 			<Container>

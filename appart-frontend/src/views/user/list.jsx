@@ -16,11 +16,19 @@ import Pagination from "react-js-pagination";
 
 
 export default class UserList extends AbstractListView {
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.dataUrl = process.env.REACT_APP_USERS_URL
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Table responsive>
@@ -92,6 +100,10 @@ export default class UserList extends AbstractListView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

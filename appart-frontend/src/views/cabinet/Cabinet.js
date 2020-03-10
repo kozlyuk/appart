@@ -16,13 +16,24 @@ import {
 	UncontrolledDropdown
 } from "reactstrap";
 import News from "./News";
-import PaymentList from "./PaymentList";
+import PaymentList from "./PaymentList.tsx";
 
+/**
+ * Cabinet view
+ *
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const Cabinet = (props) => {
 
-	const [activeTab, setActiveTab] = useState('1');
+	const [activeTab, setActiveTab] = useState('2');
 	const [isOpen, setIsOpen] = useState(false);
 
+	/**
+	 *
+	 * @param tab
+	 */
 	const toggle = tab => {
 		if(activeTab !== tab) setActiveTab(tab);
 	};
@@ -48,7 +59,7 @@ const Cabinet = (props) => {
 							</NavItem>
 							<UncontrolledDropdown nav inNavbar>
 								<DropdownToggle nav caret>
-									Profile
+									{props.user.email}
 								</DropdownToggle>
 								<DropdownMenu right>
 									<DropdownItem>
@@ -58,8 +69,8 @@ const Cabinet = (props) => {
 										Option 2
 									</DropdownItem>
 									<DropdownItem divider />
-									<DropdownItem>
-										Reset
+									<DropdownItem onClick={()=>{console.log("exit")}}>
+										Вийти
 									</DropdownItem>
 								</DropdownMenu>
 							</UncontrolledDropdown>
@@ -118,7 +129,7 @@ const Cabinet = (props) => {
 													<News />
 												</TabPane>
 												<TabPane tabId="2">
-													<PaymentList/>
+													<PaymentList user={props.user} />
 												</TabPane>
 												<TabPane tabId="3">
 													<Row>

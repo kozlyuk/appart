@@ -42,6 +42,7 @@ class GetUserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "pk",
+            "email",
             "is_staff",
             "apartments"
         ]

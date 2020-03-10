@@ -16,6 +16,10 @@ import Page from "../../components/Page";
 
 export default class ApartmentUpdate extends AbstractFormView {
 
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -42,6 +46,11 @@ export default class ApartmentUpdate extends AbstractFormView {
 		this.addResidentToAppartment.bind(this)
 	}
 
+	/**
+	 *
+	 * @param target
+	 * @returns {FormData}
+	 */
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
@@ -56,6 +65,10 @@ export default class ApartmentUpdate extends AbstractFormView {
 		return userFormData;
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	getResidentData = (value) => {
 		this.setState({
 			residentData: {
@@ -67,6 +80,11 @@ export default class ApartmentUpdate extends AbstractFormView {
 		})
 	};
 
+	/**
+	 *
+	 * @param resident_phone
+	 * @param id
+	 */
 	addResidentToAppartment= (resident_phone, id) => {
 		this.setState({
 			residentIsPinned: resident_phone,
@@ -82,6 +100,8 @@ export default class ApartmentUpdate extends AbstractFormView {
 	 *
 	 * check field valid and
 	 * set errors str to state
+	 *
+	 * @param event
 	 **/
 	handleChange = (event) => {
 		event.preventDefault();
@@ -119,6 +139,10 @@ export default class ApartmentUpdate extends AbstractFormView {
 		this.setState({errors, [name]: value});
 	};
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Fragment>
@@ -240,6 +264,10 @@ export default class ApartmentUpdate extends AbstractFormView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

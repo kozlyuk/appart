@@ -7,10 +7,25 @@ import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
 import Page from "../../components/Page";
 
-// ugly regular expression for validate length of phone number
+/**
+ * ugly regular expression for validate length of phone number
+ *
+ * @type {RegExp}
+ */
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
-// ugly regular expression for validate email
+
+/**
+ * ugly regular expression for validate email
+ *
+ * @type {RegExp}
+ */
 const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+/**
+ *
+ * @param errors
+ * @returns {boolean}
+ */
 const validateForm = (errors) => {
 	let valid = true;
 	Object.values(errors).forEach(
@@ -20,7 +35,10 @@ const validateForm = (errors) => {
 };
 
 export default class UserUpdate extends AbstractFormView {
-
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -42,14 +60,29 @@ export default class UserUpdate extends AbstractFormView {
 		this.requestType = "put"
 	}
 
+	/**
+	 *
+	 * @param event
+	 * @returns {*}
+	 */
 	uploadFileValidationFormat(event) {
 		return event.target.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)
 	}
 
+	/**
+	 *
+	 * @param event
+	 * @returns {boolean}
+	 */
 	uploadFileValidationSize(event) {
 		return Math.round((event.target.files[0].size / 1000)) < 5000;
 	}
 
+	/**
+	 *
+	 * @param target
+	 * @returns {FormData}
+	 */
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
@@ -70,6 +103,8 @@ export default class UserUpdate extends AbstractFormView {
 	 *
 	 * check field valid and
 	 * set errors str to state
+	 *
+	 * @param event
 	 **/
 	handleChange = (event) => {
 		event.preventDefault();
@@ -123,7 +158,6 @@ export default class UserUpdate extends AbstractFormView {
 
 		this.setState({errors, [name]: value});
 	};
-
 
 	content() {
 		return (
@@ -242,6 +276,10 @@ export default class UserUpdate extends AbstractFormView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

@@ -12,12 +12,19 @@ import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
 
 export default class NewsUpdate extends AbstractFormView {
-
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.dataUrl = process.env.REACT_APP_NEWS_URL
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Fragment>
@@ -93,6 +100,10 @@ export default class NewsUpdate extends AbstractFormView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

@@ -16,11 +16,19 @@ import {Link} from "react-router-dom";
 
 
 export default class ChoiceList extends AbstractListView {
+    /**
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.dataUrl = process.env.REACT_APP_CHOICES_URL
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     content() {
         return (
             <Table responsive>
@@ -55,6 +63,10 @@ export default class ChoiceList extends AbstractListView {
         )
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     render() {
         const {error, isLoaded} = this.state;
         if (error) {

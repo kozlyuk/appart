@@ -21,11 +21,19 @@ import {Link} from "react-router-dom";
 
 
 export default class NewsList extends AbstractListView {
+    /**
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.dataUrl = process.env.REACT_APP_NEWS_URL
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     content() {
         return (
             <Table responsive>
@@ -88,6 +96,10 @@ export default class NewsList extends AbstractListView {
         )
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     render() {
         const {error, isLoaded} = this.state;
         if (error) {

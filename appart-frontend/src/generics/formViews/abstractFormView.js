@@ -3,7 +3,13 @@ import axios from 'axios'
 import Auth from "../../auth/auth";
 
 export default class AbstractFormView extends React.Component {
-
+	/**
+	 *
+	 * @param props
+	 * @param dataUrl
+	 * @param requestType
+	 * @param postUrl
+	 */
 	constructor(props, dataUrl, requestType, postUrl) {
 		super(props);
 		this.state = {

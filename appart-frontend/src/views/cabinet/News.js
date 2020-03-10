@@ -8,6 +8,12 @@
 import React from "react"
 import {Col, Row} from "reactstrap";
 
+/**
+ *
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const News = (props) => {
 
 	return (

@@ -80,12 +80,14 @@ class App extends React.Component {
         <BrowserRouter>
         <GAListener>
           <Switch>
-            <LayoutRoute
-              exact
-              path="/cabinet"
-              layout={EmptyLayout}
-              component={Cabinet}
-            />
+              <LayoutRoute
+                exact
+                path="/cabinet"
+                layout={EmptyLayout}
+                component={() => (
+                  <Cabinet user={this.state.user} />
+                )}
+              />
             <LayoutRoute
               exact
               path="/login"
@@ -102,42 +104,42 @@ class App extends React.Component {
                 <AuthPage {...props} authState={STATE_SIGNUP} />
                 )}
             />
-            <React.Suspense fallback={<PageSpinner />}>
-              <MainLayout breakpoint={this.props.breakpoint}>
-                <Route exact path="/" component={DashboardPage} />
-                <Route exact path="/user" component={UserList} />
-                <Switch>
-                  <Route exact path="/user/new" component={UserNew} />
-                  <Route exact path="/user/:id/edit" component={UserUpdate} />
-                  <Route exact path="/user/:id/delete" component={UserDelete} />
-                  <Route exact path="/user/:id" component={UserDetail} />
-                </Switch>
-                <Route exact path="/house" component={HouseList} />
-                <Switch>
-                  <Route exact path="/house/new" component={HouseNew} />
-                  <Route exact path="/house/:id/edit" component={HouseUpdate} />
-                  <Route exact path="/house/:id/delete" component={HouseDelete} />
-                </Switch>
-                <Route exact path="/apartment" component={ApartmentList} />
-                <Switch>
-                  <Route exact path="/apartment/new" component={ApartmentNew} />
-                  <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
-                  <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
-                </Switch>
-                <Route exact path="/choice" component={ChoiceList} />
-                <Switch>
-                  <Route exact path="/choice/new" component={ChoiceNew} />
-                  <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
-                  <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
-                </Switch>
-                <Route exact path="/news" component={NewsList} />
-                <Switch>
-                  <Route exact path="/news/new" component={NewsNew} />
-                  <Route exact path="/news/:id/edit" component={NewsUpdate} />
-                  <Route exact path="/news/:id/delete" component={NewsDelete} />
-                </Switch>
-              </MainLayout>
-            </React.Suspense>
+              <React.Suspense fallback={<PageSpinner />}>
+                <MainLayout breakpoint={this.props.breakpoint}>
+                  <Route exact path="/" component={DashboardPage} />
+                  <Route exact path="/user" component={UserList} />
+                  <Switch>
+                    <Route exact path="/user/new" component={UserNew} />
+                    <Route exact path="/user/:id/edit" component={UserUpdate} />
+                    <Route exact path="/user/:id/delete" component={UserDelete} />
+                    <Route exact path="/user/:id" component={UserDetail} />
+                  </Switch>
+                  <Route exact path="/house" component={HouseList} />
+                  <Switch>
+                    <Route exact path="/house/new" component={HouseNew} />
+                    <Route exact path="/house/:id/edit" component={HouseUpdate} />
+                    <Route exact path="/house/:id/delete" component={HouseDelete} />
+                  </Switch>
+                  <Route exact path="/apartment" component={ApartmentList} />
+                  <Switch>
+                    <Route exact path="/apartment/new" component={ApartmentNew} />
+                    <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
+                    <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
+                  </Switch>
+                  <Route exact path="/choice" component={ChoiceList} />
+                  <Switch>
+                    <Route exact path="/choice/new" component={ChoiceNew} />
+                    <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
+                    <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
+                  </Switch>
+                  <Route exact path="/news" component={NewsList} />
+                  <Switch>
+                    <Route exact path="/news/new" component={NewsNew} />
+                    <Route exact path="/news/:id/edit" component={NewsUpdate} />
+                    <Route exact path="/news/:id/delete" component={NewsDelete} />
+                  </Switch>
+                </MainLayout>
+              </React.Suspense>
             {/*<Redirect to="/" />*/}
           </Switch>
         </GAListener>
@@ -160,6 +162,11 @@ class App extends React.Component {
   }
 }
 
+/**
+ *
+ * @param width
+ * @returns {{breakpoint: string}}
+ */
 const query = ({ width }) => {
   if (width < 575) {
     return { breakpoint: 'xs' };

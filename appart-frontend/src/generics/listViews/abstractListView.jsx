@@ -4,6 +4,12 @@ import Auth from "../../auth/auth";
 
 export default class AbstractListView extends React.Component{
 	dataUrl;
+
+	/**
+	 *
+	 * @param props
+	 * @param dataUrl
+	 */
 	constructor(props, dataUrl) {
 		super(props);
 		this.state = {
@@ -26,11 +32,19 @@ export default class AbstractListView extends React.Component{
 		this.user = new Auth();
 	}
 
+	/**
+	 *
+	 * @param pageNumber
+	 */
 	handlePageChange(pageNumber) {
 		this.setState({activePage: pageNumber});
 		this.refreshData(pageNumber)
 	}
 
+	/**
+	 *
+	 * @param page
+	 */
 	refreshData(page) {
 		axios(`${this.dataUrl}?page=${page}`, {
 			headers: {
@@ -56,6 +70,10 @@ export default class AbstractListView extends React.Component{
 			);
 	}
 
+	/**
+	 *
+	 * @param dataUrl
+	 */
 	loadData(dataUrl) {
 		axios(dataUrl, {
 			headers: {
@@ -81,6 +99,11 @@ export default class AbstractListView extends React.Component{
 			);
 	}
 
+	/**
+	 *
+	 * @param modalType
+	 * @returns {function(...[*]=)}
+	 */
 	toggle = modalType => () => {
 		if (!modalType) {
 			return this.setState({
@@ -93,6 +116,10 @@ export default class AbstractListView extends React.Component{
 		});
 	};
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	componentDidMount() {
 		this.loadData(this.dataUrl);
 		return void 0;

@@ -1,5 +1,10 @@
 import classNames from 'classnames';
 
+/**
+ *
+ * @param namespace
+ * @returns {{create: (function(*): {b: (function(...[*]=): string), e: (function(*, ...[*]=): string), m: (function(*, ...[*]=): string)})}}
+ */
 export const createBEM = namespace => {
   return {
     create: blockName => {
@@ -24,6 +29,10 @@ export const createBEM = namespace => {
   };
 };
 
+/**
+ *
+ * @type {{create: (function(*): {b: (function(...[*]=): string), e: (function(*, ...[*]=): string), m: (function(*, ...[*]=): string)})}}
+ */
 export const bemNames = createBEM('cr');
 
 export default bemNames;

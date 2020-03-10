@@ -4,6 +4,10 @@ import classNames from 'classnames';
 
 import { Badge } from 'reactstrap';
 
+/**
+ *
+ * @type styles
+ */
 const positionMap = {
   'top-right': {
     top: -3,
@@ -23,6 +27,10 @@ const positionMap = {
   },
 };
 
+/**
+ *
+ * @type breakpoints
+ */
 const sizeMap = {
   xs: {
     width: 10,
@@ -46,6 +54,15 @@ const sizeMap = {
   },
 };
 
+/**
+ *
+ * @param position
+ * @param size
+ * @param style
+ * @param className
+ * @param restBadgeProps
+ * @returns {function(*): function({tag?: *, [p: string]: *}): *}
+ */
 const withBadge = ({
   position = 'bottom-right',
   size = 'sm',

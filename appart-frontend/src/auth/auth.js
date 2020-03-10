@@ -9,6 +9,10 @@
  */
 
 export default class Auth {
+	/**
+	 *
+	 * @param authenticate
+	 */
 	constructor(authenticate = false) {
 		this.authenticate = authenticate
 	}
@@ -32,23 +36,21 @@ export default class Auth {
 			.then(res => res.json())
 			.then(
 				result => {
-					console.log(result)
-					console.log(true)
 					return true
 				},
 				error => {
-					console.log(false)
 					return false
 				}
 			);
 	}
 
-	/*
+	/**
 	 * getAuthToken()
 	 *
-	 * return auth token from
 	 * local storage (in case when user activate checkbox "remember me")
 	 * or from session storage
+	 *
+	 * @returns {string|boolean}
 	 */
 	getAuthToken() {
 		let g_session_token = localStorage.getItem("auth");
@@ -63,13 +65,13 @@ export default class Auth {
 
 	}
 
-	/*
-	 * method Auth.login(
-	 * 	email?,
-	 * 	password?): Promise<void>
-	 *
+	/**
 	 * get parameters from backend
 	 * end put it to local storage
+	 *
+	 * @param email
+	 * @param password
+	 * @returns {Promise<void>}
 	 */
 	async login(email, password) {
 		let result = await this.postLoginData(email, password);
@@ -92,11 +94,13 @@ export default class Auth {
 		window.location.reload(false);
 	}
 
-	/*
-	 * method postLoginData(email?, password?): Promise<Response | undefined>
-	 *
+	/**
 	 * get parameters
 	 * and post to backend
+	 *
+	 * @param email
+	 * @param password
+	 * @returns {Promise<Response>}
 	 */
 	async postLoginData(email, password) {
 		try {

@@ -2,6 +2,11 @@ import React from "react"
 import axios from "axios";
 
 export default class AbstractDetailView extends React.Component {
+	/**
+	 *
+	 * @param props
+	 * @param dataUrl
+	 */
 	constructor(props, dataUrl) {
 		super(props);
 		this.state = {
@@ -11,6 +16,11 @@ export default class AbstractDetailView extends React.Component {
 		this.dataUrl = dataUrl
 	}
 
+	/**
+	 * Load data from ajax
+	 *
+	 * @param dataUrl
+	 */
 	loadData(dataUrl) {
 		axios(dataUrl, {
 			// headers: {
@@ -33,6 +43,10 @@ export default class AbstractDetailView extends React.Component {
 			);
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	componentDidMount() {
 		this.loadData(this.dataUrl + this.props.match.params.id + "/");
 		return void 0;

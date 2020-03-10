@@ -22,11 +22,20 @@
 //   'dark',
 // ];
 
+/**
+ *
+ * @param availableColor
+ * @returns {string|null}
+ */
 export const getColor = (availableColor = 'primary') => {
   if (typeof window === 'undefined') {
     return null;
   }
 
+  /**
+   *
+   * @type {string}
+   */
   const color = window
     .getComputedStyle(document.documentElement)
     .getPropertyValue(`--${availableColor}`);
@@ -34,6 +43,10 @@ export const getColor = (availableColor = 'primary') => {
   return color;
 };
 
+/**
+ *
+ * @returns {string[]}
+ */
 export const getThemeColors = () => [
   'primary',
   'secondary',

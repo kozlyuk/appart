@@ -11,6 +11,11 @@ import ButtonGroup from "reactstrap/es/ButtonGroup";
 import {Link} from "react-router-dom";
 
 export default class ChoiceDelete extends AbstractDeleteView {
+	/**
+	 *
+	 * @param props
+	 * @param dataUrl
+	 */
 	constructor(props, dataUrl) {
 		super(props);
 		this.state = {
@@ -23,6 +28,10 @@ export default class ChoiceDelete extends AbstractDeleteView {
 		console.log("delete")  //TODO!!!
 	}
 
+	/**
+	 *
+	 * @param dataUrl
+	 */
 	loadData(dataUrl) {
 		axios(dataUrl, {
 			// headers: {
@@ -45,11 +54,20 @@ export default class ChoiceDelete extends AbstractDeleteView {
 			);
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	componentDidMount() {
 		this.loadData(this.dataUrl + this.props.match.params.id + "/");
 		return void 0;
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 * @constructor
+	 */
 	Content() {
 		return (
 			<Col md={12}>
@@ -68,6 +86,10 @@ export default class ChoiceDelete extends AbstractDeleteView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {isLoaded} = this.state;
 		if (!isLoaded) {

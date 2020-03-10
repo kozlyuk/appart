@@ -12,12 +12,19 @@ import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";
 
 export default class ChoiceUpdate extends AbstractFormView {
-
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.dataUrl = process.env.REACT_APP_CHOICES_URL
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Fragment>
@@ -47,6 +54,10 @@ export default class ChoiceUpdate extends AbstractFormView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {

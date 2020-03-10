@@ -13,7 +13,10 @@ import AbstractFormView from "../../generics/formViews/abstractFormView";
 import Page from "../../components/Page";
 
 export default class HouseUpdate extends AbstractFormView {
-
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,14 +36,29 @@ export default class HouseUpdate extends AbstractFormView {
 		this.requestType = "put"
 	}
 
+	/**
+	 *
+	 * @param event
+	 * @returns {*}
+	 */
 	uploadFileValidationFormat(event) {
 		return event.target.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)
 	}
 
+	/**
+	 *
+	 * @param event
+	 * @returns {boolean}
+	 */
 	uploadFileValidationSize(event) {
 		return Math.round((event.target.files[0].size / 1000)) < 5000;
 	}
 
+	/**
+	 *
+	 * @param target
+	 * @returns {FormData}
+	 */
 	submitData(target){
 		const userFormData = new FormData();
 		// dict of all elements
@@ -54,13 +72,15 @@ export default class HouseUpdate extends AbstractFormView {
 		return userFormData;
 	}
 
-	/*
+	/**
 	 * Form field validation
 	 * handleChange(event): void
 	 *
 	 * check field valid and
 	 * set errors str to state
-	 **/
+	 *
+	 * @param event
+	 */
 	handleChange = (event) => {
 		event.preventDefault();
 		const { name, value } = event.target;
@@ -101,6 +121,10 @@ export default class HouseUpdate extends AbstractFormView {
 		this.setState({errors, [name]: value});
 	};
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	content() {
 		return (
 			<Fragment>
@@ -193,6 +217,10 @@ export default class HouseUpdate extends AbstractFormView {
 		)
 	}
 
+	/**
+	 *
+	 * @returns {*}
+	 */
 	render() {
 		const {error, isLoaded} = this.state;
 		if (error) {
