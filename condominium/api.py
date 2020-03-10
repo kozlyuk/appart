@@ -1,12 +1,11 @@
 from django.db.models import Q
 from rest_framework import viewsets
-from django_auto_prefetching import AutoPrefetchViewSetMixin
 
 from condominium.models import Company, House, Apartment
 from condominium.serializers import CompanySerializer, HouseSerializer, ApartmentSerializer
 
 
-class ApartmentViewSet(AutoPrefetchViewSetMixin, viewsets.ModelViewSet):
+class ApartmentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Apartment class
     Filter queryset by search string ('filter' get parameter)
     Filter queryset by house and is_active fields ('house', 'is_active' get parameters)
@@ -17,7 +16,7 @@ class ApartmentViewSet(AutoPrefetchViewSetMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
             queryset = Apartment.objects.all()
-            search_string = self.request.GET.get('filter').split()
+            search_string = self.request.GET.get('filter', '').split()
             house = self.request.GET.get('house')
             is_active = self.request.GET.get('is_active', 'n')
             order = self.request.GET.get('order')
@@ -34,6 +33,8 @@ class ApartmentViewSet(AutoPrefetchViewSetMixin, viewsets.ModelViewSet):
                 queryset = queryset.filter(is_active=is_active)
             if order:
                 queryset = queryset.order_by(order)
+
+            queryset = queryset.select_related('house', 'resident')
             return queryset
 
 

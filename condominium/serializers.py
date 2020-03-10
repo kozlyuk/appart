@@ -2,10 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
-
 from condominium.models import Apartment, House, Company
-from accounts.models import User
-from accounts.serializers import UserSerializer
 
 
 class ApartmentSerializer(serializers.ModelSerializer):

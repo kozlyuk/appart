@@ -1,11 +1,16 @@
 """appart.dimservice URL Configuration"""
 
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-# from dimservice.api import BillListView, GetTotalDebt
+from dimservice import api
+
+router = routers.DefaultRouter()
+router.register("work", api.WorkViewSet)
+router.register("order", api.OrderViewSet, basename='Order')
+router.register("execution", api.ExecutionViewSet)
+
 
 urlpatterns = (
-    # path("api/v1/get_bills/<int:apartment>/", BillListView.as_view()),
-    # path("api/v1/get_total_debt/<int:apartment>/", GetTotalDebt.as_view()),
-    # path("api/v1/get_payments/<int:apartment>/", BillListView.as_view())
-    )
+    path("api/v1/", include(router.urls)),
+)

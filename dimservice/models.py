@@ -14,6 +14,7 @@ class Work(models.Model):
     price = models.DecimalField(_('Price'), max_digits=8, decimal_places=2, default=0)
     description = models.TextField(_('Description'), blank=True)
     active = models.BooleanField(_('Active'), default=True)
+    duration = models.DurationField(_('Duration'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Work')
