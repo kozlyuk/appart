@@ -33,7 +33,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(is_active=is_active)
             if order:
                 queryset = queryset.order_by(order)
-
+            # optimizing SQL queries
             queryset = queryset.select_related('house', 'resident')
             return queryset
 

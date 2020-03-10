@@ -28,7 +28,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "apartment",
             "apartment_name",
             "work",
-            "executors",
             "exec_status",
             "pay_status",
             "information",

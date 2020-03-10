@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from dimservice.models import Work, Order, Execution
 from dimservice.serializers import WorkSerializer, OrderSerializer, ExecutionSerializer
@@ -17,9 +17,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        # Simply add the extra select_related / prefetch_related here
         queryset = Order.objects.all()
-        queryset = queryset.select_related('apartment', 'apartment__house')   # TODO not working!!!
+        # optimizing SQL queries
+        queryset = queryset.select_related('apartment__house')
         return queryset
 
 

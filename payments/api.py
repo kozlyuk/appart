@@ -55,7 +55,8 @@ class BillListView(ListAPIView):
             raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
         # get bills for apartment
         queryset = apartment.bill_set.filter(is_active=True)
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        # optimizing SQL queries
+        queryset = queryset.prefetch_related('billline_set')
         return queryset.order_by('period')
 
 

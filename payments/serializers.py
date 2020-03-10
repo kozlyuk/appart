@@ -36,7 +36,6 @@ class BillLineSerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     bill_lines = BillLineSerializer(source='billline_set', many=True)
-    currency = serializers.SerializerMethodField()
 
     class Meta:
         model = Bill
@@ -46,17 +45,7 @@ class BillSerializer(serializers.ModelSerializer):
             "total_value",
             "period",
             "bill_lines",
-            "currency"
         ]
-
-    @staticmethod
-    def setup_eager_loading(queryset):
-        """ optimizing 'to-many' relationships with prefetch_related """
-        queryset = queryset.prefetch_related('billline_set')
-        return queryset
-
-    def get_currency(self, obj):
-        return settings.CURRENCY
 
 
 class ServiceSerializer(serializers.ModelSerializer):
