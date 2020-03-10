@@ -30,6 +30,7 @@ INSTALLED_APPS += [
     'messaging.apps.MessagingConfig',
     'notice.apps.NoticeConfig',
     'pages.apps.PagesConfig',
+    'dimservice.apps.DimserviceConfig',
     'templatetags',
     'bootstrap4',
     'rest_framework',
