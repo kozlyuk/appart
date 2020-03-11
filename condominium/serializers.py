@@ -5,20 +5,21 @@ from rest_framework.response import Response
 from condominium.models import Apartment, House, Company
 
 
+class ResidentField(serializers.RelatedField):
+    def to_representation(self, value):
+        return value.pk, value.mobile_number, \
+               f"{value.first_name} {value.last_name}"
+
 class ApartmentSerializer(serializers.ModelSerializer):
-    house_name = serializers.SerializerMethodField()
-    resident_name = serializers.SerializerMethodField()
-    resident_phone = serializers.SerializerMethodField()
+    house = serializers.StringRelatedField()
+    resident = ResidentField(read_only=True)
 
     class Meta:
         model = Apartment
         fields = [
             "pk",
             "house",
-            "house_name",
             "resident",
-            "resident_name",
-            "resident_phone",
             "number",
             "description",
             "is_active",
@@ -26,16 +27,11 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "residents_count",
         ]
 
-    def get_house_name(self, obj):
-        return obj.house.name
-
-    def get_resident_name(self, obj):
-        if obj.resident:
-            return f"{obj.resident.first_name} {obj.resident.last_name}"
-
-    def get_resident_phone(self, obj):
-        if obj.resident:
-            return obj.resident.mobile_number
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ optimizing "to-one" relationships with select_related """
+        queryset = queryset.select_related('house', 'resident')
+        return queryset
 
 
 class HouseSerializer(serializers.ModelSerializer):

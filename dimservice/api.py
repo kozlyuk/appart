@@ -18,8 +18,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Order.objects.all()
-        # optimizing SQL queries
-        queryset = queryset.select_related('apartment__house')
+
+        # Set up eager loading to avoid N+1 selects
+        # queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset
 
 

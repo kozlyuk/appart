@@ -33,8 +33,9 @@ class ApartmentViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(is_active=is_active)
             if order:
                 queryset = queryset.order_by(order)
-            # optimizing SQL queries
-            queryset = queryset.select_related('house', 'resident')
+
+            # Set up eager loading to avoid N+1 selects
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)
             return queryset
 
 

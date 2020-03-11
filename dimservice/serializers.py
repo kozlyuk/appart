@@ -20,13 +20,11 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    apartment_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
         fields = [
             "apartment",
-            "apartment_name",
             "work",
             "exec_status",
             "pay_status",
@@ -38,9 +36,11 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_closed",
         ]
 
-    def get_apartment_name(self, obj):
-        return f"{obj.apartment.number} - {obj.apartment.house.name}"
-
+    # @staticmethod
+    # def setup_eager_loading(queryset):
+    #     """ optimizing "to-many" relationships with prefetch_related """
+    #     queryset = queryset.select_related("apartment",'apartment__house')
+    #     return queryset
 
 class ExecutionSerializer(serializers.ModelSerializer):
 
