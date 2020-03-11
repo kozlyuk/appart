@@ -17,6 +17,15 @@ import {
 } from "reactstrap";
 import News from "./News";
 import PaymentList from "./PaymentList.tsx";
+import Auth from "../../auth/auth";
+import {Link} from "react-router-dom";
+
+/**
+ * User object
+ *
+ * @type {Auth}
+ */
+const user = new Auth();
 
 /**
  * Cabinet view
@@ -43,7 +52,7 @@ const Cabinet = (props) => {
 
 	return (
 			<div>
-				<Navbar color="light" light expand="md" sticky fixed>
+				<Navbar color="light" light expand="md">
 					<NavbarBrand href="/">Дім онлайн</NavbarBrand>
 					<NavbarToggler onClick={navbarToggle} />
 					<Collapse isOpen={isOpen} navbar>
@@ -62,14 +71,16 @@ const Cabinet = (props) => {
 									{props.user.email}
 								</DropdownToggle>
 								<DropdownMenu right>
+									<Link to="/" >
+										<DropdownItem>
+											Адміністрування
+										</DropdownItem>
+									</Link>
 									<DropdownItem>
-										Option 1
-									</DropdownItem>
-									<DropdownItem>
-										Option 2
+										Мій профіль
 									</DropdownItem>
 									<DropdownItem divider />
-									<DropdownItem onClick={()=>{console.log("exit")}}>
+									<DropdownItem onClick={()=>{user.logout()}}>
 										Вийти
 									</DropdownItem>
 								</DropdownMenu>
@@ -131,20 +142,20 @@ const Cabinet = (props) => {
 												<TabPane tabId="2">
 													<PaymentList user={props.user} />
 												</TabPane>
-												<TabPane tabId="3">
-													<Row>
-														<Col sm="12">
-															Оплати
-														</Col>
-													</Row>
-												</TabPane>
-												<TabPane tabId="4">
-													<Row>
-														<Col sm="12">
-															Сервісна служба
-														</Col>
-													</Row>
-												</TabPane>
+												{/*<TabPane tabId="3">*/}
+												{/*	<Row>*/}
+												{/*		<Col sm="12">*/}
+												{/*			Оплати*/}
+												{/*		</Col>*/}
+												{/*	</Row>*/}
+												{/*</TabPane>*/}
+												{/*<TabPane tabId="4">*/}
+												{/*	<Row>*/}
+												{/*		<Col sm="12">*/}
+												{/*			Сервісна служба*/}
+												{/*		</Col>*/}
+												{/*	</Row>*/}
+												{/*</TabPane>*/}
 											</TabContent>
 										</div>
 									</div>

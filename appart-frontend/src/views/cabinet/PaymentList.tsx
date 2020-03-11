@@ -11,22 +11,13 @@ import axios from "axios";
 import Auth from "../../auth/auth";
 // @ts-ignore
 import {Text} from "react-easy-i18n";
-
-interface PaymentListStateInterface {
-	apartments: undefined,
-	isLoaded: boolean|null,
-	data: any,
-	paginationCount: number|null,
-	paginationNext: number|null,
-	paginationPrevious: number|null,
-	user: any
-}
+import BillCard from "./billCard/BillCard";
 
 interface PaymentListPropsInterface {
 	user: any;
 }
 
-export default class PaymentList extends React.Component<PaymentListPropsInterface, PaymentListStateInterface>{
+export default class PaymentList extends React.Component<PaymentListPropsInterface, {}>{
 
 	/**
 	 * User object
@@ -39,7 +30,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
 	 * @param props
 	 * @param context
 	 */
-	constructor(props: any, context: any) {
+	constructor(props: PaymentListPropsInterface, context: any) {
 		super(props, context);
 		this.state = {
 			isLoaded: false,
@@ -74,7 +65,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
 	}
 
 	render() {
-		const {isLoaded} = this.state;
+		const {isLoaded}: any = this.state;
 		if (!isLoaded) {
 			return (
 				<div className="loaderWrapper text-center mt-4">
@@ -105,17 +96,8 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
 							{/*
 							// @ts-ignore*/}
 								{this.state.data.map((item) => (
-								<tr>
-									<td>
-										{item.number}
-									</td>
-									<td className="text-center">
-										{item.period}
-									</td>
-									<td className="text-center">
-										{item.total_value}
-									</td>
-								</tr>))}
+									<BillCard bill={item}/>
+								))}
 							</tbody>
 						</table>
 					</Col>

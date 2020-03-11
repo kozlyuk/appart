@@ -1,11 +1,11 @@
-import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
+import {STATE_LOGIN, STATE_SIGNUP} from 'components/AuthForm';
 import GAListener from 'components/GAListener';
-import { EmptyLayout, LayoutRoute, MainLayout } from 'components/Layout';
+import {EmptyLayout, LayoutRoute, MainLayout} from 'components/Layout';
 import PageSpinner from 'components/PageSpinner';
 import AuthPage from 'pages/AuthPage';
 import React, {Fragment} from 'react';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import './styles/reduction.scss';
 import Auth from "./auth/auth"
 import axios from "axios"
@@ -75,77 +75,78 @@ class App extends React.Component {
 
   render() {
     if (this.state.isAuthenticate) {
-    return (
-      <Fragment>
-        <BrowserRouter>
-        <GAListener>
-          <Switch>
-              <LayoutRoute
-                exact
-                path="/cabinet"
-                layout={EmptyLayout}
-                component={() => (
-                  <Cabinet user={this.state.user} />
-                )}
-              />
-            <LayoutRoute
-              exact
-              path="/login"
-              layout={EmptyLayout}
-              component={props => (
-                <AuthPage {...props} authState={STATE_LOGIN} />
-                )}
-            />
-            <LayoutRoute
-              exact
-              path="/signup"
-              layout={EmptyLayout}
-              component={props => (
-                <AuthPage {...props} authState={STATE_SIGNUP} />
-                )}
-            />
-              <React.Suspense fallback={<PageSpinner />}>
-                <MainLayout breakpoint={this.props.breakpoint}>
-                  <Route exact path="/" component={DashboardPage} />
-                  <Route exact path="/user" component={UserList} />
-                  <Switch>
-                    <Route exact path="/user/new" component={UserNew} />
-                    <Route exact path="/user/:id/edit" component={UserUpdate} />
-                    <Route exact path="/user/:id/delete" component={UserDelete} />
-                    <Route exact path="/user/:id" component={UserDetail} />
-                  </Switch>
-                  <Route exact path="/house" component={HouseList} />
-                  <Switch>
-                    <Route exact path="/house/new" component={HouseNew} />
-                    <Route exact path="/house/:id/edit" component={HouseUpdate} />
-                    <Route exact path="/house/:id/delete" component={HouseDelete} />
-                  </Switch>
-                  <Route exact path="/apartment" component={ApartmentList} />
-                  <Switch>
-                    <Route exact path="/apartment/new" component={ApartmentNew} />
-                    <Route exact path="/apartment/:id/edit" component={ApartmentUpdate} />
-                    <Route exact path="/apartment/:id/delete" component={ApartmentDelete} />
-                  </Switch>
-                  <Route exact path="/choice" component={ChoiceList} />
-                  <Switch>
-                    <Route exact path="/choice/new" component={ChoiceNew} />
-                    <Route exact path="/choice/:id/edit" component={ChoiceUpdate} />
-                    <Route exact path="/choice/:id/delete" component={ChoiceDelete} />
-                  </Switch>
-                  <Route exact path="/news" component={NewsList} />
-                  <Switch>
-                    <Route exact path="/news/new" component={NewsNew} />
-                    <Route exact path="/news/:id/edit" component={NewsUpdate} />
-                    <Route exact path="/news/:id/delete" component={NewsDelete} />
-                  </Switch>
-                </MainLayout>
-              </React.Suspense>
-            {/*<Redirect to="/" />*/}
-          </Switch>
-        </GAListener>
-      </BrowserRouter>
-      </Fragment>
-    );} else {
+      return (
+        <Fragment>
+          <BrowserRouter>
+            <GAListener>
+              <Switch>
+                <LayoutRoute
+                  exact
+                  path="/cabinet"
+                  layout={EmptyLayout}
+                  component={() => (
+                    <Cabinet user={this.state.user}/>
+                  )}
+                />
+                <LayoutRoute
+                  exact
+                  path="/login"
+                  layout={EmptyLayout}
+                  component={props => (
+                    <AuthPage {...props} authState={STATE_LOGIN}/>
+                  )}
+                />
+                <LayoutRoute
+                  exact
+                  path="/signup"
+                  layout={EmptyLayout}
+                  component={props => (
+                    <AuthPage {...props} authState={STATE_SIGNUP}/>
+                  )}
+                />
+                <React.Suspense fallback={<PageSpinner/>}>
+                  <MainLayout breakpoint={this.props.breakpoint}>
+                    <Route exact path="/" component={DashboardPage}/>
+                    <Route exact path="/user" component={UserList}/>
+                    <Switch>
+                      <Route exact path="/user/new" component={UserNew}/>
+                      <Route exact path="/user/:id/edit" component={UserUpdate}/>
+                      <Route exact path="/user/:id/delete" component={UserDelete}/>
+                      <Route exact path="/user/:id" component={UserDetail}/>
+                    </Switch>
+                    <Route exact path="/house" component={HouseList}/>
+                    <Switch>
+                      <Route exact path="/house/new" component={HouseNew}/>
+                      <Route exact path="/house/:id/edit" component={HouseUpdate}/>
+                      <Route exact path="/house/:id/delete" component={HouseDelete}/>
+                    </Switch>
+                    <Route exact path="/apartment" component={ApartmentList}/>
+                    <Switch>
+                      <Route exact path="/apartment/new" component={ApartmentNew}/>
+                      <Route exact path="/apartment/:id/edit" component={ApartmentUpdate}/>
+                      <Route exact path="/apartment/:id/delete" component={ApartmentDelete}/>
+                    </Switch>
+                    <Route exact path="/choice" component={ChoiceList}/>
+                    <Switch>
+                      <Route exact path="/choice/new" component={ChoiceNew}/>
+                      <Route exact path="/choice/:id/edit" component={ChoiceUpdate}/>
+                      <Route exact path="/choice/:id/delete" component={ChoiceDelete}/>
+                    </Switch>
+                    <Route exact path="/news" component={NewsList}/>
+                    <Switch>
+                      <Route exact path="/news/new" component={NewsNew}/>
+                      <Route exact path="/news/:id/edit" component={NewsUpdate}/>
+                      <Route exact path="/news/:id/delete" component={NewsDelete}/>
+                    </Switch>
+                  </MainLayout>
+                </React.Suspense>
+                {/*<Redirect to="/" />*/}
+              </Switch>
+            </GAListener>
+          </BrowserRouter>
+        </Fragment>
+      );
+    } else {
       return (
         <BrowserRouter>
           <LayoutRoute
@@ -153,8 +154,8 @@ class App extends React.Component {
             path="/"
             layout={EmptyLayout}
             component={props => (
-              <AuthPage {...props} authState={STATE_LOGIN} />
-              )}
+              <AuthPage {...props} authState={STATE_LOGIN}/>
+            )}
           />
         </BrowserRouter>
       )
@@ -167,28 +168,28 @@ class App extends React.Component {
  * @param width
  * @returns {{breakpoint: string}}
  */
-const query = ({ width }) => {
+const query = ({width}) => {
   if (width < 575) {
-    return { breakpoint: 'xs' };
+    return {breakpoint: 'xs'};
   }
 
   if (576 < width && width < 767) {
-    return { breakpoint: 'sm' };
+    return {breakpoint: 'sm'};
   }
 
   if (768 < width && width < 991) {
-    return { breakpoint: 'md' };
+    return {breakpoint: 'md'};
   }
 
   if (992 < width && width < 1199) {
-    return { breakpoint: 'lg' };
+    return {breakpoint: 'lg'};
   }
 
   if (width > 1200) {
-    return { breakpoint: 'xl' };
+    return {breakpoint: 'xl'};
   }
 
-  return { breakpoint: 'xs' };
+  return {breakpoint: 'xs'};
 };
 
 export default componentQueries(query)(App);
