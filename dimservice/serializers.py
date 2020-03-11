@@ -26,6 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             "apartment",
             "work",
+            "number",
             "exec_status",
             "pay_status",
             "information",
