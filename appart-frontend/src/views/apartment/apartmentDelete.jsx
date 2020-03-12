@@ -1,11 +1,11 @@
 import React from 'react';
-import Container from 'reactstrap/es/Container';
+import Container from 'reactstrap/lib/Container';
 import { CardBody, Col } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import axios from 'axios';
-import Card from 'reactstrap/es/Card';
-import Button from 'reactstrap/es/Button';
-import ButtonGroup from 'reactstrap/es/ButtonGroup';
+import Card from 'reactstrap/lib/Card';
+import Button from 'reactstrap/lib/Button';
+import ButtonGroup from 'reactstrap/lib/ButtonGroup';
 import { Link } from 'react-router-dom';
 import AbstractDeleteView from '../../generics/deleteViews/abstractDeleteView';
 
@@ -57,7 +57,9 @@ export default class ApartmentDelete extends AbstractDeleteView {
    * @returns {*}
    */
   componentDidMount() {
-    this.loadData(`${this.dataUrl + this.props.match.params.id}/`);
+    if (this.props.match.params) {
+      this.loadData(`${this.dataUrl + this.props.match.params.id}/`);
+    }
     return 0;
   }
 

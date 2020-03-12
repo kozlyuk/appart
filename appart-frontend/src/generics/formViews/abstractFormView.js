@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
-import Auth from "../../auth/auth";
+import React from 'react';
+import axios from 'axios';
+import Auth from '../../auth/auth';
 
 export default class AbstractFormView extends React.Component {
   /**
@@ -15,7 +15,7 @@ export default class AbstractFormView extends React.Component {
     this.state = {
       isLoaded: false,
       data: null,
-      url: ""
+      url: ''
     };
     this.dataUrl = dataUrl;
     this.postUrl = postUrl;
@@ -26,7 +26,7 @@ export default class AbstractFormView extends React.Component {
   loadData(dataUrl) {
     axios(dataUrl, {
       headers: {
-        "Authorization": "Token " + this.user.getAuthToken()
+        'Authorization': 'Token ' + this.user.getAuthToken()
       }
     })
       .then(
@@ -55,7 +55,7 @@ export default class AbstractFormView extends React.Component {
       method: this.requestType,
       url: this.state.url,
       headers: {
-        "Authorization": "Token " + this.user.getAuthToken()
+        'Authorization': 'Token ' + this.user.getAuthToken()
       },
       data: this.submitData(event.target)
     }).then(function(response) {
@@ -72,15 +72,18 @@ export default class AbstractFormView extends React.Component {
 
   componentDidMount() {
     if (this.dataUrl) {
-      this.loadData(this.dataUrl + this.props.match.params.id + "/");
-      this.setState({
-        url: this.dataUrl + this.props.match.params.id + "/"
-      });
+      if (this.props.match) {
+        this.loadData(this.dataUrl + this.props.match.params.id + '/');
+
+        this.setState({
+          url: this.dataUrl + this.props.match.params.id + '/'
+        });
+      }
       return void 0;
     } else {
       console.log(this.dataUrl);
       this.setState({
-        data: "new",
+        data: 'new',
         url: this.postUrl
       });
     }

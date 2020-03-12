@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
-import './locales'
-import register from "./registerServiceWorker";
+import './locales';
+import { unregister } from './registerServiceWorker';
 
 
 ReactDOM.render(
-		<App />,document.getElementById('root'));
+  <App/>, document.getElementById('root'));
 
-register();
+unregister();
