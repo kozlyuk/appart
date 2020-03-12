@@ -16,7 +16,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GetUser(views.APIView):
     """
-    Return current authentificated User pk and is_staff fields
+    Return current authentificated User
+    pk, is_staff, apartments fields
     """
 
     def get(self, request):
