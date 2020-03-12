@@ -74,7 +74,20 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.isAuthenticate) {
+    if (!this.state.isAuthenticate) {
+      return (
+        <BrowserRouter>
+          <LayoutRoute
+            exact
+            path="/"
+            layout={EmptyLayout}
+            component={props => (
+              <AuthPage {...props} authState={STATE_LOGIN}/>
+            )}
+          />
+        </BrowserRouter>
+      );
+    } else {
       return (
         <Fragment>
           <BrowserRouter>
@@ -145,19 +158,6 @@ class App extends React.Component {
             </GAListener>
           </BrowserRouter>
         </Fragment>
-      );
-    } else {
-      return (
-        <BrowserRouter>
-          <LayoutRoute
-            exact
-            path="/"
-            layout={EmptyLayout}
-            component={props => (
-              <AuthPage {...props} authState={STATE_LOGIN}/>
-            )}
-          />
-        </BrowserRouter>
       );
     }
   }
