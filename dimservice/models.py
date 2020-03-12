@@ -13,7 +13,7 @@ class Work(models.Model):
     price_code = models.CharField(_('Price code'), max_length=10, unique=True)
     price = models.DecimalField(_('Price'), max_digits=8, decimal_places=2, default=0)
     description = models.TextField(_('Description'), blank=True)
-    active = models.BooleanField(_('Active'), default=True)
+    is_active = models.BooleanField(_('Active'), default=True)
     duration = models.DurationField(_('Duration'), blank=True, null=True)
 
     class Meta:
@@ -53,6 +53,7 @@ class Order(models.Model):
     executors = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Execution',
                                        related_name='orders',verbose_name=_('Goods'), blank=True)
     # Fields
+    number = models.CharField(_('Order number'), unique=True, max_length=32)
     exec_status = models.CharField(_('Execution status'), max_length=2,
                                     choices=EXEC_STATUS_CHOICES, default=New)
     pay_status = models.CharField(_('Pay status'), max_length=2,

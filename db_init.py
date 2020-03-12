@@ -1,13 +1,14 @@
 """ Create initial database """
-from datetime import date
+from datetime import date, timedelta
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from payments.models import Service
 from payments.tasks import create_area_bills
+from dimservice.models import Work, Order
 
 
 # Cteare superuser
-User.objects.create_superuser('0673607460', 'sergey.kozlyuk@gmail.com', '100Grad')
+user = User.objects.create_superuser('0673607460', 'sergey.kozlyuk@gmail.com', '100Grad')
 print("Superuser with login 0673607460 created")
 
 
@@ -50,7 +51,7 @@ RESIDENTS = [['Resident', '1', '0000000001', 'resident1@gmail.com'],
              ['Resident', '8', '0000000008', 'resident8@gmail.com'],
              ['Resident', '9', '0000000009', 'resident9@gmail.com'],
              ['Resident', '10', '0000000010', 'resident10@gmail.com'],
-             ]
+]
 
 residents_list = []
 for resident in RESIDENTS:
@@ -79,7 +80,7 @@ SERVICES = [['Управління будинком', 'Внески на упр�
              'BA', 0.95, 'sq.m.'],
             ['Теплова енергія', 'Внески на теплову енергію',
              'BC', 1497.0, 'Gcal']
-            ]
+]
 
 for service in SERVICES:
     Service.objects.create(house=house,
@@ -94,3 +95,28 @@ print("Initial Services created")
 create_area_bills(date.today())
 
 print("Initial Bills created")
+
+WORKS = [['Послуги сантехніка 1 кат.', '1.1', 300, 1],
+         ['Послуги сантехніка 2 кат.', '1.2', 500, 2],
+         ['Послуги сантехніка 3 кат.', '1.3', 700, 3],
+         ['Послуги електрика 1 кат.', '2.1', 200, 1],
+         ['Послуги електрика 2 кат.', '2.2', 400, 2],
+         ['Послуги електрика 3 кат.', '2.3', 600, 3],
+         ['Ремонт кондиціонера 1 кат.', '3.1', 500, 1],
+         ['Ремонт кондиціонера 2 кат.', '3.2', 750, 2],
+         ['Ремонт кондиціонера 3 кат.', '3.3', 1000, 3],
+]
+
+for work in WORKS:
+    work_obj = Work.objects.create(name=work[0],
+                                   price_code=work[1],
+                                   price=work[2],
+                                   duration=timedelta(hours=work[3]))
+
+    for apartment in apartments:
+        Order.objects.create(apartment=apartment,
+                             work=work_obj,
+                             number=apartment.order_number_generate(date.today()),
+                             created_by=user)
+
+print("Initial Works and Orders created")
