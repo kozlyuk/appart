@@ -28,8 +28,11 @@ button,
 .alert {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: Poppins, Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: $font-weight-normal;
+  @font-face {
+    font-family: Poppins, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-display: swap;
+    font-weight: $font-weight-normal;
+  }
 }
 
 .cr-app {
