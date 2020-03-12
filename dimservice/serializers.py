@@ -14,7 +14,7 @@ class WorkSerializer(serializers.ModelSerializer):
             "price_code",
             "price",
             "description",
-            "active",
+            "is_active",
             "duration"
         ]
 
