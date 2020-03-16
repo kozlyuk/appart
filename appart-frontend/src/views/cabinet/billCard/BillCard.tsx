@@ -10,6 +10,7 @@ import Collapse from 'reactstrap/lib/Collapse';
 
 /**
  * Props interface
+ *
  */
 interface BillCardPropsInterface {
   bill: {
@@ -20,6 +21,10 @@ interface BillCardPropsInterface {
   }
 }
 
+/**
+ * Bill card class
+ * @interface {@link BillCardPropsInterface}
+ */
 export default class BillCard extends React.Component <BillCardPropsInterface, {}> {
   constructor(props: BillCardPropsInterface, state: any) {
     super(props, state);

@@ -133,18 +133,19 @@ class AuthForm extends React.Component {
           </div>
         )}
         <FormGroup>
-          <Label for={usernameLabel}>{usernameLabel}</Label>
+          <Label for="mobileNumber">{usernameLabel}</Label>
           {this.state.errors.mobileNumber.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-          <Input name="mobileNumber" {...usernameInputProps} onChange={this.handleChange} autoComplete="off"/>
+          <Input id="mobileNumber" name="mobileNumber" {...usernameInputProps} onChange={this.handleChange}
+                 autoComplete="off"/>
         </FormGroup>
         <FormGroup>
-          <Label for={passwordLabel}>{passwordLabel}</Label>
+          <Label for="password">{passwordLabel}</Label>
           {this.state.errors.password.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.password}</FormText>}
-          <Input name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
+          <Input id="password" name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
         {/*{this.isSignup && (*/}
         {/*  <FormGroup>*/}

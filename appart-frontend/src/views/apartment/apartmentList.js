@@ -13,19 +13,40 @@ import {
   ModalFooter,
   ModalHeader,
   Row,
-  Table,
+  Table
 } from 'reactstrap';
-import {Text} from 'react-easy-i18n';
+import { FaCheck } from 'react-icons/fa';
+import { Text } from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
-import {Link} from "react-router-dom";
-import Pagination from "react-js-pagination";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ApartmentFilter from './filter/ApartmentFilter';
+import { MdClose } from 'react-icons/md';
 
 
 export default class ApartmentList extends AbstractListView {
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_APARTMENTS_URL
+    this.state = {
+      isFilterActive: true
+    };
+    this.filterUrl = process.env.REACT_APP_HOUSES_URL;
+    this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
+    this.filterSearchHandler = this.filterSearchHandler.bind(this);
+    this.filterSelectHandler = this.filterSelectHandler.bind(this);
+  }
+
+  filterSearchHandler(event) {
+    const searchValue = event.target.value.toString();
+    if (searchValue.length > 3) {
+      this.loadData(this.dataUrl + '?q=' + searchValue);
+    }
+  }
+
+  filterSelectHandler(event) {
+    const selectValue = event.target.value.toString();
+    this.loadData(this.dataUrl + '?house=' + selectValue);
   }
 
   content() {
@@ -35,18 +56,17 @@ export default class ApartmentList extends AbstractListView {
         <tr align="center">
           <th><Text text="apartmentList.tableHeader.number"/></th>
           <th><Text text="apartmentList.tableHeader.house"/></th>
-          {/*<th><Text text="apartmentList.tableHeader.area"/></th>*/}
           <th><Text text="apartmentList.tableHeader.resident"/></th>
           <th><Text text="apartmentList.tableHeader.actions"/></th>
+          <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data.map((apartment) => (
           <tr align="center">
             <td width="2%">{apartment.number}</td>
-            <td>{apartment.house_name}</td>
-            {/*<td>{apartment.area}</td>*/}
-            {apartment.resident_name ? <td>{apartment.resident_name}</td>
+            <td>{apartment.house}</td>
+            {apartment.resident ? <td>{apartment.resident[1]}</td>
               : <td><Text text="apartmentList.emptyApartment"/></td>}
 
             <td width="15%">
@@ -60,6 +80,13 @@ export default class ApartmentList extends AbstractListView {
                   <Text text="apartmentList.tableHeader.deleteBtn"/>
                 </Badge>
               </Link>
+            </td>
+            <td>
+              {apartment.is_active ?
+                <FaCheck className="text-success"/>
+                :
+                <MdClose className="text-danger"/>
+              }
             </td>
 
             <Modal
@@ -75,7 +102,7 @@ export default class ApartmentList extends AbstractListView {
                     subtitle={apartment.address}
                     text={apartment.description}
                     style={{
-                      height: 300,
+                      height: 300
                     }}
                   >
                   </UserCard>
@@ -91,11 +118,11 @@ export default class ApartmentList extends AbstractListView {
         ))}
         </tbody>
       </Table>
-    )
+    );
   }
 
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -108,9 +135,15 @@ export default class ApartmentList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.apartment"/>, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: true }]}
           className="TablePage"
         >
+          <ApartmentFilter
+            data={this.state.filterData}
+            filterSelectHandler={this.filterSelectHandler}
+            filterSearchHandler={this.filterSearchHandler}
+            isLoaded={this.state.isFilterLoaded}
+          />
           <Row>
             <Col>
               <Card className="mb-3">
@@ -143,7 +176,7 @@ export default class ApartmentList extends AbstractListView {
             </Col>
           </Row>
         </Page>
-      )
+      );
     }
   }
 }

@@ -4,17 +4,22 @@ import Auth from '../../auth/auth';
 
 export default class AbstractListView extends React.Component {
   dataUrl;
- 
+  filterUrl;
+
   /**
    *
    * @param props
    * @param dataUrl
+   * @param filterUrl
    */
-  constructor(props, dataUrl) {
+  constructor(props, dataUrl, filterUrl) {
     super(props);
     this.state = {
+      isFilterActive: false,
       isLoaded: false,
+      isFilterLoaded: false,
       data: null,
+      filterData: null,
       paginationCount: null,
       paginationNext: null,
       paginationPrevious: null,
@@ -29,10 +34,12 @@ export default class AbstractListView extends React.Component {
       backdrop: true
     };
     dataUrl = this.dataUrl;
+    filterUrl = this.filterUrl;
     this.user = new Auth();
   }
 
   /**
+   * Paginator
    *
    * @param pageNumber
    */
@@ -101,6 +108,32 @@ export default class AbstractListView extends React.Component {
 
   /**
    *
+   * @param dataUrl
+   */
+  loadFilterData(dataUrl) {
+    axios(dataUrl, {
+      headers: {
+        'Authorization': 'Token ' + this.user.getAuthToken()
+      }
+    })
+      .then(
+        result => {
+          this.setState({
+            isFilterLoaded: true,
+            filterData: result.data.results
+          });
+        },
+        error => {
+          this.setState({
+            isFilterLoaded: true,
+            error
+          });
+        }
+      );
+  }
+
+  /**
+   *
    * @param modalType
    * @returns {function(...[*]=)}
    */
@@ -122,6 +155,9 @@ export default class AbstractListView extends React.Component {
    */
   componentDidMount() {
     this.loadData(this.dataUrl);
+    if (this.state.isFilterActive) {
+      this.loadFilterData(this.filterUrl);
+    }
     return void 0;
   }
 }

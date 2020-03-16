@@ -24,7 +24,7 @@ import {
   UncontrolledDropdown
 } from 'reactstrap';
 import News from './News';
-import PaymentList from './PaymentList.tsx';
+import PaymentList from './PaymentList';
 import Auth from '../../auth/auth';
 import { Link } from 'react-router-dom';
 
