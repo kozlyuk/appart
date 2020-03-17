@@ -38,15 +38,17 @@ export default class ApartmentList extends AbstractListView {
   }
 
   filterSearchHandler(event) {
+    const queryName = event.target.getAttribute('filterquery');
     const searchValue = event.target.value.toString();
     if (searchValue.length > 3) {
-      this.loadData(this.dataUrl + '?q=' + searchValue);
+      this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
     }
   }
 
   filterSelectHandler(event) {
+    const queryName = event.target.getAttribute('filterquery');
     const selectValue = event.target.value.toString();
-    this.loadData(this.dataUrl + '?house=' + selectValue);
+    this.loadData(`${this.dataUrl}?${queryName}=${selectValue}`);
   }
 
   content() {
@@ -63,7 +65,7 @@ export default class ApartmentList extends AbstractListView {
         </thead>
         <tbody>
         {this.state.data.map((apartment) => (
-          <tr align="center">
+          <tr key={apartment.pk} align="center">
             <td width="2%">{apartment.number}</td>
             <td>{apartment.house}</td>
             {apartment.resident ? <td>{apartment.resident[1]}</td>

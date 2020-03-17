@@ -44,12 +44,13 @@ export default class ApartmentFilter extends React.Component<ApartmentFilterInte
                 onChange={filterSelectHandler}
                 type="select"
                 name="houseFilter"
+                filterquery="house"
                 id="houseFilter"
               >
                 {/*
                 // @ts-ignore*/}
                 {this.props.data.map(option => (
-                  <option value={option.pk}>
+                  <option key={option.pk} value={option.pk}>
                     {option.name}
                   </option>
                 ))}
@@ -63,6 +64,7 @@ export default class ApartmentFilter extends React.Component<ApartmentFilterInte
                 onChange={filterSearchHandler}
                 type="text"
                 name="search"
+                filterquery="filter"
                 id="search"
               />
             </FormGroup>
