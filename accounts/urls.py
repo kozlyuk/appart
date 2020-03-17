@@ -8,7 +8,7 @@ from accounts import views
 from accounts.api import UserViewSet, GetUser, GetByNumber
 
 router = routers.DefaultRouter()
-router.register("user", UserViewSet)
+router.register("user", UserViewSet, basename='User')
 
 urlpatterns = [
 

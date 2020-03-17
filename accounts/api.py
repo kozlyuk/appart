@@ -1,5 +1,6 @@
 import re
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Q
 from rest_framework import viewsets, views, status
 from rest_framework.response import Response
 
@@ -8,10 +9,27 @@ from accounts.models import User
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """ViewSet for the User class"""
+    """ ViewSet for the User class
+    Filter queryset by search string ('filter' get parameter)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+            queryset = User.objects.all()
+            search_string = self.request.GET.get('filter', '').split()
+            order = self.request.GET.get('order')
+            for word in search_string:
+                queryset = queryset.filter(Q(mobile_number__contains=word) |
+                                           Q(first_name__icontains=word) |
+                                           Q(last_name__icontains=word) |
+                                           Q(email__icontains=word))
+
+            if order:
+                queryset = queryset.order_by(order)
+
+            return queryset
 
 
 class GetUser(views.APIView):
@@ -28,7 +46,7 @@ class GetUser(views.APIView):
 class GetByNumber(views.APIView):
     """
     Return User object by given in URL mobile_number
-    or create ones if it isn`t exist.
+    or return status.HTTP_404_NOT_FOUND if it isn`t exist.
     """
 
     def get(self, request, mobile_number):
