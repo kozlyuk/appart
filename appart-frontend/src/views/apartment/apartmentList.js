@@ -37,6 +37,11 @@ export default class ApartmentList extends AbstractListView {
     this.filterSelectHandler = this.filterSelectHandler.bind(this);
   }
 
+  /**
+   * Search handler
+   *
+   * @param event
+   */
   filterSearchHandler(event) {
     const queryName = event.target.getAttribute('filterquery');
     const searchValue = event.target.value.toString();
@@ -45,12 +50,21 @@ export default class ApartmentList extends AbstractListView {
     }
   }
 
+  /**
+   * Filter handler
+   *
+   * @param event
+   */
   filterSelectHandler(event) {
     const queryName = event.target.getAttribute('filterquery');
     const selectValue = event.target.value.toString();
     this.loadData(`${this.dataUrl}?${queryName}=${selectValue}`);
   }
 
+  /**
+   *
+   * @return {*}
+   */
   content() {
     return (
       <Table responsive>

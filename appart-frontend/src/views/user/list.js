@@ -20,6 +20,7 @@ import { Text } from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
+import UserFilter from './filter/UserFilter';
 
 
 export default class UserList extends AbstractListView {
@@ -30,6 +31,20 @@ export default class UserList extends AbstractListView {
   constructor(props) {
     super(props);
     this.dataUrl = process.env.REACT_APP_USERS_URL;
+    this.filterSearchHandler = this.filterSearchHandler.bind(this);
+  }
+
+  /**
+   * Search handler
+   *
+   * @param event
+   */
+  filterSearchHandler(event) {
+    const queryName = event.target.getAttribute('filterquery');
+    const searchValue = event.target.value.toString();
+    if (searchValue.length > 3) {
+      this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
+    }
   }
 
   /**
@@ -129,6 +144,10 @@ export default class UserList extends AbstractListView {
           breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
           className="TablePage"
         >
+          <UserFilter
+            filterSearchHandler={this.filterSearchHandler}
+            isLoaded={true}
+          />
           <Row>
             <Col>
               <Card className="mb-3">
