@@ -5,6 +5,7 @@ from .models import Payment, Bill, Service, BillLine, PaymentService
 
 
 class PaymentServiceSerializer(serializers.ModelSerializer):
+    service = serializers.StringRelatedField()
 
     class Meta:
         model = PaymentService
