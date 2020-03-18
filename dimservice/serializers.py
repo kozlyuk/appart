@@ -20,10 +20,14 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    work = serializers.StringRelatedField()
+    exec_status = serializers.CharField(source='get_exec_status_display')
+    pay_status = serializers.CharField(source='get_pay_status_display')
 
     class Meta:
         model = Order
         fields = [
+            "pk",
             "apartment",
             "work",
             "number",
@@ -36,6 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_updated",
             "date_closed",
         ]
+
 
     # @staticmethod
     # def setup_eager_loading(queryset):

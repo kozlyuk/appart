@@ -17,19 +17,19 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-            queryset = User.objects.all()
-            search_string = self.request.GET.get('filter', '').split()
-            order = self.request.GET.get('order')
-            for word in search_string:
-                queryset = queryset.filter(Q(mobile_number__contains=word) |
-                                           Q(first_name__icontains=word) |
-                                           Q(last_name__icontains=word) |
-                                           Q(email__icontains=word))
+        queryset = User.objects.all()
+        search_string = self.request.GET.get('filter', '').split()
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(mobile_number__contains=word) |
+                                       Q(first_name__icontains=word) |
+                                       Q(last_name__icontains=word) |
+                                       Q(email__icontains=word))
 
-            if order:
-                queryset = queryset.order_by(order)
+        if order:
+            queryset = queryset.order_by(order)
 
-            return queryset
+        return queryset
 
 
 class GetUser(views.APIView):

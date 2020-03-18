@@ -4,7 +4,24 @@ from rest_framework import serializers
 from .models import Payment, Bill, Service, BillLine
 
 
+class ServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = [
+            "house",
+            "name",
+            "description",
+            "uom_type",
+            "rate",
+            "uom"
+        ]
+
+
 class PaymentSerializer(serializers.ModelSerializer):
+    # service = ServiceSerializer()
+    payment_type = serializers.CharField(source='get_payment_type_display')
+    action = serializers.CharField(source='get_action_display')
 
     class Meta:
         model = Payment
@@ -52,17 +69,3 @@ class BillSerializer(serializers.ModelSerializer):
         """ optimizing "to-many" relationships with prefetch_related """
         queryset = queryset.prefetch_related('billline_set')
         return queryset
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Service
-        fields = [
-            "house",
-            "name",
-            "description",
-            "uom_type",
-            "rate",
-            "uom"
-        ]
