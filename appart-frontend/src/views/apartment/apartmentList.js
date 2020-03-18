@@ -1,28 +1,16 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Row,
-  Table
-} from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { FaCheck } from 'react-icons/fa';
 import { Text } from 'react-easy-i18n';
-import UserCard from '../../components/Card/UserCard';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ApartmentFilter from './filter/ApartmentFilter';
 import { MdClose } from 'react-icons/md';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Fade from 'react-reveal/Fade';
 
 
 export default class ApartmentList extends AbstractListView {
@@ -30,6 +18,11 @@ export default class ApartmentList extends AbstractListView {
     super(props);
     this.state = {
       isFilterActive: true
+    };
+    this.groupProps = {
+      appear: true,
+      enter: true,
+      exit: true
     };
     this.filterUrl = process.env.REACT_APP_HOUSES_URL;
     this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
@@ -67,73 +60,51 @@ export default class ApartmentList extends AbstractListView {
    */
   content() {
     return (
-      <Table responsive>
-        <thead>
-        <tr align="center">
-          <th><Text text="apartmentList.tableHeader.number"/></th>
-          <th><Text text="apartmentList.tableHeader.house"/></th>
-          <th><Text text="apartmentList.tableHeader.resident"/></th>
-          <th><Text text="apartmentList.tableHeader.actions"/></th>
-          <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
-        </tr>
-        </thead>
-        <tbody>
-        {this.state.data.map((apartment) => (
-          <tr key={apartment.pk} align="center">
-            <td width="2%">{apartment.number}</td>
-            <td>{apartment.house}</td>
-            {apartment.resident ? <td>{apartment.resident[1]}</td>
-              : <td><Text text="apartmentList.emptyApartment"/></td>}
+      <TransitionGroup {...this.groupProps}>
+        <Fade opposite key={'2'} spy={this.state.data}>
+          <Table responsive>
+            <thead>
+            <tr align="center">
+              <th><Text text="apartmentList.tableHeader.number"/></th>
+              <th><Text text="apartmentList.tableHeader.house"/></th>
+              <th><Text text="apartmentList.tableHeader.resident"/></th>
+              <th><Text text="apartmentList.tableHeader.actions"/></th>
+              <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            {this.state.data.map((apartment) => (
+              <tr key={apartment.pk} align="center">
+                <td width="2%">{apartment.number}</td>
+                <td>{apartment.house}</td>
+                {apartment.resident ? <td>{apartment.resident[1]}</td>
+                  : <td><Text text="apartmentList.emptyApartment"/></td>}
 
-            <td width="15%">
-              <Link to={`apartment/${apartment.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="apartmentList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
-              <Link to={`apartment/${apartment.pk}/delete`}>
-                <Badge color="danger" className="mr-1">
-                  <Text text="apartmentList.tableHeader.deleteBtn"/>
-                </Badge>
-              </Link>
-            </td>
-            <td>
-              {apartment.is_active ?
-                <FaCheck className="text-success"/>
-                :
-                <MdClose className="text-danger"/>
-              }
-            </td>
-
-            <Modal
-              isOpen={this.state.modal}
-              toggle={this.toggle()}
-              className={this.props.className}>
-              <ModalHeader toggle={this.toggle()}>{apartment.name}</ModalHeader>
-              <ModalBody>
-                <Col md={12}>
-                  <UserCard
-                    avatar={apartment.logo}
-                    title={apartment.name}
-                    subtitle={apartment.address}
-                    text={apartment.description}
-                    style={{
-                      height: 300
-                    }}
-                  >
-                  </UserCard>
-                </Col>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={this.toggle()}>
-                  <Text text="buttons.closeBtn"/>
-                </Button>
-              </ModalFooter>
-            </Modal>
-          </tr>
-        ))}
-        </tbody>
-      </Table>
+                <td width="15%">
+                  <Link to={`apartment/${apartment.pk}/edit`}>
+                    <Badge color="warning" className="mr-1">
+                      <Text text="apartmentList.tableHeader.editBtn"/>
+                    </Badge>
+                  </Link>
+                  <Link to={`apartment/${apartment.pk}/delete`}>
+                    <Badge color="danger" className="mr-1">
+                      <Text text="apartmentList.tableHeader.deleteBtn"/>
+                    </Badge>
+                  </Link>
+                </td>
+                <td>
+                  {apartment.is_active ?
+                    <FaCheck className="text-success"/>
+                    :
+                    <MdClose className="text-danger"/>
+                  }
+                </td>
+              </tr>
+            ))}
+            </tbody>
+          </Table>
+        </Fade>
+      </TransitionGroup>
     );
   }
 

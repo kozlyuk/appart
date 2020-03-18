@@ -12,6 +12,9 @@ import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 
+/**
+ * Filter interface
+ */
 interface FilterInterface {
   isLoaded: boolean
 }

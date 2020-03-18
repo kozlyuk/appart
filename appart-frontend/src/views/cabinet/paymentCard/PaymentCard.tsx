@@ -6,17 +6,19 @@
  */
 
 import React, { Fragment } from 'react';
-import Collapse from 'reactstrap/lib/Collapse';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
 // @ts-ignore
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 // @ts-ignore
-import Fade from 'react-reveal/Fade';
-import { Badge, ListGroup, ListGroupItem } from 'reactstrap';
+import Flip from 'react-reveal/Flip';
+import { Badge, Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 
 
+/**
+ * Payment card interface
+ */
 interface PaymentCardInterface {
   isLoaded: boolean,
   payment: {
@@ -43,8 +45,14 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
     };
   }
 
+  /**
+   * Animation props
+   */
   private readonly groupProps: { appear: boolean; exit: boolean; enter: boolean };
 
+  /**
+   * Collapse toggler
+   */
   toggle = () => {
     const { isOpen }: any = this.state;
     this.setState({
@@ -104,7 +112,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
           <Collapse tag="tr" isOpen={isOpen}>
             <td colSpan={4}>
               <TransitionGroup {...this.groupProps}>
-                <Fade key={'2'} top opposite cascade collapse when={isOpen}>
+                <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
                   {/*
 							    // @ts-ignore*/}
                   {this.paymentService.map((item: any) => (
@@ -114,7 +122,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
                       </ListGroupItem>
                     </ListGroup>
                   ))}
-                </Fade>
+                </Flip>
               </TransitionGroup>
             </td>
           </Collapse>
