@@ -1,25 +1,21 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Payment, Bill, Service, BillLine
+from .models import Payment, Bill, Service, BillLine, PaymentService
 
 
-class ServiceSerializer(serializers.ModelSerializer):
+class PaymentServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Service
+        model = PaymentService
         fields = [
-            "house",
-            "name",
-            "description",
-            "uom_type",
-            "rate",
-            "uom"
+            "service",
+            "value"
         ]
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    # service = ServiceSerializer()
+    payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True)
     payment_type = serializers.CharField(source='get_payment_type_display')
     action = serializers.CharField(source='get_action_display')
 
@@ -27,13 +23,19 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = [
             "apartment",
-            "service",
+            "payment_service",
             "payment_type",
             "action",
             "date",
             "value",
             "description",
         ]
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ optimizing "to-many" relationships with prefetch_related """
+        queryset = queryset.prefetch_related('paymentservice_set')
+        return queryset
 
 
 class BillLineSerializer(serializers.ModelSerializer):
@@ -69,3 +71,17 @@ class BillSerializer(serializers.ModelSerializer):
         """ optimizing "to-many" relationships with prefetch_related """
         queryset = queryset.prefetch_related('billline_set')
         return queryset
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = [
+            "house",
+            "name",
+            "description",
+            "uom_type",
+            "rate",
+            "uom"
+        ]

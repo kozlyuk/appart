@@ -82,4 +82,7 @@ class PaymentsListView(ListAPIView):
             raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
         # get bills for apartment
         queryset = apartment.payment_set.all()
+
+        # Set up eager loading to avoid N+1 selects
+        queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset.order_by('date')
