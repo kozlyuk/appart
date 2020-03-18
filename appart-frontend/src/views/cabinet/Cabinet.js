@@ -24,9 +24,10 @@ import {
   UncontrolledDropdown
 } from 'reactstrap';
 import News from './News';
-import PaymentList from './PaymentList';
+import BillsList from './BillsList';
 import Auth from '../../auth/auth';
 import { Link } from 'react-router-dom';
+import PaymentList from './PaymentList';
 
 /**
  * User object
@@ -44,7 +45,7 @@ const user = new Auth();
  */
 const Cabinet = (props) => {
 
-  const [activeTab, setActiveTab] = useState('2');
+  const [activeTab, setActiveTab] = useState('3');
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -161,6 +162,9 @@ const Cabinet = (props) => {
                         <News/>
                       </TabPane>
                       <TabPane tabId="2">
+                        <BillsList user={props.user}/>
+                      </TabPane>
+                      <TabPane tabId="3">
                         <PaymentList user={props.user}/>
                       </TabPane>
                       {/*<TabPane tabId="3">*/}

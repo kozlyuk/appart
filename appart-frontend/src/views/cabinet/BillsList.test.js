@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PaymentList from './PaymentList';
+import BillsList from './BillsList';
 
 it('renders without crashing', () => {
-  shallow(<PaymentList/>);
+  shallow(<BillsList/>);
 });

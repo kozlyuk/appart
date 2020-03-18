@@ -31,7 +31,6 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
     this.state = {
       isOpen: false
     };
-
   }
 
   toggle = () => {

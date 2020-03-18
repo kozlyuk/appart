@@ -1,5 +1,5 @@
 /*
- * Payment list component
+ * Bills list component
  *
  * @author          Andrey Perestyuk (Arrathilar)
  * @email-primary   a.perestyuk@itel.rv.ua
@@ -8,22 +8,24 @@
  */
 
 import React from 'react';
-import Auth from '../../auth/auth';
-import axios from 'axios';
 import { Col, Row } from 'reactstrap';
+import axios from 'axios';
+import Auth from '../../auth/auth';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
-import PaymentCard from './paymentCard/PaymentCard';
+import BillCard from './billCard/BillCard';
 
 /**
  * Props interface
  */
-interface PaymentListPropsInterface {
-  user: any,
-  isLoaded: boolean,
+interface BillsListPropsInterface {
+  user: any;
 }
 
-export default class PaymentList extends React.Component<PaymentListPropsInterface, {}> {
+/**
+ * Bills list object
+ */
+export default class BillsList extends React.Component<BillsListPropsInterface, {}> {
 
   /**
    * User object
@@ -36,7 +38,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
    * @param props
    * @param context
    */
-  constructor(props: PaymentListPropsInterface, context: any) {
+  constructor(props: BillsListPropsInterface, context: any) {
     super(props, context);
     this.state = {
       isLoaded: false,
@@ -45,10 +47,14 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
     this.user = new Auth();
   }
 
-  componentDidMount(): void {
+  /**
+   * Get data before render
+   *
+   */
+  componentDidMount() {
     if (this.props.user) {
       const { apartment_set } = this.props.user;
-      axios(`${process.env.REACT_APP_GET_PAYMENTS}${apartment_set[0]}/`, {
+      axios(`${process.env.REACT_APP_GET_BILLS}${apartment_set[0]}/`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }
@@ -90,16 +96,13 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
               <thead>
               <tr>
                 <th scope="col">
-                  Тип оплати
+                  Номер рахунку
                 </th>
                 <th className="text-center" scope="col">
-                  Період
+                  Виписаний
                 </th>
                 <th className="text-center" scope="col">
                   Сума
-                </th>
-                <th className="text-center" scope="col">
-                  Опис
                 </th>
               </tr>
               </thead>
@@ -107,7 +110,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
               {/*
 							// @ts-ignore*/}
               {this.state.data.map((item) => (
-                <PaymentCard isLoaded={isLoaded} payment={item}/>
+                <BillCard key={item.number.toString()} bill={item}/>
               ))}
               </tbody>
             </table>
@@ -117,4 +120,3 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
     }
   }
 }
-

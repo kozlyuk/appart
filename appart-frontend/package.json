@@ -25,11 +25,13 @@
     "react-infinite-calendar": "^2.3.1",
     "react-js-pagination": "^3.0.3",
     "react-notification-system": "^0.2.17",
+    "react-reveal": "^1.2.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
     "react-test-renderer": "^16.13.0",
+    "react-transition-group": "^4.3.0",
     "reactstrap": "^7.1.0",
     "typescript": "^3.8.3",
     "victory": "^32.0.0"

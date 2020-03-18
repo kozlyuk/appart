@@ -46,3 +46,4 @@ yarn-debug.log*
 yarn-error.log*
 /media/notice/
 /media/company/pictures/
+/appart-frontend/dist/
