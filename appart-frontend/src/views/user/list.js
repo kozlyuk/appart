@@ -7,6 +7,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  CardText,
   Col,
   Modal,
   ModalBody,
@@ -15,26 +16,22 @@ import {
   Row,
   Table
 } from 'reactstrap';
-import { FaCheck } from 'react-icons/fa';
 import { Text } from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import ApartmentFilter from './filter/ApartmentFilter';
-import { MdClose } from 'react-icons/md';
+import UserFilter from './filter/UserFilter';
 
 
-export default class ApartmentList extends AbstractListView {
+export default class UserList extends AbstractListView {
+  /**
+   *
+   * @param props
+   */
   constructor(props) {
     super(props);
-    this.state = {
-      isFilterActive: true
-    };
-    this.filterUrl = process.env.REACT_APP_HOUSES_URL;
-    this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
+    this.dataUrl = process.env.REACT_APP_USERS_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
-    this.filterSelectHandler = this.filterSelectHandler.bind(this);
   }
 
   /**
@@ -51,76 +48,65 @@ export default class ApartmentList extends AbstractListView {
   }
 
   /**
-   * Filter handler
    *
-   * @param event
-   */
-  filterSelectHandler(event) {
-    const queryName = event.target.getAttribute('filterquery');
-    const selectValue = event.target.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${selectValue}`);
-  }
-
-  /**
-   *
-   * @return {*}
+   * @returns {*}
    */
   content() {
     return (
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="apartmentList.tableHeader.number"/></th>
-          <th><Text text="apartmentList.tableHeader.house"/></th>
-          <th><Text text="apartmentList.tableHeader.resident"/></th>
-          <th><Text text="apartmentList.tableHeader.actions"/></th>
-          <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
+          <th><Text text="userList.tableHeader.avatar"/></th>
+          <th><Text text="userList.tableHeader.firstName"/></th>
+          <th><Text text="userList.tableHeader.lastName"/></th>
+          {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
+          <th><Text text="userList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
-        {this.state.data.map((apartment) => (
-          <tr key={apartment.pk} align="center">
-            <td width="2%">{apartment.number}</td>
-            <td>{apartment.house}</td>
-            {apartment.resident ? <td>{apartment.resident[1]}</td>
-              : <td><Text text="apartmentList.emptyApartment"/></td>}
-
-            <td width="15%">
-              <Link to={`apartment/${apartment.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="apartmentList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
-              <Link to={`apartment/${apartment.pk}/delete`}>
-                <Badge color="danger" className="mr-1">
-                  <Text text="apartmentList.tableHeader.deleteBtn"/>
-                </Badge>
-              </Link>
+        {this.state.data.map((user) => (
+          <tr key={user.pk} align="center">
+            <td width="2%">
+              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={user.avatar}
+                   alt="avatar"/>
             </td>
-            <td>
-              {apartment.is_active ?
-                <FaCheck className="text-success"/>
-                :
-                <MdClose className="text-danger"/>
-              }
+            <td>{user.first_name}</td>
+            <td>{user.last_name}</td>
+            {/*<td>{user.birth_date}</td>*/}
+            <td width="15%">
+              <Link to={`user/${user.pk}/edit`}>
+                <Badge color="warning" className="mr-1">
+                  <Text text="userList.tableHeader.editBtn"/>
+                </Badge>
+              </Link>
+              <Link to={`user/${user.pk}/delete`}>
+                <Badge color="danger" className="mr-1">
+                  <Text text="userList.tableHeader.deleteBtn"/>
+                </Badge>
+              </Link>
             </td>
 
             <Modal
               isOpen={this.state.modal}
               toggle={this.toggle()}
               className={this.props.className}>
-              <ModalHeader toggle={this.toggle()}>{apartment.name}</ModalHeader>
+              <ModalHeader toggle={this.toggle()}>{user.first_name} {user.last_name}</ModalHeader>
               <ModalBody>
                 <Col md={12}>
                   <UserCard
-                    avatar={apartment.logo}
-                    title={apartment.name}
-                    subtitle={apartment.address}
-                    text={apartment.description}
+                    avatar={user.avatar}
+                    title={user.first_name}
+                    subtitle={user.last_name}
+                    text={user.email}
                     style={{
                       height: 300
                     }}
                   >
+                    <CardBody className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                      {user.mobile_number ?
+                        <CardText><Text text="userDetail.mobileNumber"/> : {user.mobile_number}</CardText> : <></>}
+
+                    </CardBody>
                   </UserCard>
                 </Col>
               </ModalBody>
@@ -137,6 +123,10 @@ export default class ApartmentList extends AbstractListView {
     );
   }
 
+  /**
+   *
+   * @returns {*}
+   */
   render() {
     const { error, isLoaded } = this.state;
     if (error) {
@@ -151,23 +141,21 @@ export default class ApartmentList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: true }]}
+          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
           className="TablePage"
         >
-          <ApartmentFilter
-            data={this.state.filterData}
-            filterSelectHandler={this.filterSelectHandler}
+          <UserFilter
             filterSearchHandler={this.filterSearchHandler}
-            isLoaded={this.state.isFilterLoaded}
+            isLoaded={true}
           />
           <Row>
             <Col>
               <Card className="mb-3">
                 <CardHeader>
-                  <Text text="sidebar.apartment"/>
-                  <Link to="/apartment/new">
+                  <Text text="sidebar.user"/>
+                  <Link to="/user/new">
                     <Button size="sm" className="float-right" color="success">
-                      <Text text="apartmentList.addBtn"/>
+                      <Text text="userList.addBtn"/>
                     </Button>
                   </Link>
                 </CardHeader>
