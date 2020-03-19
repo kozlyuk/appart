@@ -60,6 +60,7 @@ class BillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill
         fields = [
+            "pk",
             "apartment",
             "number",
             "total_value",

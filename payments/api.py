@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Sum
 from rest_framework.generics import ListAPIView
@@ -5,8 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
+from liqpay import LiqPay
 
 from payments.serializers import BillSerializer, PaymentSerializer
+from payments.models import Bill
 from condominium.models import Apartment
 
 
@@ -86,3 +89,54 @@ class PaymentsListView(ListAPIView):
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset.order_by('date')
+
+
+class PayView(APIView):
+    """
+    Prepeare data for Payment Widget
+
+    * Get bill pk from URL parameter.
+    * Return JSON with "data" and "signature"
+    * Return error HTTP_400_BAD_REQUEST if bill does not exist.
+    """
+
+    def get(self, request, bill: int):
+        bill_pk = self.kwargs['bill']
+        # get the apartment
+        try:
+            bill = Bill.objects.get(pk=bill_pk)
+        # return error HTTP_400_BAD_REQUEST if apartment does not exist
+        except Apartment.DoesNotExist:
+            return Response(_('Bill with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
+
+        # aggregate total_debt from bills
+        liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+        params = {
+            'action': settings.LIQPAY_DEFAULT_ACTION,
+            'currency': settings.LIQPAY_DEFAULT_CURRENCY,
+            'language': settings.LIQPAY_DEFAULT_LANGUAGE,
+            'amount': str(bill.total_value),
+            'description': f'Payment for bill {bill.number}',
+            'order_id': bill_pk,
+            'version': '3',
+            'sandbox': 1, # sandbox mode, set to 1 to enable it
+            'server_url': 'https://appart.itel.rv.ua/payments/pay-callback/', # url to callback view
+        }
+        signature = liqpay.cnb_signature(params)
+        data = liqpay.cnb_data(params)
+
+        return Response({'signature': signature, 'data': data}, status=status.HTTP_200_OK)
+
+
+class PayCallbackView(APIView):
+    def post(self, request, *args, **kwargs):
+        liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+        data = request.POST.get('data')
+        signature = request.POST.get('signature')
+        sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
+        check = 'callback not valid'
+        if sign == signature:
+            check = 'callback is valid'
+        response = liqpay.decode_data_from_str(data)
+        print('callback data', response)
+        return Response({'check': check, 'data': response}, status=status.HTTP_200_OK)
