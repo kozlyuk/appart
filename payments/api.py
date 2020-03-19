@@ -9,7 +9,7 @@ from rest_framework import status
 from liqpay import LiqPay
 
 from payments.serializers import BillSerializer, PaymentSerializer
-from payments.models import Bill
+from payments.models import Bill, Payment
 from condominium.models import Apartment
 
 
@@ -93,7 +93,7 @@ class PaymentsListView(ListAPIView):
 
 class PayView(APIView):
     """
-    Prepeare data for Payment Widget
+    Prepare data for Payment Widget
 
     * Get bill pk from URL parameter.
     * Return JSON with "data" and "signature"
@@ -106,7 +106,7 @@ class PayView(APIView):
         try:
             bill = Bill.objects.get(pk=bill_pk)
         # return error HTTP_400_BAD_REQUEST if apartment does not exist
-        except Apartment.DoesNotExist:
+        except Bill.DoesNotExist:
             return Response(_('Bill with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
 
         # aggregate total_debt from bills
@@ -129,14 +129,25 @@ class PayView(APIView):
 
 
 class PayCallbackView(APIView):
+    """
+    Receice callback from bank and create payment
+
+    * Get bill pk from URL parameter.
+    * Return JSON with "data" and "signature"
+    * Return error HTTP_400_BAD_REQUEST if bill does not exist.
+    """
+
     def post(self, request, *args, **kwargs):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         data = request.POST.get('data')
         signature = request.POST.get('signature')
         sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
-        check = 'callback not valid'
         if sign == signature:
-            check = 'callback is valid'
-        response = liqpay.decode_data_from_str(data)
-        print('callback data', response)
-        return Response({'check': check, 'data': response}, status=status.HTTP_200_OK)
+            response = liqpay.decode_data_from_str(data)
+#            Payment.objects.create()
+            print('callback data', response)
+            return Response({'check': 'callback is valid'},
+                            status=status.HTTP_200_OK)
+        else:
+            return Response({'check': 'callback is not valid'},
+                            status=status.HTTP_412_PRECONDITION_FAILED)
