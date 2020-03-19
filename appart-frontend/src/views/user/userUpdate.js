@@ -10,6 +10,7 @@ import Page from '../../components/Page';
  *
  * @type {RegExp}
  */
+// eslint-disable-next-line
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
 
 /**
@@ -17,20 +18,8 @@ const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
  *
  * @type {RegExp}
  */
+// eslint-disable-next-line
 const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-
-/**
- *
- * @param errors
- * @returns {boolean}
- */
-const validateForm = (errors) => {
-  let valid = true;
-  Object.values(errors).forEach(
-    (val) => val.length > 0 && (valid = false)
-  );
-  return valid;
-};
 
 export default class UserUpdate extends AbstractFormView {
   /**

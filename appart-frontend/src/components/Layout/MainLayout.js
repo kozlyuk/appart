@@ -1,9 +1,7 @@
 import { Content, Footer, Header, Sidebar } from 'components/Layout';
 import React from 'react';
 import {
-  MdImportantDevices,
-  // MdCardGiftcard,
-  MdLoyalty,
+  MdImportantDevices
 } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';

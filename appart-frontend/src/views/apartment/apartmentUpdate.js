@@ -7,7 +7,6 @@ import {
 	Form, FormGroup, FormText, Input, Label, Row
 } from 'reactstrap';
 import {Text} from "react-easy-i18n";
-import Container from "reactstrap/es/Container";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import AbstractFormView from "../../generics/formViews/abstractFormView";

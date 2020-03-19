@@ -78,6 +78,9 @@ const Cabinet = (props) => {
             <NavItem>
               <NavLink active href="/">Personal cabinet</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/register">Registration</NavLink>
+            </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 {userEmail}
