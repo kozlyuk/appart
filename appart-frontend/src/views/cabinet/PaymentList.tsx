@@ -20,7 +20,6 @@ import PaymentCard from './paymentCard/PaymentCard';
  */
 interface PaymentListPropsInterface {
   user: any,
-  isLoaded: boolean,
 }
 
 export default class PaymentList extends React.Component<PaymentListPropsInterface, {}> {
@@ -78,7 +77,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
       return (
         <div className="loaderWrapper text-center mt-4">
           {/*
-					// @ts-ignore*/}
+		  // @ts-ignore*/}
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
         </div>)
         ;

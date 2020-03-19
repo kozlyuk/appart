@@ -112,17 +112,17 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
           <Collapse tag="tr" isOpen={isOpen}>
             <td colSpan={4}>
               <TransitionGroup {...this.groupProps}>
-                <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
                   {/*
 							    // @ts-ignore*/}
                   {this.paymentService.map((item: any) => (
-                    <ListGroup>
-                      <ListGroupItem style={{ border: 'none' }} className="justify-content-between">{item.service}
-                        <Badge color={'success'} pill className="ml-4">{item.value}</Badge>
-                      </ListGroupItem>
-                    </ListGroup>
+                    <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
+                      <ListGroup>
+                        <ListGroupItem style={{ border: 'none' }} className="justify-content-between">{item.service}
+                          <Badge color={'success'} pill className="ml-4">{item.value}</Badge>
+                        </ListGroupItem>
+                      </ListGroup>
+                    </Flip>
                   ))}
-                </Flip>
               </TransitionGroup>
             </td>
           </Collapse>
