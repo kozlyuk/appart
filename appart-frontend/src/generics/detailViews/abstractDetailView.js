@@ -1,7 +1,52 @@
-import React from "react";
-import axios from "axios";
+/*
+ * Abstract detail view
+ *
+ * @author          Andrey Perestyuk (Arrathilar)
+ * @email-primary   a.perestyuk@itel.rv.ua
+ * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
+ * @copyright       2020 ITEL-Service
+ */
+
+import React from 'react';
+import axios from 'axios';
 
 export default class AbstractDetailView extends React.Component {
+  /**
+   * Get props
+   *
+   * @return {*}
+   */
+  get props() {
+    return this._props;
+  }
+
+  /**
+   * Set props
+   *
+   * @param value
+   */
+  set props(value) {
+    this._props = value;
+  }
+
+  /**
+   * Get data url
+   *
+   * @return {*}
+   */
+  get dataUrl() {
+    return this._dataUrl;
+  }
+
+  /**
+   * Set data url
+   *
+   * @param value
+   */
+  set dataUrl(value) {
+    this._dataUrl = value;
+  }
+
   /**
    *
    * @param props
@@ -13,7 +58,8 @@ export default class AbstractDetailView extends React.Component {
       isLoaded: false,
       data: null
     };
-    this.dataUrl = dataUrl;
+    this._props = props;
+    this._dataUrl = dataUrl;
   }
 
   /**
@@ -48,7 +94,7 @@ export default class AbstractDetailView extends React.Component {
    * @returns {*}
    */
   componentDidMount() {
-    this.loadData(this.dataUrl + this.props.match.params.id + "/");
+    this.loadData(this._dataUrl + this.props.match.params.id + '/');
     return void 0;
   }
 }

@@ -1,11 +1,12 @@
 import logo200Image from '../../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import Auth from '../../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Flip from "react-reveal/Flip";
+import Flip from 'react-reveal/Flip';
+import axios from 'axios';
 
 /**
  * Ugly regular expression for validate length of phone number
@@ -38,6 +39,7 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: '',
       isMobileChecked: false,
       mobileCheckError: '',
       // validation fields
@@ -54,11 +56,21 @@ class RegistrationForm extends React.Component {
     };
   }
 
+  /**
+   * Check is state signup
+   *
+   * @return {boolean}
+   */
   get isSignup() {
     return this.props.authState === STATE_SIGNUP;
   }
 
-  handleSubmit = event => {
+  /**
+   * Handle submit
+   *
+   * @param event
+   */
+  _handleSubmit = event => {
     event.preventDefault();
     let user = new Auth();
     const target = event.target;
@@ -81,9 +93,9 @@ class RegistrationForm extends React.Component {
    * check field valid and
    * set errors str to state
    **/
-  handleChange = (event) => {
+  _handleChange = (event) => {
     event.preventDefault();
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     let errors = this.state.errors;
 
     switch (name) {
@@ -115,14 +127,18 @@ class RegistrationForm extends React.Component {
         break;
     }
 
-    this.setState({errors, [name]: value});
+    this.setState({ errors, [name]: value });
   };
 
+  /**
+   * Check is user exist in db
+   *
+   * @param mobileNumber
+   */
   isUserValid(mobileNumber) {
-    return true;
-    // axios.get(`${process.env.REACT_APP_CHECK_BY_NUMBER_URL}${mobileNumber}`)
-    //   .then(r => this.setState({isMobileChecked: true}))
-    //   .catch(e => this.setState({mobileCheckError: e}))
+    axios.get(`${process.env.REACT_APP_CHECK_BY_NUMBER_URL}${mobileNumber}`)
+      .then(r => this.setState({ isMobileChecked: true }))
+      .catch(e => this.setState({ mobileCheckError: e }));
   }
 
   checkNumber() {
@@ -132,11 +148,44 @@ class RegistrationForm extends React.Component {
         isMobileChecked: true
       });
     }
-    console.log("test")
   }
 
+  collectData(data) {
+    const mobileNumber = this.state.mobileNumber;
+    const email = this.state.email;
+    const userFirstName = data.userFirstName.value;
+    const userSecondName = data.userSecondName.value;
+    const password = data.password.value;
+    const confirmPassword = data.confirmPassword.value;
+    let formData = new FormData(data);
+    formData.append(userFirstName, userFirstName);
+    formData.append(userSecondName, userSecondName);
+    formData.append(password, password);
+    formData.append(confirmPassword, confirmPassword);
+
+    return formData;
+  }
+  
+  _register = (event) => {
+    event.preventDefault();
+    const data = this.collectData(document.forms.registration);
+    axios({
+      method: 'post',
+      url: 'registration url',
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      },
+      data: data
+    }).then(function(response) {
+      console.log(response);
+    })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
   renderButtonText() {
-    const {buttonText} = this.props;
+    const { buttonText } = this.props;
 
     if (!buttonText && this.isLogin) {
       return 'Login';
@@ -166,7 +215,7 @@ class RegistrationForm extends React.Component {
           {this.state.errors.userFirstName.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.userFirstName}</FormText>}
-          <Input id="userFirstName" name="userFirstName" {...userFirstNameInputProps} onChange={this.handleChange}
+          <Input id="userFirstName" name="userFirstName" {...userFirstNameInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -174,7 +223,7 @@ class RegistrationForm extends React.Component {
           {this.state.errors.userSecondName.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.userSecondName}</FormText>}
-          <Input id="userSecondName" name="userSecondName" {...userSecondNameInputProps} onChange={this.handleChange}
+          <Input id="userSecondName" name="userSecondName" {...userSecondNameInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -182,7 +231,7 @@ class RegistrationForm extends React.Component {
           {this.state.errors.password.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.password}</FormText>}
-          <Input id="password" name="password" {...passwordInputProps} onChange={this.handleChange}
+          <Input id="password" name="password" {...passwordInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -190,11 +239,28 @@ class RegistrationForm extends React.Component {
           {this.state.errors.confirmPassword.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.confirmPassword}</FormText>}
-          <Input id="confirmPassword" name="confirmPassword" {...confirmPasswordInputProps} onChange={this.handleChange}
+          <Input id="confirmPassword" name="confirmPassword" {...confirmPasswordInputProps}
+                 onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
+        {/*display inactive button when error length > 0 and active when error == 0*/}
+        {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
+          <Button
+            size="lg"
+            className="bg-gradient-theme-left border-0"
+            block
+            disabled>
+            The data is incorrect
+          </Button> : <Button
+            size="lg" s
+            className="bg-gradient-theme-left border-0"
+            block
+            onClick={this._register}
+          >
+            Зареєструватися
+          </Button>}
       </>
-    )
+    );
   }
 
   unCheckedForm() {
@@ -202,7 +268,7 @@ class RegistrationForm extends React.Component {
       phoneLabel,
       emailLabel,
       phoneInputProps,
-      emailInputProps,
+      emailInputProps
     } = this.props;
     return (
       <>
@@ -211,7 +277,7 @@ class RegistrationForm extends React.Component {
           {this.state.errors.mobileNumber.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-          <Input id="mobileNumber" name="mobileNumber" {...phoneInputProps} onChange={this.handleChange}
+          <Input id="mobileNumber" name="mobileNumber" {...phoneInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -219,11 +285,27 @@ class RegistrationForm extends React.Component {
           {this.state.errors.email.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.email}</FormText>}
-          <Input id="email" name="email" {...emailInputProps} onChange={this.handleChange}
+          <Input id="email" name="email" {...emailInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
+        {/*display inactive button when error length > 0 and active when error == 0*/}
+        {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
+          <Button
+            size="lg"
+            className="bg-gradient-theme-left border-0"
+            block
+            disabled>
+            The data is incorrect
+          </Button> : <Button
+            size="lg"
+            className="bg-gradient-theme-left border-0"
+            block
+            onClick={() => this.checkNumber()}
+          >
+            Перевірити номер та пошту
+          </Button>}
       </>
-    )
+    );
   }
 
   form() {
@@ -255,45 +337,30 @@ class RegistrationForm extends React.Component {
       <TransitionGroup {...this.groupProps}>
         <Flip key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
               spy={this.state.isMobileChecked}>
-          <Form onSubmit={this.handleSubmit}>
+          <Form id={'registration'} onSubmit={this._handleSubmit}>
             {showLogo && (
               <div className="text-center pb-4">
                 <img
                   src={logo200Image}
                   className="rounded"
-                  style={{width: 60, height: 60, cursor: 'pointer'}}
+                  style={{ width: 60, height: 60, cursor: 'pointer' }}
                   alt="logo"
                   onClick={onLogoClick}
                 />
               </div>
             )}
+            {/*errors*/}
             {this.state.isMobileChecked ? successInfoBox : defaultInfoBox}
             {this.state.mobileCheckError && mobileCheckError}
 
 
             {this.state.isMobileChecked ? this.checkedForm() : this.unCheckedForm()}
             <hr/>
-            {/*display inactive button when error length > 0 and active when error == 0*/}
-            {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
-              <Button
-                size="lg"
-                className="bg-gradient-theme-left border-0"
-                block
-                disabled>
-                The data is incorrect
-              </Button> : <Button
-                size="lg"
-                className="bg-gradient-theme-left border-0"
-                block
-                onClick={() => this.checkNumber()}
-              >
-                {this.renderButtonText()}
-              </Button>}
             {children}
           </Form>
         </Flip>
       </TransitionGroup>
-    )
+    );
   }
 
   render() {
@@ -302,7 +369,7 @@ class RegistrationForm extends React.Component {
         style={{
           height: '100vh',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'center'
         }}>
         <Col md={6} lg={4}>
           <Card body>
@@ -339,11 +406,11 @@ RegistrationForm.defaultProps = {
   },
   userFirstNameLabel: 'Введіть своє ім\'я',
   userFirstNameProps: {
-    type: 'text',
+    type: 'text'
   },
   userSecondNameLabel: 'Введіть своє прізвище',
   userSecondNameProps: {
-    type: 'text',
+    type: 'text'
   },
   emailLabel: 'Введіть адресу електронної скриньки',
   emailInputProps: {
