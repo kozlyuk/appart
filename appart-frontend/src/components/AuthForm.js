@@ -1,7 +1,7 @@
 import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
 import Auth from '../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
 
@@ -62,7 +62,7 @@ class AuthForm extends React.Component {
    **/
   handleChange = (event) => {
     event.preventDefault();
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     let errors = this.state.errors;
 
     switch (name) {
@@ -82,11 +82,11 @@ class AuthForm extends React.Component {
         break;
     }
 
-    this.setState({ errors, [name]: value });
+    this.setState({errors, [name]: value});
   };
 
   renderButtonText() {
-    const { buttonText } = this.props;
+    const {buttonText} = this.props;
 
     if (!buttonText && this.isLogin) {
       return 'Login';
@@ -117,7 +117,7 @@ class AuthForm extends React.Component {
             <img
               src={logo200Image}
               className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
+              style={{width: 60, height: 60, cursor: 'pointer'}}
               alt="logo"
               onClick={onLogoClick}
             />

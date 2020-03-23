@@ -10,6 +10,7 @@ import './styles/reduction.scss';
 import Auth from './auth/auth';
 import axios from 'axios';
 import Cabinet from './views/cabinet/Cabinet';
+import RegistrationForm from "./views/registration/RegistrationForm";
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -100,6 +101,14 @@ class App extends React.Component {
                   component={() => (
                     <Cabinet user={this.state.user}/>
                   )}
+                />
+                <LayoutRoute
+                    exact
+                    path="/registration"
+                    layout={EmptyLayout}
+                    component={props => (
+                        <RegistrationForm {...props} authState={STATE_SIGNUP}/>
+                    )}
                 />
                 <LayoutRoute
                   exact
