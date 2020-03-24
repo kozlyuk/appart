@@ -1,3 +1,12 @@
+/*
+ * Abstract list view
+ *
+ * @author          Andrey Perestyuk (Arrathilar)
+ * @email-primary   a.perestyuk@itel.rv.ua
+ * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
+ * @copyright       2020 ITEL-Service
+ */
+
 import React from 'react';
 import axios from 'axios';
 import Auth from '../../auth/auth';
@@ -5,6 +14,78 @@ import Auth from '../../auth/auth';
 export default class AbstractListView extends React.Component {
   dataUrl;
   filterUrl;
+
+  /**
+   * Get props
+   *
+   * @return {*}
+   */
+  get props() {
+    return this._props;
+  }
+
+  /**
+   * Set props
+   *
+   * @param value
+   */
+  set props(value) {
+    this._props = value;
+  }
+
+  /**
+   * Get data url
+   *
+   * @return {*}
+   */
+  get dataUrl() {
+    return this._dataUrl;
+  }
+
+  /**
+   * Set data url
+   *
+   * @param value
+   */
+  set dataUrl(value) {
+    this._dataUrl = value;
+  }
+
+  /**
+   * Get filter url
+   *
+   * @return {*}
+   */
+  get filterUrl() {
+    return this._filterUrl;
+  }
+
+  /**
+   * Set filter url
+   *
+   * @param value
+   */
+  set filterUrl(value) {
+    this._filterUrl = value;
+  }
+
+  /**
+   * Get user
+   *
+   * @return {Auth}
+   */
+  get user() {
+    return this._user;
+  }
+
+  /**
+   * Set user
+   *
+   * @param value
+   */
+  set user(value) {
+    this._user = value;
+  }
 
   /**
    *
@@ -35,7 +116,10 @@ export default class AbstractListView extends React.Component {
     };
     dataUrl = this.dataUrl;
     filterUrl = this.filterUrl;
-    this.user = new Auth();
+    this._user = new Auth();
+    this._props = props;
+    this._dataUrl = dataUrl;
+    this._filterUrl = filterUrl;
   }
 
   /**
@@ -55,7 +139,7 @@ export default class AbstractListView extends React.Component {
   refreshData(page) {
     axios(`${this.dataUrl}?page=${page}`, {
       headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
+        'Authorization': 'Token ' + this._user.getAuthToken()
       }
     })
       .then(
@@ -84,7 +168,7 @@ export default class AbstractListView extends React.Component {
   loadData(dataUrl) {
     axios(dataUrl, {
       headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
+        'Authorization': 'Token ' + this._user.getAuthToken()
       }
     })
       .then(
@@ -113,7 +197,7 @@ export default class AbstractListView extends React.Component {
   loadFilterData(dataUrl) {
     axios(dataUrl, {
       headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
+        'Authorization': 'Token ' + this._user.getAuthToken()
       }
     })
       .then(
