@@ -5,8 +5,10 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
+import axios from "axios";
 import Collapse from 'reactstrap/lib/Collapse';
+import Auth from "../../../auth/auth";
 
 /**
  * Props interface
@@ -14,30 +16,113 @@ import Collapse from 'reactstrap/lib/Collapse';
  */
 interface BillCardPropsInterface {
   bill: {
+    pk: number;
     number: string;
     period: string;
     total_value: number;
     bill_lines: any | undefined;
-  }
+  },
 }
 
 /**
  * Bill card class
+ *
  * @interface {@link BillCardPropsInterface}
  */
 export default class BillCard extends React.Component <BillCardPropsInterface, {}> {
   constructor(props: BillCardPropsInterface, state: any) {
     super(props, state);
     this.state = {
-      isOpen: false
+      liqPayData: null,
+      liqPaySign: null,
+      isOpen: false,
+      modal: false,
+      modal_backdrop: false,
+      modal_nested_parent: false,
+      modal_nested: false,
+      backdrop: true
     };
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
+  /**
+   * Url for get api tokens
+   */
+  private urlApiToken: any = process.env.REACT_APP_GET_PAYMENTS_TOKEN;
+
+  private user: Auth = new Auth();
+
+  componentDidMount(): void {
+    axios(`${this.urlApiToken}/${this.props.bill.pk}/`, {
+      headers: {
+        'Authorization': 'Token ' + this.user.getAuthToken()
+      }
+    })
+      .then(
+        result => {
+          const {signature}: any = result.data;
+          this.setState({
+            isLoaded: true,
+            liqPayData: result.data.data,
+            liqPaySign: signature
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+  }
+
+  /**
+   * Toggle collapse block
+   */
   toggle = () => {
-    const { isOpen }: any = this.state;
+    const {isOpen}: any = this.state;
     this.setState({
       isOpen: !isOpen
     });
+  };
+
+  /**
+   * Modal toggler
+   *
+   * @returns {function(...[*]=)}
+   */
+  toggleModal() {
+    const {liqPayData}: any = this.state;
+    const {liqPaySign}: any = this.state;
+    // @ts-ignore
+    LiqPayCheckout.init({
+      data: liqPayData,
+      signature: liqPaySign,
+      embedTo: "#liqpay_checkout",
+      language: "ru",
+      mode: "popup" // embed || popup
+      // @ts-ignore
+    }).on("liqpay.callback", function (data) {
+      console.log(data.status);
+      console.log(data);
+      // @ts-ignore
+    }).on("liqpay.ready", function (data) {
+      // ready
+      // @ts-ignore
+    }).on("liqpay.close", function (data) {
+      // close
+    });
+    // if (!modalType) {
+    //   const {modal}: any = this.state;
+    //   return this.setState({
+    //     modal: !modal
+    //   });
+    // }
+    //
+    // this.setState({
+    //   // @ts-ignore
+    //   [`modal_${modalType}`]: !this.state[`modal_${modalType}`]
+    // });
   };
 
 
@@ -53,18 +138,23 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
       this.billPeriod = this.props.bill.number;
       this.billTotalValue = this.props.bill.total_value;
     }
-    const { isOpen }: any = this.state;
+    const {isOpen}: any = this.state;
+    const {modal}: any = this.state;
+    const {className}: any = this.props;
     return (
       <Fragment>
-        <tr style={{ cursor: 'pointer' }} onClick={this.toggle} key={this.billNumber}>
-          <td>
+        <tr style={{cursor: 'pointer'}} key={this.billNumber}>
+          <td onClick={this.toggle}>
             {this.billNumber}
           </td>
-          <td className="text-center">
+          <td className="text-center" onClick={this.toggle}>
             {this.billPeriod}
           </td>
-          <td className="text-center">
+          <td className="text-center" onClick={this.toggle}>
             {this.billTotalValue}
+          </td>
+          <td className="text-center">
+            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}>Оплатити</button>
           </td>
         </tr>
         <Collapse tag="tr" isOpen={isOpen}>
@@ -74,7 +164,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
             <table className="table table-bordered table-hover table-sm">
               <thead>
               <tr>
-                <th scope="col" style={{ width: '5%' }}><small>ТОВ "УК ДІМ"</small></th>
+                <th scope="col" style={{width: '5%'}}><small>ТОВ "УК ДІМ"</small></th>
                 <th scope="col" className="text-center" colSpan={10}><small>Квитанції на оплату комунальних послуг за
                   Січень 2020
                   р.</small></th>
@@ -127,7 +217,50 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
           </td>
           {/*}*/}
         </Collapse>
+        {/*<Modal*/}
+        {/*  isOpen={modal}*/}
+        {/*  // @ts-ignore*/}
+        {/*  toggle={this.toggleModal()}*/}
+        {/*  className={className}>*/}
+        {/*  /!**/}
+        {/*  // @ts-ignore*!/*/}
+        {/*  <ModalHeader toggle={this.toggleModal()}>test</ModalHeader>*/}
+        {/*  <ModalBody>*/}
+        {/*    <Col md={12}>*/}
+        {/*      test*/}
+        {/*    </Col>*/}
+        {/*  </ModalBody>*/}
+        {/*  <ModalFooter>*/}
+        {/*    /!**/}
+        {/*    // @ts-ignore*!/*/}
+        {/*    <Button color="secondary" onClick={this.toggleModal()}>*/}
+        {/*      close*/}
+        {/*    </Button>*/}
+        {/*  </ModalFooter>*/}
+        {/*</Modal>*/}
+        <div id="liqpay_checkout"/>
       </Fragment>
     );
   }
 }
+
+
+// <div id="liqpay_checkout"></div>
+// <script>
+// window.LiqPayCheckoutCallback = function() {
+//   LiqPayCheckout.init({
+//     data: "{{ data }}",
+//     signature: "{{ signature }}",
+//     embedTo: "#liqpay_checkout",
+//     mode: "embed" // embed || popup,
+//   }).on("liqpay.callback", function(data){
+//     console.log(data.status);
+//     console.log(data);
+//   }).on("liqpay.ready", function(data){
+//     // ready
+//   }).on("liqpay.close", function(data){
+//     // close
+//   });
+// };
+// </script>
+// <script src="//static.liqpay.ua/libjs/checkout.js" async></script>

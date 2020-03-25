@@ -5,7 +5,7 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // import "./style.css"
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -26,7 +26,7 @@ import {
 import News from './News';
 import BillsList from './BillsList';
 import Auth from '../../auth/auth';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import PaymentList from './PaymentList';
 
 /**
@@ -45,7 +45,7 @@ const user = new Auth();
  */
 const Cabinet = (props) => {
 
-  const [activeTab, setActiveTab] = useState('3');
+  const [activeTab, setActiveTab] = useState('2');
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -103,7 +103,7 @@ const Cabinet = (props) => {
         </Collapse>
       </Navbar>
       <div
-        style={{ background: 'transparent' }}
+        style={{background: 'transparent'}}
         className="hero-area-bg particles_js"
       >
         <div className="overlay"/>
@@ -113,10 +113,10 @@ const Cabinet = (props) => {
               <div className="container-flex">
                 <div className="row">
                   <div className="col-3">
-                    <Nav vertical pills tag={'nav'} style={{ cursor: 'pointer' }}>
+                    <Nav vertical pills tag={'nav'} style={{cursor: 'pointer'}}>
                       <NavItem>
                         <NavLink
-                          className={({ active: activeTab === '1' })}
+                          className={({active: activeTab === '1'})}
                           onClick={() => {
                             toggle('1');
                           }}
@@ -126,7 +126,7 @@ const Cabinet = (props) => {
                       </NavItem>
                       <NavItem>
                         <NavLink
-                          className={({ active: activeTab === '2' })}
+                          className={({active: activeTab === '2'})}
                           onClick={() => {
                             toggle('2');
                           }}
@@ -136,7 +136,7 @@ const Cabinet = (props) => {
                       </NavItem>
                       <NavItem>
                         <NavLink
-                          className={({ active: activeTab === '3' })}
+                          className={({active: activeTab === '3'})}
                           onClick={() => {
                             toggle('3');
                           }}
@@ -146,7 +146,7 @@ const Cabinet = (props) => {
                       </NavItem>
                       <NavItem>
                         <NavLink
-                          className={({ active: activeTab === '4' })}
+                          className={({active: activeTab === '4'})}
                           onClick={() => {
                             toggle('4');
                           }}
