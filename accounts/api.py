@@ -97,3 +97,61 @@ class CheckResident(views.APIView):
         # return user serialized data
         message = _("Resident with such mobile number exists")
         return Response(message, status=status.HTTP_200_OK)
+
+
+class CheckResident(views.APIView):
+    """
+    Check if resident mobile number exists in DB.
+    If exists return status HTTP_200_OK.
+    If don`t exists return status HTTP_404_NOT_FOUND.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, mobile_number):
+        # check if number is valid
+        if not re.match(r'^\d{10}$', mobile_number):
+            # except return status.HTTP_404_NOT_FOUND
+            message = _("Mobile number must contain 10 digits")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        # try if Resident with such email exists
+        try:
+            user = User.objects.get(mobile_number=mobile_number)
+        # except return status.HTTP_404_NOT_FOUND
+        except User.DoesNotExist:
+            message = _("Resident with such mobile number doesn`t exist")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        # return user serialized data
+        message = _("Resident with such mobile number exists")
+        return Response(message, status=status.HTTP_200_OK)
+
+
+class Register(views.APIView):
+    """
+    Check if resident mobile number exists in DB.
+    If post_data valid - updates user data and
+    sends confirmation email with token.
+    If resident don`t exists return status HTTP_404_NOT_FOUND.
+    If post_data not valid return status HTTP_400_BAD_REQUEST.
+    If user data  updated return status HTTP_200_OK.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, mobile_number, format=None):
+        # check if number is valid
+        if not re.match(r'^\d{10}$', mobile_number):
+            # except return status.HTTP_404_NOT_FOUND
+            message = _("Mobile number must contain 10 digits")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        # try if Resident with such email exists
+        try:
+            user = User.objects.get(mobile_number=mobile_number, is_active=False)
+        # except return status.HTTP_404_NOT_FOUND
+        except User.DoesNotExist:
+            message = _("Resident with such mobile number doesn`t exist")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response('User registered', status=status.HTTP_200_OK)
+#            send_confirmation_email() # TODO
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
