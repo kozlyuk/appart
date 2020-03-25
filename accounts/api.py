@@ -69,41 +69,9 @@ class GetByNumber(views.APIView):
 
 class CheckResident(views.APIView):
     """
-    Check if resident mobile number exists in DB.
-    If exists return status HTTP_200_OK and save user email.
-    If don`t exists return status HTTP_404_NOT_FOUND.
-    """
-
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request, mobile_number, email):
-        # check if number is valid
-        if not re.match(r'^\d{10}$', mobile_number):
-            # except return status.HTTP_404_NOT_FOUND
-            message = _("Mobile number must contain 10 digits")
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
-        # try if Resident with such email exists
-        try:
-            user = User.objects.get(mobile_number=mobile_number)
-        # except return status.HTTP_404_NOT_FOUND
-        except User.DoesNotExist:
-            message = _("Resident with such mobile number doesn`t exist")
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
-        # update only email field
-        data = {"email": email}
-        serializer = UserSerializer(user, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-        # return user serialized data
-        message = _("Resident with such mobile number exists")
-        return Response(message, status=status.HTTP_200_OK)
-
-
-class CheckResident(views.APIView):
-    """
-    Check if resident mobile number exists in DB.
-    If exists return status HTTP_200_OK.
-    If don`t exists return status HTTP_404_NOT_FOUND.
+    Check if resident mobile number exists in DB and not registered.
+    If True return status HTTP_200_OK.
+    If False return status HTTP_404_NOT_FOUND.
     """
     permission_classes = [permissions.AllowAny]
 
@@ -115,10 +83,10 @@ class CheckResident(views.APIView):
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         # try if Resident with such email exists
         try:
-            user = User.objects.get(mobile_number=mobile_number)
+            User.objects.get(mobile_number=mobile_number, is_active=False)
         # except return status.HTTP_404_NOT_FOUND
         except User.DoesNotExist:
-            message = _("Resident with such mobile number doesn`t exist")
+            message = _("Resident with such mobile number doesn`t exist or already registered")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         # return user serialized data
         message = _("Resident with such mobile number exists")
@@ -136,7 +104,7 @@ class Register(views.APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request, mobile_number, format=None):
+    def post(self, request, mobile_number):
         # check if number is valid
         if not re.match(r'^\d{10}$', mobile_number):
             # except return status.HTTP_404_NOT_FOUND
@@ -147,7 +115,7 @@ class Register(views.APIView):
             user = User.objects.get(mobile_number=mobile_number, is_active=False)
         # except return status.HTTP_404_NOT_FOUND
         except User.DoesNotExist:
-            message = _("Resident with such mobile number doesn`t exist")
+            message = _("Resident with such mobile number doesn`t exist or already registered")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
