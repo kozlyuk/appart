@@ -59,6 +59,7 @@ for resident in RESIDENTS:
                                        last_name=resident[1],
                                        mobile_number=resident[2],
                                        email=resident[3],
+                                       password='Test12',
                                        )
     residents_list.append(resident_obj)
 
