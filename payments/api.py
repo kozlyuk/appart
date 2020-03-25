@@ -125,9 +125,7 @@ class PayView(APIView):
         signature = liqpay.cnb_signature(params)
         data = liqpay.cnb_data(params)
 
-        return Response({'signature': signature, 'data': data,
-                        'public_key': settings.LIQPAY_PUBLIC_KEY},
-                        status=status.HTTP_200_OK)
+        return Response({'signature': signature, 'data': data}, status=status.HTTP_200_OK)
 
 
 class PayCallbackView(APIView):
