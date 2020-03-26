@@ -1,12 +1,13 @@
 import logo200Image from '../../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import {Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 import Auth from '../../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Flip from 'react-reveal/Flip';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 /**
  * Ugly regular expression for validate length of phone number
@@ -42,18 +43,22 @@ class RegistrationForm extends React.Component {
       email: '',
       isMobileChecked: false,
       mobileCheckError: '',
+      registrationSuccess: '',
+      registrationError: '',
       // validation fields
       password: '',
       mobileNumber: '',
       errors: {
-        userFirstName: '',
-        userSecondName: '',
-        mobileNumber: '',
-        password: '',
-        confirmPassword: '',
-        email: ''
+        userFirstName: true,
+        userSecondName: true,
+        mobileNumber: true,
+        password: true,
+        confirmPassword: true,
+        email: true
       }
     };
+    this.user = new Auth();
+    this._register = this._register.bind(this);
   }
 
   /**
@@ -95,7 +100,7 @@ class RegistrationForm extends React.Component {
    **/
   _handleChange = (event) => {
     event.preventDefault();
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     let errors = this.state.errors;
 
     switch (name) {
@@ -111,6 +116,18 @@ class RegistrationForm extends React.Component {
             ? ''
             : 'Email is not valid!';
         break;
+      case 'first_name':
+        errors.userFirstName =
+          value.length > 0
+            ? ''
+            : 'Це поле обов\'язкове!';
+        break;
+      case 'last_name':
+        errors.userLastName =
+          value.length > 0
+            ? ''
+            : 'Це поле обов\'язкове!';
+        break;
       case 'password':
         errors.password =
           value.length < 6
@@ -119,15 +136,15 @@ class RegistrationForm extends React.Component {
         break;
       case 'confirmPassword':
         errors.confirmPassword =
-          value.length < 6
-            ? 'Password must be 6 characters long!'
+          value !== this.state.password
+            ? 'Паролі повинні співпадати!'
             : '';
         break;
       default:
         break;
     }
 
-    this.setState({ errors, [name]: value });
+    this.setState({errors, [name]: value});
   };
 
   /**
@@ -136,9 +153,9 @@ class RegistrationForm extends React.Component {
    * @param mobileNumber
    */
   isUserValid(mobileNumber) {
-    axios.get(`${process.env.REACT_APP_CHECK_BY_NUMBER_URL}${mobileNumber}`)
-      .then(r => this.setState({ isMobileChecked: true }))
-      .catch(e => this.setState({ mobileCheckError: e }));
+    axios.get(`${process.env.REACT_APP_CHECK_RESIDENT_BY_NUMBER_URL}${mobileNumber}/`)
+      .then(r => this.setState({isMobileChecked: true}))
+      .catch(e => this.setState({mobileCheckError: e.response.data}));
   }
 
   checkNumber() {
@@ -152,40 +169,45 @@ class RegistrationForm extends React.Component {
 
   collectData(data) {
     const mobileNumber = this.state.mobileNumber;
-    const email = this.state.email;
-    const userFirstName = data.userFirstName.value;
-    const userSecondName = data.userSecondName.value;
-    const password = data.password.value;
-    const confirmPassword = data.confirmPassword.value;
     let formData = new FormData(data);
-    formData.append(userFirstName, userFirstName);
-    formData.append(userSecondName, userSecondName);
-    formData.append(password, password);
-    formData.append(confirmPassword, confirmPassword);
+    formData.append("mobile_number", mobileNumber);
 
     return formData;
   }
-  
-  _register = (event) => {
+
+  _register(event) {
     event.preventDefault();
     const data = this.collectData(document.forms.registration);
     axios({
       method: 'post',
-      url: 'registration url',
+      url: `${process.env.REACT_APP_REGISTRATION}${this.state.mobileNumber}/`,
       headers: {
-        'Authorization': 'Token ' + this._user.getAuthToken()
+        'Authorization': 'Token ' + this.user.getAuthToken()
       },
       data: data
-    }).then(function(response) {
-      console.log(response);
+    }).then(response => {
+      Swal.fire({
+        title: 'Успіх!',
+        text: response.data,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Перейти на сторінку входу'
+      }).then((result) => {
+        if (result.value) {
+          this.props.history.push("/login");
+        }
+      })
     })
-      .catch(function(error) {
-        console.log(error);
+      .catch(error => {
+        this.setState({
+          registrationError: error.data
+        })
       });
   };
 
   renderButtonText() {
-    const { buttonText } = this.props;
+    const {buttonText} = this.props;
 
     if (!buttonText && this.isLogin) {
       return 'Login';
@@ -201,6 +223,8 @@ class RegistrationForm extends React.Component {
     const {
       userSecondNameLabel,
       userSecondNameInputProps,
+      emailLabel,
+      emailInputProps,
       userFirstNameLabel,
       userFirstNameInputProps,
       passwordLabel,
@@ -215,7 +239,7 @@ class RegistrationForm extends React.Component {
           {this.state.errors.userFirstName.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.userFirstName}</FormText>}
-          <Input id="userFirstName" name="userFirstName" {...userFirstNameInputProps} onChange={this._handleChange}
+          <Input id="userFirstName" name="first_name" {...userFirstNameInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -223,7 +247,15 @@ class RegistrationForm extends React.Component {
           {this.state.errors.userSecondName.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.userSecondName}</FormText>}
-          <Input id="userSecondName" name="userSecondName" {...userSecondNameInputProps} onChange={this._handleChange}
+          <Input id="userSecondName" name="last_name" {...userSecondNameInputProps} onChange={this._handleChange}
+                 autoComplete="off"/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="mobileNumber">{emailLabel}</Label>
+          {this.state.errors.email.length > 0 &&
+          // error field
+          <FormText color="danger">{this.state.errors.email}</FormText>}
+          <Input id="email" name="email" {...emailInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
         <FormGroup>
@@ -244,7 +276,10 @@ class RegistrationForm extends React.Component {
                  autoComplete="off"/>
         </FormGroup>
         {/*display inactive button when error length > 0 and active when error == 0*/}
-        {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
+        {this.state.errors.password ||
+        this.state.errors.confirmPassword ||
+        this.state.errors.userFirstName ||
+        this.state.errors.userLastName ?
           <Button
             size="lg"
             className="bg-gradient-theme-left border-0"
@@ -255,7 +290,7 @@ class RegistrationForm extends React.Component {
             size="lg" s
             className="bg-gradient-theme-left border-0"
             block
-            onClick={this._register}
+            onClick={this._register.bind(this)}
           >
             Зареєструватися
           </Button>}
@@ -264,12 +299,7 @@ class RegistrationForm extends React.Component {
   }
 
   unCheckedForm() {
-    const {
-      phoneLabel,
-      emailLabel,
-      phoneInputProps,
-      emailInputProps
-    } = this.props;
+    const {phoneLabel, phoneInputProps} = this.props;
     return (
       <>
         <FormGroup>
@@ -280,44 +310,32 @@ class RegistrationForm extends React.Component {
           <Input id="mobileNumber" name="mobileNumber" {...phoneInputProps} onChange={this._handleChange}
                  autoComplete="off"/>
         </FormGroup>
-        <FormGroup>
-          <Label for="mobileNumber">{emailLabel}</Label>
-          {this.state.errors.email.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.email}</FormText>}
-          <Input id="email" name="email" {...emailInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-        </FormGroup>
         {/*display inactive button when error length > 0 and active when error == 0*/}
-        {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
+        {this.state.errors.mobileNumber ?
           <Button
             size="lg"
             className="bg-gradient-theme-left border-0"
             block
             disabled>
-            The data is incorrect
+            Введіть вірні данні
           </Button> : <Button
             size="lg"
             className="bg-gradient-theme-left border-0"
             block
             onClick={() => this.checkNumber()}
           >
-            Перевірити номер та пошту
+            Перевірити номер
           </Button>}
       </>
     );
   }
 
   form() {
-    const {
-      showLogo,
-      children,
-      onLogoClick
-    } = this.props;
+    const {showLogo, children, onLogoClick} = this.props;
 
     const defaultInfoBox = (
       <Alert color="warning">
-        Введіть номер телефону та адресу поштової скриньки для перевірки доступу до реєстрації!
+        Введіть номер телефону для перевірки доступу до реєстрації!
       </Alert>
     );
 
@@ -328,39 +346,43 @@ class RegistrationForm extends React.Component {
     );
 
     const mobileCheckError = (
-      <Alert color="warning">
+      <Alert color="danger">
         Помилка: {this.state.mobileCheckError}
       </Alert>
     );
 
-    return (
-      <TransitionGroup {...this.groupProps}>
-        <Flip key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
-              spy={this.state.isMobileChecked}>
-          <Form id={'registration'} onSubmit={this._handleSubmit}>
-            {showLogo && (
-              <div className="text-center pb-4">
-                <img
-                  src={logo200Image}
-                  className="rounded"
-                  style={{ width: 60, height: 60, cursor: 'pointer' }}
-                  alt="logo"
-                  onClick={onLogoClick}
-                />
-              </div>
-            )}
-            {/*errors*/}
-            {this.state.isMobileChecked ? successInfoBox : defaultInfoBox}
-            {this.state.mobileCheckError && mobileCheckError}
-
-
-            {this.state.isMobileChecked ? this.checkedForm() : this.unCheckedForm()}
-            <hr/>
-            {children}
-          </Form>
-        </Flip>
-      </TransitionGroup>
-    );
+    if (this.state.registrationSuccess) {
+      return (
+        <div>success</div>
+      )
+    } else {
+      return (
+        <TransitionGroup {...this.groupProps}>
+          <Flip height={"auto"} key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
+                spy={this.state.isMobileChecked}>
+            <Form id={'registration'} onSubmit={this._handleSubmit}>
+              {showLogo && (
+                <div className="text-center pb-4">
+                  <img
+                    src={logo200Image}
+                    className="rounded"
+                    style={{width: 60, height: 60, cursor: 'pointer'}}
+                    alt="logo"
+                    onClick={onLogoClick}
+                  />
+                </div>
+              )}
+              {/*errors*/}
+              {this.state.isMobileChecked ? successInfoBox : defaultInfoBox}
+              {this.state.mobileCheckError && mobileCheckError}
+              {this.state.isMobileChecked ? this.checkedForm() : this.unCheckedForm()}
+              <hr/>
+              {children}
+            </Form>
+          </Flip>
+        </TransitionGroup>
+      );
+    }
   }
 
   render() {
