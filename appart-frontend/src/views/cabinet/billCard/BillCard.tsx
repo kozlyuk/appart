@@ -50,30 +50,36 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
    */
   private urlApiToken: any = process.env.REACT_APP_GET_PAYMENTS_TOKEN;
 
+  /**
+   * User object
+   */
   private user: Auth = new Auth();
 
   componentDidMount(): void {
-    axios(`${this.urlApiToken}/${this.props.bill.pk}/`, {
-      headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
-      }
-    })
-      .then(
-        result => {
-          const {signature}: any = result.data;
-          this.setState({
-            isLoaded: true,
-            liqPayData: result.data.data,
-            liqPaySign: signature
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
+    if (this.props.bill) {
+      const {pk} = this.props.bill
+      axios(`${this.urlApiToken}/${pk}/`, {
+        headers: {
+          'Authorization': 'Token ' + this.user.getAuthToken()
         }
-      );
+      })
+        .then(
+          result => {
+            const {signature}: any = result.data;
+            this.setState({
+              isLoaded: true,
+              liqPayData: result.data.data,
+              liqPaySign: signature
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        );
+    }
   }
 
   /**
@@ -112,19 +118,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
     }).on("liqpay.close", function (data) {
       // close
     });
-    // if (!modalType) {
-    //   const {modal}: any = this.state;
-    //   return this.setState({
-    //     modal: !modal
-    //   });
-    // }
-    //
-    // this.setState({
-    //   // @ts-ignore
-    //   [`modal_${modalType}`]: !this.state[`modal_${modalType}`]
-    // });
   };
-
 
   protected billNumber: string | undefined;
 
@@ -217,50 +211,8 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
           </td>
           {/*}*/}
         </Collapse>
-        {/*<Modal*/}
-        {/*  isOpen={modal}*/}
-        {/*  // @ts-ignore*/}
-        {/*  toggle={this.toggleModal()}*/}
-        {/*  className={className}>*/}
-        {/*  /!**/}
-        {/*  // @ts-ignore*!/*/}
-        {/*  <ModalHeader toggle={this.toggleModal()}>test</ModalHeader>*/}
-        {/*  <ModalBody>*/}
-        {/*    <Col md={12}>*/}
-        {/*      test*/}
-        {/*    </Col>*/}
-        {/*  </ModalBody>*/}
-        {/*  <ModalFooter>*/}
-        {/*    /!**/}
-        {/*    // @ts-ignore*!/*/}
-        {/*    <Button color="secondary" onClick={this.toggleModal()}>*/}
-        {/*      close*/}
-        {/*    </Button>*/}
-        {/*  </ModalFooter>*/}
-        {/*</Modal>*/}
         <div id="liqpay_checkout"/>
       </Fragment>
     );
   }
 }
-
-
-// <div id="liqpay_checkout"></div>
-// <script>
-// window.LiqPayCheckoutCallback = function() {
-//   LiqPayCheckout.init({
-//     data: "{{ data }}",
-//     signature: "{{ signature }}",
-//     embedTo: "#liqpay_checkout",
-//     mode: "embed" // embed || popup,
-//   }).on("liqpay.callback", function(data){
-//     console.log(data.status);
-//     console.log(data);
-//   }).on("liqpay.ready", function(data){
-//     // ready
-//   }).on("liqpay.close", function(data){
-//     // close
-//   });
-// };
-// </script>
-// <script src="//static.liqpay.ua/libjs/checkout.js" async></script>

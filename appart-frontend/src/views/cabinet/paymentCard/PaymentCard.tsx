@@ -32,6 +32,9 @@ interface PaymentCardInterface {
   },
 }
 
+/**
+ * Payment card class
+ */
 export default class PaymentCard extends React.Component<PaymentCardInterface, {}> {
   constructor(props: PaymentCardInterface, state: any) {
     super(props, state);

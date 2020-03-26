@@ -49,6 +49,7 @@ const Cabinet = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   /**
+   * Toggle collapse block
    *
    * @param tab
    */
@@ -167,20 +168,6 @@ const Cabinet = (props) => {
                       <TabPane tabId="3">
                         <PaymentList user={props.user}/>
                       </TabPane>
-                      {/*<TabPane tabId="3">*/}
-                      {/*	<Row>*/}
-                      {/*		<Col sm="12">*/}
-                      {/*			Оплати*/}
-                      {/*		</Col>*/}
-                      {/*	</Row>*/}
-                      {/*</TabPane>*/}
-                      {/*<TabPane tabId="4">*/}
-                      {/*	<Row>*/}
-                      {/*		<Col sm="12">*/}
-                      {/*			Сервісна служба*/}
-                      {/*		</Col>*/}
-                      {/*	</Row>*/}
-                      {/*</TabPane>*/}
                     </TabContent>
                   </div>
                 </div>
@@ -190,7 +177,6 @@ const Cabinet = (props) => {
         </div>
       </div>
     </div>
-
   );
 };
 
