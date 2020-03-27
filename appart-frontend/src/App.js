@@ -10,7 +10,7 @@ import './styles/reduction.scss';
 import Auth from './auth/auth';
 import axios from 'axios';
 import Cabinet from './views/cabinet/Cabinet';
-import RegistrationForm from "./views/registration/RegistrationForm";
+import RegistrationForm from './views/registration/RegistrationForm';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -78,14 +78,24 @@ class App extends React.Component {
     if (!this.state.isAuthenticate) {
       return (
         <BrowserRouter>
-          <LayoutRoute
-            exact
-            path="/"
-            layout={EmptyLayout}
-            component={props => (
-              <AuthPage {...props} authState={STATE_LOGIN}/>
-            )}
-          />
+          <Switch>
+            <LayoutRoute
+              exact
+              path="/"
+              layout={EmptyLayout}
+              component={props => (
+                <AuthPage {...props} authState={STATE_LOGIN}/>
+              )}
+            />
+            <LayoutRoute
+              exact
+              path="/registration"
+              layout={EmptyLayout}
+              component={props => (
+                <RegistrationForm {...props} authState={STATE_SIGNUP}/>
+              )}
+            />
+          </Switch>
         </BrowserRouter>
       );
     } else {
@@ -103,12 +113,12 @@ class App extends React.Component {
                   )}
                 />
                 <LayoutRoute
-                    exact
-                    path="/registration"
-                    layout={EmptyLayout}
-                    component={props => (
-                        <RegistrationForm {...props} authState={STATE_SIGNUP}/>
-                    )}
+                  exact
+                  path="/registration"
+                  layout={EmptyLayout}
+                  component={props => (
+                    <RegistrationForm {...props} authState={STATE_SIGNUP}/>
+                  )}
                 />
                 <LayoutRoute
                   exact
