@@ -106,6 +106,9 @@ export default class BillsList extends React.Component<BillsListPropsInterface, 
                 <th className="text-center" scope="col">
                   Сума
                 </th>
+                <th className="text-center" scope="col">
+                  Дії
+                </th>
               </tr>
               </thead>
               <tbody>
