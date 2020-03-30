@@ -1,16 +1,17 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import { FaCheck } from 'react-icons/fa';
-import { Text } from 'react-easy-i18n';
-import { Link } from 'react-router-dom';
+import {Badge, Button, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {FaCheck} from 'react-icons/fa';
+import {Text} from 'react-easy-i18n';
+import {Link} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ApartmentFilter from './filter/ApartmentFilter';
-import { MdClose } from 'react-icons/md';
+import {MdClose} from 'react-icons/md';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Fade from 'react-reveal/Fade';
+import PageSpinner from "../../components/PageSpinner";
 
 
 export default class ApartmentList extends AbstractListView {
@@ -109,12 +110,13 @@ export default class ApartmentList extends AbstractListView {
   }
 
   render() {
-    const { error, isLoaded } = this.state;
+    const {error, isLoaded} = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
+          <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
         </div>)
         ;
@@ -122,7 +124,7 @@ export default class ApartmentList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: true }]}
+          breadcrumbs={[{name: <Text text="sidebar.apartment"/>, active: true}]}
           className="TablePage"
         >
           <ApartmentFilter
