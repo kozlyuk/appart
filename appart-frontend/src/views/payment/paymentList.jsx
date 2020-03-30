@@ -1,23 +1,8 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardText,
-  Col,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Row,
-  Table
-} from 'reactstrap';
+import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import {Text} from 'react-easy-i18n';
-import UserCard from '../../components/Card/UserCard';
 import {Link} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PaymentFilter from './filter/PaymentFilter';
@@ -57,21 +42,16 @@ export default class PaymentList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="paymentList.tableHeader.avatar"/></th>
-          <th><Text text="paymentList.tableHeader.firstName"/></th>
-          <th><Text text="paymentList.tableHeader.lastName"/></th>
+          <th width="2%"><Text text="paymentList.tableHeader.apartment"/></th>
+          <th><Text text="paymentList.tableHeader.value"/></th>
           <th><Text text="paymentList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data.map((payment) => (
           <tr key={payment.pk} align="center">
-            <td width="2%">
-              <img onClick={this.toggle()} style={{height: '30px', cursor: 'pointer'}} src={payment.avatar}
-                   alt="avatar"/>
-            </td>
-            <td>{payment.first_name}</td>
-            <td>{payment.last_name}</td>
+            <td>{payment.apartment}</td>
+            <td>{payment.value}</td>
             {/*<td>{user.birth_date}</td>*/}
             <td width="15%">
               <Link to={`payment/${payment.pk}/edit`}>
@@ -85,37 +65,6 @@ export default class PaymentList extends AbstractListView {
                 </Badge>
               </Link>
             </td>
-
-            <Modal
-              isOpen={this.state.modal}
-              toggle={this.toggle()}
-              className={this.props.className}>
-              <ModalHeader toggle={this.toggle()}>{payment.first_name} {payment.last_name}</ModalHeader>
-              <ModalBody>
-                <Col md={12}>
-                  <UserCard
-                    avatar={payment.avatar}
-                    title={payment.first_name}
-                    subtitle={payment.last_name}
-                    text={payment.email}
-                    style={{
-                      height: 300
-                    }}
-                  >
-                    <CardBody className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-                      {payment.mobile_number ?
-                        <CardText><Text text="userDetail.mobileNumber"/> : {payment.mobile_number}</CardText> : <></>}
-
-                    </CardBody>
-                  </UserCard>
-                </Col>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={this.toggle()}>
-                  <Text text="buttons.closeBtn"/>
-                </Button>
-              </ModalFooter>
-            </Modal>
           </tr>
         ))}
         </tbody>
@@ -154,11 +103,6 @@ export default class PaymentList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.user"/>
-                  <Link to="/user/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="userList.addBtn"/>
-                    </Button>
-                  </Link>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
