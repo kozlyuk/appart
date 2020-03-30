@@ -1,9 +1,11 @@
 import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import Auth from '../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
@@ -21,6 +23,7 @@ class AuthForm extends React.Component {
         password: ''
       }
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   get isLogin() {
@@ -41,16 +44,42 @@ class AuthForm extends React.Component {
     event.preventDefault();
     let user = new Auth();
     const target = event.target;
-    console.log(target.mobileNumber.value);
     const mobileNumber = target.mobileNumber.value;
     const password = target.password.value;
     this.setState({
       password: password,
       mobileNumber: mobileNumber
     });
-    user.login(mobileNumber, password).then(r => {
-      return r;
-    });
+
+    axios({
+      method: 'post',
+      url: process.env.REACT_APP_LOGIN,
+      data: { username: mobileNumber, password }
+    })
+      .then(response => {
+        localStorage.setItem('auth', 'key: ' + response.data.key);
+        window.location.reload(false);
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Упс...',
+          text: error.response.data.non_field_errors[0]
+        });
+      });
+
+    // user.login(mobileNumber, password)
+    //   .then(r => {
+    //     return r;
+    //   })
+    //   .catch(error => {
+    //     console.log(error.response.data);
+    //     // Swal.fire({
+    //     //   icon: 'error',
+    //     //   title: 'Oops...',
+    //     //   text: 'error.data'
+    //     // });
+    //   });
   };
 
   /*
@@ -62,7 +91,7 @@ class AuthForm extends React.Component {
    **/
   handleChange = (event) => {
     event.preventDefault();
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     let errors = this.state.errors;
 
     switch (name) {
@@ -82,11 +111,11 @@ class AuthForm extends React.Component {
         break;
     }
 
-    this.setState({errors, [name]: value});
+    this.setState({ errors, [name]: value });
   };
 
   renderButtonText() {
-    const {buttonText} = this.props;
+    const { buttonText } = this.props;
 
     if (!buttonText && this.isLogin) {
       return 'Login';
@@ -117,7 +146,7 @@ class AuthForm extends React.Component {
             <img
               src={logo200Image}
               className="rounded"
-              style={{width: 60, height: 60, cursor: 'pointer'}}
+              style={{ width: 60, height: 60, cursor: 'pointer' }}
               alt="logo"
               onClick={onLogoClick}
             />

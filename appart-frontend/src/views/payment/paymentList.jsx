@@ -20,18 +20,18 @@ import {Text} from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
 import {Link} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import UserFilter from './filter/UserFilter';
+import PaymentFilter from './filter/PaymentFilter';
 import PageSpinner from "../../components/PageSpinner";
 
 
-export default class UserList extends AbstractListView {
+export default class PaymentList extends AbstractListView {
   /**
    *
    * @param props
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_USERS_URL;
+    this.dataUrl = process.env.REACT_APP_PAYMENT;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
@@ -57,30 +57,29 @@ export default class UserList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="userList.tableHeader.avatar"/></th>
-          <th><Text text="userList.tableHeader.firstName"/></th>
-          <th><Text text="userList.tableHeader.lastName"/></th>
-          {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
-          <th><Text text="userList.tableHeader.actions"/></th>
+          <th><Text text="paymentList.tableHeader.avatar"/></th>
+          <th><Text text="paymentList.tableHeader.firstName"/></th>
+          <th><Text text="paymentList.tableHeader.lastName"/></th>
+          <th><Text text="paymentList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
-        {this.state.data.map((user) => (
-          <tr key={user.pk} align="center">
+        {this.state.data.map((payment) => (
+          <tr key={payment.pk} align="center">
             <td width="2%">
-              <img onClick={this.toggle()} style={{height: '30px', cursor: 'pointer'}} src={user.avatar}
+              <img onClick={this.toggle()} style={{height: '30px', cursor: 'pointer'}} src={payment.avatar}
                    alt="avatar"/>
             </td>
-            <td>{user.first_name}</td>
-            <td>{user.last_name}</td>
+            <td>{payment.first_name}</td>
+            <td>{payment.last_name}</td>
             {/*<td>{user.birth_date}</td>*/}
             <td width="15%">
-              <Link to={`user/${user.pk}/edit`}>
+              <Link to={`payment/${payment.pk}/edit`}>
                 <Badge color="warning" className="mr-1">
                   <Text text="userList.tableHeader.editBtn"/>
                 </Badge>
               </Link>
-              <Link to={`user/${user.pk}/delete`}>
+              <Link to={`payment/${payment.pk}/delete`}>
                 <Badge color="danger" className="mr-1">
                   <Text text="userList.tableHeader.deleteBtn"/>
                 </Badge>
@@ -91,21 +90,21 @@ export default class UserList extends AbstractListView {
               isOpen={this.state.modal}
               toggle={this.toggle()}
               className={this.props.className}>
-              <ModalHeader toggle={this.toggle()}>{user.first_name} {user.last_name}</ModalHeader>
+              <ModalHeader toggle={this.toggle()}>{payment.first_name} {payment.last_name}</ModalHeader>
               <ModalBody>
                 <Col md={12}>
                   <UserCard
-                    avatar={user.avatar}
-                    title={user.first_name}
-                    subtitle={user.last_name}
-                    text={user.email}
+                    avatar={payment.avatar}
+                    title={payment.first_name}
+                    subtitle={payment.last_name}
+                    text={payment.email}
                     style={{
                       height: 300
                     }}
                   >
                     <CardBody className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-                      {user.mobile_number ?
-                        <CardText><Text text="userDetail.mobileNumber"/> : {user.mobile_number}</CardText> : <></>}
+                      {payment.mobile_number ?
+                        <CardText><Text text="userDetail.mobileNumber"/> : {payment.mobile_number}</CardText> : <></>}
 
                     </CardBody>
                   </UserCard>
@@ -146,7 +145,7 @@ export default class UserList extends AbstractListView {
           breadcrumbs={[{name: <Text text="sidebar.user"/>, active: true}]}
           className="TablePage"
         >
-          <UserFilter
+          <PaymentFilter
             filterSearchHandler={this.filterSearchHandler}
             isLoaded={true}
           />
