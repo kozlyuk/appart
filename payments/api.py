@@ -1,16 +1,23 @@
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Sum
+from rest_framework import viewsets, mixins, status
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
-from rest_framework import status
 from liqpay import LiqPay
 
 from payments.serializers import BillSerializer, PaymentSerializer
 from payments.models import Bill, Payment
 from condominium.models import Apartment
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Payment class"""
+
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
 
 
 class GetTotalDebt(APIView):
@@ -149,5 +156,6 @@ class PayCallbackView(APIView):
             return Response({'check': 'callback is valid'},
                             status=status.HTTP_200_OK)
         else:
+            print('signature is not verified', response)
             return Response({'check': 'callback is not valid'},
                             status=status.HTTP_412_PRECONDITION_FAILED)
