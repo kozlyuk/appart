@@ -32,7 +32,6 @@ class User(AbstractUser):
     email = models.EmailField(_('Email address'), blank=True)
     birth_date = models.DateField(_('Birth date'), null=True, blank=True)
     avatar = models.ImageField(_('Photo'), upload_to=avatar_directory_path, default='avatars/no_image.jpg', blank=True)
-    is_active = models.BooleanField(_('Is active'), default=False)
     theme = models.CharField(_('Theme'), max_length=2, choices=THEME_CHOICES, default='LT')
 
     USERNAME_FIELD = 'mobile_number'
