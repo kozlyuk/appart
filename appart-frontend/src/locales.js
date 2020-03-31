@@ -32,6 +32,7 @@ registerLang('en', {
     news: 'news',
     question: 'question',
     payment: 'payment',
+    bills: 'bills',
     profile: 'profile'
   },
   userList: {
@@ -202,6 +203,7 @@ registerLang('ua', {
     news: 'новини',
     question: 'запитання',
     payment: 'платежі',
+    bills: 'рахунки',
     profile: 'профіль'
   },
   userList: {

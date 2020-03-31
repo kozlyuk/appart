@@ -1,14 +1,5 @@
-/**
- * User update view
- *
- * @author          Andrey Perestyuk (Arrathilar)
- * @email-primary   a.perestyuk@itel.rv.ua
- * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
- * @copyright       2020 ITEL-Service
- */
-
 import React, { Fragment } from 'react';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -30,7 +21,7 @@ const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
 // eslint-disable-next-line
 const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
-export default class UserUpdate extends AbstractFormView {
+export default class PaymentUpdate extends AbstractFormView {
   /**
    *
    * @param props
@@ -52,7 +43,7 @@ export default class UserUpdate extends AbstractFormView {
         avatarSize: ''
       }
     };
-    this.dataUrl = process.env.REACT_APP_USERS_URL;
+    this.dataUrl = process.env.REACT_APP_PAYMENT;
     this.requestType = 'put';
   }
 
@@ -158,114 +149,76 @@ export default class UserUpdate extends AbstractFormView {
   content() {
     return (
       <Fragment>
-        <CardHeader><Text text="userForm.title"/>: {this.state.data.first_name} {this.state.data.last_name}</CardHeader>
+        <CardHeader>Payment</CardHeader>
         <CardBody>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
-              {this.state.errors.mobileNumber.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+              <Label for="apartment">Apartment</Label>
               <Input
-                name="mobileNumber"
-                plaintext
-                value={this.state.data.mobile_number}
+                name="apartment"
+                type="text"
+                value={this.state.data.apartment}
                 onChange={this.handleChange}
                 readOnly
               />
             </FormGroup>
             <FormGroup>
-              <Label for="firstName"><Text text="userForm.firstName"/></Label>
-              {this.state.errors.first_name.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.first_name}</FormText>}
+              <Label for="payment_service">Services</Label>
               <Input
                 type="text"
-                name="firstName"
-                defaultValue={this.state.data.first_name}
+                name="payment_service"
+                defaultValue={this.state.data.payment_service.map(item => {
+                  return ' ' + item.service + ' value: ' + item.value;
+                })}
                 onChange={this.handleChange}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
-              <Label for="lastName"><Text text="userForm.lastName"/></Label>
-              {this.state.errors.last_name.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.last_name}</FormText>}
+              <Label for="payment_type">Payment type</Label>
               <Input
                 type="text"
-                name="lastName"
-                defaultValue={this.state.data.last_name}
+                name="payment_type"
+                defaultValue={this.state.data.payment_type}
                 onChange={this.handleChange}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
-              <Label for="email"><Text text="userForm.email"/></Label>
-              {this.state.errors.email.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.email}</FormText>}
+              <Label for="text">Action</Label>
               <Input
-                type="email"
-                name="email"
-                defaultValue={this.state.data.email}
+                type="text"
+                name="action"
+                defaultValue={this.state.data.action}
                 onChange={this.handleChange}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
-              <Label for="birthday"><Text text="userForm.birthDate"/></Label>
-              {this.state.errors.birthday.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.birthday}</FormText>}
+              <Label for="date">Date</Label>
               <Input
                 type="date"
-                name="birthday"
-                defaultValue={this.state.data.birth_date}
+                name="date"
+                defaultValue={this.state.data.date}
                 onChange={this.handleChange}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
-              <Label for="avatar"><Text text="userForm.avatar"/></Label>
-              {this.state.errors.avatarFormat.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}
-              {this.state.errors.avatarSize.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
+              <Label for="value">Value</Label>
               <Input
-                type="file"
-                name="avatar"
+                type="text"
+                name="value"
+                value={this.state.data.value}
                 onChange={this.handleChange}
+                readOnly
               />
-              <FormText color="muted">
-                {/*This is some placeholder block-level help text for the above*/}
-                {/*input. It's a bit lighter and easily wraps to a new line.*/}
-              </FormText>
             </FormGroup>
-            {/*<FormGroup>*/}
-            {/*	<Label for="theme"><Text text="userForm.theme"/></Label>*/}
-            {/*	<Input type="select" name="theme">*/}
-            {/*		<option value="LT">Light</option>*/}
-            {/*		<option value="DK">Dark</option>*/}
-            {/*	</Input>*/}
-            {/*</FormGroup>*/}
-            <Link to="/user">
+            <Link to="/payment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>
             </Link>
-            {this.state.defaultInactiveBtn ||
-            this.state.errors.mobileNumber ||
-            this.state.errors.first_name ||
-            this.state.errors.last_name ||
-            this.state.errors.email ||
-            this.state.errors.birthday ||
-            this.state.errors.avatarSize ||
-            this.state.errors.avatarFormat ?
-              <Button disabled className="float-right">
-                <Text text="buttons.submitBtn"/>
-              </Button> : <Button className="float-right" type="submit">
-                <Text text="buttons.submitBtn"/>
-              </Button>
-            }
           </Form>
         </CardBody>
       </Fragment>
@@ -292,7 +245,7 @@ export default class UserUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: false },
+          breadcrumbs={[{ name: <Text text="sidebar.payment"/>, active: false },
             { name: this.state.data.first_name + ' ' + this.state.data.last_name, active: true }]}
           className="TablePage"
         >

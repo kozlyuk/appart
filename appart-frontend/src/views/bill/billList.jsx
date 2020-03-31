@@ -1,3 +1,12 @@
+/**
+ * Bill list view
+ *
+ * @author          Andrey Perestyuk (Arrathilar)
+ * @email-primary   a.perestyuk@itel.rv.ua
+ * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
+ * @copyright       2020 ITEL-Service
+ */
+
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
@@ -5,18 +14,18 @@ import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import PaymentFilter from './filter/PaymentFilter';
+import PaymentFilter from './filter/UserFilter';
 import PageSpinner from '../../components/PageSpinner';
 
 
-export default class PaymentList extends AbstractListView {
+export default class BillList extends AbstractListView {
   /**
    *
    * @param props
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_PAYMENT;
+    this.dataUrl = process.env.REACT_APP_BILLS;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
