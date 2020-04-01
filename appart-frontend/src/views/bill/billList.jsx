@@ -10,12 +10,12 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import { Text } from 'react-easy-i18n';
-import { Link } from 'react-router-dom';
+import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {Text} from 'react-easy-i18n';
+import {Link} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import PaymentFilter from './filter/UserFilter';
 import PageSpinner from '../../components/PageSpinner';
+import BillFilter from "./filter/BillFilter";
 
 
 export default class BillList extends AbstractListView {
@@ -51,20 +51,20 @@ export default class BillList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th width="2%"><Text text="paymentList.tableHeader.apartment"/></th>
-          <th><Text text="paymentList.tableHeader.value"/></th>
-          <th><Text text="paymentList.tableHeader.actions"/></th>
+          <th width="2%">Apartment</th>
+          <th>Number</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        {this.state.data.map((payment) => (
-          <tr key={payment.pk} align="center">
-            <td>{payment.apartment}</td>
-            <td>{payment.value}</td>
+        {this.state.data.map((bill) => (
+          <tr key={bill.pk} align="center">
+            <td>{bill.apartment}</td>
+            <td>{bill.number}</td>
             <td width="15%">
-              <Link to={`payment/${payment.pk}/edit`}>
+              <Link to={`bill/${bill.pk}/edit`}>
                 <Badge color="warning" className="mr-1">
-                  <Text text="userList.tableHeader.editBtn"/>
+                  Details
                 </Badge>
               </Link>
             </td>
@@ -80,7 +80,7 @@ export default class BillList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const { error, isLoaded } = this.state;
+    const {error, isLoaded} = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -93,10 +93,10 @@ export default class BillList extends AbstractListView {
     } else {
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
+          breadcrumbs={[{name: <Text text="sidebar.bills"/>, active: true}]}
           className="TablePage"
         >
-          <PaymentFilter
+          <BillFilter
             filterSearchHandler={this.filterSearchHandler}
             isLoaded={true}
           />
@@ -104,7 +104,7 @@ export default class BillList extends AbstractListView {
             <Col>
               <Card className="mb-3">
                 <CardHeader>
-                  <Text text="sidebar.user"/>
+                  <Text text="sidebar.bills"/>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

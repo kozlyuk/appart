@@ -8,16 +8,16 @@
  */
 
 import React from 'react';
-import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import {Col, FormGroup, Input, Label, Row} from 'reactstrap';
 // @ts-ignore
-import { Text } from 'react-easy-i18n';
+import {Text} from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
 
 interface FilterInterface {
   isLoaded: boolean,
 }
 
-export default class UserFilter extends React.Component<FilterInterface, {}> {
+export default class BillFilter extends React.Component<FilterInterface, {}> {
 
   constructor(props: any) {
     super(props);
@@ -28,7 +28,7 @@ export default class UserFilter extends React.Component<FilterInterface, {}> {
 
 
   render(): any {
-    const { filterSearchHandler }: any = this.props;
+    const {filterSearchHandler}: any = this.props;
     const isLoaded: boolean = this.props.isLoaded;
     if (!isLoaded) {
       return (
