@@ -3,11 +3,13 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from payments.api import PaymentViewSet, BillViewSet
 from payments.api import BillListView, GetTotalDebt, PaymentsListView, \
-                         PayView, PayCallbackView, PaymentViewSet
+                         PayView, PayCallbackView
 
 router = routers.DefaultRouter()
 router.register("payment", PaymentViewSet)
+router.register("bill", BillViewSet)
 
 
 urlpatterns = (

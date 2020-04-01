@@ -20,6 +20,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
 
 
+class BillViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Payment class"""
+
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+
+
 class GetTotalDebt(APIView):
     """
     Return total debt for given apartment
