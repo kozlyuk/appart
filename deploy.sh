@@ -14,12 +14,12 @@
 NAME="dimonline"
 APACHE_OWNER="apache:apache"
 DEPLOY_BRANCH="master"
-DEFAULT_ROOT_USER_WITH_ROOT="dimonline"
-PROJECT_OWNER_USERNAME="arrathilar"                                # default: dimonline
-PROJECT_ROOT_DIRECTORY="/home/dimonline/dimonline/"                # default: /home/dimonline/dimonline/
-PROJECT_DIRECTORY="/home/dimonline/dimonline/appart-frontend/"     # default: /home/dimonline/dimonline/appart-frontend/
-BUILD_DIRECTORY="/home/dimonline/dimonline/appart-frontend/build/" # default: /home/dimonline/dimonline/appart-frontend/build/
-APACHE_FRONTEND_FOLDER="/home/dimonline/frontend/"                 # default: /home/dimonline/frontend/
+DEFAULT_ROOT_USER_WITH_ROOT="arrathilar"
+PROJECT_OWNER_USERNAME="arrathilar"                             # default: dimonline
+PROJECT_ROOT_DIRECTORY="/home/dimonline/appart/"                # default: /home/dimonline/dimonline/
+PROJECT_DIRECTORY="/home/dimonline/appart/appart-frontend/"     # default: /home/dimonline/dimonline/appart-frontend/
+BUILD_DIRECTORY="/home/dimonline/appart/appart-frontend/build/" # default: /home/dimonline/dimonline/appart-frontend/build/
+APACHE_FRONTEND_FOLDER="/home/dimonline/frontend/"              # default: /home/dimonline/frontend/
 
 WELCOME_TEXT="CiDilojilojilojilojilojilZcg4paI4paI4paI4paI4paI4paI4pWXIOKWiOKWiOKWiOKWiOKWiOKWiOKVlyAg4paI4paI4paI4paI4paI4pWXIOKWiOKWiOKWiOKWiOKWiOKWiOKVlyDilojilojilojilojilojilojilojilojilZcK4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4pWa4pWQ4pWQ4paI4paI4pWU4pWQ4pWQ4pWdCuKWiOKWiOKWiOKWiOKWiOKWiOKWiOKVkeKWiOKWiOKWiOKWiOKWiOKWiOKVlOKVneKWiOKWiOKWiOKWiOKWiOKWiOKVlOKVneKWiOKWiOKWiOKWiOKWiOKWiOKWiOKVkeKWiOKWiOKWiOKWiOKWiOKWiOKVlOKVnSAgIOKWiOKWiOKVkSAgIArilojilojilZTilZDilZDilojilojilZHilojilojilZTilZDilZDilZDilZ0g4paI4paI4pWU4pWQ4pWQ4pWQ4pWdIOKWiOKWiOKVlOKVkOKVkOKWiOKWiOKVkeKWiOKWiOKVlOKVkOKVkOKWiOKWiOKVlyAgIOKWiOKWiOKVkSAgIArilojilojilZEgIOKWiOKWiOKVkeKWiOKWiOKVkSAgICAg4paI4paI4pWRICAgICDilojilojilZEgIOKWiOKWiOKVkeKWiOKWiOKVkSAg4paI4paI4pWRICAg4paI4paI4pWRICAgCuKVmuKVkOKVnSAg4pWa4pWQ4pWd4pWa4pWQ4pWdICAgICDilZrilZDilZ0gICAgIOKVmuKVkOKVnSAg4pWa4pWQ4pWd4pWa4pWQ4pWdICDilZrilZDilZ0gICDilZrilZDilZ0gICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo="
 
@@ -91,7 +91,7 @@ mv $BUILD_DIRECTORY/.htaccess $APACHE_FRONTEND_FOLDER/
 chown -R $APACHE_OWNER $APACHE_FRONTEND_FOLDER
 
 # restart apache
-sudo systemctl restart httpd || exit
+sudo systemctl restart httpd.service || exit
 
 # restart celery
 sudo systemctl restart celeryd.service || exit
