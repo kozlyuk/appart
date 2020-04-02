@@ -13,7 +13,7 @@
 # get variables
 NAME="dimonline"
 APACHE_OWNER="apache:apache"
-DEPLOY_BRANCH="service"
+DEPLOY_BRANCH="master"
 DEFAULT_ROOT_USER_WITH_ROOT="dimonline"
 PROJECT_OWNER_USERNAME="arrathilar"                                # default: dimonline
 PROJECT_ROOT_DIRECTORY="/home/dimonline/dimonline/"                # default: /home/dimonline/dimonline/
@@ -31,21 +31,21 @@ Y=$(tput setaf 3)
 echo ${WELCOME_TEXT} | base64 --decode
 printf "\n"
 
-## check existing DEFAULT_ROOT_USER_WITH_ROOT
-#if [ $(getent passwd $DEFAULT_ROOT_USER_WITH_ROOT) ]; then
-#  printf $Y"${DEFAULT_ROOT_USER_WITH_ROOT} exist\n"$N
-#else
-#  printf $R"${DEFAULT_ROOT_USER_WITH_ROOT} user does not exist\n"$N
-#  exit 0
-#fi
-#
-## check existing PROJECT_OWNER_USERNAME
-#if [ $(getent passwd $PROJECT_OWNER_USERNAME) ]; then
-#  printf $Y"${PROJECT_OWNER_USERNAME} exist\n"$N
-#else
-#  printf $R"${PROJECT_OWNER_USERNAME} owner does not exist\n"$N
-#  exit 0
-#fi
+# check existing DEFAULT_ROOT_USER_WITH_ROOT
+if [ $(getent passwd $DEFAULT_ROOT_USER_WITH_ROOT) ]; then
+  printf $Y"${DEFAULT_ROOT_USER_WITH_ROOT} exist\n"$N
+else
+  printf $R"${DEFAULT_ROOT_USER_WITH_ROOT} user does not exist\n"$N
+  exit 0
+fi
+
+# check existing PROJECT_OWNER_USERNAME
+if [ $(getent passwd $PROJECT_OWNER_USERNAME) ]; then
+  printf $Y"${PROJECT_OWNER_USERNAME} exist\n"$N
+else
+  printf $R"${PROJECT_OWNER_USERNAME} owner does not exist\n"$N
+  exit 0
+fi
 
 # check attributes
 if [ -z "${APACHE_OWNER}" ]; then
