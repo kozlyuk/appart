@@ -16,7 +16,7 @@ APACHE_OWNER="apache:apache"
 DEPLOY_BRANCH="master"
 
 DEFAULT_ROOT_USER_WITH_ROOT="arrathilar"
-PROJECT_OWNER_USERNAME="arrathilar"                             # default: dimonline
+PROJECT_OWNER_USERNAME="dimonline"                              # default: dimonline
 PROJECT_ROOT_DIRECTORY="/home/dimonline/appart/"                # default: /home/dimonline/dimonline/
 PROJECT_DIRECTORY="/home/dimonline/appart/appart-frontend/"     # default: /home/dimonline/dimonline/appart-frontend/
 BUILD_DIRECTORY="/home/dimonline/appart/appart-frontend/build/" # default: /home/dimonline/dimonline/appart-frontend/build/
@@ -86,8 +86,8 @@ else
 fi
 
 # move build directory
-mv $BUILD_DIRECTORY/* $APACHE_FRONTEND_FOLDER/
-mv $BUILD_DIRECTORY/.htaccess $APACHE_FRONTEND_FOLDER/
+mv $BUILD_DIRECTORY* $APACHE_FRONTEND_FOLDER/
+mv $BUILD_DIRECTORY.htaccess $APACHE_FRONTEND_FOLDER/
 # change owner to apache
 chown -R $APACHE_OWNER $APACHE_FRONTEND_FOLDER
 
