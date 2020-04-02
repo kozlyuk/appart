@@ -14,6 +14,7 @@
 NAME="dimonline"
 APACHE_OWNER="apache:apache"
 DEPLOY_BRANCH="master"
+
 DEFAULT_ROOT_USER_WITH_ROOT="arrathilar"
 PROJECT_OWNER_USERNAME="arrathilar"                             # default: dimonline
 PROJECT_ROOT_DIRECTORY="/home/dimonline/appart/"                # default: /home/dimonline/dimonline/
