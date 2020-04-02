@@ -1,27 +1,36 @@
 import logo200Image from 'assets/img/logo/logo_200.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import React from 'react';
-import {MdDashboard, MdExtension, MdKeyboardArrowDown, MdPayment, MdWeb, MdWidgets} from 'react-icons/md';
-import {NavLink} from 'react-router-dom';
-import {Collapse, Nav, Navbar, NavItem, NavLink as BSNavLink,} from 'reactstrap';
+import {
+  MdAttachMoney,
+  MdDashboard,
+  MdExtension,
+  MdKeyboardArrowDown,
+  MdPayment,
+  MdWeb,
+  MdWidgets
+} from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
+import { Collapse, Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
 import bn from 'utils/bemnames';
-import {Text} from 'react-easy-i18n';
+import { Text } from 'react-easy-i18n';
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
   backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  backgroundRepeat: 'no-repeat'
 };
 
 const condominiumComponents = [
-  {to: '/house', name: <Text text="sidebar.house"/>, exact: false, Icon: MdWidgets},
-  {to: '/apartment', name: <Text text="sidebar.apartment"/>, exact: false, Icon: MdWidgets},
+  { to: '/house', name: <Text text="sidebar.house"/>, exact: false, Icon: MdWidgets },
+  { to: '/apartment', name: <Text text="sidebar.apartment"/>, exact: false, Icon: MdWidgets }
 ];
 
 const navItems = [
-  {to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard},
-  {to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb},
-  {to: '/payment', name: <Text text="sidebar.payment"/>, exact: true, Icon: MdPayment}
+  { to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard },
+  { to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb },
+  { to: '/payment', name: <Text text="sidebar.payment"/>, exact: true, Icon: MdPayment },
+  { to: '/bill', name: <Text text="sidebar.bills"/>, exact: true, Icon: MdAttachMoney }
 ];
 
 const bem = bn.create('sidebar');
@@ -31,7 +40,7 @@ class Sidebar extends React.Component {
     isOpenComponentCondominium: false,
     isOpenComponentNotice: false,
     isOpenContents: true,
-    isOpenPages: true,
+    isOpenPages: true
   };
 
   handleClick = name => () => {
@@ -39,7 +48,7 @@ class Sidebar extends React.Component {
       const isOpen = prevState[`isOpen${name}`];
 
       return {
-        [`isOpen${name}`]: !isOpen,
+        [`isOpen${name}`]: !isOpen
       };
     });
   };
@@ -59,7 +68,7 @@ class Sidebar extends React.Component {
             />
           </Navbar>
           <Nav vertical>
-            {navItems.map(({to, name, exact, Icon}, index) => (
+            {navItems.map(({ to, name, exact, Icon }, index) => (
               <NavItem key={index} className={bem.e('nav-item')}>
                 <BSNavLink
                   id={`navItem-${name}-${index}`}
@@ -92,13 +101,13 @@ class Sidebar extends React.Component {
                       ? 'rotate(0deg)'
                       : 'rotate(-90deg)',
                     transitionDuration: '0.3s',
-                    transitionProperty: 'transform',
+                    transitionProperty: 'transform'
                   }}
                 />
               </BSNavLink>
             </NavItem>
             <Collapse isOpen={this.state.isOpenComponentCondominium}>
-              {condominiumComponents.map(({to, name, exact, Icon}, index) => (
+              {condominiumComponents.map(({ to, name, exact, Icon }, index) => (
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
                     id={`navItem-${name}-${index}`}

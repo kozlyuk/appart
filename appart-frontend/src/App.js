@@ -11,7 +11,10 @@ import Auth from './auth/auth';
 import axios from 'axios';
 import Cabinet from './views/cabinet/Cabinet';
 import RegistrationForm from './views/registration/RegistrationForm';
-import PaymentList from "./views/payment/paymentList";
+import PaymentList from './views/payment/paymentList';
+import PaymentUpdate from './views/payment/paymentUpdate';
+import BillList from './views/bill/billList';
+import BillUpdate from "./views/bill/billUpdate";
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -173,8 +176,11 @@ class App extends React.Component {
                     </Switch>
                     <Route exact path="/payment" component={PaymentList}/>
                     <Switch>
-                      {/*<Route exact path="/news/:id/edit" component={NewsUpdate}/>*/}
-                      {/*<Route exact path="/news/:id/delete" component={NewsDelete}/>*/}
+                      <Route exact path="/payment/:id/edit" component={PaymentUpdate}/>
+                    </Switch>
+                    <Route exact path="/bill" component={BillList}/>
+                    <Switch>
+                      <Route exact path="/bill/:id/edit" component={BillUpdate}/>
                     </Switch>
                   </MainLayout>
                 </React.Suspense>
