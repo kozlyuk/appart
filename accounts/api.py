@@ -1,11 +1,17 @@
 import re
 from django.utils.translation import ugettext_lazy as _
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
 from django.db.models import Q
+from django.core.mail import EmailMessage
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
 
 from accounts.serializers import UserSerializer, GetUserSerializer
 from accounts.models import User
+from accounts.services import account_activation_token
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -76,12 +82,7 @@ class CheckResident(views.APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, mobile_number):
-        # check if number is valid
-        if not re.match(r'^\d{10}$', mobile_number):
-            # except return status.HTTP_404_NOT_FOUND
-            message = _("Mobile number must contain 10 digits")
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
-        # try if Resident with such email exists
+        # try if Resident with such mobile_number exists
         try:
             User.objects.get(mobile_number=mobile_number, is_active=False)
         # except return status.HTTP_404_NOT_FOUND
@@ -104,11 +105,15 @@ class Register(views.APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request, mobile_number):
+    def post(self, request):
         # check if number is valid
-        if not re.match(r'^\d{10}$', mobile_number):
-            # except return status.HTTP_404_NOT_FOUND
-            message = _("Mobile number must contain 10 digits")
+        mobile_number = request.POST.get('mobile_number')
+        if not mobile_number:
+            message = _("POST data doesn`t contain mobile_number")
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+        email = request.POST.get('email')
+        if not email:
+            message = _("POST data doesn`t contain email")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         # try if Resident with such email exists
         try:
@@ -120,6 +125,35 @@ class Register(views.APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your DimOnline account.'
+            message = render_to_string('acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'token':account_activation_token.make_token(user),
+            })
+            email = EmailMessage(
+                        mail_subject, message, to=[user.email]
+            )
+            email.send()
             return Response('User registered', status=status.HTTP_200_OK)
-#            send_confirmation_email() # TODO
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, uidb64, token):
+        # check if number is valid
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return Response('Thank you for your email confirmation.'
+                            'Now you can login your account.',
+                            status=status.HTTP_200_OK)
+        else:
+            return Response('Activation link is invalid!',
+                            status=status.HTTP_400_BAD_REQUEST)
