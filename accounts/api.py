@@ -115,7 +115,7 @@ class Register(views.APIView):
         if not email:
             message = _("POST data doesn`t contain email")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
-        # try if Resident with such email exists
+        # try if Resident with such mobile number exists or already registered
         try:
             user = User.objects.get(mobile_number=mobile_number, is_active=False)
         # except return status.HTTP_404_NOT_FOUND
@@ -123,10 +123,11 @@ class Register(views.APIView):
             message = _("Resident with such mobile number doesn`t exist or already registered")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user, data=request.data, partial=True)
+        # check if serializer is valid
         if serializer.is_valid():
             serializer.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your DimOnline account.'
+            mail_subject = _('Activate your DimOnline account.')
             message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -137,7 +138,7 @@ class Register(views.APIView):
                         mail_subject, message, to=[user.email]
             )
             email.send()
-            return Response('User registered', status=status.HTTP_200_OK)
+            return Response(_('User registered'), status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -151,9 +152,8 @@ class Register(views.APIView):
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return Response('Thank you for your email confirmation.'
-                            'Now you can login your account.',
+            return Response(_('Thank you for your email confirmation. Now you can login your account.'),
                             status=status.HTTP_200_OK)
         else:
-            return Response('Activation link is invalid!',
+            return Response(_('Activation link is invalid!'),
                             status=status.HTTP_400_BAD_REQUEST)
