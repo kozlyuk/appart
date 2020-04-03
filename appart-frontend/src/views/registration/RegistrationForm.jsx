@@ -180,7 +180,7 @@ class RegistrationForm extends React.Component {
     const data = this.collectData(document.forms.registration);
     axios({
       method: 'post',
-      url: `${process.env.REACT_APP_REGISTRATION}${this.state.mobileNumber}/`,
+      url: `${process.env.REACT_APP_REGISTRATION}`,
       data: data
     }).then(response => {
       Swal.fire({
