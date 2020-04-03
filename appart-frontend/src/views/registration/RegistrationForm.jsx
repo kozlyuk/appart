@@ -48,6 +48,7 @@ class RegistrationForm extends React.Component {
       // validation fields
       password: '',
       mobileNumber: '',
+      backendErrors: '',
       errors: {
         userFirstName: true,
         userSecondName: true,
@@ -295,9 +296,15 @@ class RegistrationForm extends React.Component {
   }
 
   unCheckedForm() {
+    const mobileCheckError = (
+      <Alert color="danger">
+        Помилка: {this.state.mobileCheckError}
+      </Alert>
+    );
     const { phoneLabel, phoneInputProps } = this.props;
     return (
       <>
+        {this.state.mobileCheckError && mobileCheckError}
         <FormGroup>
           <Label for="mobileNumber">{phoneLabel}</Label>
           {this.state.errors.mobileNumber.length > 0 &&
@@ -341,12 +348,6 @@ class RegistrationForm extends React.Component {
       </Alert>
     );
 
-    const mobileCheckError = (
-      <Alert color="danger">
-        Помилка: {this.state.mobileCheckError}
-      </Alert>
-    );
-
     if (this.state.registrationSuccess) {
       return (
         <div>success</div>
@@ -370,7 +371,6 @@ class RegistrationForm extends React.Component {
               )}
               {/*errors*/}
               {this.state.isMobileChecked ? successInfoBox : defaultInfoBox}
-              {this.state.mobileCheckError && mobileCheckError}
               {this.state.isMobileChecked ? this.checkedForm() : this.unCheckedForm()}
               <hr/>
               {children}
