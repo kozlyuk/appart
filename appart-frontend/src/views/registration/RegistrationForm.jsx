@@ -191,7 +191,7 @@ class RegistrationForm extends React.Component {
         confirmButtonText: 'Перейти на сторінку входу'
       }).then((result) => {
         if (result.value) {
-          this.props.history.push('/login');
+          this.props.history.push('/');
         }
       });
     })
