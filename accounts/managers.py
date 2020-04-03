@@ -12,7 +12,8 @@ class CustomUserManager(BaseUserManager):
     Custom user model manager where mobile_number is the unique identifiers
     for authentication instead of usernames.
     """
-    def create_user(self, mobile_number, email, password=None):
+    def create_user(self, mobile_number, email, password=None,
+                    is_active=False, first_name='', last_name=''):
         """
         Creates and saves a User with the given mobile number, email and password.
         """
@@ -27,6 +28,9 @@ class CustomUserManager(BaseUserManager):
         user = self.model(
             mobile_number=mobile_number,
             email=self.normalize_email(email),
+            is_active=is_active,
+            first_name=first_name,
+            last_name=last_name
         )
 
         user.set_password(password)
@@ -41,6 +45,7 @@ class CustomUserManager(BaseUserManager):
             mobile_number=mobile_number,
             email=email,
             password=password,
+            is_active=True
         )
         user.is_superuser = True
         user.is_staff = True

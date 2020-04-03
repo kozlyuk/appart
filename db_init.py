@@ -55,12 +55,12 @@ RESIDENTS = [['Resident', '1', '0000000001', 'resident1@gmail.com'],
 
 residents_list = []
 for resident in RESIDENTS:
-    resident_obj = User.objects.create(first_name=resident[0],
-                                       last_name=resident[1],
-                                       mobile_number=resident[2],
-                                       email=resident[3],
-                                       password='Test12',
-                                       )
+    resident_obj = User.objects.create_user(mobile_number=resident[2],
+                                            email=resident[3],
+                                            password='Test12',
+                                            first_name=resident[0],
+                                            last_name=resident[1]
+                                            )
     residents_list.append(resident_obj)
 
 index = 0
