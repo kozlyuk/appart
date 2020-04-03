@@ -15,7 +15,6 @@
                 <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
                     <li class="nav-item {% if request.resolver_match.url_name == 'house_main' %}active{% endif %}"><a class="nav-link" href="{{ url('house_main') }}">{{ _('House') }}</a></li>
                     <li class="nav-item {% if request.resolver_match.url_name == 'company_main' %}active{% endif %}"><a class="nav-link" href="{{ url('company_main') }}">{{ _('Company') }}</a></li>
-                    <li class="nav-item {% if request.resolver_match.url_name == 'personal_cabinet' %}active{% endif %}"><a class="nav-link" href="{{ url('personal_cabinet') }}">{{ _('Personal cabinet') }}</a></li>
                     {# <li class="nav-item"><a class="nav-link" href="">{{ _('Profile') }}</a></li> #}
                 </ul>
                 <div class="btn-sing float-right">
