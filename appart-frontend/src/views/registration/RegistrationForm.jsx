@@ -1,13 +1,13 @@
 import logo200Image from '../../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import { Alert, Button, Card, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import Auth from '../../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Flip from 'react-reveal/Flip';
 import axios from 'axios';
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 /**
  * Ugly regular expression for validate length of phone number
@@ -57,7 +57,6 @@ class RegistrationForm extends React.Component {
         email: true
       }
     };
-    this.user = new Auth();
     this._register = this._register.bind(this);
   }
 
@@ -100,7 +99,7 @@ class RegistrationForm extends React.Component {
    **/
   _handleChange = (event) => {
     event.preventDefault();
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     let errors = this.state.errors;
 
     switch (name) {
@@ -144,7 +143,7 @@ class RegistrationForm extends React.Component {
         break;
     }
 
-    this.setState({errors, [name]: value});
+    this.setState({ errors, [name]: value });
   };
 
   /**
@@ -154,8 +153,8 @@ class RegistrationForm extends React.Component {
    */
   isUserValid(mobileNumber) {
     axios.get(`${process.env.REACT_APP_CHECK_RESIDENT_BY_NUMBER_URL}${mobileNumber}/`)
-      .then(r => this.setState({isMobileChecked: true}))
-      .catch(e => this.setState({mobileCheckError: e.response.data}));
+      .then(r => this.setState({ isMobileChecked: true }))
+      .catch(e => this.setState({ mobileCheckError: e.response.data }));
   }
 
   checkNumber() {
@@ -170,7 +169,7 @@ class RegistrationForm extends React.Component {
   collectData(data) {
     const mobileNumber = this.state.mobileNumber;
     let formData = new FormData(data);
-    formData.append("mobile_number", mobileNumber);
+    formData.append('mobile_number', mobileNumber);
 
     return formData;
   }
@@ -181,9 +180,6 @@ class RegistrationForm extends React.Component {
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_REGISTRATION}${this.state.mobileNumber}/`,
-      headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
-      },
       data: data
     }).then(response => {
       Swal.fire({
@@ -195,19 +191,19 @@ class RegistrationForm extends React.Component {
         confirmButtonText: 'Перейти на сторінку входу'
       }).then((result) => {
         if (result.value) {
-          this.props.history.push("/login");
+          this.props.history.push('/login');
         }
-      })
+      });
     })
       .catch(error => {
         this.setState({
           registrationError: error.data
-        })
+        });
       });
   };
 
   renderButtonText() {
-    const {buttonText} = this.props;
+    const { buttonText } = this.props;
 
     if (!buttonText && this.isLogin) {
       return 'Login';
@@ -299,7 +295,7 @@ class RegistrationForm extends React.Component {
   }
 
   unCheckedForm() {
-    const {phoneLabel, phoneInputProps} = this.props;
+    const { phoneLabel, phoneInputProps } = this.props;
     return (
       <>
         <FormGroup>
@@ -331,7 +327,7 @@ class RegistrationForm extends React.Component {
   }
 
   form() {
-    const {showLogo, children, onLogoClick} = this.props;
+    const { showLogo, children, onLogoClick } = this.props;
 
     const defaultInfoBox = (
       <Alert color="warning">
@@ -354,11 +350,11 @@ class RegistrationForm extends React.Component {
     if (this.state.registrationSuccess) {
       return (
         <div>success</div>
-      )
+      );
     } else {
       return (
         <TransitionGroup {...this.groupProps}>
-          <Flip height={"auto"} key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
+          <Flip height={'auto'} key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
                 spy={this.state.isMobileChecked}>
             <Form id={'registration'} onSubmit={this._handleSubmit}>
               {showLogo && (
@@ -366,7 +362,7 @@ class RegistrationForm extends React.Component {
                   <img
                     src={logo200Image}
                     className="rounded"
-                    style={{width: 60, height: 60, cursor: 'pointer'}}
+                    style={{ width: 60, height: 60, cursor: 'pointer' }}
                     alt="logo"
                     onClick={onLogoClick}
                   />
