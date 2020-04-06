@@ -161,7 +161,8 @@ class RegistrationForm extends React.Component {
       .catch(e => this.setState({ mobileCheckError: e.response.data }));
   }
 
-  checkNumber() {
+  checkNumber(event) {
+    event.preventDefault();
     const userNumber = this.state.mobileNumber;
     if (this.isUserValid(userNumber)) {
       this.setState({
@@ -234,96 +235,99 @@ class RegistrationForm extends React.Component {
     } = this.props;
     return (
       <>
-        <FormGroup>
-          <Label for="userFirstName">{userFirstNameLabel}</Label>
-          {this.state.errors.userFirstName.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.userFirstName}</FormText>}
-          <Input className={this.state.registrationError.first_name && 'is-invalid'} id="userFirstName"
-                 name="first_name" {...userFirstNameInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-          {this.state.registrationError.first_name &&
-          <div className="invalid-feedback">
-            {this.state.errors.first_name}
-          </div>
-          }
-        </FormGroup>
-        <FormGroup>
-          <Label for="userSecondName">{userSecondNameLabel}</Label>
-          {this.state.errors.userSecondName.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.userSecondName}</FormText>}
-          <Input className={this.state.registrationError.last_name && 'is-invalid'} id="userSecondName"
-                 name="last_name" {...userSecondNameInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-          {this.state.registrationError.last_name &&
-          <div className="invalid-feedback">
-            {this.state.registrationError.last_name}
-          </div>
-          }
-        </FormGroup>
-        <FormGroup>
-          <Label for="mobileNumber">{emailLabel}</Label>
-          {this.state.errors.email.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.email}</FormText>}
-          <Input className={this.state.registrationError.email && 'is-invalid'} id="email"
-                 name="email" {...emailInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-          {this.state.registrationError.email &&
-          <div className="invalid-feedback">
-            {this.state.registrationError.email}
-          </div>
-          }
-        </FormGroup>
-        <FormGroup>
-          <Label for="password">{passwordLabel}</Label>
-          {this.state.errors.password.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.password}</FormText>}
-          <Input className={this.state.registrationError.password && 'is-invalid'} id="password"
-                 name="password" {...passwordInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-          {this.state.registrationError.password &&
-          <div className="invalid-feedback">
-            {this.state.registrationError.password}
-          </div>
-          }
-        </FormGroup>
-        <FormGroup>
-          <Label for="confirmPassword">{confirmPasswordLabel}</Label>
-          {this.state.errors.confirmPassword.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.confirmPassword}</FormText>}
-          <Input className={this.state.registrationError.confirmPassword && 'is-invalid'} id="confirmPassword"
-                 name="confirmPassword" {...confirmPasswordInputProps}
-                 onChange={this._handleChange}
-                 autoComplete="off"/>
-          {this.state.registrationError.confirmPassword &&
-          <div className="invalid-feedback">
-            {this.state.registrationError.confirmPassword}
-          </div>
-          }
-        </FormGroup>
-        {/*display inactive button when error length > 0 and active when error == 0*/}
-        {this.state.errors.password ||
-        this.state.errors.confirmPassword ||
-        this.state.errors.userFirstName ||
-        this.state.errors.userLastName ?
-          <Button
-            size="lg"
-            className="bg-gradient-theme-left border-0"
-            block
-            disabled>
-            The data is incorrect
-          </Button> : <Button
-            size="lg"
-            className="bg-gradient-theme-left border-0"
-            block
-            onClick={this._register.bind(this)}
-          >
-            Зареєструватися
-          </Button>}
+        <Form id={'registration'}>
+          <FormGroup>
+            <Label for="userFirstName">{userFirstNameLabel}</Label>
+            {this.state.errors.userFirstName.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.userFirstName}</FormText>}
+            <Input className={this.state.registrationError.first_name && 'is-invalid'} id="userFirstName"
+                   name="first_name" {...userFirstNameInputProps} onChange={this._handleChange}
+                   autoComplete="off"/>
+            {this.state.registrationError.first_name &&
+            <div className="invalid-feedback">
+              {this.state.errors.first_name}
+            </div>
+            }
+          </FormGroup>
+          <FormGroup>
+            <Label for="userSecondName">{userSecondNameLabel}</Label>
+            {this.state.errors.userSecondName.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.userSecondName}</FormText>}
+            <Input className={this.state.registrationError.last_name && 'is-invalid'} id="userSecondName"
+                   name="last_name" {...userSecondNameInputProps} onChange={this._handleChange}
+                   autoComplete="off"/>
+            {this.state.registrationError.last_name &&
+            <div className="invalid-feedback">
+              {this.state.registrationError.last_name}
+            </div>
+            }
+          </FormGroup>
+          <FormGroup>
+            <Label for="mobileNumber">{emailLabel}</Label>
+            {this.state.errors.email.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.email}</FormText>}
+            <Input className={this.state.registrationError.email && 'is-invalid'} id="email"
+                   name="email" {...emailInputProps} onChange={this._handleChange}
+                   autoComplete="off"/>
+            {this.state.registrationError.email &&
+            <div className="invalid-feedback">
+              {this.state.registrationError.email}
+            </div>
+            }
+          </FormGroup>
+          <FormGroup>
+            <Label for="password">{passwordLabel}</Label>
+            {this.state.errors.password.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.password}</FormText>}
+            <Input className={this.state.registrationError.password && 'is-invalid'} id="password"
+                   name="password" {...passwordInputProps} onChange={this._handleChange}
+                   autoComplete="off"/>
+            {this.state.registrationError.password &&
+            <div className="invalid-feedback">
+              {this.state.registrationError.password}
+            </div>
+            }
+          </FormGroup>
+          <FormGroup>
+            <Label for="confirmPassword">{confirmPasswordLabel}</Label>
+            {this.state.errors.confirmPassword.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.confirmPassword}</FormText>}
+            <Input className={this.state.registrationError.confirmPassword && 'is-invalid'} id="confirmPassword"
+                   name="confirmPassword" {...confirmPasswordInputProps}
+                   onChange={this._handleChange}
+                   autoComplete="off"/>
+            {this.state.registrationError.confirmPassword &&
+            <div className="invalid-feedback">
+              {this.state.registrationError.confirmPassword}
+            </div>
+            }
+          </FormGroup>
+          {/*display inactive button when error length > 0 and active when error == 0*/}
+          {this.state.errors.password ||
+          this.state.errors.confirmPassword ||
+          this.state.errors.userFirstName ||
+          this.state.errors.userLastName ?
+            <Button
+              size="lg"
+              className="bg-gradient-theme-left border-0"
+              block
+              disabled>
+              The data is incorrect
+            </Button> : <Button
+              type="submit"
+              size="lg"
+              className="bg-gradient-theme-left border-0"
+              block
+              onClick={this._register.bind(this)}
+            >
+              Зареєструватися
+            </Button>}
+        </Form>
       </>
     );
   }
@@ -337,31 +341,34 @@ class RegistrationForm extends React.Component {
     const { phoneLabel, phoneInputProps } = this.props;
     return (
       <>
-        {this.state.mobileCheckError && mobileCheckError}
-        <FormGroup>
-          <Label for="mobileNumber">{phoneLabel}</Label>
-          {this.state.errors.mobileNumber.length > 0 &&
-          // error field
-          <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
-          <Input id="mobileNumber" name="mobileNumber" {...phoneInputProps} onChange={this._handleChange}
-                 autoComplete="off"/>
-        </FormGroup>
-        {/*display inactive button when error length > 0 and active when error == 0*/}
-        {this.state.errors.mobileNumber ?
-          <Button
-            size="lg"
-            className="bg-gradient-theme-left border-0"
-            block
-            disabled>
-            Введіть вірні данні
-          </Button> : <Button
-            size="lg"
-            className="bg-gradient-theme-left border-0"
-            block
-            onClick={() => this.checkNumber()}
-          >
-            Перевірити номер
-          </Button>}
+        <Form id={'registration-unchecked'} onSubmit={() => this.checkNumber().bind(this)}>
+          {this.state.mobileCheckError && mobileCheckError}
+          <FormGroup>
+            <Label for="mobileNumber">{phoneLabel}</Label>
+            {this.state.errors.mobileNumber.length > 0 &&
+            // error field
+            <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
+            <Input id="mobileNumber" name="mobileNumber" {...phoneInputProps} onChange={this._handleChange}
+                   autoComplete="off"/>
+          </FormGroup>
+          {/*display inactive button when error length > 0 and active when error == 0*/}
+          {this.state.errors.mobileNumber ?
+            <Button
+              size="lg"
+              className="bg-gradient-theme-left border-0"
+              block
+              disabled>
+              Введіть вірні данні
+            </Button> : <Button
+              type="submit"
+              size="lg"
+              className="bg-gradient-theme-left border-0"
+              block
+              onClick={this.checkNumber.bind(this)}
+            >
+              Перевірити номер
+            </Button>}
+        </Form>
       </>
     );
   }
@@ -390,7 +397,7 @@ class RegistrationForm extends React.Component {
         <TransitionGroup {...this.groupProps}>
           <Flip height={'auto'} key={'2'} top opposite cascade collapse when={this.state.isMobileChecked}
                 spy={this.state.isMobileChecked}>
-            <Form id={'registration'} onSubmit={this._handleSubmit}>
+            <>
               {showLogo && (
                 <div className="text-center pb-4">
                   <img
@@ -407,7 +414,7 @@ class RegistrationForm extends React.Component {
               {this.state.isMobileChecked ? this.checkedForm() : this.unCheckedForm()}
               <hr/>
               {children}
-            </Form>
+            </>
           </Flip>
         </TransitionGroup>
       );
