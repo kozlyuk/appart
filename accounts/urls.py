@@ -4,7 +4,6 @@ from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth
 from rest_framework import routers
 
-from accounts import views
 from accounts.api import UserViewSet, GetUser, GetByNumber, \
                          CheckResident, Register
 
@@ -19,7 +18,7 @@ urlpatterns = [
     path("api/v1/check_resident/<str:mobile_number>/", CheckResident.as_view()),
     path("api/v1/register/<str:mobile_number>/", Register.as_view()),
 
-    path('login/', views.CustomLoginView.as_view(template_name='auth.html'), name='login'),
+    path('login/', auth.LoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
     path('password_change/', auth.PasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', auth.PasswordChangeDoneView.as_view(), name='password_change_done'),
