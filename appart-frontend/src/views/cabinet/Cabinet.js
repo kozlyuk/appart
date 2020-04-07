@@ -28,6 +28,7 @@ import BillsList from './BillsList';
 import Auth from '../../auth/auth';
 import {Link} from 'react-router-dom';
 import PaymentList from './PaymentList';
+import ServiceCard from "./serviceCard/serviceCard";
 
 /**
  * User object
@@ -78,6 +79,9 @@ const Cabinet = (props) => {
             </NavItem>
             <NavItem>
               <NavLink active href="/">Personal cabinet</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/registration">Registration</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
@@ -167,6 +171,9 @@ const Cabinet = (props) => {
                       </TabPane>
                       <TabPane tabId="3">
                         <PaymentList user={props.user}/>
+                      </TabPane>
+                      <TabPane tabId="4">
+                        <ServiceCard user={props.user}/>
                       </TabPane>
                     </TabContent>
                   </div>

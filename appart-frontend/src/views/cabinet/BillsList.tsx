@@ -47,6 +47,8 @@ export default class BillsList extends React.Component<BillsListPropsInterface, 
     this.user = new Auth();
   }
 
+// ToDo: need check for user have apartment
+// ToDo: add error if user have no payments and bills
   /**
    * Get data before render
    *

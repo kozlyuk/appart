@@ -69,7 +69,7 @@ const News = (props) => {
 							alt="..."
 						/>
 						<div className="card-body">
-							<a className="link" href="#">
+							<a className="link" href="/">
 								<h5 className="card-title mt-1">
 									Стандартна новина
 								</h5>

@@ -16,11 +16,12 @@ import {
   Row,
   Table
 } from 'reactstrap';
-import { Text } from 'react-easy-i18n';
+import {Text} from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import UserFilter from './filter/UserFilter';
+import PageSpinner from "../../components/PageSpinner";
 
 
 export default class UserList extends AbstractListView {
@@ -67,7 +68,7 @@ export default class UserList extends AbstractListView {
         {this.state.data.map((user) => (
           <tr key={user.pk} align="center">
             <td width="2%">
-              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={user.avatar}
+              <img onClick={this.toggle()} style={{height: '30px', cursor: 'pointer'}} src={user.avatar}
                    alt="avatar"/>
             </td>
             <td>{user.first_name}</td>
@@ -128,12 +129,13 @@ export default class UserList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const { error, isLoaded } = this.state;
+    const {error, isLoaded} = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
+          <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
         </div>)
         ;
@@ -141,7 +143,7 @@ export default class UserList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
+          breadcrumbs={[{name: <Text text="sidebar.user"/>, active: true}]}
           className="TablePage"
         >
           <UserFilter

@@ -1,4 +1,6 @@
 /*
+ * Abstract filter form
+ *
  * @author          Andrey Perestyuk (Arrathilar)
  * @email-primary   a.perestyuk@itel.rv.ua
  * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
@@ -19,5 +21,5 @@ export default abstract class AbstractFilterForm extends React.Component<{}, {}>
     super(props);
   }
 
-  
+
 }

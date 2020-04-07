@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Sum
+from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
@@ -13,6 +14,20 @@ from payments.models import Bill, Payment
 from condominium.models import Apartment
 
 from notice.models import News
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Payment class"""
+
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+
+class BillViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Payment class"""
+
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+
 
 class GetTotalDebt(APIView):
     """
@@ -138,7 +153,8 @@ class PayCallbackView(APIView):
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
 
-    def post(self, request, *args, **kwargs):
+
+    def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         data = request.POST.get('data')
         signature = request.POST.get('signature')
@@ -147,12 +163,12 @@ class PayCallbackView(APIView):
             response = liqpay.decode_data_from_str(data)
 
             News.objects.create(title="Success Payment", text=response)
+#            Payment.objects.create()
             print('callback data', response)
             return Response({'check': 'callback is valid'},
                             status=status.HTTP_200_OK)
         else:
             News.objects.create(title="Failed payment", text=response)
-            print('callback data', response)
-
+            print('signature is not verified', response)
             return Response({'check': 'callback is not valid'},
                             status=status.HTTP_412_PRECONDITION_FAILED)

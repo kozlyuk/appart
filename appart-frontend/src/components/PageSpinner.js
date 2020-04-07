@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Spinner } from 'reactstrap';
+import {Spinner} from 'reactstrap';
 
-const PageSpinner = ({ color = 'primary' }) => {
+const PageSpinner = ({color = 'primary'}) => {
   return (
     <div className="cr-page-spinner">
-      <Spinner color={color} />
+      <Spinner style={{width: '3rem', height: '3rem'}} type="grow" color={color}/>
     </div>
   );
 };

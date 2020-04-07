@@ -4,16 +4,11 @@ import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import Auth from '../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
-const validateForm = (errors) => {
-  let valid = true;
-  Object.values(errors).forEach(
-    (val) => val.length > 0 && (valid = false)
-  );
-  return valid;
-};
 
 class AuthForm extends React.Component {
 
@@ -28,6 +23,7 @@ class AuthForm extends React.Component {
         password: ''
       }
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   get isLogin() {
@@ -48,16 +44,42 @@ class AuthForm extends React.Component {
     event.preventDefault();
     let user = new Auth();
     const target = event.target;
-    console.log(target.mobileNumber.value);
     const mobileNumber = target.mobileNumber.value;
     const password = target.password.value;
     this.setState({
       password: password,
       mobileNumber: mobileNumber
     });
-    user.login(mobileNumber, password).then(r => {
-      return r;
-    });
+
+    axios({
+      method: 'post',
+      url: process.env.REACT_APP_LOGIN,
+      data: { username: mobileNumber, password }
+    })
+      .then(response => {
+        localStorage.setItem('auth', 'key: ' + response.data.key);
+        window.location.reload(false);
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Упс...',
+          text: error.response.data.non_field_errors[0]
+        });
+      });
+
+    // user.login(mobileNumber, password)
+    //   .then(r => {
+    //     return r;
+    //   })
+    //   .catch(error => {
+    //     console.log(error.response.data);
+    //     // Swal.fire({
+    //     //   icon: 'error',
+    //     //   title: 'Oops...',
+    //     //   text: 'error.data'
+    //     // });
+    //   });
   };
 
   /*
@@ -113,8 +135,6 @@ class AuthForm extends React.Component {
       usernameInputProps,
       passwordLabel,
       passwordInputProps,
-      // confirmPasswordLabel,
-      // confirmPasswordInputProps,
       children,
       onLogoClick
     } = this.props;
@@ -147,12 +167,6 @@ class AuthForm extends React.Component {
           <FormText color="danger">{this.state.errors.password}</FormText>}
           <Input id="password" name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
-        {/*{this.isSignup && (*/}
-        {/*  <FormGroup>*/}
-        {/*    <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>*/}
-        {/*    <Input {...confirmPasswordInputProps} />*/}
-        {/*  </FormGroup>*/}
-        {/*)}*/}
         <FormGroup check>
           <Label check>
             <Input type="checkbox"/>{' '}
@@ -175,22 +189,6 @@ class AuthForm extends React.Component {
             type="submit">
             {this.renderButtonText()}
           </Button>}
-
-        {/*<div className="text-center pt-1">*/}
-        {/*  <h6>or</h6>*/}
-        {/*  <h6>*/}
-        {/*    {this.isSignup ? (*/}
-        {/*      <a href="#login" onClick={this.changeAuthState(STATE_LOGIN)}>*/}
-        {/*        Login*/}
-        {/*      </a>*/}
-        {/*    ) : (*/}
-        {/*      <a href="#signup" onClick={this.changeAuthState(STATE_SIGNUP)}>*/}
-        {/*        Signup*/}
-        {/*      </a>*/}
-        {/*    )}*/}
-        {/*  </h6>*/}
-        {/*</div>*/}
-
         {children}
       </Form>
     );

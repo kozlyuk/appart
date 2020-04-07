@@ -23,6 +23,7 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = [
+            "pk",
             "apartment",
             "payment_service",
             "payment_type",
