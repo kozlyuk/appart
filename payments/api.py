@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Sum
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
@@ -151,7 +151,7 @@ class PayCallbackView(APIView):
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         data = request.POST.get('data')
         signature = request.POST.get('signature')

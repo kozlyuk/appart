@@ -9,7 +9,6 @@ django-font-awesome             # https://github.com/benbacardi/django-font-awes
 django-widget-tweaks            # https://github.com/jazzband/django-widget-tweaks
 Jinja2                          # https://github.com/noirbizarre/jinja2
 viberbot==1.0.11                # https://viber.github.io/docs/api/python-bot-api/
-django-summernote==0.8.11.6     # https://github.com/summernote/summernote
 django-rest-auth==0.9.5         # https://github.com/Tivix/django-rest-auth
 django-cors-headers==3.2.1      # https://github.com/adamchainz/django-cors-headers
 celery==4.4.0                   # https://github.com/celery/celery
