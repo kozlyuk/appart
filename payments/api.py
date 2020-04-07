@@ -12,6 +12,7 @@ from payments.serializers import BillSerializer, PaymentSerializer
 from payments.models import Bill, Payment
 from condominium.models import Apartment
 
+from notice.models import News
 
 class GetTotalDebt(APIView):
     """
@@ -144,10 +145,14 @@ class PayCallbackView(APIView):
         sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
         if sign == signature:
             response = liqpay.decode_data_from_str(data)
-#            Payment.objects.create()
+
+            News.objects.create(title="Success Payment", text=response)
             print('callback data', response)
             return Response({'check': 'callback is valid'},
                             status=status.HTTP_200_OK)
         else:
+            News.objects.create(title="Failed payment", text=response)
+            print('callback data', response)
+
             return Response({'check': 'callback is not valid'},
                             status=status.HTTP_412_PRECONDITION_FAILED)
