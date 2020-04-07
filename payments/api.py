@@ -6,12 +6,14 @@ from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
+from rest_framework import status
 from liqpay import LiqPay
 
 from payments.serializers import BillSerializer, PaymentSerializer
 from payments.models import Bill, Payment
 from condominium.models import Apartment
 
+from notice.models import News
 
 class PaymentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Payment class"""
@@ -151,6 +153,7 @@ class PayCallbackView(APIView):
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
 
+
     def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         data = request.POST.get('data')
@@ -158,11 +161,14 @@ class PayCallbackView(APIView):
         sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
         if sign == signature:
             response = liqpay.decode_data_from_str(data)
+
+            News.objects.create(title="Success Payment", text=response)
 #            Payment.objects.create()
             print('callback data', response)
             return Response({'check': 'callback is valid'},
                             status=status.HTTP_200_OK)
         else:
+            News.objects.create(title="Failed payment", text=response)
             print('signature is not verified', response)
             return Response({'check': 'callback is not valid'},
                             status=status.HTTP_412_PRECONDITION_FAILED)
