@@ -8,9 +8,6 @@
 import React, {Fragment} from 'react';
 import {Text} from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Flip from 'react-reveal/Flip';
-import {Badge, Collapse, ListGroup, ListGroupItem} from 'reactstrap';
 
 /**
  * Payment card class
@@ -39,15 +36,20 @@ export default class ServiceCard extends React.Component {
   };
 
   render() {
-    if (this.props.payment) {
-      this.paymentType = this.props.payment.payment_type.toString();
-      this.action = this.props.payment.action.toString();
-      this.date = this.props.payment.date.toString();
-      this.value = this.props.payment.value;
-      this.description = this.props.payment.description.toString();
-      this.paymentService = this.props.payment.payment_service;
+    if (this.props.service) {
+      this.pk = this.props.service.pk;
+      this.apartment = this.props.service.apartment;
+      this.work = this.props.service.apartment;
+      this.number = this.props.service.number;
+      this.execStatus = this.props.service.exec_status;
+      this.payStatus = this.props.service.pay_status;
+      this.information = this.props.service.information;
+      this.warning = this.props.service.warning;
+      this.createdBy = this.props.service.created_by;
+      this.dateCreated = this.props.service.date_created;
+      this.dateUpdated = this.props.service.date_updated;
+      this.dateClosed = this.props.service.date_closed;
     }
-    const {isOpen} = this.state;
     if (!this.props.isLoaded) {
       return (
         <td colSpan={4} className="loaderWrapper text-center mt-4 ml-auto mr-auto">
@@ -62,35 +64,44 @@ export default class ServiceCard extends React.Component {
         <Fragment>
           <tr style={{cursor: 'pointer'}} onClick={this.toggle}>
             <td>
-              {this.paymentType}
+              {this.props.service.apartment}
             </td>
             <td className="text-center">
-              {this.date}
+              {this.work}
             </td>
             <td className="text-center">
-              {this.value}
+              {this.number}
             </td>
             <td className="text-center">
-              {this.description}
+              {this.execStatus}
+            </td>
+            <td className="text-center">
+              {this.payStatus}
+            </td>
+            <td className="text-center">
+              {this.information}
+            </td>
+            <td className="text-center">
+              {this.warning}
             </td>
           </tr>
-          <Collapse tag="tr" isOpen={isOpen}>
-            <td colSpan={4}>
-              <TransitionGroup {...this.groupProps}>
-                {/*
-                 // @ts-ignore*/}
-                {this.paymentService.map((item) => (
-                  <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
-                    <ListGroup>
-                      <ListGroupItem style={{border: 'none'}} className="justify-content-between">{item.service}
-                        <Badge color={'success'} pill className="ml-4">{item.value}</Badge>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </Flip>
-                ))}
-              </TransitionGroup>
-            </td>
-          </Collapse>
+          {/*<Collapse tag="tr" isOpen={isOpen}>*/}
+          {/*  <td colSpan={4}>*/}
+          {/*    <TransitionGroup {...this.groupProps}>*/}
+          {/*      /!**/}
+          {/*       // @ts-ignore*!/*/}
+          {/*      {this.paymentService.map((item) => (*/}
+          {/*        <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>*/}
+          {/*          <ListGroup>*/}
+          {/*            <ListGroupItem style={{border: 'none'}} className="justify-content-between">{item.service}*/}
+          {/*              <Badge color={'success'} pill className="ml-4">{item.value}</Badge>*/}
+          {/*            </ListGroupItem>*/}
+          {/*          </ListGroup>*/}
+          {/*        </Flip>*/}
+          {/*      ))}*/}
+          {/*    </TransitionGroup>*/}
+          {/*  </td>*/}
+          {/*</Collapse>*/}
         </Fragment>
       );
     }
