@@ -153,7 +153,7 @@ export default class AbstractFormView extends React.Component {
     event.preventDefault();
     axios({
       method: this._requestType,
-      url: this.state.url,
+      url: this._postUrl,
       headers: {
         'Authorization': 'Token ' + this._user.getAuthToken()
       },

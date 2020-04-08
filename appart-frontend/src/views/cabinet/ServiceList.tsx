@@ -10,10 +10,11 @@
 import React from 'react';
 import Auth from '../../auth/auth';
 import axios from 'axios';
-import {Col, Row} from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
 // @ts-ignore
-import {Text} from 'react-easy-i18n';
-import ServiceCard from "./serviceCard/serviceCard";
+import { Text } from 'react-easy-i18n';
+import ServiceCard from './serviceCard/serviceCard';
+import { Link } from 'react-router-dom';
 
 /**
  * Props interface
@@ -46,7 +47,7 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
 
   componentDidMount(): void {
     if (this.props.user) {
-      const {apartment_set} = this.props.user;
+      const { apartment_set } = this.props.user;
       axios(`${process.env.REACT_APP_SERVICES}`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
@@ -72,7 +73,7 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
   }
 
   render() {
-    const {isLoaded}: any = this.state;
+    const { isLoaded }: any = this.state;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
@@ -85,20 +86,22 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
       return (
         <Row>
           <Col sm="12">
+            <div className={'text-center container-fluid mb-2'}>
+              <Link to="/order/new">
+                <Button className={'mx-auto'} outline color={'success'}>Додати замовлення</Button>
+              </Link>
+            </div>
             <table className="table bg-white">
               <thead>
               <tr>
                 <th scope="col">
-                  Тип оплати
+                  Назва
                 </th>
                 <th className="text-center" scope="col">
-                  Період
+                  Ціна
                 </th>
                 <th className="text-center" scope="col">
-                  Сума
-                </th>
-                <th className="text-center" scope="col">
-                  Опис
+                  Тривалість
                 </th>
               </tr>
               </thead>
