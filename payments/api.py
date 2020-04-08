@@ -136,7 +136,7 @@ class PayView(APIView):
             'order_id': bill_pk,
             'version': '3',
             'sandbox': 1, # sandbox mode, set to 1 to enable it
-            'server_url': 'https://appart.itel.rv.ua/payments/pay-callback/', # url to callback view
+            'server_url': 'https://dimonline.pp.ua/payments/pay-callback/', # url to callback view
         }
         signature = liqpay.cnb_signature(params)
         data = liqpay.cnb_data(params)

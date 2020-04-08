@@ -134,7 +134,7 @@ class Register(views.APIView):
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':account_activation_token.make_token(user),
             })
-            send_email.delay(mail_subject, message, to=[user.email])
+            send_email(mail_subject, message, to=[user.email]) # TODO add delay
             return Response(_('User registered'), status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
