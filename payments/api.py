@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from liqpay import LiqPay
 
 from payments.serializers import BillSerializer, PaymentSerializer
@@ -136,7 +136,7 @@ class PayView(APIView):
             'order_id': bill_pk,
             'version': '3',
             'sandbox': 1, # sandbox mode, set to 1 to enable it
-            'server_url': 'https://dimonline.pp.ua/payments/api/v1/pay_callback/', # url to callback view
+            'server_url': 'https://dimonline.pp.ua:8443/payments/api/v1/pay_callback/', # url to callback view
         }
         signature = liqpay.cnb_signature(params)
         data = liqpay.cnb_data(params)
@@ -152,7 +152,7 @@ class PayCallbackView(APIView):
     * Return JSON with "data" and "signature"
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
-
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
