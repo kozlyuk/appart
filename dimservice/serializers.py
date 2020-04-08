@@ -10,6 +10,7 @@ class WorkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Work
         fields = [
+            "pk",
             "name",
             "price_code",
             "price",
@@ -21,8 +22,8 @@ class WorkSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     work = serializers.StringRelatedField()
-    exec_status = serializers.CharField(source='get_exec_status_display')
-    pay_status = serializers.CharField(source='get_pay_status_display')
+    # exec_status = serializers.CharField(source='get_exec_status_display')
+    # pay_status = serializers.CharField(source='get_pay_status_display')
 
     class Meta:
         model = Order
@@ -30,8 +31,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "pk",
             "apartment",
             "work",
-            "exec_status",
-            "pay_status",
+            # "exec_status",
+            # "pay_status",
             "information",
             "warning",
             "created_by",
@@ -52,6 +53,7 @@ class ExecutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Execution
         fields = [
+            "pk",
             "order",
             "executor",
             "scheduled_time",
