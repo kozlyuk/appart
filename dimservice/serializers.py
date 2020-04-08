@@ -5,6 +5,18 @@ from rest_framework.response import Response
 from dimservice.models import Work, Order, Execution
 
 
+class ChoicesField(serializers.Field):
+    def __init__(self, choices, **kwargs):
+        self._choices = choices
+        super(ChoicesField, self).__init__(**kwargs)
+
+    def to_representation(self, obj):
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        return getattr(self._choices, data)
+
+
 class WorkSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -22,8 +34,8 @@ class WorkSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     work = serializers.StringRelatedField()
-    # exec_status = serializers.CharField(source='get_exec_status_display')
-    # pay_status = serializers.CharField(source='get_pay_status_display')
+    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES)
+    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES)
 
     class Meta:
         model = Order
@@ -31,8 +43,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "pk",
             "apartment",
             "work",
-            # "exec_status",
-            # "pay_status",
+            "exec_status",
+            "pay_status",
             "information",
             "warning",
             "created_by",
