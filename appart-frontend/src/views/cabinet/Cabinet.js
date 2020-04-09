@@ -46,7 +46,7 @@ const user = new Auth();
  */
 const Cabinet = (props) => {
 
-  const [activeTab, setActiveTab] = useState('4');
+  const [activeTab, setActiveTab] = useState('1');
   const [isOpen, setIsOpen] = useState(false);
 
   /**
