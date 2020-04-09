@@ -10,9 +10,9 @@
 import React from 'react';
 import Auth from '../../auth/auth';
 import axios from 'axios';
-import {Col, Row} from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 // @ts-ignore
-import {Text} from 'react-easy-i18n';
+import { Text } from 'react-easy-i18n';
 import PaymentCard from './paymentCard/PaymentCard';
 
 /**
@@ -46,8 +46,8 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
 
   componentDidMount(): void {
     if (this.props.user) {
-      const {apartment_set} = this.props.user;
-      axios(`${process.env.REACT_APP_GET_PAYMENTS}${apartment_set[0]}/`, {
+      const { apartment } = this.props.user;
+      axios(`${process.env.REACT_APP_GET_PAYMENTS}${apartment[0].pk}/`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }
@@ -72,7 +72,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
   }
 
   render() {
-    const {isLoaded}: any = this.state;
+    const { isLoaded }: any = this.state;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
