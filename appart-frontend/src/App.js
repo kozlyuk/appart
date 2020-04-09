@@ -1,11 +1,11 @@
-import {STATE_LOGIN, STATE_SIGNUP} from './components/AuthForm';
+import { STATE_LOGIN, STATE_SIGNUP } from './components/AuthForm';
 import GAListener from './components/GAListener';
-import {EmptyLayout, LayoutRoute, MainLayout} from './components/Layout';
+import { EmptyLayout, LayoutRoute, MainLayout } from './components/Layout';
 import PageSpinner from './components/PageSpinner';
 import AuthPage from './pages/AuthPage';
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import componentQueries from 'react-component-queries';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
 import Auth from './auth/auth';
 import axios from 'axios';
@@ -14,7 +14,8 @@ import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
 import PaymentUpdate from './views/payment/paymentUpdate';
 import BillList from './views/bill/billList';
-import BillUpdate from "./views/bill/billUpdate";
+import BillUpdate from './views/bill/billUpdate';
+import OrderNew from './views/order/OrderNew';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -118,6 +119,14 @@ class App extends React.Component {
                 />
                 <LayoutRoute
                   exact
+                  path="/order/new"
+                  layout={EmptyLayout}
+                  component={props => (
+                    <OrderNew {...props} user={this.state.user}/>
+                  )}
+                />
+                <LayoutRoute
+                  exact
                   path="/registration"
                   layout={EmptyLayout}
                   component={props => (
@@ -199,28 +208,28 @@ class App extends React.Component {
  * @param width
  * @returns {{breakpoint: string}}
  */
-const query = ({width}) => {
+const query = ({ width }) => {
   if (width < 575) {
-    return {breakpoint: 'xs'};
+    return { breakpoint: 'xs' };
   }
 
   if (576 < width && width < 767) {
-    return {breakpoint: 'sm'};
+    return { breakpoint: 'sm' };
   }
 
   if (768 < width && width < 991) {
-    return {breakpoint: 'md'};
+    return { breakpoint: 'md' };
   }
 
   if (992 < width && width < 1199) {
-    return {breakpoint: 'lg'};
+    return { breakpoint: 'lg' };
   }
 
   if (width > 1200) {
-    return {breakpoint: 'xl'};
+    return { breakpoint: 'xl' };
   }
 
-  return {breakpoint: 'xs'};
+  return { breakpoint: 'xs' };
 };
 
 export default componentQueries(query)(App);

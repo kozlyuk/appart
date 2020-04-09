@@ -5,12 +5,9 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, {Fragment} from 'react';
-import {Text} from 'react-easy-i18n';
+import React, { Fragment } from 'react';
+import { Text } from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Flip from 'react-reveal/Flip';
-import {Badge, Collapse, ListGroup, ListGroupItem} from 'reactstrap';
 
 /**
  * Payment card class
@@ -32,22 +29,19 @@ export default class ServiceCard extends React.Component {
    * Collapse toggler
    */
   toggle = () => {
-    const {isOpen} = this.state;
+    const { isOpen } = this.state;
     this.setState({
       isOpen: !isOpen
     });
   };
 
   render() {
-    if (this.props.payment) {
-      this.paymentType = this.props.payment.payment_type.toString();
-      this.action = this.props.payment.action.toString();
-      this.date = this.props.payment.date.toString();
-      this.value = this.props.payment.value;
-      this.description = this.props.payment.description.toString();
-      this.paymentService = this.props.payment.payment_service;
+    if (this.props.service) {
+      this.name = this.props.service.name;
+      this.price = this.props.service.price;
+      this.price_code = this.props.service.price_code;
+      this.duration = this.props.service.duration;
     }
-    const {isOpen} = this.state;
     if (!this.props.isLoaded) {
       return (
         <td colSpan={4} className="loaderWrapper text-center mt-4 ml-auto mr-auto">
@@ -60,37 +54,17 @@ export default class ServiceCard extends React.Component {
     } else {
       return (
         <Fragment>
-          <tr style={{cursor: 'pointer'}} onClick={this.toggle}>
+          <tr style={{ cursor: 'pointer' }} onClick={this.toggle}>
             <td>
-              {this.paymentType}
+              {this.name}
             </td>
             <td className="text-center">
-              {this.date}
+              {this.price}
             </td>
             <td className="text-center">
-              {this.value}
-            </td>
-            <td className="text-center">
-              {this.description}
+              {this.duration}
             </td>
           </tr>
-          <Collapse tag="tr" isOpen={isOpen}>
-            <td colSpan={4}>
-              <TransitionGroup {...this.groupProps}>
-                {/*
-                 // @ts-ignore*/}
-                {this.paymentService.map((item) => (
-                  <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
-                    <ListGroup>
-                      <ListGroupItem style={{border: 'none'}} className="justify-content-between">{item.service}
-                        <Badge color={'success'} pill className="ml-4">{item.value}</Badge>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </Flip>
-                ))}
-              </TransitionGroup>
-            </td>
-          </Collapse>
         </Fragment>
       );
     }
