@@ -3,6 +3,7 @@ from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import User
+from condominium.models import Apartment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -35,7 +36,20 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
 
+class UserApartmentsSerializer(serializers.ModelSerializer):
+    house = serializers.StringRelatedField()
+
+    class Meta:
+        model = Apartment
+        fields = [
+            "pk",
+            "house",
+            "number"
+        ]
+
+
 class GetUserSerializer(serializers.ModelSerializer):
+    apartment = UserApartmentsSerializer(source='apartment_set', many=True)
 
     class Meta:
         model = User
@@ -43,7 +57,7 @@ class GetUserSerializer(serializers.ModelSerializer):
             "pk",
             "email",
             "is_staff",
-            "apartment_set"
+            "apartment"
         ]
 
 
