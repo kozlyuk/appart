@@ -21,8 +21,8 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES)
-    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES)
+    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
+    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
     class Meta:
         model = Order
