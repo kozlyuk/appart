@@ -1,21 +1,9 @@
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, status
 from rest_framework.response import Response
+from appart.utils import ChoicesField
 
 from dimservice.models import Work, Order, Execution
-
-
-class ChoicesField(serializers.Field):
-    def __init__(self, choices, **kwargs):
-        self._choices = choices
-        super(ChoicesField, self).__init__(**kwargs)
-
-    def to_representation(self, obj):
-        return self._choices[obj]
-
-    def to_internal_value(self, data):
-        return getattr(self._choices, data)
-
 
 class WorkSerializer(serializers.ModelSerializer):
 
@@ -33,9 +21,8 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    work = serializers.StringRelatedField()
-    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES)
-    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES)
+    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
+    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
     class Meta:
         model = Order
