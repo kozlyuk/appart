@@ -17,7 +17,8 @@ registerLang('en', {
       pictureSize: 'Please choose file less 5Mb',
       houseApartmentsCount: 'Please enter the correct quantity!',
       apartmentNumber: 'Please enter the correct number!',
-      apartmentArea: 'The area should be different from 0!'
+      apartmentArea: 'The area should be different from 0!',
+      description: 'Description field cannot be empty!'
     }
   },
   sidebar: {
@@ -188,7 +189,8 @@ registerLang('ua', {
       email: 'Введіть вірний формат електронної пошти!',
       houseApartmentsCount: 'Вкажіть вірну кількість!',
       apartmentNumber: 'Вкажіть корректний номер!',
-      apartmentArea: 'Площа має бути відмінною від 0!'
+      apartmentArea: 'Площа має бути відмінною від 0!',
+      description: 'Поле опису не може бути пустим!'
     }
   },
   sidebar: {

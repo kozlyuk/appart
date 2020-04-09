@@ -10,8 +10,27 @@
 import React from 'react';
 import axios from 'axios';
 import Auth from '../../auth/auth';
+import Swal from 'sweetalert2';
 
 export default class AbstractFormView extends React.Component {
+  /**
+   * Get success redirect url
+   *
+   * @return {*}
+   */
+  get successRedirect() {
+    return this._successRedirect;
+  }
+
+  /**
+   * Set success redirect url
+   *
+   * @param value
+   */
+  set successRedirect(value) {
+    this._successRedirect = value;
+  }
+
   /**
    * Get props
    *
@@ -108,8 +127,9 @@ export default class AbstractFormView extends React.Component {
    * @param dataUrl
    * @param requestType
    * @param postUrl
+   * @param successRedirect
    */
-  constructor(props, dataUrl, requestType, postUrl) {
+  constructor(props, dataUrl, requestType, postUrl, successRedirect, successButton) {
     super(props);
     this.state = {
       isLoaded: false,
@@ -121,6 +141,8 @@ export default class AbstractFormView extends React.Component {
     this._dataUrl = dataUrl;
     this._requestType = requestType;
     this._postUrl = postUrl;
+    this._successRedirect = successRedirect;
+    this._successButton = successButton;
   }
 
   loadData(dataUrl) {
@@ -158,11 +180,30 @@ export default class AbstractFormView extends React.Component {
         'Authorization': 'Token ' + this._user.getAuthToken()
       },
       data: this.submitData(event.target)
-    }).then(function(response) {
-      console.log(response);
+    }).then((response) => {
+      let successMessage = '';
+      if (typeof response.data == 'string') {
+        let successMessage = response.data;
+      }
+      Swal.fire({
+        title: 'Успіх!',
+        text: successMessage,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: this._successButton
+      }).then((result) => {
+        if (result.value) {
+          this.props.history.push(this._successRedirect);
+        }
+      });
     })
       .catch(function(error) {
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       });
   };
 

@@ -121,8 +121,8 @@ class App extends React.Component {
                   exact
                   path="/order/new"
                   layout={EmptyLayout}
-                  component={() => (
-                    <OrderNew user={this.state.user}/>
+                  component={props => (
+                    <OrderNew {...props} user={this.state.user}/>
                   )}
                 />
                 <LayoutRoute
