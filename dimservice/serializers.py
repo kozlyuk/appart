@@ -1,15 +1,16 @@
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, status
 from rest_framework.response import Response
+from appart.utils import ChoicesField
 
 from dimservice.models import Work, Order, Execution
-
 
 class WorkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Work
         fields = [
+            "pk",
             "name",
             "price_code",
             "price",
@@ -20,9 +21,8 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    work = serializers.StringRelatedField()
-    exec_status = serializers.CharField(source='get_exec_status_display')
-    pay_status = serializers.CharField(source='get_pay_status_display')
+    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
+    pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
     class Meta:
         model = Order
@@ -30,7 +30,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "pk",
             "apartment",
             "work",
-            "number",
             "exec_status",
             "pay_status",
             "information",
@@ -53,6 +52,7 @@ class ExecutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Execution
         fields = [
+            "pk",
             "order",
             "executor",
             "scheduled_time",

@@ -32,7 +32,6 @@ urlpatterns = [
     path('notice/', include('notice.urls')),
     path('dimservice/', include('dimservice.urls')),
 
-    path('summernote/', include('django_summernote.urls')),
     path('rest-auth/', include('rest_auth.urls'))
 
 ]
@@ -41,5 +40,4 @@ urlpatterns = [
 
 if DEBUG:
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
-
-urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))] #   Django silk
+    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))] #   Django silk

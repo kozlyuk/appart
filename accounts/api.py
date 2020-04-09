@@ -3,11 +3,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.db.models import Q
-from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
+from messaging.tasks import send_email
 
 from accounts.serializers import UserSerializer, GetUserSerializer
 from accounts.models import User
@@ -134,13 +134,19 @@ class Register(views.APIView):
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':account_activation_token.make_token(user),
             })
-            email = EmailMessage(
-                        mail_subject, message, to=[user.email]
-            )
-            email.send()
+            send_email(mail_subject, message, to=[user.email]) # TODO add delay
             return Response(_('User registered'), status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Activate(views.APIView):
+    """
+    Check actvation url and makes user active.
+    If token is valid send HTTP_200_OK and make user active.
+    If token is not valid send HTTP_400_BAD_REQUEST.
+    """
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, uidb64, token):
         # check if number is valid
