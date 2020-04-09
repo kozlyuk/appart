@@ -151,9 +151,9 @@ export default class OrderNew extends AbstractFormView {
                 name="apartment"
                 id="apartment"
               >
-                {this.state.userData.apartment_set.map(option => (
-                  <option key={option} value={option}>
-                    {option}
+                {this.state.userData.apartment.map(option => (
+                  <option key={option.pk} value={option.pk}>
+                    {option.number}, {option.house}
                   </option>
                 ))}
               </Input>
