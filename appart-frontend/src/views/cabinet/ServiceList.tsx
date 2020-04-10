@@ -10,11 +10,11 @@
 import React from 'react';
 import Auth from '../../auth/auth';
 import axios from 'axios';
-import { Button, Col, Row } from 'reactstrap';
+import {Button, Col, Row} from 'reactstrap';
 // @ts-ignore
-import { Text } from 'react-easy-i18n';
+import {Text} from 'react-easy-i18n';
 import ServiceCard from './serviceCard/serviceCard';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 /**
  * Props interface
@@ -47,7 +47,7 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
 
   componentDidMount(): void {
     if (this.props.user) {
-      const { apartment_set } = this.props.user;
+      const {apartment_set} = this.props.user;
       axios(`${process.env.REACT_APP_SERVICES}`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
@@ -73,7 +73,7 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
   }
 
   render() {
-    const { isLoaded }: any = this.state;
+    const {isLoaded}: any = this.state;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
@@ -95,13 +95,13 @@ export default class ServiceList extends React.Component<ServiceListPropsInterfa
               <thead>
               <tr>
                 <th scope="col">
-                  Назва
+                  Назва роботи
                 </th>
                 <th className="text-center" scope="col">
-                  Ціна
+                  Статус виконанн
                 </th>
                 <th className="text-center" scope="col">
-                  Тривалість
+                  Статус оплати
                 </th>
               </tr>
               </thead>

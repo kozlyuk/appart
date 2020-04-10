@@ -5,8 +5,8 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { Fragment } from 'react';
-import { Text } from 'react-easy-i18n';
+import React, {Fragment} from 'react';
+import {Text} from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
 
 /**
@@ -29,7 +29,7 @@ export default class ServiceCard extends React.Component {
    * Collapse toggler
    */
   toggle = () => {
-    const { isOpen } = this.state;
+    const {isOpen} = this.state;
     this.setState({
       isOpen: !isOpen
     });
@@ -37,9 +37,9 @@ export default class ServiceCard extends React.Component {
 
   render() {
     if (this.props.service) {
-      this.name = this.props.service.name;
-      this.price = this.props.service.price;
-      this.price_code = this.props.service.price_code;
+      this.work = this.props.service.work;
+      this.execStatus = this.props.service.exec_status;
+      this.payStatus = this.props.service.pay_status;
       this.duration = this.props.service.duration;
     }
     if (!this.props.isLoaded) {
@@ -54,15 +54,15 @@ export default class ServiceCard extends React.Component {
     } else {
       return (
         <Fragment>
-          <tr style={{ cursor: 'pointer' }} onClick={this.toggle}>
+          <tr style={{cursor: 'pointer'}} onClick={this.toggle}>
             <td>
-              {this.name}
+              {this.work}
             </td>
             <td className="text-center">
-              {this.price}
+              {this.execStatus}
             </td>
             <td className="text-center">
-              {this.duration}
+              {this.payStatus}
             </td>
           </tr>
         </Fragment>
