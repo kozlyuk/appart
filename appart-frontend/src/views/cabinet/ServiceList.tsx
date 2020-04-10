@@ -10,19 +10,20 @@
 import React from 'react';
 import Auth from '../../auth/auth';
 import axios from 'axios';
-import { Col, Row } from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
-import PaymentCard from './paymentCard/PaymentCard';
+import ServiceCard from './serviceCard/serviceCard';
+import { Link } from 'react-router-dom';
 
 /**
  * Props interface
  */
-interface PaymentListPropsInterface {
+interface ServiceListPropsInterface {
   user: any,
 }
 
-export default class PaymentList extends React.Component<PaymentListPropsInterface, {}> {
+export default class ServiceList extends React.Component<ServiceListPropsInterface, {}> {
 
   /**
    * User object
@@ -35,7 +36,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
    * @param props
    * @param context
    */
-  constructor(props: PaymentListPropsInterface, context: any) {
+  constructor(props: ServiceListPropsInterface, context: any) {
     super(props, context);
     this.state = {
       isLoaded: false,
@@ -46,8 +47,8 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
 
   componentDidMount(): void {
     if (this.props.user) {
-      const { apartment } = this.props.user;
-      axios(`${process.env.REACT_APP_GET_PAYMENTS}${apartment[0].pk}/`, {
+      const { apartment_set } = this.props.user;
+      axios(`${process.env.REACT_APP_SERVICES}`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }
@@ -85,20 +86,22 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
       return (
         <Row>
           <Col sm="12">
+            <div className={'text-center container-fluid mb-2'}>
+              <Link to="/order/new">
+                <Button className={'mx-auto'} outline color={'success'}>Додати замовлення</Button>
+              </Link>
+            </div>
             <table className="table bg-white">
               <thead>
               <tr>
                 <th scope="col">
-                  Тип оплати
+                  Назва
                 </th>
                 <th className="text-center" scope="col">
-                  Період
+                  Ціна
                 </th>
                 <th className="text-center" scope="col">
-                  Сума
-                </th>
-                <th className="text-center" scope="col">
-                  Опис
+                  Тривалість
                 </th>
               </tr>
               </thead>
@@ -106,7 +109,7 @@ export default class PaymentList extends React.Component<PaymentListPropsInterfa
               {/*
 							// @ts-ignore*/}
               {this.state.data.map((item) => (
-                <PaymentCard key={item.toString()} isLoaded={isLoaded} payment={item}/>
+                <ServiceCard key={item.toString()} isLoaded={isLoaded} service={item}/>
               ))}
               </tbody>
             </table>

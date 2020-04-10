@@ -198,17 +198,6 @@ export default class UserNew extends AbstractFormView {
               </FormGroup>
             }
             <FormGroup>
-              <Label for="firstName"><Text text="userForm.firstName"/></Label>
-              {this.state.errors.first_name.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.first_name}</FormText>}
-              <Input
-                type="text"
-                name="firstName"
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-            <FormGroup>
               <Label for="lastName"><Text text="userForm.lastName"/></Label>
               {this.state.errors.last_name.length > 0 &&
               // error field

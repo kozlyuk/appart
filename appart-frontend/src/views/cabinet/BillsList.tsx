@@ -8,11 +8,11 @@
  */
 
 import React from 'react';
-import {Col, Row} from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import axios from 'axios';
 import Auth from '../../auth/auth';
 // @ts-ignore
-import {Text} from 'react-easy-i18n';
+import { Text } from 'react-easy-i18n';
 import BillCard from './billCard/BillCard';
 
 /**
@@ -55,8 +55,8 @@ export default class BillsList extends React.Component<BillsListPropsInterface, 
    */
   componentDidMount() {
     if (this.props.user) {
-      const {apartment_set} = this.props.user;
-      axios(`${process.env.REACT_APP_GET_BILLS}${apartment_set[0]}/`, {
+      const { apartment } = this.props.user;
+      axios(`${process.env.REACT_APP_GET_BILLS}${apartment[0].pk}/`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }
@@ -81,7 +81,7 @@ export default class BillsList extends React.Component<BillsListPropsInterface, 
   }
 
   render() {
-    const {isLoaded}: any = this.state;
+    const { isLoaded }: any = this.state;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
