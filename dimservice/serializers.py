@@ -40,7 +40,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_closed",
         ]
 
-
     # @staticmethod
     # def setup_eager_loading(queryset):
     #     """ optimizing "to-many" relationships with prefetch_related """

@@ -64,7 +64,6 @@ class PaymentAdmin(admin.ModelAdmin):
     list_display = [
         "apartment",
         "payment_type",
-        "action",
         "date",
         "value",
     ]
