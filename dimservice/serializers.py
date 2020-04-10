@@ -21,6 +21,7 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    work = serializers.StringRelatedField()
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
