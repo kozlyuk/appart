@@ -1,11 +1,19 @@
 """appart.payments URL Configuration"""
 
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from payments.api import BillListView, GetTotalDebt, PaymentsListView, \
+from payments.api import BillViewSet, PaymentViewSet, \
+                         BillListView, GetTotalDebt, PaymentsListView, \
                          PayView, PayCallbackView
 
+router = routers.DefaultRouter()
+router.register("bill", BillViewSet)
+router.register("payment", PaymentViewSet)
+
 urlpatterns = (
+    path("api/v1/", include(router.urls)),
+
     path("api/v1/get_bills/<int:apartment>/", BillListView.as_view()),
     path("api/v1/get_total_debt/<int:apartment>/", GetTotalDebt.as_view()),
     path("api/v1/get_payments/<int:apartment>/", PaymentsListView.as_view()),
