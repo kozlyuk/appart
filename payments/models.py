@@ -129,9 +129,6 @@ class Payment(models.Model):
         (BankPayment, _('Bank payment')),
         (LiqPay, _('LiqPay payment'))
     )
-    PAYMENT_ACTION_CHOICES = (
-        ('PY', 'pay'),
-    )
     #  Relationships
     apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'),
                                   on_delete=models.PROTECT, blank=True, null=True)
@@ -139,10 +136,10 @@ class Payment(models.Model):
                                      verbose_name=_('Services'), blank=True)
     #  Fields
     payment_type = models.CharField(_('Payment type'), max_length=2, choices=PAYMENT_TYPE_CHOICES, default='BP')
-    action = models.CharField(_('Payment action'), max_length=2, choices=PAYMENT_ACTION_CHOICES, default='PY')
     date = models.DateField(_('Payment date'), default=date.today)
     value = models.DecimalField(_('Payment value'), max_digits=8, decimal_places=2, default=0)
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
+    liqpay_responce = models.TextField(_('LiqPay responce'), blank=True, null=True)
     # Creator and Date information
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Created by'),
                                    blank=True, null=True, on_delete=models.CASCADE)

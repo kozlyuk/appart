@@ -78,7 +78,6 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
   render() {
     if (this.props.payment) {
       this.paymentType = this.props.payment.payment_type.toString();
-      this.action = this.props.payment.action.toString();
       this.date = this.props.payment.date.toString();
       this.value = this.props.payment.value;
       this.description = this.props.payment.description.toString();

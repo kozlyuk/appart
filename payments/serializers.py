@@ -18,7 +18,6 @@ class PaymentServiceSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True)
     payment_type = serializers.CharField(source='get_payment_type_display')
-    action = serializers.CharField(source='get_action_display')
 
     class Meta:
         model = Payment
@@ -27,7 +26,6 @@ class PaymentSerializer(serializers.ModelSerializer):
             "apartment",
             "payment_service",
             "payment_type",
-            "action",
             "date",
             "value",
             "description",
