@@ -21,7 +21,7 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    work = serializers.StringRelatedField()
+    work_name = serializers.CharField(source='work')
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
@@ -31,6 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "pk",
             "apartment",
             "work",
+            "work_name",
             "exec_status",
             "pay_status",
             "information",
@@ -41,11 +42,11 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_closed",
         ]
 
-    # @staticmethod
-    # def setup_eager_loading(queryset):
-    #     """ optimizing "to-many" relationships with prefetch_related """
-    #     queryset = queryset.select_related("apartment",'apartment__house')
-    #     return queryset
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ optimizing "to-one" relationships with select_related """
+        queryset = queryset.select_related('work')
+        return queryset
 
 class ExecutionSerializer(serializers.ModelSerializer):
 
