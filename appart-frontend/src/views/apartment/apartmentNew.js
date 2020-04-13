@@ -41,11 +41,24 @@ export default class ApartmentNew extends AbstractFormView {
         description: '',
         area: true,
         resident_count: ''
+      },
+      fieldError: {
+        house: '',
+        resident: '',
+        number: '',
+        account_number: '',
+        area: '',
+        residents_count: '',
+        description: '',
+        is_active: '',
+        debt: ''
       }
     };
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_APARTMENTS_URL;
     this.requestType = 'post';
+    this.successRedirect = '/apartment';
+    this._successButton = 'Повернутися до списку апартаментів';
   }
 
   /**
@@ -137,7 +150,7 @@ export default class ApartmentNew extends AbstractFormView {
       <Fragment>
         <CardHeader><Text text="apartmentForm.newApartment.title"/></CardHeader>
         <CardBody>
-          <Form onSubmit={this.handleSubmit}>
+          <Form id="apartmentCreate" onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="house"><Text text="apartmentForm.house"/></Label>
               {this.state.errors.house.length > 0 &&

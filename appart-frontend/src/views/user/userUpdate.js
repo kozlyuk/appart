@@ -50,10 +50,23 @@ export default class UserUpdate extends AbstractFormView {
         birthday: '',
         avatarFormat: '',
         avatarSize: ''
+      },
+      fieldError: {
+        username: '',
+        mobile_number: '',
+        email: '',
+        birth_date: '',
+        avatar: '',
+        theme: '',
+        first_name: '',
+        last_name: ''
       }
     };
     this.dataUrl = process.env.REACT_APP_USERS_URL;
+    this._postUrl = process.env.REACT_APP_USERS_URL + this.props.match.params.id + '/';
     this.requestType = 'put';
+    this.successRedirect = '/user';
+    this._successButton = 'Повернутися до списку користувачів';
   }
 
   /**
@@ -93,7 +106,7 @@ export default class UserUpdate extends AbstractFormView {
     return userFormData;
   }
 
-  /*
+  /**
    * Form field validation
    * handleChange(event): void
    *
@@ -101,7 +114,7 @@ export default class UserUpdate extends AbstractFormView {
    * set errors str to state
    *
    * @param event
-   **/
+   */
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -167,12 +180,18 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
               <Input
+                className={this.state.fieldError.mobile_number && 'is-invalid'}
                 name="mobileNumber"
-                plaintext
+                disabled
                 value={this.state.data.mobile_number}
                 onChange={this.handleChange}
                 readOnly
               />
+              {this.state.fieldError.mobile_number &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.mobile_number}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="firstName"><Text text="userForm.firstName"/></Label>
@@ -180,11 +199,17 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.first_name}</FormText>}
               <Input
+                className={this.state.fieldError.first_name && 'is-invalid'}
                 type="text"
                 name="firstName"
                 defaultValue={this.state.data.first_name}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.first_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.first_name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="lastName"><Text text="userForm.lastName"/></Label>
@@ -192,11 +217,17 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.last_name}</FormText>}
               <Input
+                className={this.state.fieldError.last_name && 'is-invalid'}
                 type="text"
                 name="lastName"
                 defaultValue={this.state.data.last_name}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.last_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.last_name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="email"><Text text="userForm.email"/></Label>
@@ -204,11 +235,17 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.email}</FormText>}
               <Input
+                className={this.state.fieldError.email && 'is-invalid'}
                 type="email"
                 name="email"
                 defaultValue={this.state.data.email}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.email &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.email}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="birthday"><Text text="userForm.birthDate"/></Label>
@@ -216,11 +253,17 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.birthday}</FormText>}
               <Input
+                className={this.state.fieldError.birth_date && 'is-invalid'}
                 type="date"
                 name="birthday"
                 defaultValue={this.state.data.birth_date}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.birth_date &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.birth_date}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="avatar"><Text text="userForm.avatar"/></Label>
@@ -231,10 +274,16 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
               <Input
+                className={this.state.fieldError.avatar && 'is-invalid'}
                 type="file"
                 name="avatar"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.avatar &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.avatar}
+              </div>
+              }
               <FormText color="muted">
                 {/*This is some placeholder block-level help text for the above*/}
                 {/*input. It's a bit lighter and easily wraps to a new line.*/}

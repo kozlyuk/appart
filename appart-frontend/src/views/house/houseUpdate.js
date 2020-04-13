@@ -23,10 +23,20 @@ export default class HouseUpdate extends AbstractFormView {
         photoFormat: '',
         photoSize: '',
         apartmentCount: ''
+      },
+      fieldError: {
+        name: '',
+        address: '',
+        logo: '',
+        description: '',
+        apartments_count: ''
       }
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
+    this._postUrl = process.env.REACT_APP_HOUSES_URL + this.props.match.params.id + '/';
     this.requestType = 'put';
+    this.successRedirect = '/house';
+    this._successButton = 'Повернутися до списку будинків';
   }
 
   /**
@@ -91,13 +101,13 @@ export default class HouseUpdate extends AbstractFormView {
             ? [<Text text="global.validateErrors.emptyField"/>]
             : '';
         break;
-      case 'apartmentCount':
+      case 'apartments_count':
         errors.apartmentCount =
           value === '0' || value === ''
             ? [<Text text="global.validateErrors.houseApartmentsCount"/>]
             : '';
         break;
-      case 'photo':
+      case 'logo':
         errors.photoFormat =
           this.uploadFileValidationFormat(event)
             ? ''
@@ -130,11 +140,18 @@ export default class HouseUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.name}</FormText>}
               <Input
+                className={this.state.fieldError.name && 'is-invalid'}
+                id="name"
                 type="text"
                 name="name"
                 defaultValue={this.state.data.name}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="address"><Text text="houseForm.address"/></Label>
@@ -142,11 +159,18 @@ export default class HouseUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.address}</FormText>}
               <Input
+                className={this.state.fieldError.address && 'is-invalid'}
+                id="address"
                 type="text"
                 name="address"
                 defaultValue={this.state.data.address}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.address &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.address}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="photo"><Text text="houseForm.photo"/></Label>
@@ -157,9 +181,16 @@ export default class HouseUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.photoSize}</FormText>}
               <Input
+                className={this.state.fieldError.logo && 'is-invalid'}
+                id="photo"
                 type="file"
-                name="photo"
+                name="logo"
                 onChange={this.handleChange}/>
+              {this.state.fieldError.logo &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.logo}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="description"><Text text="houseForm.description"/></Label>
@@ -167,11 +198,18 @@ export default class HouseUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.description}</FormText>}
               <Input
+                className={this.state.fieldError.description && 'is-invalid'}
+                id="description"
                 type="textarea"
                 name="description"
                 defaultValue={this.state.data.description}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.description &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.description}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="apartmentCount"><Text text="houseForm.apartmentCount"/></Label>
@@ -179,12 +217,19 @@ export default class HouseUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.apartmentCount}</FormText>}
               <Input
+                className={this.state.fieldError.apartments_count && 'is-invalid'}
+                id="apartmentCount"
                 type="number"
-                name="apartmentCount"
+                name="apartments_count"
                 min="0"
                 defaultValue={this.state.data.apartments_count}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.apartments_count &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.apartments_count}
+              </div>
+              }
             </FormGroup>
 
             <Link to="/house">
@@ -192,7 +237,7 @@ export default class HouseUpdate extends AbstractFormView {
                 <Text text="buttons.returnBtn"/>
               </Button>
             </Link>
-            {this.state.description ||
+            {this.state.errors.description ||
             this.state.errors.address ||
             this.state.errors.name ||
             this.state.errors.photoSize ||

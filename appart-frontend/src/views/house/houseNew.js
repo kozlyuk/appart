@@ -23,11 +23,20 @@ export default class HouseNew extends AbstractFormView {
         photoFormat: '',
         photoSize: '',
         apartmentCount: true
+      },
+      fieldError: {
+        name: '',
+        address: '',
+        logo: '',
+        description: '',
+        apartments_count: ''
       }
     };
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_HOUSES_URL;
     this.requestType = 'post';
+    this.successRedirect = '/house';
+    this._successButton = 'Повернутися до списку будинків';
   }
 
   /**
@@ -54,17 +63,7 @@ export default class HouseNew extends AbstractFormView {
    * @returns {FormData}
    */
   submitData(target) {
-    const userFormData = new FormData();
-    // dict of all elements
-    console.log(target);
-    userFormData.append('description', target.description.value);
-    userFormData.append('address', target.address.value);
-    userFormData.append('name', target.name.value);
-    if (target.photo.files[0]) {
-      userFormData.append('logo', target.photo.files[0]);
-    }
-    userFormData.append('apartments_count', target.apartmentCount.value);
-    return userFormData;
+    return new FormData(document.forms.userCreate);
   }
 
   /**
@@ -93,13 +92,13 @@ export default class HouseNew extends AbstractFormView {
             ? [<Text text="global.validateErrors.emptyField"/>]
             : '';
         break;
-      case 'apartmentCount':
+      case 'apartments_count':
         errors.apartmentCount =
           value === '0' || value === ''
             ? [<Text text="global.validateErrors.houseApartmentsCount"/>]
             : '';
         break;
-      case 'photo':
+      case 'logo':
         errors.photoFormat =
           this.uploadFileValidationFormat(event)
             ? ''
@@ -125,17 +124,24 @@ export default class HouseNew extends AbstractFormView {
       <Fragment>
         <CardHeader><Text text="houseForm.newHouse.title"/></CardHeader>
         <CardBody>
-          <Form onSubmit={this.handleSubmit}>
+          <Form id="userCreate" onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="name"><Text text="houseForm.name"/></Label>
               {this.state.errors.name.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.name}</FormText>}
               <Input
+                className={this.state.fieldError.name && 'is-invalid'}
+                id="name"
                 type="text"
                 name="name"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="address"><Text text="houseForm.address"/></Label>
@@ -143,13 +149,20 @@ export default class HouseNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.address}</FormText>}
               <Input
+                className={this.state.fieldError.address && 'is-invalid'}
+                id="address"
                 type="text"
                 name="address"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.address &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.address}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
-              <Label for="photo"><Text text="houseForm.photo"/></Label>
+              <Label for="logo"><Text text="houseForm.photo"/></Label>
               {this.state.errors.photoFormat.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.photoFormat}</FormText>}
@@ -157,10 +170,17 @@ export default class HouseNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.photoSize}</FormText>}
               <Input
+                className={this.state.fieldError.logo && 'is-invalid'}
+                id="logo"
                 type="file"
-                name="photo"
+                name="logo"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.logo &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.logo}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="description"><Text text="houseForm.description"/></Label>
@@ -168,10 +188,17 @@ export default class HouseNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.description}</FormText>}
               <Input
+                className={this.state.fieldError.description && 'is-invalid'}
+                id="description"
                 type="textarea"
                 name="description"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.description &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.description}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="apartmentCount"><Text text="houseForm.apartmentCount"/></Label>
@@ -179,11 +206,18 @@ export default class HouseNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.apartmentCount}</FormText>}
               <Input
+                className={this.state.fieldError.apartments_count && 'is-invalid'}
+                id="apartmentCount"
                 type="number"
-                name="apartmentCount"
+                name="apartments_count"
                 min="0"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.apartments_count &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.apartments_count}
+              </div>
+              }
             </FormGroup>
 
             <Link to="/house">

@@ -40,11 +40,23 @@ export default class UserNew extends AbstractFormView {
         birthday: '',
         avatarFormat: '',
         avatarSize: ''
+      },
+      fieldError: {
+        username: '',
+        mobile_number: '',
+        email: '',
+        birth_date: '',
+        avatar: '',
+        theme: '',
+        first_name: '',
+        last_name: ''
       }
     };
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_USERS_URL;
     this.requestType = 'post';
+    this.successRedirect = '/user';
+    this._successButton = 'Повернутися до списку користувачів';
   }
 
   /**
@@ -71,24 +83,14 @@ export default class UserNew extends AbstractFormView {
    * @returns {FormData}
    */
   submitData(target) {
-    const userFormData = new FormData();
-    // dict of all elements
-    userFormData.append('mobile_number', target.mobileNumber.value);
-    userFormData.append('first_name', target.firstName.value);
-    userFormData.append('last_name', target.lastName.value);
-    userFormData.append('email', target.email.value);
-    userFormData.append('birthday', target.birthday.value);
-    if (target.avatar.files[0]) {
-      userFormData.append('avatar', target.avatar.files[0]);
-    }
-    return userFormData;
+    return new FormData(document.forms.userCreate);
   }
 
   handleSubmit() {
     console.log('new user');
   }
 
-  /*
+  /**
    * Form field validation
    * handleChange(event): void
    *
@@ -96,13 +98,13 @@ export default class UserNew extends AbstractFormView {
    * set errors str to state
    *
    * @param event
-   **/
+   */
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
     let errors = this.state.errors;
     switch (name) {
-      case 'mobileNumber':
+      case 'mobile_number':
         errors.mobileNumber =
           (validPhoneRegex.test(value) && value.length === 10)
             ? ''
@@ -114,13 +116,13 @@ export default class UserNew extends AbstractFormView {
             ? [<Text text="global.validateErrors.password"/>]
             : '';
         break;
-      case 'firstName':
+      case 'first_name':
         errors.first_name =
           value.length < 1
             ? [<Text text="global.validateErrors.first_name"/>]
             : '';
         break;
-      case 'lastName':
+      case 'last_name':
         errors.last_name =
           value.length < 1
             ? [<Text text="global.validateErrors.last_name"/>]
@@ -170,43 +172,64 @@ export default class UserNew extends AbstractFormView {
       <Fragment>
         <CardHeader><Text text="userForm.newUser.title"/></CardHeader>
         <CardBody>
-          <Form onSubmit={this.handleSubmit}>
+          <Form id="userCreate" onSubmit={this.handleSubmit}>
             {this.props.mobileNumber ?
               <FormGroup>
-                <Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
+                <Label for="mobile_number"><Text text="userForm.mobileNumber"/></Label>
                 {this.state.errors.mobileNumber.length > 0 &&
                 // error field
                 <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
                 <Input
-                  name="mobileNumber"
+                  className={this.state.fieldError.mobile_number && 'is-invalid'}
+                  name="mobile_number"
+                  id="mobile_number"
                   type="number"
                   defaultValue={this.props.mobileNumber}
                   onChange={this.handleChange}
                 />
+                {this.state.fieldError.mobile_number &&
+                <div className="invalid-feedback">
+                  {this.state.fieldError.mobile_number}
+                </div>
+                }
               </FormGroup>
               :
               <FormGroup>
-                <Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
+                <Label for="mobile_number"><Text text="userForm.mobileNumber"/></Label>
                 {this.state.errors.mobileNumber.length > 0 &&
                 // error field
                 <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
                 <Input
-                  name="mobileNumber"
+                  className={this.state.fieldError.mobile_number && 'is-invalid'}
+                  name="mobile_number"
+                  id="mobile_number"
                   type="number"
                   onChange={this.handleChange}
                 />
+                {this.state.fieldError.mobile_number &&
+                <div className="invalid-feedback">
+                  {this.state.fieldError.mobile_number}
+                </div>
+                }
               </FormGroup>
             }
             <FormGroup>
-              <Label for="lastName"><Text text="userForm.lastName"/></Label>
+              <Label for="last_name"><Text text="userForm.lastName"/></Label>
               {this.state.errors.last_name.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.last_name}</FormText>}
               <Input
+                className={this.state.fieldError.last_name && 'is-invalid'}
                 type="text"
-                name="lastName"
+                id="last_name"
+                name="last_name"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.last_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.last_name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="email"><Text text="userForm.email"/></Label>
@@ -214,10 +237,17 @@ export default class UserNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.email}</FormText>}
               <Input
+                className={this.state.fieldError.email && 'is-invalid'}
                 type="email"
+                id="email"
                 name="email"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.email &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.email}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="birthday"><Text text="userForm.birthDate"/></Label>
@@ -225,10 +255,17 @@ export default class UserNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.birthday}</FormText>}
               <Input
+                className={this.state.fieldError.birth_date && 'is-invalid'}
                 type="date"
                 name="birthday"
+                id="birthday"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.birth_date &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.birth_date}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="avatar"><Text text="userForm.avatar"/></Label>
@@ -239,10 +276,17 @@ export default class UserNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
               <Input
+                className={this.state.fieldError.avatar && 'is-invalid'}
                 type="file"
+                id="avatar"
                 name="avatar"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.avatar &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.avatar}
+              </div>
+              }
               <FormText color="muted">
                 {/*This is some placeholder block-level help text for the above*/}
                 {/*input. It's a bit lighter and easily wraps to a new line.*/}
