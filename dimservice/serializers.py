@@ -21,7 +21,7 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    work_name = serializers.CharField(source='work')
+    work_name = serializers.CharField(source='work', required=False)
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
 
