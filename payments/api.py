@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Sum
@@ -164,9 +165,13 @@ class PayCallbackView(APIView):
         sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
         if sign == signature:
             response = liqpay.decode_data_from_str(data)
+            end_date = datetime.fromtimestamp(int(response['end_date']) / 1e3)
 
-            News.objects.create(title="Success Payment", text=response)
-#            Payment.objects.create()
+            Payment.objects.create(payment_type=Payment.LiqPay,
+                                   date=end_date,
+                                   value=response['amount'],
+                                   description=response['description'],
+                                   liqpay_responce=response)
             return Response({'check': 'callback is valid'},
                             status=status.HTTP_200_OK)
         else:
