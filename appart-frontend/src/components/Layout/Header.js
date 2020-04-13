@@ -1,33 +1,21 @@
 import Avatar from 'components/Avatar';
 import { UserCard } from 'components/Card';
 import Notifications from 'components/Notifications';
-import SearchInput from 'components/SearchInput';
 import { notificationsData } from 'demos/header';
 import withBadge from 'hocs/withBadge';
+import Auth from '../../auth/auth';
+import Breadcrumbs from '../../breadcrumbs/Breadcrumbs';
+import { Button, ListGroup, ListGroupItem, Nav, Navbar, NavItem, NavLink, Popover, PopoverBody } from 'reactstrap';
 import React from 'react';
 import {
   MdClearAll,
   MdExitToApp,
-  MdHelp,
   MdInsertChart,
-  MdMessage,
   MdNotificationsActive,
   MdNotificationsNone,
   MdPersonPin,
-  MdSettingsApplications,
+  MdSettingsApplications
 } from 'react-icons/md';
-import {
-  Button,
-  ListGroup,
-  ListGroupItem,
-  // NavbarToggler,
-  Nav,
-  Navbar,
-  NavItem,
-  NavLink,
-  Popover,
-  PopoverBody,
-} from 'reactstrap';
 import bn from 'utils/bemnames';
 
 const bem = bn.create('header');
@@ -40,21 +28,25 @@ const MdNotificationsActiveWithBadge = withBadge({
     right: -10,
     display: 'inline-flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  children: <small>5</small>,
+  children: <small>5</small>
 })(MdNotificationsActive);
 
 class Header extends React.Component {
-  state = {
-    isOpenNotificationPopover: false,
-    isNotificationConfirmed: false,
-    isOpenUserCardPopover: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpenNotificationPopover: false,
+      isNotificationConfirmed: false,
+      isOpenUserCardPopover: false
+    };
+    this.user = new Auth();
+  }
 
   toggleNotificationPopover = () => {
     this.setState({
-      isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
+      isOpenNotificationPopover: !this.state.isOpenNotificationPopover
     });
 
     if (!this.state.isNotificationConfirmed) {
@@ -64,7 +56,7 @@ class Header extends React.Component {
 
   toggleUserCardPopover = () => {
     this.setState({
-      isOpenUserCardPopover: !this.state.isOpenUserCardPopover,
+      isOpenUserCardPopover: !this.state.isOpenUserCardPopover
     });
   };
 
@@ -82,12 +74,28 @@ class Header extends React.Component {
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
           <Button outline onClick={this.handleSidebarControlButton}>
-            <MdClearAll size={25} />
+            <MdClearAll size={25}/>
           </Button>
         </Nav>
         <Nav navbar>
-          <SearchInput />
+          {/*{this.props.breadcrumbs && (*/}
+          {/*  <Breadcrumb className={bem.e('breadcrumb')}>*/}
+          {/*    <BreadcrumbItem><Text text="sidebar.home"/></BreadcrumbItem>*/}
+          {/*    {this.props.breadcrumbs.length &&*/}
+          {/*    this.props.breadcrumbs.map(({ name, active }, index) => (*/}
+          {/*      <BreadcrumbItem key={index} active={active}>*/}
+          {/*        <Link to="/test">*/}
+          {/*          {name}*/}
+          {/*        </Link>*/}
+          {/*      </BreadcrumbItem>*/}
+          {/*    ))}*/}
+          {/*  </Breadcrumb>*/}
+          {/*)}*/}
+          <Breadcrumbs/>
         </Nav>
+
+        {/*  <SearchInput />*/}
+        {/*</Nav>*/}
 
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">
@@ -113,7 +121,7 @@ class Header extends React.Component {
               target="Popover1"
             >
               <PopoverBody>
-                <Notifications notificationsData={notificationsData} />
+                <Notifications notificationsData={notificationsData}/>
               </PopoverBody>
             </Popover>
           </NavItem>
@@ -142,22 +150,18 @@ class Header extends React.Component {
                 >
                   <ListGroup flush>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdPersonPin /> Profile
+                      <MdPersonPin/> Profile
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdInsertChart /> Stats
+                      <MdInsertChart/> Stats
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdMessage /> Messages
+                      <MdSettingsApplications/> Settings
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdSettingsApplications /> Settings
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdHelp /> Help
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdExitToApp /> Signout
+                    <ListGroupItem tag="button" action className="border-light" onClick={() => {
+                      this.user.logout();
+                    }}>
+                      <MdExitToApp/> Sign out
                     </ListGroupItem>
                   </ListGroup>
                 </UserCard>
