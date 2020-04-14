@@ -56,7 +56,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                 queryset = queryset.order_by(order)
 
             # Set up eager loading to avoid N+1 selects
-            # queryset = self.get_serializer_class().setup_eager_loading(queryset)
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)
             return queryset
 
 
