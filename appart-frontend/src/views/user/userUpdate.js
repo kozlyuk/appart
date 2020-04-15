@@ -76,7 +76,9 @@ export default class UserUpdate extends AbstractFormView {
       }
     };
     this.dataUrl = process.env.REACT_APP_USERS_URL;
-    this._postUrl = process.env.REACT_APP_USERS_URL + this.props.match.params.id + '/';
+    if (this.props.match) {
+      this._postUrl = process.env.REACT_APP_USERS_URL + this.props.match.params.id + '/';
+    }
     this.requestType = 'put';
     this.successRedirect = '/user';
     this._successButton = 'Повернутися до списку користувачів';

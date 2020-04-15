@@ -45,7 +45,9 @@ export default class HouseUpdate extends AbstractFormView {
       }
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
-    this._postUrl = process.env.REACT_APP_HOUSES_URL + this.props.match.params.id + '/';
+    if (this.props.match) {
+      this._postUrl = process.env.REACT_APP_HOUSES_URL + this.props.match.params.id + '/';
+    }
     this.requestType = 'put';
     this.successRedirect = '/house';
     this._successButton = 'Повернутися до списку будинків';
