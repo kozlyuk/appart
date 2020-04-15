@@ -1,4 +1,4 @@
-import AbstractListView from "../../generics/listViews/abstractListView";
+import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
 import {
@@ -15,11 +15,11 @@ import {
   Row,
   Table
 } from 'reactstrap';
-import {Text} from "react-easy-i18n";
-import UserCard from "../../components/Card/UserCard";
-import {Link} from "react-router-dom";
-import Pagination from "react-js-pagination";
-import PageSpinner from "../../components/PageSpinner";
+import { Text } from 'react-easy-i18n';
+import UserCard from '../../components/Card/UserCard';
+import { Link } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
+import PageSpinner from '../../components/PageSpinner';
 
 
 export default class HouseList extends AbstractListView {
@@ -29,7 +29,7 @@ export default class HouseList extends AbstractListView {
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_HOUSES_URL
+    this.dataUrl = process.env.REACT_APP_HOUSES_URL;
   }
 
   /**
@@ -54,7 +54,7 @@ export default class HouseList extends AbstractListView {
           <tr align="center">
             <td width="2%">{house.pk}</td>
             <td width="2%">
-              <img onClick={this.toggle()} style={{height: "30px", cursor: "pointer"}} src={house.logo} alt="avatar"/>
+              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
             </td>
             <td>{house.name}</td>
             <td>{house.address}</td>
@@ -63,11 +63,6 @@ export default class HouseList extends AbstractListView {
               <Link to={`house/${house.pk}/edit`}>
                 <Badge color="warning" className="mr-1">
                   <Text text="houseList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
-              <Link to={`house/${house.pk}/delete`}>
-                <Badge color="danger" className="mr-1">
-                  <Text text="houseList.tableHeader.deleteBtn"/>
                 </Badge>
               </Link>
             </td>
@@ -85,7 +80,7 @@ export default class HouseList extends AbstractListView {
                     subtitle={house.address}
                     text={house.description}
                     style={{
-                      height: 300,
+                      height: 300
                     }}
                   >
                   </UserCard>
@@ -101,7 +96,7 @@ export default class HouseList extends AbstractListView {
         ))}
         </tbody>
       </Table>
-    )
+    );
   }
 
   /**
@@ -109,7 +104,7 @@ export default class HouseList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -123,7 +118,7 @@ export default class HouseList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.house"/>, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.house"/>, active: true }]}
           className="TablePage"
         >
           <Row>
@@ -158,7 +153,7 @@ export default class HouseList extends AbstractListView {
             </Col>
           </Row>
         </Page>
-      )
+      );
     }
   }
 }

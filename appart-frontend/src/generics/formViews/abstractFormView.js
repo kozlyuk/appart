@@ -152,6 +152,9 @@ export default class AbstractFormView extends React.Component {
     this.handleSubmit.bind(this);
   }
 
+  secondaryLoadData() {
+  }
+
   /**
    * Load data
    *
@@ -225,10 +228,19 @@ export default class AbstractFormView extends React.Component {
         this.setState({
           fieldError: error.response.data
         });
+        let errorArr = [];
+        for (let i in error.response.data) {
+          errorArr.push(error.response.data[i]);
+        }
+        const errorString = (errorArr.map(item => {
+          const errorValue = item[0].toString();
+          console.log(errorValue);
+          return (`<div>${errorValue}</div>`);
+        }));
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!' + error
+          html: errorString.join('')
         });
       });
   };
@@ -247,6 +259,7 @@ export default class AbstractFormView extends React.Component {
    * @return {*}
    */
   componentDidMount() {
+    this.secondaryLoadData();
     if (this._dataUrl) {
       if (this.props.match) {
         this.loadData(this._dataUrl + this.props.match.params.id + '/');

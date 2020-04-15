@@ -1,5 +1,17 @@
 import React, { Fragment } from 'react';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import {
+  Button,
+  ButtonToolbar,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -231,24 +243,30 @@ export default class HouseUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
-
-            <Link to="/house">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
-              </Button>
-            </Link>
-            {this.state.errors.description ||
-            this.state.errors.address ||
-            this.state.errors.name ||
-            this.state.errors.photoSize ||
-            this.state.errors.photoFormat ||
-            this.state.errors.apartmentCount ?
-              <Button disabled className="float-right">
-                <Text text="buttons.submitBtn"/>
-              </Button> : <Button className="float-right" type="submit">
-                <Text text="buttons.submitBtn"/>
-              </Button>
-            }
+            <ButtonToolbar>
+              <Link to="/house">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Link className="mx-auto" to={`delete`}>
+                <Button color="danger">
+                  <Text text="houseList.tableHeader.deleteBtn"/>
+                </Button>
+              </Link>
+              {this.state.errors.description ||
+              this.state.errors.address ||
+              this.state.errors.name ||
+              this.state.errors.photoSize ||
+              this.state.errors.photoFormat ||
+              this.state.errors.apartmentCount ?
+                <Button disabled className="float-right">
+                  <Text text="buttons.submitBtn"/>
+                </Button> : <Button className="float-right" type="submit">
+                  <Text text="buttons.submitBtn"/>
+                </Button>
+              }
+            </ButtonToolbar>
           </Form>
         </CardBody>
       </Fragment>

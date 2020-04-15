@@ -1,6 +1,18 @@
 import React, { Fragment } from 'react';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  CustomInput,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
@@ -32,6 +44,10 @@ export default class UserNew extends AbstractFormView {
       // validation fields
       password: '',
       mobileNumber: '',
+      data: {
+        is_active: false,
+        is_staff: false
+      },
       errors: {
         mobileNumber: true,
         first_name: '',
@@ -83,11 +99,38 @@ export default class UserNew extends AbstractFormView {
    * @returns {FormData}
    */
   submitData(target) {
-    return new FormData(document.forms.userCreate);
+    const userFormData = new FormData(document.forms.userCreate);
+    userFormData.delete('is_staff');
+    userFormData.delete('is_active');
+    userFormData.append('is_staff', this.state.data.is_staff);
+    userFormData.append('is_active', this.state.data.is_active);
+    return userFormData;
   }
 
   handleSubmit() {
     console.log('new user');
+  }
+
+  /**
+   * Switch toggler
+   *
+   * @param event
+   * @param name
+   */
+  switchToggler(event, name) {
+    let prevState = { ...this.state.data };
+    switch (name) {
+      case name = 'is_staff':
+        prevState.is_staff = !this.state.data.is_staff;
+        this.setState({ data: prevState });
+        break;
+      case name = 'is_active':
+        prevState.is_active = !this.state.data.is_active;
+        this.setState({ data: prevState });
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -214,6 +257,24 @@ export default class UserNew extends AbstractFormView {
               </FormGroup>
             }
             <FormGroup>
+              <Label for="first_name"><Text text="userForm.firstName"/></Label>
+              {this.state.errors.first_name.length > 0 &&
+              // error field
+              <FormText color="danger">{this.state.errors.first_name}</FormText>}
+              <Input
+                className={this.state.fieldError.first_name && 'is-invalid'}
+                id="first_name"
+                type="text"
+                name="firstName"
+                onChange={this.handleChange}
+              />
+              {this.state.fieldError.first_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.first_name}
+              </div>
+              }
+            </FormGroup>
+            <FormGroup>
               <Label for="last_name"><Text text="userForm.lastName"/></Label>
               {this.state.errors.last_name.length > 0 &&
               // error field
@@ -249,48 +310,75 @@ export default class UserNew extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <Label for="birthday"><Text text="userForm.birthDate"/></Label>*/}
+            {/*  {this.state.errors.birthday.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.birthday}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.birth_date && 'is-invalid'}*/}
+            {/*    type="date"*/}
+            {/*    name="birthday"*/}
+            {/*    id="birthday"*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.birth_date &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.birth_date}*/}
+            {/*  </div>*/}
+            {/*  }*/}
+            {/*</FormGroup>*/}
+            {/*<FormGroup>*/}
+            {/*  <Label for="avatar"><Text text="userForm.avatar"/></Label>*/}
+            {/*  {this.state.errors.avatarFormat.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}*/}
+            {/*  {this.state.errors.avatarSize.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarSize}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.avatar && 'is-invalid'}*/}
+            {/*    type="file"*/}
+            {/*    id="avatar"*/}
+            {/*    name="avatar"*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.avatar &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.avatar}*/}
+            {/*  </div>*/}
+            {/*  }*/}
+            {/*  <FormText color="muted">*/}
+            {/*    /!*This is some placeholder block-level help text for the above*!/*/}
+            {/*    /!*input. It's a bit lighter and easily wraps to a new line.*!/*/}
+            {/*  </FormText>*/}
+            {/*</FormGroup>*/}
             <FormGroup>
-              <Label for="birthday"><Text text="userForm.birthDate"/></Label>
-              {this.state.errors.birthday.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.birthday}</FormText>}
-              <Input
-                className={this.state.fieldError.birth_date && 'is-invalid'}
-                type="date"
-                name="birthday"
-                id="birthday"
-                onChange={this.handleChange}
-              />
-              {this.state.fieldError.birth_date &&
-              <div className="invalid-feedback">
-                {this.state.fieldError.birth_date}
+              <Label for="exampleCheckbox">Права доступу</Label>
+              <div>
+                <CustomInput
+                  type="switch"
+                  id="is_active"
+                  name="is_active"
+                  label="Активний"
+                  checked={this.state.data.is_active}
+                  onChange={() => this.switchToggler(this, 'is_active')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до особистого кабінету
+                </FormText>
+                <CustomInput
+                  type="switch"
+                  id="is_staff"
+                  name="is_staff"
+                  label="Персонал"
+                  checked={this.state.data.is_staff}
+                  onChange={() => this.switchToggler(this, 'is_staff')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до адмін сторінки
+                </FormText>
               </div>
-              }
-            </FormGroup>
-            <FormGroup>
-              <Label for="avatar"><Text text="userForm.avatar"/></Label>
-              {this.state.errors.avatarFormat.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}
-              {this.state.errors.avatarSize.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
-              <Input
-                className={this.state.fieldError.avatar && 'is-invalid'}
-                type="file"
-                id="avatar"
-                name="avatar"
-                onChange={this.handleChange}
-              />
-              {this.state.fieldError.avatar &&
-              <div className="invalid-feedback">
-                {this.state.fieldError.avatar}
-              </div>
-              }
-              <FormText color="muted">
-                {/*This is some placeholder block-level help text for the above*/}
-                {/*input. It's a bit lighter and easily wraps to a new line.*/}
-              </FormText>
             </FormGroup>
             {this.props.hasCloseBtn ?
               <Button color="warning" onClick={this.props.hasCloseBtn}>

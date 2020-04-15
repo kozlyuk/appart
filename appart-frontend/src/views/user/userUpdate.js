@@ -8,7 +8,20 @@
  */
 
 import React, { Fragment } from 'react';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import {
+  Button,
+  ButtonToolbar,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  CustomInput,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -99,11 +112,35 @@ export default class UserUpdate extends AbstractFormView {
     userFormData.append('first_name', target.firstName.value);
     userFormData.append('last_name', target.lastName.value);
     userFormData.append('email', target.email.value);
-    userFormData.append('birthday', target.birthday.value);
-    if (target.avatar.files[0]) {
-      userFormData.append('avatar', target.avatar.files[0]);
-    }
+    // userFormData.append('birthday', target.birthday.value);
+    userFormData.append('is_staff', this.state.data.is_staff);
+    userFormData.append('is_active', this.state.data.is_active);
+    // if (target.avatar.files[0]) {
+    //   userFormData.append('avatar', target.avatar.files[0]);
+    // }
     return userFormData;
+  }
+
+  /**
+   * Switch toggler
+   *
+   * @param event
+   * @param name
+   */
+  switchToggler(event, name) {
+    let prevState = { ...this.state.data };
+    switch (name) {
+      case name = 'is_staff':
+        prevState.is_staff = !this.state.data.is_staff;
+        this.setState({ data: prevState });
+        break;
+      case name = 'is_active':
+        prevState.is_active = !this.state.data.is_active;
+        this.setState({ data: prevState });
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -194,12 +231,13 @@ export default class UserUpdate extends AbstractFormView {
               }
             </FormGroup>
             <FormGroup>
-              <Label for="firstName"><Text text="userForm.firstName"/></Label>
+              <Label for="first_name"><Text text="userForm.firstName"/></Label>
               {this.state.errors.first_name.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.first_name}</FormText>}
               <Input
                 className={this.state.fieldError.first_name && 'is-invalid'}
+                id="first_name"
                 type="text"
                 name="firstName"
                 defaultValue={this.state.data.first_name}
@@ -247,74 +285,97 @@ export default class UserUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
-            <FormGroup>
-              <Label for="birthday"><Text text="userForm.birthDate"/></Label>
-              {this.state.errors.birthday.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.birthday}</FormText>}
-              <Input
-                className={this.state.fieldError.birth_date && 'is-invalid'}
-                type="date"
-                name="birthday"
-                defaultValue={this.state.data.birth_date}
-                onChange={this.handleChange}
-              />
-              {this.state.fieldError.birth_date &&
-              <div className="invalid-feedback">
-                {this.state.fieldError.birth_date}
-              </div>
-              }
-            </FormGroup>
-            <FormGroup>
-              <Label for="avatar"><Text text="userForm.avatar"/></Label>
-              {this.state.errors.avatarFormat.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}
-              {this.state.errors.avatarSize.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
-              <Input
-                className={this.state.fieldError.avatar && 'is-invalid'}
-                type="file"
-                name="avatar"
-                onChange={this.handleChange}
-              />
-              {this.state.fieldError.avatar &&
-              <div className="invalid-feedback">
-                {this.state.fieldError.avatar}
-              </div>
-              }
-              <FormText color="muted">
-                {/*This is some placeholder block-level help text for the above*/}
-                {/*input. It's a bit lighter and easily wraps to a new line.*/}
-              </FormText>
-            </FormGroup>
             {/*<FormGroup>*/}
-            {/*	<Label for="theme"><Text text="userForm.theme"/></Label>*/}
-            {/*	<Input type="select" name="theme">*/}
-            {/*		<option value="LT">Light</option>*/}
-            {/*		<option value="DK">Dark</option>*/}
-            {/*	</Input>*/}
+            {/*  <Label for="birthday"><Text text="userForm.birthDate"/></Label>*/}
+            {/*  {this.state.errors.birthday.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.birthday}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.birth_date && 'is-invalid'}*/}
+            {/*    type="date"*/}
+            {/*    name="birthday"*/}
+            {/*    defaultValue={this.state.data.birth_date}*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.birth_date &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.birth_date}*/}
+            {/*  </div>*/}
+            {/*  }*/}
             {/*</FormGroup>*/}
-            <Link to="/user">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
-              </Button>
-            </Link>
-            {this.state.defaultInactiveBtn ||
-            this.state.errors.mobileNumber ||
-            this.state.errors.first_name ||
-            this.state.errors.last_name ||
-            this.state.errors.email ||
-            this.state.errors.birthday ||
-            this.state.errors.avatarSize ||
-            this.state.errors.avatarFormat ?
-              <Button disabled className="float-right">
-                <Text text="buttons.submitBtn"/>
-              </Button> : <Button className="float-right" type="submit">
-                <Text text="buttons.submitBtn"/>
-              </Button>
-            }
+            {/*<FormGroup>*/}
+            {/*  <Label for="avatar"><Text text="userForm.avatar"/></Label>*/}
+            {/*  {this.state.errors.avatarFormat.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}*/}
+            {/*  {this.state.errors.avatarSize.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarSize}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.avatar && 'is-invalid'}*/}
+            {/*    type="file"*/}
+            {/*    name="avatar"*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.avatar &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.avatar}*/}
+            {/*  </div>*/}
+            {/*  }*/}
+            {/*</FormGroup>*/}
+            <FormGroup>
+              <Label for="exampleCheckbox">Права доступу</Label>
+              <div>
+                <CustomInput
+                  type="switch"
+                  id="is_active"
+                  name="is_active"
+                  label="Активний"
+                  checked={this.state.data.is_active}
+                  onChange={() => this.switchToggler(this, 'is_active')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до особистого кабінету
+                </FormText>
+                <CustomInput
+                  type="switch"
+                  id="is_staff"
+                  name="is_staff"
+                  label="Персонал"
+                  checked={this.state.data.is_staff}
+                  onChange={() => this.switchToggler(this, 'is_staff')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до адмін сторінки
+                </FormText>
+              </div>
+            </FormGroup>
+            <ButtonToolbar>
+              <Link to="/user">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Link className="mx-auto" to={`delete`}>
+                <Button color="danger">
+                  <Text text="userList.tableHeader.deleteBtn"/>
+                </Button>
+              </Link>
+              {this.state.defaultInactiveBtn ||
+              this.state.errors.mobileNumber ||
+              this.state.errors.first_name ||
+              this.state.errors.last_name ||
+              this.state.errors.email ||
+              this.state.errors.birthday ||
+              this.state.errors.avatarSize ||
+              this.state.errors.avatarFormat ?
+                <Button disabled className="float-right">
+                  <Text text="buttons.submitBtn"/>
+                </Button> : <Button className="float-right" type="submit">
+                  <Text text="buttons.submitBtn"/>
+                </Button>
+              }
+            </ButtonToolbar>
           </Form>
         </CardBody>
       </Fragment>
