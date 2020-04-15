@@ -40,10 +40,25 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 
 class HouseViewSet(viewsets.ModelViewSet):
-    """ViewSet for the House class"""
+    """ViewSet for the House class
+    Filter queryset by search string ('filter' get parameter)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = House.objects.all()
     serializer_class = HouseSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = House.objects.all()
+        search_string = self.request.GET.get('filter', '').split()
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(name__icontains=word) |
+                                       Q(address__icontains=word))
+
+        if order:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 class CompanyViewSet(viewsets.ModelViewSet):

@@ -7,7 +7,7 @@ from condominium import api
 
 router = routers.DefaultRouter()
 router.register("apartment", api.ApartmentViewSet, basename='Apartment')
-router.register("house", api.HouseViewSet)
+router.register("house", api.HouseViewSet, basename='House')
 router.register("company", api.CompanyViewSet)
 
 
