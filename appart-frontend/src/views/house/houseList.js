@@ -55,7 +55,6 @@ export default class HouseList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th>#</th>
           <th><Text text="houseList.tableHeader.housePhoto"/></th>
           <th><Text text="houseList.tableHeader.houseName"/></th>
           <th><Text text="houseList.tableHeader.houseAddress"/></th>
@@ -66,7 +65,6 @@ export default class HouseList extends AbstractListView {
         <tbody>
         {this.state.data.map((house) => (
           <tr align="center">
-            <td width="2%">{house.pk}</td>
             <td width="2%">
               <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
             </td>
