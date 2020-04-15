@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
@@ -40,19 +40,18 @@ export default class UserFilter extends React.Component<FilterInterface, {}> {
     } else {
       return (
         <Row form>
-          <Col md={8}/>
-          <Col md={4}>
-            <FormGroup>
-              <Label for="search">Пошук</Label>
+          <Form inline className="mx-auto mb-2" onSubmit={filterSearchHandler}>
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+              <Label className="mr-sm-2" for="search">Пошук</Label>
               <Input
-                onChange={filterSearchHandler}
                 type="text"
                 name="search"
                 filterquery="filter"
                 id="search"
               />
+              <Button className="ml-2" type="submit" color="primary">Пошук</Button>
             </FormGroup>
-          </Col>
+          </Form>
         </Row>
       );
     }

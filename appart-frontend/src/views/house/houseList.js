@@ -20,6 +20,7 @@ import UserCard from '../../components/Card/UserCard';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PageSpinner from '../../components/PageSpinner';
+import HouseFilter from './filter/HouseFilter';
 
 
 export default class HouseList extends AbstractListView {
@@ -30,6 +31,19 @@ export default class HouseList extends AbstractListView {
   constructor(props) {
     super(props);
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
+    this.filterSearchHandler = this.filterSearchHandler.bind(this);
+  }
+
+  /**
+   * Search handler
+   *
+   * @param event
+   */
+  filterSearchHandler(event) {
+    event.preventDefault();
+    const queryName = event.target.search.getAttribute('filterquery');
+    const searchValue = event.target.search.value.toString();
+    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
   }
 
   /**
@@ -121,6 +135,10 @@ export default class HouseList extends AbstractListView {
           breadcrumbs={[{ name: <Text text="sidebar.house"/>, active: true }]}
           className="TablePage"
         >
+          <HouseFilter
+            filterSearchHandler={this.filterSearchHandler}
+            isLoaded={true}
+          />
           <Row>
             <Col>
               <Card className="mb-3">
