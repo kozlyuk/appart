@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             "mobile_number",
             "email",
             "is_active",
+            "is_staff",
             "birth_date",
             "avatar",
             "theme",
