@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Button, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 
@@ -43,36 +43,48 @@ export default class ApartmentFilter extends React.Component<FilterInterface, {}
       return (
         <Row form>
           <Col md={6}>
-            <FormGroup>
-              <Label for="houseFilter"><Text text="apartmentList.tableHeader.house"/></Label>
-              <Input
-                onChange={filterSelectHandler}
-                type="select"
-                name="houseFilter"
-                filterquery="house"
-                id="houseFilter"
-              >
-                {/*
-                // @ts-ignore*/}
-                {this.props.data.map(option => (
-                  <option key={option.pk} value={option.pk}>
-                    {option.name}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
+            <Form inline className="mx-auto mb-2">
+              <FormGroup style={{ width: '100%' }}>
+                <Label sm={2} for="houseFilter"><Text text="apartmentList.tableHeader.house"/></Label>
+                <Col className="col-sm-10 pl-0 pr-0">
+                  <Input
+                    style={{ width: '100%' }}
+                    onChange={filterSelectHandler}
+                    type="select"
+                    name="houseFilter"
+                    filterquery="house"
+                    id="houseFilter"
+                  >
+                    {/*
+                   // @ts-ignore*/}
+                    {this.props.data.map(option => (
+                      <option key={option.pk} value={option.pk}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+            </Form>
           </Col>
           <Col md={6}>
-            <FormGroup>
-              <Label for="search">Пошук</Label>
-              <Input
-                onChange={filterSearchHandler}
-                type="text"
-                name="search"
-                filterquery="filter"
-                id="search"
-              />
-            </FormGroup>
+            <Form inline className="mx-auto mb-2" onSubmit={filterSearchHandler}>
+              <FormGroup style={{ width: '100%' }}>
+                <Label sm={2} for="search">Пошук</Label>
+                <Col className="col-sm-8 pr-0 pl-0">
+                  <Input
+                    style={{ width: '100%' }}
+                    type="text"
+                    name="search"
+                    filterquery="filter"
+                    id="search"
+                  />
+                </Col>
+                <Col className="col-sm-2 pr-0 pl-0">
+                  <Button size="sm" className="ml-2" type="submit" color="primary">Пошук</Button>
+                </Col>
+              </FormGroup>
+            </Form>
           </Col>
         </Row>
       );

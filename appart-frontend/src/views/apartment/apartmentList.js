@@ -37,11 +37,10 @@ export default class ApartmentList extends AbstractListView {
    * @param event
    */
   filterSearchHandler(event) {
-    const queryName = event.target.getAttribute('filterquery');
-    const searchValue = event.target.value.toString();
-    if (searchValue.length > 3) {
-      this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
-    }
+    event.preventDefault();
+    const queryName = event.target.search.getAttribute('filterquery');
+    const searchValue = event.target.search.value.toString();
+    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
   }
 
   /**
