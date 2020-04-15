@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
@@ -17,17 +17,69 @@ from condominium.models import Apartment
 from notice.models import News
 
 class PaymentViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Payment class"""
+    """ViewSet for the Payment class
+    Filter queryset by search string ('filter' get parameter)
+    Filter queryset by apartment and payment_type fields
+    ('apartment', 'payment_type' get parameters)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
+
+    def get_queryset(self):
+        queryset = Payment.objects.all()
+        search_string = self.request.GET.get('filter', '').split()
+        apartment = self.request.GET.get('apartment')
+        payment_type = self.request.GET.getlist('payment_type')
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(description__icontains=word) |
+                                       Q(apartment__account_number__contains=word) |
+                                       Q(apartment__number__contains=word))
+
+        if apartment:
+            queryset = queryset.filter(apartment=apartment)
+        if payment_type:
+            qs_union = Payment.objects.none()
+            for payment in payment_type:
+                qs_segment = queryset.filter(payment_type=payment)
+                qs_union = qs_union | qs_segment
+            queryset = qs_union
+        if order:
+            queryset = queryset.order_by(order)
+
+        # Set up eager loading to avoid N+1 selects
+        queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        return queryset
 
 
 class BillViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Payment class"""
+    """ViewSet for the Bill class
+    Filter queryset by search string ('filter' get parameter)
+    Filter queryset by apartment field ('apartment' get parameter)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = Bill.objects.all()
     serializer_class = BillSerializer
+
+    def get_queryset(self):
+        queryset = Bill.objects.all()
+        search_string = self.request.GET.get('filter', '').split()
+        apartment = self.request.GET.get('apartment')
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(number__contains=word) |
+                                       Q(apartment__number__contains=word) |
+                                       Q(apartment__account_number__contains=word))
+
+        if apartment:
+            queryset = queryset.filter(apartment=apartment)
+        if order:
+            queryset = queryset.order_by(order)
+
+        # Set up eager loading to avoid N+1 selects
+        queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        return queryset
 
 
 class GetTotalDebt(APIView):

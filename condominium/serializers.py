@@ -11,7 +11,7 @@ class ResidentField(serializers.RelatedField):
                f"{value.first_name} {value.last_name}"
 
 class ApartmentSerializer(serializers.ModelSerializer):
-    house = serializers.StringRelatedField()
+    house_name = serializers.CharField(source='house', required=False)
     resident = ResidentField(read_only=True)
 
     class Meta:
@@ -19,6 +19,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "house",
+            "house_name",
             "resident",
             "number",
             "description",

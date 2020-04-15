@@ -8,8 +8,8 @@ from payments.api import BillViewSet, PaymentViewSet, \
                          PayView, PayCallbackView
 
 router = routers.DefaultRouter()
-router.register("bill", BillViewSet)
-router.register("payment", PaymentViewSet)
+router.register("bill", BillViewSet, basename='Bill')
+router.register("payment", PaymentViewSet, basename='Payment')
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
