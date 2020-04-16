@@ -55,6 +55,7 @@ class BillLineSerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     bill_lines = BillLineSerializer(source='billline_set', many=True)
+    purpose = serializers.SerializerMethodField()
 
     class Meta:
         model = Bill
@@ -63,9 +64,13 @@ class BillSerializer(serializers.ModelSerializer):
             "apartment",
             "number",
             "total_value",
+            "purpose",
             "period",
             "bill_lines",
         ]
+
+    def get_purpose(self, obj):
+        return ",".join([line.service.name for line in obj.billline_set.all()])
 
     @staticmethod
     def setup_eager_loading(queryset):
