@@ -188,7 +188,7 @@ export default class AbstractFormView extends React.Component {
    * @param target
    * @return {*}
    */
-  submitData(target) {
+  collectData(target) {
     return void 0;
   }
 
@@ -205,7 +205,7 @@ export default class AbstractFormView extends React.Component {
       headers: {
         'Authorization': 'Token ' + this._user.getAuthToken()
       },
-      data: this.submitData(event.target)
+      data: this.collectData(event.target)
     }).then((response) => {
       let successMessage = '';
       if (typeof response.data == 'string') {
@@ -272,7 +272,6 @@ export default class AbstractFormView extends React.Component {
     } else {
       console.log(this._dataUrl);
       this.setState({
-        data: 'new',
         url: this._postUrl
       });
     }

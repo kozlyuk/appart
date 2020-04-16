@@ -70,7 +70,7 @@ export default class PaymentUpdate extends AbstractFormView {
    * @param target
    * @returns {FormData}
    */
-  submitData(target) {
+  collectData(target) {
     const userFormData = new FormData();
     // dict of all elements
     userFormData.append('mobile_number', target.mobileNumber.value);

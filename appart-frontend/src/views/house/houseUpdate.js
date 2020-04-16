@@ -76,7 +76,7 @@ export default class HouseUpdate extends AbstractFormView {
    * @param target
    * @returns {FormData}
    */
-  submitData(target) {
+  collectData(target) {
     const userFormData = new FormData();
     // dict of all elements
     userFormData.append('description', target.description.value);

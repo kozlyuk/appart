@@ -62,7 +62,7 @@ export default class HouseNew extends AbstractFormView {
    * @param target
    * @returns {FormData}
    */
-  submitData(target) {
+  collectData(target) {
     return new FormData(document.forms.userCreate);
   }
 

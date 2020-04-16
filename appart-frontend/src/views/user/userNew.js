@@ -16,6 +16,7 @@ import {
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
+import UserService from '../../services/UserService';
 
 /**
  * ugly regular expression for validate length of phone number
@@ -98,13 +99,14 @@ export default class UserNew extends AbstractFormView {
    * @param target
    * @returns {FormData}
    */
-  submitData(target) {
-    const userFormData = new FormData(document.forms.userCreate);
-    userFormData.delete('is_staff');
-    userFormData.delete('is_active');
-    userFormData.append('is_staff', this.state.data.is_staff);
-    userFormData.append('is_active', this.state.data.is_active);
-    return userFormData;
+  collectData(target) {
+    return (
+      UserService.getFormData(
+        document.forms.userCreate,
+        this.state.data.is_staff,
+        this.state.data.is_active
+      )
+    );
   }
 
   handleSubmit() {

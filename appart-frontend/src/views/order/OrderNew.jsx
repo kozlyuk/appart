@@ -95,7 +95,7 @@ export default class OrderNew extends AbstractFormView {
    * @param target
    * @return {FormData}
    */
-  submitData(target) {
+  collectData(target) {
     return new FormData(document.forms.newOrder);
   }
 

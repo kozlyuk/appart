@@ -71,7 +71,7 @@ export default class ApartmentUpdate extends AbstractFormView {
    * @param target
    * @returns {FormData}
    */
-  submitData(target) {
+  collectData(target) {
     const userFormData = new FormData();
     // dict of all elements
     userFormData.append('house', this.state.data.house);
