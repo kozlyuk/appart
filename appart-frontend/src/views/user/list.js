@@ -22,6 +22,8 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import UserFilter from './filter/UserFilter';
 import PageSpinner from '../../components/PageSpinner';
+import { FaCheck } from 'react-icons/fa';
+import { MdClose } from 'react-icons/md';
 
 
 export default class UserList extends AbstractListView {
@@ -59,6 +61,8 @@ export default class UserList extends AbstractListView {
           <th><Text text="userList.tableHeader.avatar"/></th>
           <th><Text text="userList.tableHeader.firstName"/></th>
           <th><Text text="userList.tableHeader.lastName"/></th>
+          <th>Активний</th>
+          <th>Персонал</th>
           {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
           <th><Text text="userList.tableHeader.actions"/></th>
         </tr>
@@ -72,6 +76,20 @@ export default class UserList extends AbstractListView {
             </td>
             <td>{user.first_name}</td>
             <td>{user.last_name}</td>
+            <td>
+              {user.is_active ?
+                <FaCheck className="text-success"/>
+                :
+                <MdClose className="text-danger"/>
+              }
+            </td>
+            <td>
+              {user.is_staff ?
+                <FaCheck className="text-success"/>
+                :
+                <MdClose className="text-danger"/>
+              }
+            </td>
             {/*<td>{user.birth_date}</td>*/}
             <td width="15%">
               <Link to={`user/${user.pk}/edit`}>
