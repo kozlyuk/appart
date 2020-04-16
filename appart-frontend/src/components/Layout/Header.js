@@ -5,7 +5,18 @@ import { notificationsData } from 'demos/header';
 import withBadge from 'hocs/withBadge';
 import Auth from '../../auth/auth';
 import Breadcrumbs from '../../breadcrumbs/Breadcrumbs';
-import { Button, ListGroup, ListGroupItem, Nav, Navbar, NavItem, NavLink, Popover, PopoverBody } from 'reactstrap';
+import {
+  Badge,
+  Button,
+  ListGroup,
+  ListGroupItem,
+  Nav,
+  Navbar,
+  NavItem,
+  NavLink,
+  Popover,
+  PopoverBody
+} from 'reactstrap';
 import React from 'react';
 import {
   MdClearAll,
@@ -17,6 +28,7 @@ import {
   MdSettingsApplications
 } from 'react-icons/md';
 import bn from 'utils/bemnames';
+import { UserConsumer } from '../../globalContext/userContext';
 
 const bem = bn.create('header');
 
@@ -125,49 +137,57 @@ class Header extends React.Component {
               </PopoverBody>
             </Popover>
           </NavItem>
-
-          <NavItem>
-            <NavLink id="Popover2">
-              <Avatar
-                onClick={this.toggleUserCardPopover}
-                className="can-click"
-              />
-            </NavLink>
-            <Popover
-              placement="bottom-end"
-              isOpen={this.state.isOpenUserCardPopover}
-              toggle={this.toggleUserCardPopover}
-              target="Popover2"
-              className="p-0 border-0"
-              style={{ minWidth: 250 }}
-            >
-              <PopoverBody className="p-0 border-light">
-                <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
-                  className="border-light"
+          <UserConsumer>
+            {({ email, is_staff }) => (
+              <NavItem>
+                <NavLink id="Popover2">
+                  {is_staff &&
+                  <Badge pill className="mr-2"
+                         color="success">Admin</Badge>
+                  }
+                  <Avatar
+                    onClick={this.toggleUserCardPopover}
+                    className="can-click"
+                  />
+                </NavLink>
+                <Popover
+                  placement="bottom-end"
+                  isOpen={this.state.isOpenUserCardPopover}
+                  toggle={this.toggleUserCardPopover}
+                  target="Popover2"
+                  className="p-0 border-0"
+                  style={{ minWidth: 250 }}
                 >
-                  <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdPersonPin/> Profile
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdInsertChart/> Stats
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdSettingsApplications/> Settings
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light" onClick={() => {
-                      this.user.logout();
-                    }}>
-                      <MdExitToApp/> Sign out
-                    </ListGroupItem>
-                  </ListGroup>
-                </UserCard>
-              </PopoverBody>
-            </Popover>
-          </NavItem>
+                  <PopoverBody className="p-0 border-light">
+                    <UserCard
+                      title="Jane"
+                      subtitle={email}
+                      text="Last updated 3 mins ago"
+                      className="border-light"
+                    >
+                      <ListGroup flush>
+                        <ListGroupItem tag="button" action className="border-light">
+                          <MdPersonPin/> Profile
+                        </ListGroupItem>
+                        <ListGroupItem tag="button" action className="border-light">
+                          <MdInsertChart/> Stats
+                        </ListGroupItem>
+                        <ListGroupItem tag="button" action className="border-light">
+                          <MdSettingsApplications/> Settings
+                        </ListGroupItem>
+                        <ListGroupItem tag="button" action className="border-light" onClick={() => {
+                          this.user.logout();
+                        }}>
+                          <MdExitToApp/> Sign out
+                        </ListGroupItem>
+                      </ListGroup>
+                    </UserCard>
+                  </PopoverBody>
+
+                </Popover>
+              </NavItem>
+            )}
+          </UserConsumer>
         </Nav>
       </Navbar>
     );

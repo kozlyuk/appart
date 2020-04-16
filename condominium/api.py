@@ -46,7 +46,6 @@ class HouseViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = HouseSerializer
-    pagination_class = None
 
     def get_queryset(self):
         queryset = House.objects.all()
