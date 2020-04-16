@@ -199,8 +199,8 @@ class App extends React.Component {
                       {/*  <div>test</div>*/}
                       {/*</Route>*/}
                     </MainLayout>
+                    <Redirect to="/"/>
                   </React.Suspense>
-                  <Redirect to="/"/>
                 </Switch>
               </GAListener>
             </BrowserRouter>
