@@ -22,7 +22,9 @@ import ApartmentPhoneChecker from '../../utils/apartmentPhoneChecker';
 import axios from 'axios';
 import PageSpinner from '../../components/PageSpinner';
 
-
+/**
+ * Appartment create class
+ */
 export default class ApartmentNew extends AbstractFormView {
   /**
    *
@@ -111,7 +113,7 @@ export default class ApartmentNew extends AbstractFormView {
 
   /**
    *
-   * @param id
+   * @param {S[string]} id
    */
   addResidentToState(id) {
     this.setState({
@@ -121,8 +123,8 @@ export default class ApartmentNew extends AbstractFormView {
 
   /**
    *
-   * @param resident_phone
-   * @param id
+   * @param {string} resident_phone
+   * @param {number} id
    */
   addResidentToAppartment = (resident_phone, id) => {
     this.setState({
@@ -140,7 +142,7 @@ export default class ApartmentNew extends AbstractFormView {
    * check field valid and
    * set errors str to state
    *
-   * @param event
+   * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   handleChange = (event) => {
     event.preventDefault();

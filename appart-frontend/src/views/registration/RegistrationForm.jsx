@@ -98,8 +98,8 @@ class RegistrationForm extends React.Component {
    * check field valid and
    * set errors str to state
    *
-   * @param event
    * @private
+   * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   _handleChange = (event) => {
     event.preventDefault();

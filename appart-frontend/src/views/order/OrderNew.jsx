@@ -42,7 +42,7 @@ export default class OrderNew extends AbstractFormView {
    * check field valid and
    * set errors str to state
    *
-   * @param event
+   * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   _handleChange = (event) => {
     event.preventDefault();

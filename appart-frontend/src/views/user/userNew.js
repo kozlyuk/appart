@@ -116,8 +116,8 @@ export default class UserNew extends AbstractFormView {
   /**
    * Switch toggler
    *
-   * @param event
-   * @param name
+   * @param {UserNew} event
+   * @param {string} name
    */
   switchToggler(event, name) {
     let prevState = { ...this.state.data };

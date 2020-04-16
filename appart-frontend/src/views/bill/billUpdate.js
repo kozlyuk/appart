@@ -60,16 +60,16 @@ export default class BillUpdate extends AbstractFormView {
     }
     return userFormData;
   }
-
-  /*
+  
+  /**
    * Form field validation
    * handleChange(event): void
    *
    * check field valid and
    * set errors str to state
    *
-   * @param event
-   **/
+   * @param {React.ChangeEvent<HTMLInputElement>} event
+   */
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
