@@ -19,6 +19,8 @@ import { Link } from 'react-router-dom';
 
 import Page from '../../components/Page';
 import ApartmentPhoneChecker from '../../utils/apartmentPhoneChecker';
+import axios from 'axios';
+import PageSpinner from '../../components/PageSpinner';
 
 
 export default class ApartmentNew extends AbstractFormView {
@@ -34,6 +36,7 @@ export default class ApartmentNew extends AbstractFormView {
       residentIdIsPinned: '',
       addedUserToForm: '',
       enableNativeMobileInput: true,
+      houseData: '',
       errors: {
         house: '',
         resident: '',
@@ -41,11 +44,46 @@ export default class ApartmentNew extends AbstractFormView {
         description: '',
         area: true,
         resident_count: ''
+      },
+      fieldError: {
+        house: '',
+        resident: '',
+        number: '',
+        account_number: '',
+        area: '',
+        residents_count: '',
+        description: '',
+        is_active: '',
+        debt: ''
       }
     };
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_APARTMENTS_URL;
     this.requestType = 'post';
+    this.successRedirect = '/apartment';
+    this._successButton = 'Повернутися до списку апартаментів';
+  }
+
+  secondaryLoadData() {
+    axios(process.env.REACT_APP_HOUSES_URL, {
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            houseData: result.data
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
   }
 
   /**
@@ -56,11 +94,11 @@ export default class ApartmentNew extends AbstractFormView {
   submitData(target) {
     const userFormData = new FormData();
     // dict of all elements
-    userFormData.append('house', this.state.data.house);
+    userFormData.append('house', target.house.value);
     userFormData.append('number', target.apartmentNumber.value);
     userFormData.append('description', target.description.value);
     userFormData.append('area', target.area.value);
-    userFormData.append('residents_count', target.residentCount.value);
+    userFormData.append('residents_count', target.resident_count.value);
     if (this.state.residentIsPinned) {
       userFormData.append('resident', this.state.residentIdIsPinned);
     }
@@ -137,27 +175,47 @@ export default class ApartmentNew extends AbstractFormView {
       <Fragment>
         <CardHeader><Text text="apartmentForm.newApartment.title"/></CardHeader>
         <CardBody>
-          <Form onSubmit={this.handleSubmit}>
+          <Form id="apartmentCreate" onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="house"><Text text="apartmentForm.house"/></Label>
               {this.state.errors.house.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.house}</FormText>}
               <Input
-                type="text"
+                className={this.state.fieldError.house && 'is-invalid'}
+                type="select"
                 name="house"
+                id="house"
                 onChange={this.handleChange}
-              />
+              >
+                {this.state.houseData.results.map(option => (
+                  <option key={option.pk} value={option.pk}>
+                    {option.name}
+                  </option>
+                ))}
+              </Input>
+              {this.state.fieldError.house &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.house}
+              </div>
+              }
             </FormGroup>
             {this.state.residentIsPinned &&
             <FormGroup>
               <Label for="resident"><Text text="apartmentForm.resident"/></Label>
               <Input
+                className={this.state.fieldError.resident && 'is-invalid'}
+                id="resident"
                 type="tel"
                 name="resident"
                 readOnly
                 defaultValue={this.state.residentIsPinned}
               />
+              {this.state.fieldError.resident &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.resident}
+              </div>
+              }
             </FormGroup>
             }
             {this.state.addedUserToForm &&
@@ -171,11 +229,18 @@ export default class ApartmentNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.number}</FormText>}
               <Input
+                className={this.state.fieldError.number && 'is-invalid'}
+                id="number"
                 type="number"
                 min="0"
                 name="apartmentNumber"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.number &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.number}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="area"><Text text="apartmentForm.area"/></Label>
@@ -183,11 +248,18 @@ export default class ApartmentNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.area}</FormText>}
               <Input
+                className={this.state.fieldError.area && 'is-invalid'}
+                id="area"
                 type="number"
                 min="0"
                 name="area"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.area &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.area}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="resident_count"><Text text="apartmentForm.residentCount"/></Label>
@@ -195,11 +267,18 @@ export default class ApartmentNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.resident_count}</FormText>}
               <Input
+                className={this.state.fieldError.resident_count && 'is-invalid'}
+                id="resident_count"
                 type="number"
                 min="0"
                 name="resident_count"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.resident_count &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.resident_count}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="description"><Text text="apartmentForm.description"/></Label>
@@ -207,10 +286,17 @@ export default class ApartmentNew extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.description}</FormText>}
               <Input
+                className={this.state.fieldError.description && 'is-invalid'}
+                id="description"
                 type="textarea"
                 name="description"
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.description &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.description}
+              </div>
+              }
             </FormGroup>
 
             <Link to="/apartment">
@@ -243,34 +329,46 @@ export default class ApartmentNew extends AbstractFormView {
    * @returns {*}
    */
   render() {
-    return (
-      <Page
-        breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: false },
-          { name: <Text text="apartmentForm.newApartment.title"/>, active: true }]}
-        className="TablePage"
-      >
-        <Row>
-          <Col xl={7}>
-            <Card>
-              {this.content()}
-            </Card>
-          </Col>
-          <Col xl={5}>
-            <Card>
-              <CardBody>
-                <Form>
-                  <FormGroup>
-                    <ApartmentPhoneChecker
-                      data={this.state.data}
-                      addResidentToAppartment={this.addResidentToAppartment}
-                    />
-                  </FormGroup>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Page>
-    );
+    const { error, isLoaded } = this.state;
+    if (error) {
+      return <div><Text text="global.error"/>: {error.message}</div>;
+    } else if (!isLoaded) {
+      return (
+        <div className="loaderWrapper text-center mt-4">
+          <PageSpinner/>
+          <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
+        </div>)
+        ;
+    } else {
+      return (
+        <Page
+          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: false },
+            { name: <Text text="apartmentForm.newApartment.title"/>, active: true }]}
+          className="TablePage"
+        >
+          <Row>
+            <Col xl={7}>
+              <Card>
+                {this.content()}
+              </Card>
+            </Col>
+            <Col xl={5}>
+              <Card>
+                <CardBody>
+                  <Form>
+                    <FormGroup>
+                      <ApartmentPhoneChecker
+                        data={this.state.data}
+                        addResidentToAppartment={this.addResidentToAppartment}
+                      />
+                    </FormGroup>
+                  </Form>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Page>
+      );
+    }
   }
 }

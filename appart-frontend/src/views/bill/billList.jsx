@@ -10,12 +10,12 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-import {Text} from 'react-easy-i18n';
-import {Link} from 'react-router-dom';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Text } from 'react-easy-i18n';
+import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PageSpinner from '../../components/PageSpinner';
-import BillFilter from "./filter/BillFilter";
+import BillFilter from './filter/BillFilter';
 
 
 export default class BillList extends AbstractListView {
@@ -35,11 +35,10 @@ export default class BillList extends AbstractListView {
    * @param event
    */
   filterSearchHandler(event) {
-    const queryName = event.target.getAttribute('filterquery');
-    const searchValue = event.target.value.toString();
-    if (searchValue.length > 3) {
-      this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
-    }
+    event.preventDefault();
+    const queryName = event.target.search.getAttribute('filterquery');
+    const searchValue = event.target.search.value.toString();
+    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
   }
 
   /**
@@ -80,7 +79,7 @@ export default class BillList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -93,7 +92,7 @@ export default class BillList extends AbstractListView {
     } else {
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.bills"/>, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: true }]}
           className="TablePage"
         >
           <BillFilter

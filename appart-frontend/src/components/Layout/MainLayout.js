@@ -1,8 +1,6 @@
 import { Content, Footer, Header, Sidebar } from 'components/Layout';
 import React from 'react';
-import {
-  MdImportantDevices
-} from 'react-icons/md';
+import { MdImportantDevices } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
 
@@ -28,9 +26,9 @@ class MainLayout extends React.Component {
       }
 
       this.notificationSystem.addNotification({
-        title: <MdImportantDevices />,
+        title: <MdImportantDevices/>,
         message: 'Welome to Apart dashboard!',
-        level: 'info',
+        level: 'info'
       });
     }, 1500);
 
@@ -76,11 +74,11 @@ class MainLayout extends React.Component {
     const { children } = this.props;
     return (
       <main className="cr-app bg-light">
-        <Sidebar />
+        <Sidebar/>
         <Content fluid onClick={this.handleContentClick}>
-          <Header />
+          <Header breadcrumbs={this.props.breadcrumbs}/>
           {children}
-          <Footer />
+          <Footer/>
         </Content>
 
         <NotificationSystem
