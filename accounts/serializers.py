@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import Group
 
 from accounts.models import User
 from condominium.models import Apartment
@@ -20,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
             "is_staff",
             "birth_date",
             "avatar",
-            "theme",
         ]
 
     def validate_email(self, value):
@@ -48,9 +48,14 @@ class UserApartmentsSerializer(serializers.ModelSerializer):
             "number"
         ]
 
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
 
 class GetUserSerializer(serializers.ModelSerializer):
     apartment = UserApartmentsSerializer(source='apartment_set', many=True)
+    groups = GroupSerializer(many=True)
 
     class Meta:
         model = User
@@ -58,7 +63,14 @@ class GetUserSerializer(serializers.ModelSerializer):
             "pk",
             "email",
             "is_staff",
-            "apartment"
+            "is_active",
+            "is_registered",
+            "is_superuser",
+            "groups",
+            "apartment",
+            "first_name",
+            "last_name",
+            "avatar",
         ]
 
 

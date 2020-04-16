@@ -70,7 +70,7 @@ class BillSerializer(serializers.ModelSerializer):
         ]
 
     def get_purpose(self, obj):
-        return ",".join([line.service.name for line in obj.billline_set.all()])
+        return ", ".join([line.service.name for line in obj.billline_set.all()])
 
     @staticmethod
     def setup_eager_loading(queryset):
