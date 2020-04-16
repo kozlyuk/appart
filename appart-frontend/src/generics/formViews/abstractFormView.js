@@ -12,6 +12,9 @@ import axios from 'axios';
 import Auth from '../../auth/auth';
 import Swal from 'sweetalert2';
 
+/**
+ * Abstract form class
+ */
 export default class AbstractFormView extends React.Component {
   /**
    * Get success redirect url
@@ -122,19 +125,22 @@ export default class AbstractFormView extends React.Component {
   }
 
   /**
+   * Abstract form constructor
    *
    * @param props
    * @param dataUrl
    * @param requestType
    * @param postUrl
    * @param successRedirect
+   * @param successButton
    */
   constructor(props, dataUrl, requestType, postUrl, successRedirect, successButton) {
     super(props);
     this.state = {
       isLoaded: false,
       data: null,
-      url: ''
+      url: '',
+      fieldError: ''
     };
     this._user = new Auth();
     this._props = props;
@@ -143,8 +149,17 @@ export default class AbstractFormView extends React.Component {
     this._postUrl = postUrl;
     this._successRedirect = successRedirect;
     this._successButton = successButton;
+    this.handleSubmit.bind(this);
   }
 
+  secondaryLoadData() {
+  }
+
+  /**
+   * Load data
+   *
+   * @param dataUrl
+   */
   loadData(dataUrl) {
     axios(dataUrl, {
       headers: {
@@ -167,10 +182,21 @@ export default class AbstractFormView extends React.Component {
       );
   }
 
+  /**
+   * Submit data wrapper
+   *
+   * @param target
+   * @return {*}
+   */
   submitData(target) {
     return void 0;
   }
 
+  /**
+   * Handle submit
+   *
+   * @param event
+   */
   handleSubmit = (event) => {
     event.preventDefault();
     axios({
@@ -183,7 +209,7 @@ export default class AbstractFormView extends React.Component {
     }).then((response) => {
       let successMessage = '';
       if (typeof response.data == 'string') {
-        let successMessage = response.data;
+        successMessage = response.data;
       }
       Swal.fire({
         title: 'Успіх!',
@@ -198,20 +224,42 @@ export default class AbstractFormView extends React.Component {
         }
       });
     })
-      .catch(function(error) {
+      .catch((error) => {
+        this.setState({
+          fieldError: error.response.data
+        });
+        let errorArr = [];
+        for (let i in error.response.data) {
+          errorArr.push(error.response.data[i]);
+        }
+        const errorString = (errorArr.map(item => {
+          const errorValue = item[0].toString();
+          console.log(errorValue);
+          return (`<div>${errorValue}</div>`);
+        }));
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!'
+          html: errorString.join('')
         });
       });
   };
 
+  /**
+   * Update wrapper
+   *
+   * @return {*}
+   */
   update() {
     return void 0;
   }
 
+  /**
+   *
+   * @return {*}
+   */
   componentDidMount() {
+    this.secondaryLoadData();
     if (this._dataUrl) {
       if (this.props.match) {
         this.loadData(this._dataUrl + this.props.match.params.id + '/');

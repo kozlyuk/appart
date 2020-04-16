@@ -8,7 +8,20 @@
  */
 
 import React, { Fragment } from 'react';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import {
+  Button,
+  ButtonToolbar,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  CustomInput,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -50,10 +63,25 @@ export default class UserUpdate extends AbstractFormView {
         birthday: '',
         avatarFormat: '',
         avatarSize: ''
+      },
+      fieldError: {
+        username: '',
+        mobile_number: '',
+        email: '',
+        birth_date: '',
+        avatar: '',
+        theme: '',
+        first_name: '',
+        last_name: ''
       }
     };
     this.dataUrl = process.env.REACT_APP_USERS_URL;
+    if (this.props.match) {
+      this._postUrl = process.env.REACT_APP_USERS_URL + this.props.match.params.id + '/';
+    }
     this.requestType = 'put';
+    this.successRedirect = '/user';
+    this._successButton = 'Повернутися до списку користувачів';
   }
 
   /**
@@ -86,14 +114,38 @@ export default class UserUpdate extends AbstractFormView {
     userFormData.append('first_name', target.firstName.value);
     userFormData.append('last_name', target.lastName.value);
     userFormData.append('email', target.email.value);
-    userFormData.append('birthday', target.birthday.value);
-    if (target.avatar.files[0]) {
-      userFormData.append('avatar', target.avatar.files[0]);
-    }
+    // userFormData.append('birthday', target.birthday.value);
+    userFormData.append('is_staff', this.state.data.is_staff);
+    userFormData.append('is_active', this.state.data.is_active);
+    // if (target.avatar.files[0]) {
+    //   userFormData.append('avatar', target.avatar.files[0]);
+    // }
     return userFormData;
   }
 
-  /*
+  /**
+   * Switch toggler
+   *
+   * @param event
+   * @param name
+   */
+  switchToggler(event, name) {
+    let prevState = { ...this.state.data };
+    switch (name) {
+      case name = 'is_staff':
+        prevState.is_staff = !this.state.data.is_staff;
+        this.setState({ data: prevState });
+        break;
+      case name = 'is_active':
+        prevState.is_active = !this.state.data.is_active;
+        this.setState({ data: prevState });
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
    * Form field validation
    * handleChange(event): void
    *
@@ -101,7 +153,7 @@ export default class UserUpdate extends AbstractFormView {
    * set errors str to state
    *
    * @param event
-   **/
+   */
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -167,24 +219,37 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
               <Input
+                className={this.state.fieldError.mobile_number && 'is-invalid'}
                 name="mobileNumber"
-                plaintext
+                disabled
                 value={this.state.data.mobile_number}
                 onChange={this.handleChange}
                 readOnly
               />
+              {this.state.fieldError.mobile_number &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.mobile_number}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
-              <Label for="firstName"><Text text="userForm.firstName"/></Label>
+              <Label for="first_name"><Text text="userForm.firstName"/></Label>
               {this.state.errors.first_name.length > 0 &&
               // error field
               <FormText color="danger">{this.state.errors.first_name}</FormText>}
               <Input
+                className={this.state.fieldError.first_name && 'is-invalid'}
+                id="first_name"
                 type="text"
                 name="firstName"
                 defaultValue={this.state.data.first_name}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.first_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.first_name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="lastName"><Text text="userForm.lastName"/></Label>
@@ -192,11 +257,17 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.last_name}</FormText>}
               <Input
+                className={this.state.fieldError.last_name && 'is-invalid'}
                 type="text"
                 name="lastName"
                 defaultValue={this.state.data.last_name}
                 onChange={this.handleChange}
               />
+              {this.state.fieldError.last_name &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.last_name}
+              </div>
+              }
             </FormGroup>
             <FormGroup>
               <Label for="email"><Text text="userForm.email"/></Label>
@@ -204,68 +275,109 @@ export default class UserUpdate extends AbstractFormView {
               // error field
               <FormText color="danger">{this.state.errors.email}</FormText>}
               <Input
+                className={this.state.fieldError.email && 'is-invalid'}
                 type="email"
                 name="email"
                 defaultValue={this.state.data.email}
                 onChange={this.handleChange}
               />
-            </FormGroup>
-            <FormGroup>
-              <Label for="birthday"><Text text="userForm.birthDate"/></Label>
-              {this.state.errors.birthday.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.birthday}</FormText>}
-              <Input
-                type="date"
-                name="birthday"
-                defaultValue={this.state.data.birth_date}
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="avatar"><Text text="userForm.avatar"/></Label>
-              {this.state.errors.avatarFormat.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}
-              {this.state.errors.avatarSize.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.avatarSize}</FormText>}
-              <Input
-                type="file"
-                name="avatar"
-                onChange={this.handleChange}
-              />
-              <FormText color="muted">
-                {/*This is some placeholder block-level help text for the above*/}
-                {/*input. It's a bit lighter and easily wraps to a new line.*/}
-              </FormText>
+              {this.state.fieldError.email &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.email}
+              </div>
+              }
             </FormGroup>
             {/*<FormGroup>*/}
-            {/*	<Label for="theme"><Text text="userForm.theme"/></Label>*/}
-            {/*	<Input type="select" name="theme">*/}
-            {/*		<option value="LT">Light</option>*/}
-            {/*		<option value="DK">Dark</option>*/}
-            {/*	</Input>*/}
+            {/*  <Label for="birthday"><Text text="userForm.birthDate"/></Label>*/}
+            {/*  {this.state.errors.birthday.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.birthday}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.birth_date && 'is-invalid'}*/}
+            {/*    type="date"*/}
+            {/*    name="birthday"*/}
+            {/*    defaultValue={this.state.data.birth_date}*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.birth_date &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.birth_date}*/}
+            {/*  </div>*/}
+            {/*  }*/}
             {/*</FormGroup>*/}
-            <Link to="/user">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
-              </Button>
-            </Link>
-            {this.state.defaultInactiveBtn ||
-            this.state.errors.mobileNumber ||
-            this.state.errors.first_name ||
-            this.state.errors.last_name ||
-            this.state.errors.email ||
-            this.state.errors.birthday ||
-            this.state.errors.avatarSize ||
-            this.state.errors.avatarFormat ?
-              <Button disabled className="float-right">
-                <Text text="buttons.submitBtn"/>
-              </Button> : <Button className="float-right" type="submit">
-                <Text text="buttons.submitBtn"/>
-              </Button>
-            }
+            {/*<FormGroup>*/}
+            {/*  <Label for="avatar"><Text text="userForm.avatar"/></Label>*/}
+            {/*  {this.state.errors.avatarFormat.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}*/}
+            {/*  {this.state.errors.avatarSize.length > 0 &&*/}
+            {/*  // error field*/}
+            {/*  <FormText color="danger">{this.state.errors.avatarSize}</FormText>}*/}
+            {/*  <Input*/}
+            {/*    className={this.state.fieldError.avatar && 'is-invalid'}*/}
+            {/*    type="file"*/}
+            {/*    name="avatar"*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*  />*/}
+            {/*  {this.state.fieldError.avatar &&*/}
+            {/*  <div className="invalid-feedback">*/}
+            {/*    {this.state.fieldError.avatar}*/}
+            {/*  </div>*/}
+            {/*  }*/}
+            {/*</FormGroup>*/}
+            <FormGroup>
+              <Label for="exampleCheckbox">Права доступу</Label>
+              <div>
+                <CustomInput
+                  type="switch"
+                  id="is_active"
+                  name="is_active"
+                  label="Активний"
+                  checked={this.state.data.is_active}
+                  onChange={() => this.switchToggler(this, 'is_active')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до особистого кабінету
+                </FormText>
+                <CustomInput
+                  type="switch"
+                  id="is_staff"
+                  name="is_staff"
+                  label="Персонал"
+                  checked={this.state.data.is_staff}
+                  onChange={() => this.switchToggler(this, 'is_staff')}
+                />
+                <FormText color="muted">
+                  Користувач матиме доступ до адмін сторінки
+                </FormText>
+              </div>
+            </FormGroup>
+            <ButtonToolbar>
+              <Link to="/user">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Link className="mx-auto" to={`delete`}>
+                <Button color="danger">
+                  <Text text="userList.tableHeader.deleteBtn"/>
+                </Button>
+              </Link>
+              {this.state.defaultInactiveBtn ||
+              this.state.errors.mobileNumber ||
+              this.state.errors.first_name ||
+              this.state.errors.last_name ||
+              this.state.errors.email ||
+              this.state.errors.birthday ||
+              this.state.errors.avatarSize ||
+              this.state.errors.avatarFormat ?
+                <Button disabled className="float-right">
+                  <Text text="buttons.submitBtn"/>
+                </Button> : <Button className="float-right" type="submit">
+                  <Text text="buttons.submitBtn"/>
+                </Button>
+              }
+            </ButtonToolbar>
           </Form>
         </CardBody>
       </Fragment>

@@ -17,7 +17,7 @@ interface FilterInterface {
   isLoaded: boolean,
 }
 
-export default class PaymentFilter extends React.Component<FilterInterface, {}> {
+export default class HouseFilter extends React.Component<FilterInterface, {}> {
 
   constructor(props: any) {
     super(props);

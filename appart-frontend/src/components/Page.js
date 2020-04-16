@@ -3,21 +3,18 @@ import PropTypes from 'utils/propTypes';
 
 import bn from 'utils/bemnames';
 
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-
 import Typography from './Typography';
-import { Text } from 'react-easy-i18n';
 
 const bem = bn.create('page');
 
 const Page = ({
-  title,
-  breadcrumbs,
-  tag: Tag,
-  className,
-  children,
-  ...restProps
-}) => {
+                title,
+                breadcrumbs,
+                tag: Tag,
+                className,
+                children,
+                ...restProps
+              }) => {
   const classes = bem.b('px-3', className);
 
   return (
@@ -28,19 +25,9 @@ const Page = ({
             {title}
           </Typography>
         ) : (
-            title
-          )}
-        {breadcrumbs && (
-          <Breadcrumb className={bem.e('breadcrumb')}>
-            <BreadcrumbItem><Text text="sidebar.home"/></BreadcrumbItem>
-            {breadcrumbs.length &&
-              breadcrumbs.map(({ name, active }, index) => (
-                <BreadcrumbItem key={index} active={active}>
-                  {name}
-                </BreadcrumbItem>
-              ))}
-          </Breadcrumb>
+          title
         )}
+        
       </div>
       {children}
     </Tag>
@@ -55,14 +42,14 @@ Page.propTypes = {
   breadcrumbs: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
-      active: PropTypes.bool,
+      active: PropTypes.bool
     })
-  ),
+  )
 };
 
 Page.defaultProps = {
   tag: 'div',
-  title: '',
+  title: ''
 };
 
 export default Page;
