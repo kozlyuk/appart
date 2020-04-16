@@ -84,7 +84,7 @@ class CheckResident(views.APIView):
     def get(self, request, mobile_number):
         # try if Resident with such mobile_number exists
         try:
-            User.objects.get(mobile_number=mobile_number, is_active=False)
+            User.objects.get(mobile_number=mobile_number, is_registered=False)
         # except return status.HTTP_404_NOT_FOUND
         except User.DoesNotExist:
             message = _("Resident with such mobile number doesn`t exist or already registered")
@@ -117,7 +117,7 @@ class Register(views.APIView):
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         # try if Resident with such mobile number exists or already registered
         try:
-            user = User.objects.get(mobile_number=mobile_number, is_active=False)
+            user = User.objects.get(mobile_number=mobile_number, is_registered=False)
         # except return status.HTTP_404_NOT_FOUND
         except User.DoesNotExist:
             message = _("Resident with such mobile number doesn`t exist or already registered")
@@ -156,6 +156,7 @@ class Activate(views.APIView):
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
         if user is not None and account_activation_token.check_token(user, token):
+            user.is_registered = True
             user.is_active = True
             user.save()
             return Response(_('Thank you for your email confirmation. Now you can login your account.'),

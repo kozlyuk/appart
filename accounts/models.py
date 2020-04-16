@@ -7,11 +7,6 @@ from django.core.validators import RegexValidator
 
 from .managers import CustomUserManager
 
-THEME_CHOICES = (
-    ('LT', _('Light')),
-    ('DK', _('Dark')),
-)
-
 
 def avatar_directory_path(instance, filename):
     """ file will be uploaded to MEDIA_ROOT/avatars/user_id/<filename> """
@@ -32,7 +27,7 @@ class User(AbstractUser):
     email = models.EmailField(_('Email address'), blank=True)
     birth_date = models.DateField(_('Birth date'), null=True, blank=True)
     avatar = models.ImageField(_('Photo'), upload_to=avatar_directory_path, default='avatars/no_image.jpg', blank=True)
-    theme = models.CharField(_('Theme'), max_length=2, choices=THEME_CHOICES, default='LT')
+    is_registered = models.BooleanField(_('Registered'), default=False)
 
     USERNAME_FIELD = 'mobile_number'
     REQUIRED_FIELDS = ['email']
