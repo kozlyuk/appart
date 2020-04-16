@@ -5,14 +5,9 @@ from rest_framework.response import Response
 from condominium.models import Apartment, House, Company
 
 
-class ResidentField(serializers.RelatedField):
-    def to_representation(self, value):
-        return value.pk, value.mobile_number, \
-               f"{value.first_name} {value.last_name}"
-
 class ApartmentSerializer(serializers.ModelSerializer):
     house_name = serializers.CharField(source='house', required=False)
-    resident = ResidentField(read_only=True)
+    resident_name = serializers.CharField(source='resident', required=False)
 
     class Meta:
         model = Apartment
@@ -21,6 +16,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "house",
             "house_name",
             "resident",
+            "resident_name",
             "number",
             "description",
             "is_active",
