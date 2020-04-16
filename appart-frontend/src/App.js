@@ -195,12 +195,12 @@ class App extends React.Component {
                       <Switch>
                         <Route exact path="/bill/:id/edit" component={BillUpdate}/>
                       </Switch>
-                      <Redirect to="/"/>
                       {/*<Route path="*">*/}
                       {/*  <div>test</div>*/}
                       {/*</Route>*/}
                     </MainLayout>
                   </React.Suspense>
+                  <Redirect to="/"/>
                 </Switch>
               </GAListener>
             </BrowserRouter>
