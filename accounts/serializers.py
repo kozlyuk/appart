@@ -56,6 +56,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class GetUserSerializer(serializers.ModelSerializer):
     apartment = UserApartmentsSerializer(source='apartment_set', many=True)
     groups = GroupSerializer(many=True)
+    avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -72,6 +73,11 @@ class GetUserSerializer(serializers.ModelSerializer):
             "last_name",
             "avatar",
         ]
+
+    def get_avatar(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.avatar.url
+        return request.build_absolute_uri(photo_url)
 
 
 class CustomLoginSerializer(LoginSerializer):

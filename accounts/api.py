@@ -41,11 +41,10 @@ class UserViewSet(viewsets.ModelViewSet):
 class GetUser(views.APIView):
     """
     Return current authentificated User
-    pk, is_staff, apartments fields
     """
 
     def get(self, request):
-        serializer = GetUserSerializer(request.user)
+        serializer = GetUserSerializer(request.user, context={"request":request})
         return Response(serializer.data)
 
 
