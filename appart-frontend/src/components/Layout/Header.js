@@ -138,14 +138,15 @@ class Header extends React.Component {
             </Popover>
           </NavItem>
           <UserConsumer>
-            {({ email, is_staff }) => (
+            {({ email, is_superuser, avatar, first_name, last_name }) => (
               <NavItem>
                 <NavLink id="Popover2">
-                  {is_staff &&
+                  {is_superuser &&
                   <Badge pill className="mr-2"
-                         color="success">Admin</Badge>
+                         color="success">Superuser</Badge>
                   }
                   <Avatar
+                    src={avatar}
                     onClick={this.toggleUserCardPopover}
                     className="can-click"
                   />
@@ -160,9 +161,9 @@ class Header extends React.Component {
                 >
                   <PopoverBody className="p-0 border-light">
                     <UserCard
-                      title="Jane"
+                      avatar={avatar}
+                      title={`${first_name} ${last_name}`}
                       subtitle={email}
-                      text="Last updated 3 mins ago"
                       className="border-light"
                     >
                       <ListGroup flush>

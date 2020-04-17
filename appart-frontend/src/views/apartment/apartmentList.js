@@ -77,7 +77,7 @@ export default class ApartmentList extends AbstractListView {
               <tr key={apartment.pk} align="center">
                 <td width="2%">{apartment.number}</td>
                 <td>{apartment.house}</td>
-                {apartment.resident ? <td>{apartment.resident[1]}</td>
+                {apartment.resident ? <td>{apartment.resident_name}</td>
                   : <td><Text text="apartmentList.emptyApartment"/></td>}
 
                 <td width="15%">
