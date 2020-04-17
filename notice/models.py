@@ -18,7 +18,7 @@ class Notice(models.Model):
 
     #  Relationships
     apartment = models.ForeignKey(Apartment, verbose_name=_(
-        'Apartment'), on_delete=models.PROTECT, blank=True, null=True)
+        'Apartment'), on_delete=models.CASCADE, blank=True, null=True)
 
     #  Fields
     title = models.CharField(_('News title'), max_length=100)
@@ -86,6 +86,7 @@ class Question(models.Model):
     """ Model contains Poll questions """
 
     #  Fields
+    title = models.CharField(_('Question title'), max_length=100)
     question_text = models.TextField(_("Question text"))
     actual_from = models.DateField(_('Actual from'), blank=True, null=True)
     actual_to = models.DateField(_('Actual to'), blank=True, null=True)
@@ -103,7 +104,7 @@ class Question(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return self.question_text
+        return self.title
 
 
 class Choice(models.Model):

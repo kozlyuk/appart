@@ -1,57 +1,55 @@
 from rest_framework import serializers
 
-from . import models
+from notice.models import Notice, News, Question, Choice
 
-
-class ChoiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Choice
-        fields = [
-            "pk",
-            "votes",
-            "choice_text",
-        ]
 
 class NoticeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.Notice
+        model = Notice
         fields = [
+            "pk",
+            "title",
+            "apartment",
             "actual_to",
             "actual_from",
-            "title",
-            "date_updated",
-            "date_created",
             "text",
         ]
 
-class QuestionSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Question
-        fields = [
-            "actual_from",
-            "actual_to",
-            "question_text",
-            "date_updated",
-            "date_created",
-        ]
 
 class NewsSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.News
+        model = News
         fields = [
             "pk",
-            "houses",
             "title",
-            "text",
             "news_status",
+            "text",
+            "actual_to",
+            "actual_from",
+        ]
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Question
+        fields = [
+            "pk",
+            "title",
+            "question_text",
             "actual_from",
             "actual_to",
-            "picture",
-            "created_by",
-            "date_created",
-            "date_updated"
+        ]
+
+class ChoiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Choice
+        fields = [
+            "pk",
+            "question",
+            "choice_text",
+            "votes",
         ]
