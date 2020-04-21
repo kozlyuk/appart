@@ -52,6 +52,7 @@ export default class BillList extends AbstractListView {
         <tr align="center">
           <th width="2%">Apartment</th>
           <th>Number</th>
+          <th>Purpose</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -60,6 +61,7 @@ export default class BillList extends AbstractListView {
           <tr key={bill.pk} align="center">
             <td>{bill.apartment}</td>
             <td>{bill.number}</td>
+            <td>{bill.purpose}</td>
             <td width="15%">
               <Link to={`bill/${bill.pk}/edit`}>
                 <Badge color="warning" className="mr-1">

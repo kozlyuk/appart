@@ -1,5 +1,18 @@
 import React, { Fragment } from 'react';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -162,34 +175,24 @@ export default class PaymentUpdate extends AbstractFormView {
                 readOnly
               />
             </FormGroup>
-            <FormGroup>
-              <Label for="payment_service">Services</Label>
-              <Input
-                type="text"
-                name="payment_service"
-                defaultValue={this.state.data.payment_service.map(item => {
-                  return ' ' + item.service + ' value: ' + item.value;
-                })}
-                onChange={this.handleChange}
-                readOnly
-              />
-            </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <Label for="payment_service">Services</Label>*/}
+            {/*  <Input*/}
+            {/*    type="text"*/}
+            {/*    name="payment_service"*/}
+            {/*    defaultValue={this.state.data.payment_service.map(item => {*/}
+            {/*      return ' ' + item.service + ' value: ' + item.value;*/}
+            {/*    })}*/}
+            {/*    onChange={this.handleChange}*/}
+            {/*    readOnly*/}
+            {/*  />*/}
+            {/*</FormGroup>*/}
             <FormGroup>
               <Label for="payment_type">Payment type</Label>
               <Input
                 type="text"
                 name="payment_type"
                 defaultValue={this.state.data.payment_type}
-                onChange={this.handleChange}
-                readOnly
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="text">Action</Label>
-              <Input
-                type="text"
-                name="action"
-                defaultValue={this.state.data.action}
                 onChange={this.handleChange}
                 readOnly
               />
@@ -214,6 +217,15 @@ export default class PaymentUpdate extends AbstractFormView {
                 readOnly
               />
             </FormGroup>
+            <ListGroup className="mb-3">
+              <ListGroupItem disabled className="justify-content-between">Purpose:</ListGroupItem>
+              {this.state.data.payment_service.map(item => {
+                return (
+                  <ListGroupItem className="justify-content-between">{item.service} <Badge
+                    pill>{item.value}</Badge></ListGroupItem>
+                );
+              })}
+            </ListGroup>
             <Link to="/payment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
