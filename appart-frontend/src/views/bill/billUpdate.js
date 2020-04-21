@@ -7,10 +7,23 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, {Fragment} from 'react';
-import {Button, Card, CardBody, CardHeader, Container, Form, FormGroup, Input, Label} from 'reactstrap';
-import {Text} from 'react-easy-i18n';
-import {Link} from 'react-router-dom';
+import React, { Fragment } from 'react';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
+import { Text } from 'react-easy-i18n';
+import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
 import Page from '../../components/Page';
 
@@ -72,9 +85,9 @@ export default class BillUpdate extends AbstractFormView {
    **/
   handleChange = (event) => {
     event.preventDefault();
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     let errors = this.state.errors;
-    this.setState({errors, ['defaultInactiveBtn']: false});
+    this.setState({ errors, ['defaultInactiveBtn']: false });
     switch (name) {
       case 'password':
         errors.password =
@@ -98,7 +111,7 @@ export default class BillUpdate extends AbstractFormView {
         break;
     }
 
-    this.setState({errors, [name]: value});
+    this.setState({ errors, [name]: value });
   };
 
   content() {
@@ -147,6 +160,23 @@ export default class BillUpdate extends AbstractFormView {
                 disabled
               />
             </FormGroup>
+            <ListGroup className="mb-3">
+              <ListGroupItem disabled className="justify-content-between">Purpose:</ListGroupItem>
+              {this.state.data.bill_lines.map(item => {
+                return (
+                  <>
+                    <ListGroupItem className="justify-content-between">
+                      Попередня заборгованість <Badge pill>{item.previous_debt}</Badge>
+                    </ListGroupItem>
+                    <ListGroupItem className="justify-content-between">
+                      Загальна заборгованість <Badge pill>{item.total_debt}</Badge>
+                    </ListGroupItem>
+                    <ListGroupItem className="justify-content-between">
+                      Загально <Badge pill>{item.value}</Badge>
+                    </ListGroupItem>
+                  </>);
+              })}
+            </ListGroup>
             <Link to="/bill">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
@@ -163,7 +193,7 @@ export default class BillUpdate extends AbstractFormView {
    * @returns {*}
    */
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -178,8 +208,8 @@ export default class BillUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.bills"/>, active: false},
-            {name: this.state.data.number, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: false },
+            { name: this.state.data.number, active: true }]}
           className="TablePage"
         >
           <Container>
