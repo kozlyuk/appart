@@ -5,10 +5,10 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, {Fragment} from 'react';
-import axios from "axios";
+import React, { Fragment } from 'react';
+import axios from 'axios';
 import Collapse from 'reactstrap/lib/Collapse';
-import Auth from "../../../auth/auth";
+import Auth from '../../../../auth/auth';
 
 /**
  * Props interface
@@ -57,7 +57,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
 
   componentDidMount(): void {
     if (this.props.bill) {
-      const {pk} = this.props.bill
+      const { pk } = this.props.bill;
       axios(`${this.urlApiToken}/${pk}/`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
@@ -65,7 +65,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
       })
         .then(
           result => {
-            const {signature}: any = result.data;
+            const { signature }: any = result.data;
             this.setState({
               isLoaded: true,
               liqPayData: result.data.data,
@@ -86,7 +86,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
    * Toggle collapse block
    */
   toggle = () => {
-    const {isOpen}: any = this.state;
+    const { isOpen }: any = this.state;
     this.setState({
       isOpen: !isOpen
     });
@@ -98,24 +98,24 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
    * @returns {function(...[*]=)}
    */
   toggleModal() {
-    const {liqPayData}: any = this.state;
-    const {liqPaySign}: any = this.state;
+    const { liqPayData }: any = this.state;
+    const { liqPaySign }: any = this.state;
     // @ts-ignore
     LiqPayCheckout.init({
       data: liqPayData,
       signature: liqPaySign,
-      embedTo: "#liqpay_checkout",
-      language: "ru",
-      mode: "popup" // embed || popup
+      embedTo: '#liqpay_checkout',
+      language: 'ru',
+      mode: 'popup' // embed || popup
       // @ts-ignore
-    }).on("liqpay.callback", function (data) {
+    }).on('liqpay.callback', function(data) {
       console.log(data.status);
       console.log(data);
       // @ts-ignore
-    }).on("liqpay.ready", function (data) {
+    }).on('liqpay.ready', function(data) {
       // ready
       // @ts-ignore
-    }).on("liqpay.close", function (data) {
+    }).on('liqpay.close', function(data) {
       // close
     });
   };
@@ -132,12 +132,12 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
       this.billPeriod = this.props.bill.number;
       this.billTotalValue = this.props.bill.total_value;
     }
-    const {isOpen}: any = this.state;
-    const {modal}: any = this.state;
-    const {className}: any = this.props;
+    const { isOpen }: any = this.state;
+    const { modal }: any = this.state;
+    const { className }: any = this.props;
     return (
       <Fragment>
-        <tr style={{cursor: 'pointer'}} key={this.billNumber}>
+        <tr style={{ cursor: 'pointer' }} key={this.billNumber}>
           <td onClick={this.toggle}>
             {this.billNumber}
           </td>
@@ -158,7 +158,7 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
             <table className="table table-bordered table-hover table-sm">
               <thead>
               <tr>
-                <th scope="col" style={{width: '5%'}}><small>ТОВ "УК ДІМ"</small></th>
+                <th scope="col" style={{ width: '5%' }}><small>ТОВ "УК ДІМ"</small></th>
                 <th scope="col" className="text-center" colSpan={10}><small>Квитанції на оплату комунальних послуг за
                   Січень 2020
                   р.</small></th>

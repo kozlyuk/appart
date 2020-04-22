@@ -13,7 +13,7 @@ import axios from 'axios';
 import { Col, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
-import PaymentCard from './paymentCard/PaymentCard';
+import PaymentCard from './components/paymentCard/PaymentCard';
 
 /**
  * Props interface
