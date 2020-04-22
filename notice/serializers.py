@@ -1,9 +1,12 @@
 from rest_framework import serializers
+from appart.utils import ChoicesField
 
 from notice.models import Notice, News, Question, Choice
 
 
 class NoticeSerializer(serializers.ModelSerializer):
+    notice_status = ChoicesField(choices=Notice.STATUS_CHOICES,
+                                 required=False)
 
     class Meta:
         model = Notice
@@ -11,6 +14,7 @@ class NoticeSerializer(serializers.ModelSerializer):
             "pk",
             "title",
             "apartment",
+            "notice_status",
             "actual_to",
             "actual_from",
             "text",
