@@ -7,7 +7,7 @@
 
 import React, { Fragment } from 'react';
 import { Text } from 'react-easy-i18n';
-import PageSpinner from '../../../components/PageSpinner';
+import PageSpinner from '../../../../components/PageSpinner';
 
 /**
  * Payment card class

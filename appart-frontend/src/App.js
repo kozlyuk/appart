@@ -9,7 +9,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
 import Auth from './auth/auth';
 import axios from 'axios';
-import Cabinet from './views/cabinet/Cabinet';
 import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
 import PaymentUpdate from './views/payment/paymentUpdate';
@@ -17,6 +16,11 @@ import BillList from './views/bill/billList';
 import BillUpdate from './views/bill/billUpdate';
 import OrderNew from './views/order/OrderNew';
 import { UserProvider } from './globalContext/userContext';
+import CabinetLayout from './components/Layout/CabinetLayout';
+import BillListing from './views/cabinet/components/billListing/BillListing';
+import PaymentListing from './views/cabinet/components/paymentListing/PaymentListing';
+import ServiceListing from './views/cabinet/components/serviceListing/ServiceListing';
+import Notice from './views/cabinet/Notice';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -115,15 +119,35 @@ class App extends React.Component {
                   <LayoutRoute
                     exact
                     path="/cabinet"
-                    layout={EmptyLayout}
-                    component={() => (
-                      <Cabinet user={this.state.user}/>
-                    )}
-                  />
+                    layout={CabinetLayout}
+                    component={(props) => (
+                      <Notice {...props}/>
+                    )}/>
                   <LayoutRoute
                     exact
-                    path="/order/new"
-                    layout={EmptyLayout}
+                    path="/cabinet/bills"
+                    layout={CabinetLayout}
+                    component={(props) => (
+                      <BillListing {...props}/>
+                    )}/>
+                  <LayoutRoute
+                    exact
+                    path="/cabinet/payments"
+                    layout={CabinetLayout}
+                    component={(props) => (
+                      <PaymentListing {...props}/>
+                    )}/>
+                  <LayoutRoute
+                    exact
+                    path="/cabinet/service"
+                    layout={CabinetLayout}
+                    component={(props) => (
+                      <ServiceListing {...props}/>
+                    )}/>
+                  <LayoutRoute
+                    exact
+                    path="/cabinet/order/new"
+                    layout={CabinetLayout}
                     component={props => (
                       <OrderNew {...props} user={this.state.user}/>
                     )}

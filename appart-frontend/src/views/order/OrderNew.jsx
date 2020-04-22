@@ -5,14 +5,15 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
-import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Auth from '../../auth/auth';
 import PageSpinner from '../../components/PageSpinner';
+import { Input } from 'reactstrap';
+import FormText from 'reactstrap/lib/FormText';
+import { Link } from 'react-router-dom';
 
 export default class OrderNew extends AbstractFormView {
   /**
@@ -31,7 +32,7 @@ export default class OrderNew extends AbstractFormView {
     this._user = new Auth();
     this.postUrl = process.env.REACT_APP_ORDER;
     this.requestType = 'post';
-    this.successRedirect = '/cabinet';
+    this.successRedirect = '/cabinet/service';
     this._successButton = 'Повернутися до кабінету';
   }
 
@@ -124,76 +125,6 @@ export default class OrderNew extends AbstractFormView {
    *
    * @returns {*}
    */
-  content() {
-    return (
-      <Fragment>
-        <CardHeader>Order</CardHeader>
-        <CardBody>
-          <Form id="newOrder" onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <Label for="work">Назва роботи</Label>
-              <Input
-                type="select"
-                name="work"
-                id="work"
-              >
-                {this.state.workData.results.map(option => (
-                  <option key={option.pk} value={option.pk}>
-                    {option.name}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label for="apartment">Номер апартаментів</Label>
-              <Input
-                type="select"
-                name="apartment"
-                id="apartment"
-              >
-                {this.state.userData.apartment.map(option => (
-                  <option key={option.pk} value={option.pk}>
-                    {option.number}, {option.house}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label for="information">Опис</Label>
-              <Input
-                className={this.state.errors.description.length && 'is-invalid'}
-                id="information"
-                type="textarea"
-                name="information"
-                onChange={this._handleChange}
-              />
-              {this.state.errors.description &&
-              // error field
-              <FormText color="danger">{this.state.errors.description}</FormText>}
-            </FormGroup>
-
-            <Link to="/cabinet">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
-              </Button>
-            </Link>
-            {this.state.errors.description ?
-              <Button disabled className="float-right">
-                <Text text="buttons.submitBtn"/>
-              </Button> : <Button className="float-right" type="submit">
-                <Text text="buttons.submitBtn"/>
-              </Button>
-            }
-          </Form>
-        </CardBody>
-      </Fragment>
-    );
-  }
-
-  /**
-   *
-   * @returns {*}
-   */
   render() {
     const { error, isLoaded } = this.state;
     if (error) {
@@ -206,13 +137,78 @@ export default class OrderNew extends AbstractFormView {
         </div>)
         ;
     } else {
-
       return (
-        <Container>
-          <Card>
-            {this.content()}
-          </Card>
-        </Container>
+        <div className="pay-form shadow-sm py-4 my-3 bg-white">
+          <div className="mx-auto col-xl-8 col-12">
+            <form id="newOrder" onSubmit={this.handleSubmit}>
+              <div className="form-group row align-items-center  ">
+                <label htmlFor="work"
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Назва роботи</label>
+                <div className="col-sm-8  my-3">
+                  <Input
+                    className="form-control form-control-custom"
+                    type="select"
+                    name="work"
+                    id="work"
+                  >
+                    {this.state.workData.results.map(option => (
+                      <option key={option.pk} value={option.pk}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </Input>
+                </div>
+              </div>
+
+              <div className="form-group row align-items-center">
+                <label htmlFor="apartment"
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Номер апартаментів</label>
+                <div className="col-sm-8  my-3">
+                  <Input
+                    className="form-control form-control-custom"
+                    type="select"
+                    name="apartment"
+                    id="apartment"
+                  >
+                    {this.state.userData.apartment.map(option => (
+                      <option key={option.pk} value={option.pk}>
+                        {option.number}, {option.house}
+                      </option>
+                    ))}
+                  </Input>
+                </div>
+              </div>
+              <div className="form-group row align-items-center">
+                <label htmlFor="information"
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Опис</label>
+                <div className="col-sm-8  my-3">
+                  <Input
+                    className={this.state.errors.description.length ? 'form-control form-control-custom is-invalid' : 'form-control form-control-custom'}
+                    type="textarea"
+                    name="information"
+                    id="information"
+                    onChange={this._handleChange}
+                  />
+                  {this.state.errors.description &&
+                  // error field
+                  <FormText color="danger">{this.state.errors.description}</FormText>}
+                </div>
+              </div>
+              <div className="form-group row align-items-center justify-content-sm-center">
+                <div className="col-sm-4 ">
+                  <Link to="/cabinet/service">
+                    <button className="btn btn-warning mt-3 btn-add">
+                      <Text text="buttons.returnBtn"/>
+                    </button>
+                  </Link>
+                </div>
+                <div className="col-sm-8 ">
+                  <button type="submit" className="btn btn-success mt-3 btn-add">Надіслати</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       );
     }
   }

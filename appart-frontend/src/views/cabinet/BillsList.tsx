@@ -13,7 +13,7 @@ import axios from 'axios';
 import Auth from '../../auth/auth';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
-import BillCard from './billCard/BillCard';
+import BillCard from './components/billCard/BillCard';
 
 /**
  * Props interface

@@ -5,15 +5,15 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 // @ts-ignore
-import {Text} from 'react-easy-i18n';
-import PageSpinner from '../../../components/PageSpinner';
+import { Text } from 'react-easy-i18n';
+import PageSpinner from '../../../../components/PageSpinner';
 // @ts-ignore
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 // @ts-ignore
 import Flip from 'react-reveal/Flip';
-import {Badge, Collapse, ListGroup, ListGroupItem} from 'reactstrap';
+import { Badge, Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 
 
 /**
@@ -57,7 +57,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
    * Collapse toggler
    */
   toggle = () => {
-    const {isOpen}: any = this.state;
+    const { isOpen }: any = this.state;
     this.setState({
       isOpen: !isOpen
     });
@@ -83,7 +83,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
       this.description = this.props.payment.description.toString();
       this.paymentService = this.props.payment.payment_service;
     }
-    const {isOpen}: any = this.state;
+    const { isOpen }: any = this.state;
     if (!this.props.isLoaded) {
       return (
         <td colSpan={4} className="loaderWrapper text-center mt-4 ml-auto mr-auto">
@@ -96,7 +96,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
     } else {
       return (
         <Fragment>
-          <tr style={{cursor: 'pointer'}} onClick={this.toggle}>
+          <tr style={{ cursor: 'pointer' }} onClick={this.toggle}>
             <td>
               {this.paymentType}
             </td>
@@ -118,7 +118,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
                 {this.paymentService.map((item: any) => (
                   <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
                     <ListGroup>
-                      <ListGroupItem style={{border: 'none'}} className="justify-content-between">{item.service}
+                      <ListGroupItem style={{ border: 'none' }} className="justify-content-between">{item.service}
                         <Badge color={'success'} pill className="ml-4">{item.value}</Badge>
                       </ListGroupItem>
                     </ListGroup>
