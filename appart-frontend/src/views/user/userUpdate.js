@@ -358,11 +358,6 @@ export default class UserUpdate extends AbstractFormView {
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
-              <Link className="mx-auto" to={`delete`}>
-                <Button color="danger">
-                  <Text text="userList.tableHeader.deleteBtn"/>
-                </Button>
-              </Link>
               {this.state.defaultInactiveBtn ||
               this.state.errors.mobileNumber ||
               this.state.errors.first_name ||
@@ -371,9 +366,9 @@ export default class UserUpdate extends AbstractFormView {
               this.state.errors.birthday ||
               this.state.errors.avatarSize ||
               this.state.errors.avatarFormat ?
-                <Button disabled className="float-right">
+                <Button disabled className="ml-auto float-right">
                   <Text text="buttons.submitBtn"/>
-                </Button> : <Button className="float-right" type="submit">
+                </Button> : <Button className="ml-auto float-right" type="submit">
                   <Text text="buttons.submitBtn"/>
                 </Button>
               }

@@ -18,7 +18,9 @@ export default class ApartmentList extends AbstractListView {
   constructor(props) {
     super(props);
     this.state = {
-      isFilterActive: true
+      isFilterActive: true,
+      houseQuery: '',
+      searchQuery: ''
     };
     this.groupProps = {
       appear: true,
@@ -38,9 +40,12 @@ export default class ApartmentList extends AbstractListView {
    */
   filterSearchHandler(event) {
     event.preventDefault();
-    const queryName = event.target.search.getAttribute('filterquery');
     const searchValue = event.target.search.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
+    this.setState({
+      searchQuery: searchValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
   }
 
   /**
@@ -49,9 +54,24 @@ export default class ApartmentList extends AbstractListView {
    * @param event
    */
   filterSelectHandler(event) {
-    const queryName = event.target.getAttribute('filterquery');
     const selectValue = event.target.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${selectValue}`);
+    this.setState({
+      houseQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  }
+
+  /**
+   * Get query string
+   *
+   * @return {string}
+   */
+  getQueryString() {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+
+    return `${this.dataUrl}?filter=${searchQuery}&house=${houseQuery}`;
   }
 
   /**
@@ -76,7 +96,7 @@ export default class ApartmentList extends AbstractListView {
             {this.state.data.map((apartment) => (
               <tr key={apartment.pk} align="center">
                 <td width="2%">{apartment.number}</td>
-                <td>{apartment.house}</td>
+                <td>{apartment.house_name}</td>
                 {apartment.resident ? <td>{apartment.resident_name}</td>
                   : <td><Text text="apartmentList.emptyApartment"/></td>}
 

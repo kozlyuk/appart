@@ -17,7 +17,6 @@ import BillList from './views/bill/billList';
 import BillUpdate from './views/bill/billUpdate';
 import OrderNew from './views/order/OrderNew';
 import { UserProvider } from './globalContext/userContext';
-import { Redirect } from 'react-router';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -169,7 +168,10 @@ class App extends React.Component {
                         <Route exact path="/house/:id/edit" component={HouseUpdate}/>
                         <Route exact path="/house/:id/delete" component={HouseDelete}/>
                       </Switch>
-                      <Route exact path="/apartment" component={ApartmentList}/>
+                      <Route exact path="/apartment"
+                             component={props => (
+                               <ApartmentList {...props}/>
+                             )}/>
                       <Switch>
                         <Route exact path="/apartment/new" component={ApartmentNew}/>
                         <Route exact path="/apartment/:id/edit" component={ApartmentUpdate}/>
@@ -199,7 +201,7 @@ class App extends React.Component {
                       {/*  <div>test</div>*/}
                       {/*</Route>*/}
                     </MainLayout>
-                    <Redirect to="/"/>
+                    {/*<Redirect to="/"/>*/}
                   </React.Suspense>
                 </Switch>
               </GAListener>
