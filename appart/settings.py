@@ -24,7 +24,6 @@ INSTALLED_APPS += [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'accounts.apps.AccountsConfig',
     'condominium.apps.CondominiumConfig',
     'payments.apps.PaymentsConfig',
@@ -58,8 +57,6 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'silk.middleware.SilkyMiddleware',
 ]
-
-SITE_ID = 1
 
 ROOT_URLCONF = 'appart.urls'
 
@@ -148,7 +145,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
+    'DATE_FORMAT': "%d.%m.%Y",
+    'DATETIME_FORMAT': "%d.%m.%Y",
 }
 
 REST_AUTH_SERIALIZERS = {
