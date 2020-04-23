@@ -252,9 +252,9 @@ export default class HouseUpdate extends AbstractFormView {
                 </Button>
               </Link>
               {/*<Link className="mx-auto" to={`delete`}>*/}
-              <Button className="mx-auto" disabled color="danger">
-                <Text text="houseList.tableHeader.deleteBtn"/>
-              </Button>
+              {/*<Button className="mx-auto" disabled color="danger">*/}
+              {/*  <Text text="houseList.tableHeader.deleteBtn"/>*/}
+              {/*</Button>*/}
               {/*</Link>*/}
               {this.state.errors.description ||
               this.state.errors.address ||
@@ -262,9 +262,9 @@ export default class HouseUpdate extends AbstractFormView {
               this.state.errors.photoSize ||
               this.state.errors.photoFormat ||
               this.state.errors.apartmentCount ?
-                <Button disabled className="float-right">
+                <Button disabled className="ml-auto float-right">
                   <Text text="buttons.submitBtn"/>
-                </Button> : <Button className="float-right" type="submit">
+                </Button> : <Button className="ml-auto float-right" type="submit">
                   <Text text="buttons.submitBtn"/>
                 </Button>
               }
