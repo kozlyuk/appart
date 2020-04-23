@@ -2,15 +2,16 @@ import React from 'react';
 import Container from 'reactstrap/lib/Container';
 import { CardBody, Col } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
-import axios from 'axios';
 import Card from 'reactstrap/lib/Card';
 import Button from 'reactstrap/lib/Button';
 import ButtonGroup from 'reactstrap/lib/ButtonGroup';
 import { Link } from 'react-router-dom';
 import AbstractDeleteView from '../../generics/deleteViews/abstractDeleteView';
+import Auth from '../../auth/auth';
 
 export default class ApartmentDelete extends AbstractDeleteView {
   /**
+   * Apartment delete constructor
    *
    * @param props
    * @param dataUrl
@@ -21,35 +22,10 @@ export default class ApartmentDelete extends AbstractDeleteView {
       isLoaded: false
     };
     this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
-  }
-
-  submitHandler() {
-    console.log('delete'); // TODO!!!
-  }
-
-  /**
-   *
-   * @param dataUrl
-   */
-  loadData(dataUrl) {
-    axios(dataUrl, {
-      // headers: {
-      // "Authorization": "Token " + this.authToken
-      // }
-    }).then(
-      result => {
-        this.setState({
-          isLoaded: true,
-          data: result.data
-        });
-      },
-      error => {
-        this.setState({
-          isLoaded: true,
-          error
-        });
-      }
-    );
+    this.user = new Auth();
+    this.successRedirect = '/apartment';
+    this.successButton = 'Повернутися до списку апартаментів';
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
   /**
@@ -57,9 +33,7 @@ export default class ApartmentDelete extends AbstractDeleteView {
    * @returns {*}
    */
   componentDidMount() {
-    if (this.props.match.params) {
-      this.loadData(`${this.dataUrl + this.props.match.params.id}/`);
-    }
+    this.loadData(`${this.dataUrl + this.props.match.params.id}/`);
     return 0;
   }
 
@@ -97,17 +71,19 @@ export default class ApartmentDelete extends AbstractDeleteView {
    * @returns {*}
    */
   render() {
-    const { isLoaded } = this.state;
-    if (!isLoaded) {
+    const { error, isLoaded } = this.state;
+    if (error) {
+      return <div><Text text="global.error"/>: {error.message}</div>;
+    } else if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
           <h3 className="text-center text-muted">
             <Text text="global.loading"/>
           </h3>
-        </div>
-      );
+        </div>)
+        ;
+    } else {
+      return <Container>{this.Content()}</Container>;
     }
-
-    return <Container>{this.Content()}</Container>;
   }
 }

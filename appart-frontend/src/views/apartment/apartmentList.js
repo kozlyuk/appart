@@ -88,8 +88,8 @@ export default class ApartmentList extends AbstractListView {
               <th><Text text="apartmentList.tableHeader.number"/></th>
               <th><Text text="apartmentList.tableHeader.house"/></th>
               <th><Text text="apartmentList.tableHeader.resident"/></th>
-              <th><Text text="apartmentList.tableHeader.actions"/></th>
               <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
+              <th><Text text="apartmentList.tableHeader.actions"/></th>
             </tr>
             </thead>
             <tbody>
@@ -99,20 +99,19 @@ export default class ApartmentList extends AbstractListView {
                 <td>{apartment.house_name}</td>
                 {apartment.resident ? <td>{apartment.resident_name}</td>
                   : <td><Text text="apartmentList.emptyApartment"/></td>}
-
-                <td width="15%">
-                  <Link to={`apartment/${apartment.pk}/edit`}>
-                    <Badge color="warning" className="mr-1">
-                      <Text text="apartmentList.tableHeader.editBtn"/>
-                    </Badge>
-                  </Link>
-                </td>
                 <td>
                   {apartment.is_active ?
                     <FaCheck className="text-success"/>
                     :
                     <MdClose className="text-danger"/>
                   }
+                </td>
+                <td width="15%">
+                  <Link to={`apartment/${apartment.pk}/edit`}>
+                    <Badge color="warning" className="mr-1">
+                      <Text text="apartmentList.tableHeader.editBtn"/>
+                    </Badge>
+                  </Link>
                 </td>
               </tr>
             ))}

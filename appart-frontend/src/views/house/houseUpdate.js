@@ -251,11 +251,11 @@ export default class HouseUpdate extends AbstractFormView {
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
-              <Link className="mx-auto" to={`delete`}>
-                <Button color="danger">
-                  <Text text="houseList.tableHeader.deleteBtn"/>
-                </Button>
-              </Link>
+              {/*<Link className="mx-auto" to={`delete`}>*/}
+              <Button className="mx-auto" disabled color="danger">
+                <Text text="houseList.tableHeader.deleteBtn"/>
+              </Button>
+              {/*</Link>*/}
               {this.state.errors.description ||
               this.state.errors.address ||
               this.state.errors.name ||
