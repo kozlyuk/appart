@@ -2,11 +2,12 @@ import React from 'react';
 import AbstractDeleteView from '../../generics/deleteViews/abstractDeleteView';
 import { Button, ButtonGroup, Card, CardBody, Col, Container } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Auth from '../../auth/auth';
 
 export default class HouseDelete extends AbstractDeleteView {
   /**
+   * House delete constructor
    *
    * @param props
    * @param dataUrl
@@ -17,36 +18,10 @@ export default class HouseDelete extends AbstractDeleteView {
       isLoaded: false
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
-  }
-
-  submitHandler() {
-    console.log('delete');  //TODO!!!
-  }
-
-  /**
-   *
-   * @param dataUrl
-   */
-  loadData(dataUrl) {
-    axios(dataUrl, {
-      // headers: {
-      // 	"Authorization": "Token " + this.authToken
-      // }
-    })
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            data: result.data
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+    this.user = new Auth();
+    this.successRedirect = '/house';
+    this.successButton = 'Повернутися до списку будинків';
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
   /**
