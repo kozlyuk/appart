@@ -8,8 +8,8 @@
 import React from 'react';
 import Navbar from '../../views/cabinet/layout/Navbar';
 import { UserConsumer } from '../../globalContext/userContext';
-import './cabinet.css';
 import Sidebar from '../../views/cabinet/layout/CabinetSidebar';
+import './cabinet.css';
 
 class CabinetLayout extends React.Component {
 

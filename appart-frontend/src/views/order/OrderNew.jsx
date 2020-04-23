@@ -141,7 +141,7 @@ export default class OrderNew extends AbstractFormView {
         <div className="pay-form shadow-sm py-4 my-3 bg-white">
           <div className="mx-auto col-xl-8 col-12">
             <form id="newOrder" onSubmit={this.handleSubmit}>
-              <div className="form-group row align-items-center  ">
+              <div className="form-group form-group-cabinet row align-items-center  ">
                 <label htmlFor="work"
                        className="col-sm-4 col row-form-label pr-4 text-sm-right">Назва роботи</label>
                 <div className="col-sm-8  my-3">
@@ -160,7 +160,7 @@ export default class OrderNew extends AbstractFormView {
                 </div>
               </div>
 
-              <div className="form-group row align-items-center">
+              <div className="form-group form-group-cabinet row align-items-center">
                 <label htmlFor="apartment"
                        className="col-sm-4 col row-form-label pr-4 text-sm-right">Номер апартаментів</label>
                 <div className="col-sm-8  my-3">
@@ -178,7 +178,7 @@ export default class OrderNew extends AbstractFormView {
                   </Input>
                 </div>
               </div>
-              <div className="form-group row align-items-center">
+              <div className="form-group form-group-cabinet row align-items-center">
                 <label htmlFor="information"
                        className="col-sm-4 col row-form-label pr-4 text-sm-right">Опис</label>
                 <div className="col-sm-8  my-3">
@@ -194,7 +194,7 @@ export default class OrderNew extends AbstractFormView {
                   <FormText color="danger">{this.state.errors.description}</FormText>}
                 </div>
               </div>
-              <div className="form-group row align-items-center justify-content-sm-center">
+              <div className="form-group form-group-cabinet row align-items-center justify-content-sm-center">
                 <div className="col-sm-4 ">
                   <Link to="/cabinet/service">
                     <button className="btn btn-warning mt-3 btn-add">
