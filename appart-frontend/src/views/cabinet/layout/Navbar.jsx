@@ -11,6 +11,7 @@ import axios from 'axios';
 import Auth from '../../../auth/auth';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
+import CabinetBreadcrumbs from '../../../breadcrumbs/CabinetBreadcrumbs';
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -84,10 +85,7 @@ export default class Navbar extends React.Component {
             <span className="navbar-toggler-icon"/>
           </button>
           <div className="d-none d-md-block mr-auto ">
-            <ol className="breadcrumb bg-white my-auto">
-              <li><a className="h6 active" href="#">Головна</a></li>
-              <li><a className="h6 active">Рахунки</a></li>
-            </ol>
+            <CabinetBreadcrumbs/>
           </div>
           <div className="navbar-nav nav-tabs col-md pr-0 text-center  ">
             <div>

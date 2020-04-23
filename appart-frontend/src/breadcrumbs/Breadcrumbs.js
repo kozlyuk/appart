@@ -10,6 +10,13 @@ import { Link } from 'react-router-dom';
 //   { path: '/user', breadcrumb: 'user' }
 // ];
 
+/**
+ * Breadcrumbs hoc for dashboard
+ *
+ * @param breadcrumbs
+ * @return {*}
+ * @constructor
+ */
 const Breadcrumbs = ({ breadcrumbs }) => (
   <nav aria-label="breadcrumb">
     <ol style={{
