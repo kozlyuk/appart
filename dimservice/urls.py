@@ -13,4 +13,6 @@ router.register("execution", api.ExecutionViewSet)
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
+
+    path("api/v1/get_orders/<int:apartment>/", api.OrderListView.as_view()),
 )

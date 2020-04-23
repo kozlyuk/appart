@@ -9,6 +9,7 @@ import axios from 'axios';
 import Auth from '../../../../auth/auth';
 import { Text } from 'react-easy-i18n';
 import NewOrderButton from '../newOrderButton/NewOrderButton';
+import { UserConsumer } from '../../../../globalContext/userContext';
 
 export default class ServiceListing extends React.Component {
   /**
@@ -28,9 +29,16 @@ export default class ServiceListing extends React.Component {
     this.user = new Auth();
   }
 
+  /**
+   * User context consumer
+   *
+   * @type {React.Consumer<{}>}
+   */
+  static contextType = UserConsumer;
+
   componentDidMount() {
     if (this.context) {
-      axios(`${process.env.REACT_APP_SERVICES}`, {
+      axios(`${process.env.REACT_APP_SERVICES}${this.context.apartment[0].pk}/`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }
