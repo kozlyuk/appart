@@ -39,7 +39,6 @@ INSTALLED_APPS += [
     'corsheaders',
     'font_awesome',
     'widget_tweaks',
-    'django_summernote',
     'django_celery_results',
     'silk'
 
