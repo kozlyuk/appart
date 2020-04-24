@@ -318,20 +318,20 @@ export default class ApartmentUpdate extends AbstractFormView {
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
-              <Link className="mx-auto" to={`delete`}>
-                <Button color="danger" className="mr-1">
-                  <Text text="apartmentList.tableHeader.deleteBtn"/>
-                </Button>
-              </Link>
+              {/*<Link className="mx-auto" to={`delete`}>*/}
+              {/*  <Button color="danger" className="mr-1">*/}
+              {/*    <Text text="apartmentList.tableHeader.deleteBtn"/>*/}
+              {/*  </Button>*/}
+              {/*</Link>*/}
               {this.state.errors.house ||
               this.state.errors.resident ||
               this.state.errors.number ||
               this.state.errors.description ||
               this.state.errors.area ||
               this.state.errors.resident_count ?
-                <Button disabled className="float-right">
+                <Button disabled className="ml-auto float-right">
                   <Text text="buttons.submitBtn"/>
-                </Button> : <Button className="float-right" type="submit">
+                </Button> : <Button className="ml-auto float-right" type="submit">
                   <Text text="buttons.submitBtn"/>
                 </Button>
               }
