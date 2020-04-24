@@ -62,6 +62,7 @@ for resident in RESIDENTS:
                                             last_name=resident[1]
                                             )
     residents_list.append(resident_obj)
+residents_list.append(user)
 
 index = 0
 for apartment in apartments:
