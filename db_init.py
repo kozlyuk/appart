@@ -62,6 +62,7 @@ for resident in RESIDENTS:
                                             last_name=resident[1]
                                             )
     residents_list.append(resident_obj)
+residents_list.append(user)
 
 index = 0
 for apartment in apartments:
@@ -117,7 +118,6 @@ for work in WORKS:
     for apartment in apartments:
         Order.objects.create(apartment=apartment,
                              work=work_obj,
-                             number=apartment.order_number_generate(date.today()),
                              created_by=user)
 
 print("Initial Works and Orders created")

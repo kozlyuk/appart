@@ -1,12 +1,10 @@
 """  Models for Payments application  """
 
-from datetime import datetime, date
+from datetime import date
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from django.db.models import F, FloatField, Sum
-from appart.formatChecker import ContentTypeRestrictedFileField
-from django.urls import reverse
+from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
 
