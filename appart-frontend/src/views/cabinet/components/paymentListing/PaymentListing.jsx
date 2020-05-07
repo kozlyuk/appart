@@ -1,4 +1,4 @@
-/*
+/**
  * @author          Andrey Perestyuk (Arrathilar)
  * @email-primary   a.perestyuk@itel.rv.ua
  * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
@@ -9,12 +9,12 @@ import React from 'react';
 import axios from 'axios';
 import Auth from '../../../../auth/auth';
 import { Text } from 'react-easy-i18n';
-import PaymentLines from './PaymentLines';
 import { UserConsumer } from '../../../../globalContext/userContext';
+import PaymentLines from './PaymentLines';
 
 export default class PaymentListing extends React.Component {
   /**
-   * Payment listing constructor
+   * Bill list constructor
    *
    * @param props
    */
@@ -63,6 +63,7 @@ export default class PaymentListing extends React.Component {
     }
   }
 
+
   render() {
     const { isLoaded } = this.state;
     if (!isLoaded) {
@@ -76,9 +77,9 @@ export default class PaymentListing extends React.Component {
     } else {
       return (
         <div className="table-account shadow-sm py-2 px-4 ">
-          <table className="table bg-white table-striped">
+          <table className="table bg-white table-striped ">
             <thead className="one">
-            <tr className="">
+            <tr className="" onClick={this.toggle}>
               <th className="text-center" scope="col">Тип оплати</th>
               <th className="text-center" scope="col">Період</th>
               <th className="text-center" scope="col">Сума</th>
@@ -88,9 +89,12 @@ export default class PaymentListing extends React.Component {
             <tbody>
             {this.state.data.map((item) => (
               <>
-                <PaymentLines item={item} isOpen={this.state.isOpen}/>
+                <PaymentLines payment={item} isOpen={this.state.isOpen}/>
               </>
             ))}
+            {/*{this.state.data.map((item) => (*/}
+            {/*  */}
+            {/*))}*/}
             </tbody>
           </table>
         </div>

@@ -50,10 +50,10 @@ export default class BillList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th width="2%">Apartment</th>
-          <th>Number</th>
-          <th>Purpose</th>
-          <th>Actions</th>
+          <th width="2%">Апартаменти</th>
+          <th>Номер</th>
+          <th>Призначення</th>
+          <th>Дії</th>
         </tr>
         </thead>
         <tbody>
@@ -65,7 +65,7 @@ export default class BillList extends AbstractListView {
             <td width="15%">
               <Link to={`bill/${bill.pk}/edit`}>
                 <Badge color="warning" className="mr-1">
-                  Details
+                  Детально
                 </Badge>
               </Link>
             </td>

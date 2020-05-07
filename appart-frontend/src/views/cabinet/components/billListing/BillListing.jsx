@@ -1,4 +1,4 @@
-/**
+/*
  * @author          Andrey Perestyuk (Arrathilar)
  * @email-primary   a.perestyuk@itel.rv.ua
  * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
@@ -9,11 +9,12 @@ import React from 'react';
 import axios from 'axios';
 import Auth from '../../../../auth/auth';
 import { Text } from 'react-easy-i18n';
+import BillLines from './BillLines';
 import { UserConsumer } from '../../../../globalContext/userContext';
 
 export default class BillListing extends React.Component {
   /**
-   * Bill list constructor
+   * Bill listing constructor
    *
    * @param props
    */
@@ -27,7 +28,6 @@ export default class BillListing extends React.Component {
       paginationPrevious: ''
     };
     this.user = new Auth();
-    this.toggleModal = this.toggleModal.bind(this);
   }
 
   /**
@@ -63,28 +63,6 @@ export default class BillListing extends React.Component {
     }
   }
 
-  /**
-   * Modal toggler
-   *
-   * @returns {function(...[*]=)}
-   */
-  toggleModal() {
-    const { liqPayData } = this.state;
-    const { liqPaySign } = this.state;
-    global.LiqPayCheckout.init({
-      data: liqPayData,
-      signature: liqPaySign,
-      embedTo: '#liqpay_checkout',
-      language: 'ru',
-      mode: 'popup' // embed || popup
-    }).on('liqpay.callback', function(data) {
-      console.log(data.status);
-      console.log(data);
-    }).on('liqpay.ready', function(data) {
-    }).on('liqpay.close', function(data) {
-    });
-  };
-
   render() {
     const { isLoaded } = this.state;
     if (!isLoaded) {
@@ -98,7 +76,7 @@ export default class BillListing extends React.Component {
     } else {
       return (
         <div className="table-account shadow-sm py-2 px-4 ">
-          <table className="table bg-white table-striped ">
+          <table className="table bg-white table-striped">
             <thead className="one">
             <tr className="">
               <th className="text-center" scope="col">Номер рахунку</th>
@@ -109,14 +87,9 @@ export default class BillListing extends React.Component {
             </thead>
             <tbody>
             {this.state.data.map((item) => (
-              <tr style={{ cursor: 'pointer' }}>
-                <td>{item.number}</td>
-                <td className="text-center">{item.period}</td>
-                <td className="text-center">{item.total_value}</td>
-                <td className="text-center">
-                  <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}>Оплатити</button>
-                </td>
-              </tr>
+              <>
+                <BillLines item={item} isOpen={this.state.isOpen}/>
+              </>
             ))}
             </tbody>
           </table>

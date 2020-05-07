@@ -121,7 +121,7 @@ export default class BillUpdate extends AbstractFormView {
         <CardBody>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="apartment">Apartment</Label>
+              <Label for="apartment">Апартаменти</Label>
               <Input
                 name="apartment"
                 type="text"
@@ -131,7 +131,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="number">Number</Label>
+              <Label for="number">Номер</Label>
               <Input
                 type="text"
                 name="number"
@@ -141,7 +141,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="total_value">Total value</Label>
+              <Label for="total_value">Загальна вартість</Label>
               <Input
                 type="number"
                 name="total_value"
@@ -151,7 +151,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="period">Period</Label>
+              <Label for="period">Період</Label>
               <Input
                 type="text"
                 name="period"
@@ -161,7 +161,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <ListGroup className="mb-3">
-              <ListGroupItem disabled className="justify-content-between">Purpose:</ListGroupItem>
+              <ListGroupItem disabled className="justify-content-between">Деталі:</ListGroupItem>
               {this.state.data.bill_lines.map(item => {
                 return (
                   <>

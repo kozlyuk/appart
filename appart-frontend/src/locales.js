@@ -36,6 +36,13 @@ registerLang('en', {
     bills: 'bills',
     profile: 'profile'
   },
+  paymentList: {
+    tableHeader: {
+      apartment: 'Apartment',
+      value: 'Value',
+      actions: 'Actions'
+    }
+  },
   userList: {
     addBtn: 'Add new user',
     tableHeader: {
@@ -109,6 +116,7 @@ registerLang('en', {
     house: 'House',
     number: 'Apartment number',
     area: 'Area',
+    resident: 'Resident number',
     residentCount: 'Resident count',
     description: 'description',
     newApartment: {
@@ -208,6 +216,13 @@ registerLang('ua', {
     bills: 'рахунки',
     profile: 'профіль'
   },
+  paymentList: {
+    tableHeader: {
+      apartment: 'Апартаменти',
+      value: 'Вартість',
+      actions: 'Дії'
+    }
+  },
   userList: {
     addBtn: 'Додати нового користувача',
     tableHeader: {
@@ -281,6 +296,7 @@ registerLang('ua', {
     house: 'Будинок',
     number: 'Номер апартаментів',
     area: 'Площа',
+    resident: 'Номер телефону жителя',
     residentCount: 'Кількість жителів',
     description: 'Описання',
     newApartment: {

@@ -166,7 +166,7 @@ export default class PaymentUpdate extends AbstractFormView {
         <CardBody>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="apartment">Apartment</Label>
+              <Label for="apartment">Апартаменти</Label>
               <Input
                 name="apartment"
                 type="text"
@@ -188,7 +188,7 @@ export default class PaymentUpdate extends AbstractFormView {
             {/*  />*/}
             {/*</FormGroup>*/}
             <FormGroup>
-              <Label for="payment_type">Payment type</Label>
+              <Label for="payment_type">Тип оплати</Label>
               <Input
                 type="text"
                 name="payment_type"
@@ -198,7 +198,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="date">Date</Label>
+              <Label for="date">Дата</Label>
               <Input
                 type="date"
                 name="date"
@@ -208,7 +208,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="value">Value</Label>
+              <Label for="value">Вартість</Label>
               <Input
                 type="text"
                 name="value"
@@ -218,7 +218,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <ListGroup className="mb-3">
-              <ListGroupItem disabled className="justify-content-between">Purpose:</ListGroupItem>
+              <ListGroupItem disabled className="justify-content-between">Призначення:</ListGroupItem>
               {this.state.data.payment_service.map(item => {
                 return (
                   <ListGroupItem className="justify-content-between">{item.service} <Badge

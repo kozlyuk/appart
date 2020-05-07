@@ -193,6 +193,24 @@ export default class ApartmentUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            {this.state.data.resident_name &&
+            <FormGroup>
+              <Label for="resident">Житель</Label>
+              <Input
+                className={this.state.fieldError.resident && 'is-invalid'}
+                id="resident"
+                type="tel"
+                name="resident"
+                readOnly
+                defaultValue={this.state.data.resident_name}
+              />
+              {this.state.fieldError.resident &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.resident}
+              </div>
+              }
+            </FormGroup>
+            }
             {this.state.residentIsPinned &&
             <FormGroup>
               <Label for="resident"><Text text="apartmentForm.resident"/></Label>

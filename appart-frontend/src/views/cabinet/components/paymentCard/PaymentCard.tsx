@@ -114,7 +114,7 @@ export default class PaymentCard extends React.Component<PaymentCardInterface, {
             <td colSpan={4}>
               <TransitionGroup {...this.groupProps}>
                 {/*
-							    // @ts-ignore*/}
+							  // @ts-ignore*/}
                 {this.paymentService.map((item: any) => (
                   <Flip key={'2'} top opposite cascade collapse when={isOpen} spy={isOpen}>
                     <ListGroup>

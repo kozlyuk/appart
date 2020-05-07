@@ -17,8 +17,8 @@ import BillUpdate from './views/bill/billUpdate';
 import OrderNew from './views/order/OrderNew';
 import { UserProvider } from './globalContext/userContext';
 import CabinetLayout from './components/Layout/CabinetLayout';
-import BillListing from './views/cabinet/components/billListing/BillListing';
 import PaymentListing from './views/cabinet/components/paymentListing/PaymentListing';
+import BillListing from './views/cabinet/components/billListing/BillListing';
 import ServiceListing from './views/cabinet/components/serviceListing/ServiceListing';
 import Notice from './views/cabinet/Notice';
 

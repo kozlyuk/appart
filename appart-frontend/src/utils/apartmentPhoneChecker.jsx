@@ -158,7 +158,7 @@ export default class ApartmentPhoneChecker extends React.Component {
               </CardTitle>
               <CardText>
                 <p>email: <strong>{this.state.responseData.email}</strong></p>
-                <p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
+                {/*<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>*/}
                 <Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
               </CardText>
             </CardBody>
@@ -188,7 +188,7 @@ export default class ApartmentPhoneChecker extends React.Component {
             </CardTitle>
             <CardText>
               <p>email: <strong>{this.state.responseData.email}</strong></p>
-              <p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>
+              {/*<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>*/}
               <Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
             </CardText>
           </CardBody>

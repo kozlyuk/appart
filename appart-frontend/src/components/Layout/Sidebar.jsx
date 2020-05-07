@@ -1,4 +1,3 @@
-import logo200Image from 'assets/img/logo/logo_200.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import React from 'react';
 import {
@@ -59,13 +58,16 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground}/>
         <div className={bem.e('content')}>
           <Navbar>
-            <img
-              src={logo200Image}
-              width="auto"
-              height="50"
-              className="ml-auto mr-auto"
-              alt=""
-            />
+            {/*<img*/}
+            {/*  src={logo200Image}*/}
+            {/*  width="auto"*/}
+            {/*  height="50"*/}
+            {/*  className="ml-auto mr-auto"*/}
+            {/*  alt=""*/}
+            {/*/>*/}
+            <div className="container">
+              <h2 className="m-auto">Дім онлайн</h2>
+            </div>
           </Navbar>
           <Nav vertical>
             {navItems.map(({ to, name, exact, Icon }, index) => (

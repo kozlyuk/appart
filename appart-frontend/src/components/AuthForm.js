@@ -1,4 +1,3 @@
-import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
@@ -68,18 +67,6 @@ class AuthForm extends React.Component {
         });
       });
 
-    // user.login(mobileNumber, password)
-    //   .then(r => {
-    //     return r;
-    //   })
-    //   .catch(error => {
-    //     console.log(error.response.data);
-    //     // Swal.fire({
-    //     //   icon: 'error',
-    //     //   title: 'Oops...',
-    //     //   text: 'error.data'
-    //     // });
-    //   });
   };
 
   /*
@@ -143,13 +130,14 @@ class AuthForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         {showLogo && (
           <div className="text-center pb-4">
-            <img
-              src={logo200Image}
-              className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
-              alt="logo"
-              onClick={onLogoClick}
-            />
+            <h2 className="m-auto">Дім онлайн</h2>
+            {/*<img*/}
+            {/*  src={logo200Image}*/}
+            {/*  className="rounded"*/}
+            {/*  style={{ width: 60, height: 60, cursor: 'pointer' }}*/}
+            {/*  alt="logo"*/}
+            {/*  onClick={onLogoClick}*/}
+            {/*/>*/}
           </div>
         )}
         <FormGroup>
