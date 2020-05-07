@@ -200,7 +200,7 @@ export default class PaymentUpdate extends AbstractFormView {
             <FormGroup>
               <Label for="date">Дата</Label>
               <Input
-                type="date"
+                type="text"
                 name="date"
                 defaultValue={this.state.data.date}
                 onChange={this.handleChange}
