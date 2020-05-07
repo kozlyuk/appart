@@ -217,6 +217,7 @@ export default class PaymentUpdate extends AbstractFormView {
                 readOnly
               />
             </FormGroup>
+            {!this.state.data.payment_service &&
             <ListGroup className="mb-3">
               <ListGroupItem disabled className="justify-content-between">Призначення:</ListGroupItem>
               {this.state.data.payment_service.map(item => {
@@ -226,6 +227,7 @@ export default class PaymentUpdate extends AbstractFormView {
                 );
               })}
             </ListGroup>
+            }
             <Link to="/payment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>

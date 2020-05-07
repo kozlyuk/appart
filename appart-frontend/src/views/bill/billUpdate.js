@@ -8,20 +8,7 @@
  */
 
 import React, { Fragment } from 'react';
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Container,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  ListGroup,
-  ListGroupItem
-} from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
@@ -160,23 +147,32 @@ export default class BillUpdate extends AbstractFormView {
                 disabled
               />
             </FormGroup>
-            <ListGroup className="mb-3">
-              <ListGroupItem disabled className="justify-content-between">Деталі:</ListGroupItem>
-              {this.state.data.bill_lines.map(item => {
-                return (
-                  <>
-                    <ListGroupItem className="justify-content-between">
-                      Попередня заборгованість <Badge pill>{item.previous_debt}</Badge>
-                    </ListGroupItem>
-                    <ListGroupItem className="justify-content-between">
-                      Загальна заборгованість <Badge pill>{item.total_debt}</Badge>
-                    </ListGroupItem>
-                    <ListGroupItem className="justify-content-between">
-                      Загально <Badge pill>{item.value}</Badge>
-                    </ListGroupItem>
-                  </>);
-              })}
-            </ListGroup>
+            <FormGroup>
+              <Label for="period">Призначення</Label>
+              <Input
+                type="text"
+                name="period"
+                defaultValue={this.state.data.purpose}
+                onChange={this.handleChange}
+                disabled
+              />
+            </FormGroup>
+            {/*<ListGroup className="mb-3">*/}
+            {/*  /!*{this.state.data.bill_lines.map(item => {*!/*/}
+            {/*  /!*  return (*!/*/}
+            {/*  /!*    <>*!/*/}
+            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
+            {/*  /!*        Попередня заборгованість <Badge pill>{item.previous_debt}</Badge>*!/*/}
+            {/*  /!*      </ListGroupItem>*!/*/}
+            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
+            {/*  /!*        Загальна заборгованість <Badge pill>{item.total_debt}</Badge>*!/*/}
+            {/*  /!*      </ListGroupItem>*!/*/}
+            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
+            {/*  /!*        Загально <Badge pill>{item.value}</Badge>*!/*/}
+            {/*  /!*      </ListGroupItem>*!/*/}
+            {/*  /!*    </>);*!/*/}
+            {/*  /!*})}*!/*/}
+            {/*</ListGroup>*/}
             <Link to="/bill">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
