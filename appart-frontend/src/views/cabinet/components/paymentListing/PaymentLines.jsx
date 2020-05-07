@@ -7,7 +7,6 @@
 
 import React from 'react';
 import { Collapse } from 'reactstrap';
-import { UserConsumer } from '../../../../globalContext/userContext';
 import { Text } from 'react-easy-i18n';
 import Auth from '../../../../auth/auth';
 import axios from 'axios';
@@ -94,13 +93,6 @@ export default class PaymentLines extends React.Component {
       });
     }
   };
-
-  /**
-   * User context consumer
-   *
-   * @type {React.Consumer<{}>}
-   */
-  static contextType = UserConsumer;
 
 
   render() {

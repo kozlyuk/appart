@@ -87,7 +87,7 @@ export default class BillListing extends React.Component {
             <tbody>
             {this.state.data.map((item) => (
               <>
-                <BillLines item={item} isOpen={this.state.isOpen}/>
+                <BillLines key={item.pk} item={item} isOpen={this.state.isOpen}/>
               </>
             ))}
             </tbody>

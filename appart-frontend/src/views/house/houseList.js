@@ -64,7 +64,7 @@ export default class HouseList extends AbstractListView {
         </thead>
         <tbody>
         {this.state.data.map((house) => (
-          <tr align="center">
+          <tr key={house.pk} align="center">
             <td width="2%">
               <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
             </td>
