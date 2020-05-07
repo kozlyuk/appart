@@ -84,6 +84,7 @@ export default class PaymentListing extends React.Component {
               <th className="text-center" scope="col">Період</th>
               <th className="text-center" scope="col">Сума</th>
               <th className="text-center" scope="col">Опис</th>
+              <th className="text-center" scope="col">Дії</th>
             </tr>
             </thead>
             <tbody>
