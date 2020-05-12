@@ -36,6 +36,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "pay_status",
             "information",
             "warning",
+            "executors",
             "created_by",
             "date_created",
             "date_updated",
