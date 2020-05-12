@@ -82,6 +82,7 @@ export default class BillListing extends React.Component {
               <th className="text-center" scope="col">Номер рахунку</th>
               <th className="text-center" scope="col">Виписаний</th>
               <th className="text-center" scope="col">Сума</th>
+              <th className="text-center" scope="col">Дії</th>
             </tr>
             </thead>
             <tbody>
