@@ -86,7 +86,7 @@ export default class ServiceListing extends React.Component {
               </thead>
               <tbody>
               {this.state.data.map((item) => (
-                <tr style={{ cursor: 'pointer' }}>
+                <tr key={item.pk} style={{ cursor: 'pointer' }}>
                   <td>{item.work_name}</td>
                   <td className="text-center">{item.exec_status}</td>
                   <td className="text-center">{item.pay_status}</td>

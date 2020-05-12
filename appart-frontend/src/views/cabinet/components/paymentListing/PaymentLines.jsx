@@ -7,10 +7,7 @@
 
 import React from 'react';
 import { Collapse } from 'reactstrap';
-import { UserConsumer } from '../../../../globalContext/userContext';
 import { Text } from 'react-easy-i18n';
-import Auth from '../../../../auth/auth';
-import axios from 'axios';
 
 export default class PaymentLines extends React.Component {
 
@@ -20,68 +17,7 @@ export default class PaymentLines extends React.Component {
       isOpen: false,
       isLoaded: true
     };
-    this.toggleModal = this.toggleModal.bind(this);
   }
-
-  /**
-   * User object
-   */
-  user = new Auth();
-
-
-  componentDidMount() {
-    /**
-     * Url for get api tokens
-     */
-    const urlApiToken = process.env.REACT_APP_GET_PAYMENTS_TOKEN;
-
-    if (this.props.payment) {
-      const { pk } = this.props.payment;
-      axios(`${urlApiToken}/${pk}/`, {
-        headers: {
-          'Authorization': 'Token ' + this.user.getAuthToken()
-        }
-      })
-        .then(
-          result => {
-            const { signature } = result.data;
-            this.setState({
-              isLoaded: true,
-              liqPayData: result.data.data,
-              liqPaySign: signature
-            });
-          },
-          error => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        );
-    }
-  }
-
-  /**
-   * Modal toggler
-   *
-   * @returns {function(...[*]=)}
-   */
-  toggleModal() {
-    const { liqPayData } = this.state;
-    const { liqPaySign } = this.state;
-    global.LiqPayCheckout.init({
-      data: liqPayData,
-      signature: liqPaySign,
-      embedTo: '#liqpay_checkout',
-      language: 'ru',
-      mode: 'popup' // embed || popup
-    }).on('liqpay.callback', function(data) {
-      console.log(data.status);
-      console.log(data);
-    }).on('liqpay.ready', function(data) {
-    }).on('liqpay.close', function(data) {
-    });
-  };
 
   /**
    * Collapse toggler
@@ -94,13 +30,6 @@ export default class PaymentLines extends React.Component {
       });
     }
   };
-
-  /**
-   * User context consumer
-   *
-   * @type {React.Consumer<{}>}
-   */
-  static contextType = UserConsumer;
 
 
   render() {
@@ -121,9 +50,6 @@ export default class PaymentLines extends React.Component {
             <td className="text-center" onClick={this.toggle}>{this.props.payment.date}</td>
             <td className="text-center" onClick={this.toggle}>{this.props.payment.value}</td>
             <td className="text-center" onClick={this.toggle}>{this.props.payment.description}</td>
-            <td className="text-center">
-              <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}>Оплатити</button>
-            </td>
           </tr>
           <Collapse tag="tr" isOpen={this.state.isOpen}>
             {/*{this.props.bill.bill_lines[0] &&*/}
