@@ -15,6 +15,13 @@ class WorkViewSet(viewsets.ModelViewSet):
     serializer_class = WorkSerializer
 
 
+class WorkWithoutPagination(WorkViewSet):
+    """ViewSet for the Work class
+    Without pagination
+    """
+    pagination_class = None
+
+
 class OrderViewSet(viewsets.ModelViewSet):
     """ViewSet for the Order class
     Filter queryset by search string ('filter' get parameter)
