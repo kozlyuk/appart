@@ -15,4 +15,6 @@ urlpatterns = (
     path("api/v1/", include(router.urls)),
 
     path("api/v1/get_orders/<int:apartment>/", api.OrderListView.as_view()),
+    path("api/v1/get_exec_choices/", api.ExecStatusChoices.as_view()),
+    path("api/v1/get_payment_choices/", api.PaymentStatusChoices.as_view()),
 )

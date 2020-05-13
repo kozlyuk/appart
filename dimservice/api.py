@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, views
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
@@ -97,3 +97,23 @@ class ExecutionViewSet(viewsets.ModelViewSet):
 
     queryset = Execution.objects.all()
     serializer_class = ExecutionSerializer
+
+
+class ExecStatusChoices(views.APIView):
+    """
+    Send JSON list of EXEC_STATUS_CHOICES
+    """
+    def get(self, request):
+        # Sending JSON list EXEC_STATUS_CHOICES
+        json_data = [Order.EXEC_STATUS_CHOICES]
+        return Response(json_data, status=status.HTTP_200_OK)
+
+
+class PaymentStatusChoices(views.APIView):
+    """
+    Send JSON list of PAYMENT_STATUS_CHOICES
+    """
+    def get(self, request):
+        # Sending JSON list PAYMENT_STATUS_CHOICES
+        json_data = [Order.PAYMENT_STATUS_CHOICES]
+        return Response(json_data, status=status.HTTP_200_OK)
