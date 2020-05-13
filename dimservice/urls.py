@@ -7,6 +7,7 @@ from dimservice import api
 
 router = routers.DefaultRouter()
 router.register("work", api.WorkViewSet)
+router.register("work_without_pagination", api.WorkWithoutPagination)
 router.register("order", api.OrderViewSet, basename='Order')
 router.register("execution", api.ExecutionViewSet)
 
