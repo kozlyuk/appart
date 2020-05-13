@@ -107,3 +107,13 @@ class ExecStatusChoices(views.APIView):
         # Sending JSON list EXEC_STATUS_CHOICES
         json_data = [Order.EXEC_STATUS_CHOICES]
         return Response(json_data, status=status.HTTP_200_OK)
+
+
+class PaymentStatusChoices(views.APIView):
+    """
+    Send JSON list of PAYMENT_STATUS_CHOICES
+    """
+    def get(self, request):
+        # Sending JSON list PAYMENT_STATUS_CHOICES
+        json_data = [Order.PAYMENT_STATUS_CHOICES]
+        return Response(json_data, status=status.HTTP_200_OK)
