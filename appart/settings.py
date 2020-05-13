@@ -136,7 +136,7 @@ CORS_ALLOW_HEADERS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication', #need ot disable
+#         'rest_framework.authentication.SessionAuthentication', #need ot disable
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -148,6 +148,8 @@ REST_FRAMEWORK = {
     'DATE_FORMAT': "%d.%m.%Y",
     'DATETIME_FORMAT': "%d.%m.%Y",
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
