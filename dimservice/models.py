@@ -3,7 +3,6 @@
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from django.core.validators import MaxValueValidator
 
 from condominium.models import Apartment
 
@@ -51,10 +50,10 @@ class Order(models.Model):
     apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'), on_delete=models.PROTECT)
     work = models.ForeignKey(Work, verbose_name=_('Work'), on_delete=models.PROTECT)
     executors = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Execution',
-                                       related_name='orders',verbose_name=_('Goods'), blank=True)
+                                       related_name='orders', verbose_name=_('Goods'), blank=True)
     # Fields
     exec_status = models.CharField(_('Execution status'), max_length=2,
-                                    choices=EXEC_STATUS_CHOICES, default=New)
+                                   choices=EXEC_STATUS_CHOICES, default=New)
     pay_status = models.CharField(_('Pay status'), max_length=2,
                                   choices=PAYMENT_STATUS_CHOICES, default=NotPaid)
     information = models.CharField(_('Information'), max_length=255, blank=True)

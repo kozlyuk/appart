@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import viewsets, status, views
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -52,14 +53,14 @@ class OrderViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(work=work)
         if exec_statuses:
             qs_union = Order.objects.none()
-            for status in exec_statuses:
-                qs_segment = queryset.filter(exec_status=status)
+            for exec_status in exec_statuses:
+                qs_segment = queryset.filter(exec_status=exec_status)
                 qs_union = qs_union | qs_segment
             queryset = qs_union
         if pay_statuses:
             qs_union = Order.objects.none()
-            for status in pay_statuses:
-                qs_segment = queryset.filter(pay_status=status)
+            for pay_status in pay_statuses:
+                qs_segment = queryset.filter(pay_status=pay_status)
                 qs_union = qs_union | qs_segment
             queryset = qs_union
         if order:

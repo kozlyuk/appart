@@ -1,6 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
-from rest_framework import serializers, status
-from rest_framework.response import Response
+from rest_framework import serializers
 from appart.utils import ChoicesField
 
 from dimservice.models import Work, Order, Execution
@@ -24,12 +22,14 @@ class OrderSerializer(serializers.ModelSerializer):
     work_name = serializers.CharField(source='work', required=False)
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
+    house = serializers.CharField(source='apartment.house.pk', required=False)
 
     class Meta:
         model = Order
         fields = [
             "pk",
             "apartment",
+            "house",
             "work",
             "work_name",
             "exec_status",
@@ -46,7 +46,8 @@ class OrderSerializer(serializers.ModelSerializer):
     @staticmethod
     def setup_eager_loading(queryset):
         """ optimizing "to-one" relationships with select_related """
-        queryset = queryset.select_related('work')
+        queryset = queryset.select_related('work', 'apartment', 'apartment__house') \
+                           .prefetch_related('executors')
         return queryset
 
 class ExecutionSerializer(serializers.ModelSerializer):
