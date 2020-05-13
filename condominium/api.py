@@ -38,13 +38,14 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset
 
+class ApartmentWithoutPagination(ApartmentViewSet):
+    pagination_class = None
 
 class HouseViewSet(viewsets.ModelViewSet):
     """ViewSet for the House class
     Filter queryset by search string ('filter' get parameter)
     Order queryset by any given field ('order' get parameter)
     """
-
     serializer_class = HouseSerializer
 
     def get_queryset(self):
@@ -59,6 +60,8 @@ class HouseViewSet(viewsets.ModelViewSet):
             queryset = queryset.order_by(order)
         return queryset
 
+class HouseWithoutPagination(HouseViewSet):
+    pagination_class = None
 
 class CompanyViewSet(viewsets.ModelViewSet):
     """ViewSet for the Company class"""
