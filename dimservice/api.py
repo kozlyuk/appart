@@ -28,7 +28,7 @@ class WorkViewSet(viewsets.ModelViewSet):
                                        Q(price_code__contains=word))
 
         if is_basic:
-            queryset = queryset.filter(is_basic=is_basic)
+            queryset = queryset.filter(is_basic__icontains=is_basic)
         if order:
             queryset = queryset.order_by(order)
 
