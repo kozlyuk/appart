@@ -10,10 +10,29 @@ from condominium.models import Apartment
 
 
 class WorkViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Work class"""
+    """ViewSet for the Work class
+    Filter queryset by search string ('filter' get parameter)
+    Filter queryset by is_basic field ('is_basic' get parameters)
+    Order queryset by any given field ('order' get parameter)
+    """
 
-    queryset = Work.objects.all()
     serializer_class = WorkSerializer
+
+    def get_queryset(self):
+        queryset = Work.objects.filter(is_active=True)
+        search_string = self.request.GET.get('filter', '').split()
+        is_basic = self.request.GET.get('is_basic')
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(name__icontains=word) |
+                                       Q(price_code__contains=word))
+
+        if is_basic:
+            queryset = queryset.filter(is_basic=is_basic)
+        if order:
+            queryset = queryset.order_by(order)
+
+        return queryset
 
 
 class WorkWithoutPagination(WorkViewSet):

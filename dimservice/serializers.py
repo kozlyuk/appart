@@ -13,7 +13,6 @@ class WorkSerializer(serializers.ModelSerializer):
             "price_code",
             "price",
             "description",
-            "is_active",
             "duration"
         ]
 
@@ -42,6 +41,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_updated",
             "date_closed",
         ]
+        read_only_fields = ('house', 'work_name')
 
     @staticmethod
     def setup_eager_loading(queryset):
