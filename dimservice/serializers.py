@@ -17,11 +17,28 @@ class WorkSerializer(serializers.ModelSerializer):
         ]
 
 
+class ExecutionSerializer(serializers.ModelSerializer):
+    executor_name = serializers.CharField(source='executor', required=False)
+    exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
+
+    class Meta:
+        model = Execution
+        fields = [
+            "pk",
+            "executor",
+            "executor_name",
+            "scheduled_time",
+            "exec_status",
+        ]
+        read_only_fields = ['executor_name']
+
+
 class OrderSerializer(serializers.ModelSerializer):
     work_name = serializers.CharField(source='work', required=False)
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
     house = serializers.CharField(source='apartment.house.pk', required=False)
+    executions = ExecutionSerializer(source='execution_set', many=True)
 
     class Meta:
         model = Order
@@ -35,29 +52,57 @@ class OrderSerializer(serializers.ModelSerializer):
             "pay_status",
             "information",
             "warning",
-            "executors",
+            "executions",
             "created_by",
             "date_created",
             "date_updated",
             "date_closed",
         ]
-        read_only_fields = ('house', 'work_name')
+        read_only_fields = [
+            "house",
+            "work_name",
+            "created_by",
+            "date_created",
+            "date_updated",
+            "date_closed"
+            ]
+
+    def create(self, validated_data):
+        # creating order
+        order = Order.objects.create(**validated_data)
+        # creating executions
+        executions_data = validated_data.pop('executions')
+        for execution_data in executions_data:
+            Execution.objects.create(order=order, **execution_data)
+        return order
+
+    def update(self, instance, validated_data):
+        # updating order
+        instance.apartment = validated_data.get('apartment', instance.apartment)
+        instance.work = validated_data.get('work', instance.work)
+        instance.exec_status = validated_data.get('exec_status', instance.exec_status)
+        instance.pay_status = validated_data.get('pay_status', instance.pay_status)
+        instance.information = validated_data.get('information', instance.information)
+        instance.warning = validated_data.get('warning', instance.warning)
+
+        # updating executions
+        executions_data = validated_data.get('executions')
+        for execution_data in executions_data:
+            execution_id = execution_data.get('id', None)
+            if execution_id:
+                execution = Execution.objects.get(id=execution_id, order=instance)
+                execution.executor = execution_data.get('executor', execution.executor)
+                execution.scheduled_time = execution_data.get('scheduled_time', execution.scheduled_time)
+                execution.exec_status = execution_data.get('exec_status', execution.exec_status)
+                execution.save()
+            else:
+                Execution.objects.create(order=instance, **execution_data)
+
+        return instance
 
     @staticmethod
     def setup_eager_loading(queryset):
         """ optimizing "to-one" relationships with select_related """
         queryset = queryset.select_related('work', 'apartment', 'apartment__house') \
-                           .prefetch_related('executors')
+                           .prefetch_related('execution_set')
         return queryset
-
-class ExecutionSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Execution
-        fields = [
-            "pk",
-            "order",
-            "executor",
-            "scheduled_time",
-            "exec_status",
-        ]

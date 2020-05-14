@@ -94,8 +94,8 @@ class Execution(models.Model):
                                    choices=EXEC_STATUS_CHOICES, default=Scheduled)
 
     class Meta:
-        verbose_name = _('Executor')
-        verbose_name_plural = _('Executors')
+        verbose_name = _('Execution')
+        verbose_name_plural = _('Executions')
 
     def __str__(self):
         return f"{self.order} {self.executor}"
