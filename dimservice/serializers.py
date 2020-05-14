@@ -38,7 +38,7 @@ class OrderSerializer(serializers.ModelSerializer):
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
     house = serializers.CharField(source='apartment.house.pk', required=False)
-    executions = ExecutionSerializer(source='execution_set', many=True)
+    executions = ExecutionSerializer(source='execution_set', many=True, required=False)
 
     class Meta:
         model = Order
@@ -57,7 +57,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_created",
             "date_updated",
             "date_closed",
-        ]
+            ]
         read_only_fields = [
             "house",
             "work_name",
@@ -71,9 +71,10 @@ class OrderSerializer(serializers.ModelSerializer):
         # creating order
         order = Order.objects.create(**validated_data)
         # creating executions
-        executions_data = validated_data.pop('executions')
-        for execution_data in executions_data:
-            Execution.objects.create(order=order, **execution_data)
+        executions_data = validated_data.get('executions')
+        if executions_data is not None:
+            for execution_data in executions_data:
+                Execution.objects.create(order=order, **execution_data)
         return order
 
     def update(self, instance, validated_data):
