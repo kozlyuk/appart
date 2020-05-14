@@ -58,17 +58,20 @@ class OrderSerializer(serializers.ModelSerializer):
             "date_updated",
             "date_closed",
         ]
-        read_only_fields = ["house",
-                            "work_name",
-                            "created_by",
-                            "date_created",
-                            "date_updated",
-                            "date_closed"
-                            ]
+        read_only_fields = [
+            "house",
+            "work_name",
+            "created_by",
+            "date_created",
+            "date_updated",
+            "date_closed"
+            ]
 
     def create(self, validated_data):
-        executions_data = validated_data.pop('executions')
+        # creating order
         order = Order.objects.create(**validated_data)
+        # creating executions
+        executions_data = validated_data.pop('executions')
         for execution_data in executions_data:
             Execution.objects.create(order=order, **execution_data)
         return order
@@ -82,14 +85,15 @@ class OrderSerializer(serializers.ModelSerializer):
         instance.information = validated_data.get('information', instance.information)
         instance.warning = validated_data.get('warning', instance.warning)
 
-        # updating execution
+        # updating executions
         executions_data = validated_data.get('executions')
         for execution_data in executions_data:
             execution_id = execution_data.get('id', None)
             if execution_id:
                 execution = Execution.objects.get(id=execution_id, order=instance)
-                execution.name = execution_data.get('name', execution.name)
-                execution.price = execution_data.get('price', execution.price)
+                execution.executor = execution_data.get('executor', execution.executor)
+                execution.scheduled_time = execution_data.get('scheduled_time', execution.scheduled_time)
+                execution.exec_status = execution_data.get('exec_status', execution.exec_status)
                 execution.save()
             else:
                 Execution.objects.create(order=instance, **execution_data)
