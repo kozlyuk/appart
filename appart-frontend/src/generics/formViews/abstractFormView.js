@@ -225,6 +225,7 @@ export default class AbstractFormView extends React.Component {
       });
     })
       .catch((error) => {
+        console.log(error);
         this.setState({
           fieldError: error.response.data
         });

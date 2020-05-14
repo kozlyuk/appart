@@ -21,6 +21,8 @@ import PaymentListing from './views/cabinet/components/paymentListing/PaymentLis
 import BillListing from './views/cabinet/components/billListing/BillListing';
 import ServiceListing from './views/cabinet/components/serviceListing/ServiceListing';
 import Notice from './views/cabinet/Notice';
+import OrderList from './views/order/OrderList';
+import OrderForm from './views/order/OrderForm';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -212,6 +214,11 @@ class App extends React.Component {
                         <Route exact path="/news/new" component={NewsNew}/>
                         <Route exact path="/news/:id/edit" component={NewsUpdate}/>
                         <Route exact path="/news/:id/delete" component={NewsDelete}/>
+                      </Switch>
+                      <Route exact path="/order" component={OrderList}/>
+                      <Switch>
+                        <Route exact path="/order/:id/edit" component={OrderForm}/>
+                        {/*<Route exact path="/news/:id/delete" component={NewsDelete}/>*/}
                       </Switch>
                       <Route exact path="/payment" component={PaymentList}/>
                       <Switch>

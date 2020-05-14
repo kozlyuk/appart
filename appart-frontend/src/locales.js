@@ -34,7 +34,10 @@ registerLang('en', {
     question: 'question',
     payment: 'payment',
     bills: 'bills',
-    profile: 'profile'
+    profile: 'profile',
+    service: 'service',
+    order: 'orders',
+    work: 'work\'s'
   },
   paymentList: {
     tableHeader: {
@@ -65,6 +68,17 @@ registerLang('en', {
       actions: 'Actions',
       editBtn: 'Edit',
       deleteBtn: 'Delete'
+    }
+  },
+  orderList: {
+    tableHeader: {
+      apartment: 'Apartment',
+      execStatus: 'Execution status',
+      payStatus: 'Pay status',
+      warning: 'Warning',
+      workName: 'Work name',
+      actions: 'Actions',
+      editBtn: 'Edit'
     }
   },
   houseDelete: {
@@ -214,7 +228,10 @@ registerLang('ua', {
     question: 'запитання',
     payment: 'платежі',
     bills: 'рахунки',
-    profile: 'профіль'
+    profile: 'профіль',
+    service: 'сервісна служба',
+    order: 'замовлення',
+    work: 'роботи'
   },
   paymentList: {
     tableHeader: {
@@ -256,6 +273,17 @@ registerLang('ua', {
     apartmentCount: 'Кількість апартаментів',
     newHouse: {
       title: 'Новий будинок'
+    }
+  },
+  orderList: {
+    tableHeader: {
+      apartment: 'Апартаменти',
+      execStatus: 'Статус виконання',
+      payStatus: 'Статус оплати',
+      warning: 'Зауваження',
+      workName: 'Робота',
+      actions: 'Дії',
+      editBtn: 'Редагувати'
     }
   },
   houseDelete: {
