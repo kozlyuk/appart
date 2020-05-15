@@ -1,5 +1,6 @@
 """ Models for describing management structure of dimservice """
 
+from datetime import timedelta
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
@@ -12,7 +13,7 @@ class Work(models.Model):
     price_code = models.CharField(_('Price code'), max_length=10, unique=True)
     price = models.DecimalField(_('Price'), max_digits=8, decimal_places=2, default=0)
     description = models.TextField(_('Description'), blank=True)
-    duration = models.DurationField(_('Duration'), blank=True, null=True)
+    duration = models.DurationField(_('Duration'), default=timedelta(hours=1))
     is_basic = models.BooleanField(_('Basic'), default=True)
     is_active = models.BooleanField(_('Active'), default=True)
 
