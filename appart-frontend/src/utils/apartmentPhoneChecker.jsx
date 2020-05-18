@@ -207,7 +207,7 @@ export default class ApartmentPhoneChecker extends React.Component {
     let buttonText = 'Введіть номер телефону для перевірки користувача';
     let ifButtonDisabled = true;
     if (this.state.errors.mobileNumber.length === 0) {
-      buttonText = 'Перевірити наявність в базі';
+      buttonText = 'Перевірити';
       ifButtonDisabled = false;
     }
 
@@ -227,8 +227,8 @@ export default class ApartmentPhoneChecker extends React.Component {
               onChange={this.handleChange}
             />
             {this.state.userDoesNotExist &&
-            <Button color="success" onClick={this.toggle()} style={{ display: 'inline-block', marginLeft: '10px' }}>Створити
-              користувача</Button>
+            <Button color="success" onClick={this.toggle()}
+                    style={{ display: 'inline-block', marginLeft: '10px' }}>+</Button>
             }
             <Button onClick={this.getUserById} disabled={ifButtonDisabled}
                     style={{ display: 'inline-block', marginLeft: '10px' }}>{buttonText}</Button>
@@ -264,8 +264,8 @@ export default class ApartmentPhoneChecker extends React.Component {
                 defaultValue={this.props.data.resident_mobile_number}
               />
               {this.state.userDoesNotExist &&
-              <Button color="success" onClick={this.toggle()} style={{ display: 'inline-block', marginLeft: '10px' }}>Створити
-                користувача</Button>
+              <Button color="success" onClick={this.toggle()}
+                      style={{ display: 'inline-block', marginLeft: '10px' }}>+</Button>
               }
               <Button onClick={this.getUserById} disabled={ifButtonDisabled}
                       style={{ display: 'inline-block', marginLeft: '10px' }}>{buttonText}</Button>
