@@ -79,7 +79,8 @@ registerLang('en', {
       workName: 'Work name',
       actions: 'Actions',
       editBtn: 'Edit'
-    }
+    },
+    addBtn: 'Add order'
   },
   houseDelete: {
     text: 'Are you sure you want to remove house'
@@ -183,6 +184,18 @@ registerLang('en', {
       title: 'New news'
     }
   },
+  workList: {
+    tableHeader: {
+      title: 'Works',
+      name: 'Work name',
+      priceCode: 'Price code',
+      price: 'Price',
+      duration: 'Duration',
+      actions: 'Actions'
+    },
+    emptyDuration: 'Duration empty',
+    addBtn: 'Add work'
+  },
   newsDelete: {
     text: 'Are you sure you want to remove news'
   },
@@ -284,7 +297,8 @@ registerLang('ua', {
       workName: 'Робота',
       actions: 'Дії',
       editBtn: 'Редагувати'
-    }
+    },
+    addBtn: 'Додати замовлення'
   },
   houseDelete: {
     text: 'Дійсно бажаєте видалити будинок'
@@ -379,6 +393,25 @@ registerLang('ua', {
   },
   newsDelete: {
     text: 'Дійсно бажаєте видалити новину'
+  },
+  workList: {
+    tableHeader: {
+      title: 'Роботи',
+      name: 'Назва',
+      priceCode: 'Пункт кошторису',
+      price: 'Ціна',
+      duration: 'Тривалість',
+      actions: 'Дії'
+    },
+    emptyDuration: 'Тривалість відсутня',
+    addBtn: 'Додати роботу'
+  },
+  workForm: {
+    name: 'Робота',
+    priceCode: 'Пункт кошторису',
+    price: 'Вартість',
+    description: 'Описання',
+    duration: 'Тривалість'
   },
   buttons: {
     submitBtn: 'Зберегти',
