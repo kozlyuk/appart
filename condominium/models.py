@@ -82,7 +82,7 @@ class Apartment(models.Model):
         ordering = ['house', 'number']
 
     def __str__(self):
-        return f"{self.number} - {self.house.name}"
+        return f"№{self.number} {self.house.name}"
 
     def get_latest_bill(self, service):
         """ return last bill of apartment for service """
