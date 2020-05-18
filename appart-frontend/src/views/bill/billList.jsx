@@ -50,7 +50,7 @@ export default class BillList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th width="2%">Апартаменти</th>
+          <th>Апартаменти</th>
           <th>Номер</th>
           <th>Призначення</th>
           <th>Дії</th>

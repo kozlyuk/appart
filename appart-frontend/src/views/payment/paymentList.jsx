@@ -41,7 +41,7 @@ export default class PaymentList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th width="2%"><Text text="paymentList.tableHeader.apartment"/></th>
+          <th><Text text="paymentList.tableHeader.apartment"/></th>
           <th><Text text="paymentList.tableHeader.value"/></th>
           <th><Text text="paymentList.tableHeader.actions"/></th>
         </tr>
