@@ -55,7 +55,7 @@ export default class CabinetSidebar extends React.Component {
             </ul>
           </nav>
         </div>
-      </Slide>
+       </Slide>
     );
   }
 }

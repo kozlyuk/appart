@@ -1,3 +1,6 @@
+.main-container {
+    overflow: auto;
+}
 .menu .col-3 {
     border-radius: 0;
 }
@@ -61,6 +64,7 @@
 
 .navbar {
     border-radius: 0 0 0.75rem 0.75rem;
+
 }
 
 .navbar .nav-item a {
