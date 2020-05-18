@@ -217,7 +217,7 @@ class App extends React.Component {
                       </Switch>
                       <Route exact path="/work" component={WorkList}/>
                       <Switch>
-                        <Route exact path="/work/new" component={NewsNew}/>
+                        <Route exact path="/work/new" component={WorkUpdate}/>
                         <Route exact path="/work/:id/edit" component={WorkUpdate}/>
                         <Route exact path="/work/:id/delete" component={NewsDelete}/>
                       </Switch>

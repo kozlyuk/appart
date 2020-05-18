@@ -26,14 +26,19 @@ export default class WorkUpdate extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       rangeValue: null,
       // validation fields
       password: '',
       duration: null,
       mobileNumber: '',
       // defaultInactiveBtn: true,
+      nameRequired: true,
+      price_codeRequired: true,
       errors: {
-        work: null
+        name: '',
+        price_code: '',
+        price: ''
       }
     };
     /**
@@ -43,15 +48,24 @@ export default class WorkUpdate extends AbstractFormView {
      * @private
      */
     this._user = new Auth();
-    this.dataUrl = process.env.REACT_APP_WORKS;
-    if (this.props.match) {
+    if (this.props.match.params.id) {
+      this.dataUrl = process.env.REACT_APP_WORKS;
       /**
        * @type {string}
        * @private
        */
       this._postUrl = process.env.REACT_APP_WORKS + this.props.match.params.id + '/';
+      this.requestType = 'put';
+
+    } else {
+      this.dataUrl = undefined;
+      this.requestType = 'post';
+      /**
+       * @type {string}
+       * @private
+       */
+      this._postUrl = process.env.REACT_APP_WORKS;
     }
-    this.requestType = 'put';
     this.successRedirect = '/work';
     /**
      * @type {string}
@@ -90,12 +104,14 @@ export default class WorkUpdate extends AbstractFormView {
           value.length < 1
             ? [<Text text="global.validateErrors.emptyField"/>]
             : '';
+        this.setState({ nameRequired: false });
         break;
       case 'price_code':
         errors.price_code =
           value.length < 1
             ? [<Text text="global.validateErrors.emptyField"/>]
             : '';
+        this.setState({ price_codeRequired: false });
         break;
       case 'price':
         errors.price =
@@ -141,7 +157,20 @@ export default class WorkUpdate extends AbstractFormView {
    */
   componentDidMount() {
     this._getTimeRangeOptionsValue('8:00', '1:00');
-    return super.componentDidMount();
+    if (this.props.match.params.id) {
+      this._getTimeRangeOptionsValue('8:00', '1:00');
+      return super.componentDidMount();
+    } else {
+      this.setState({
+        isLoaded: true,
+        data: {
+          name: '',
+          price_code: '',
+          price: '',
+          description: ''
+        }
+      });
+    }
   }
 
   /**
@@ -150,18 +179,24 @@ export default class WorkUpdate extends AbstractFormView {
    * @param {string} parameter format parameter
    */
   _reformatDate(date, parameter) {
-    if (parameter === 'woSeconds') {
-      return date.substring(0, date.length - 3);
-    }
-    if (parameter === 'wSeconds') {
-      return date += ':00';
+    if (this.props.match.params.id) {
+      if (parameter === 'woSeconds') {
+        return date.substring(0, date.length - 3);
+      }
+      if (parameter === 'wSeconds') {
+        return date += ':00';
+      }
+    } else {
+      if (parameter === 'wSeconds') {
+        return date += ':00';
+      }
     }
   }
 
   content() {
     return (
       <Fragment>
-        <CardHeader>{this.state.data.name}</CardHeader>
+        <CardHeader>{this.state.data.name ? this.state.data.name : 'Нова робота'}</CardHeader>
         <CardBody>
           <Form id="workForm" onSubmit={this.handleSubmit}>
             <InputWithLabel
@@ -217,9 +252,20 @@ export default class WorkUpdate extends AbstractFormView {
                 <Text text="buttons.returnBtn"/>
               </Button>
             </Link>
-            <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
-              <Text text="buttons.submitBtn"/>
-            </Button>
+            {!this.props.match.params.id ?
+              this.state.nameRequired ||
+              this.state.price_codeRequired ?
+                <Button disabled className="float-right">
+                  <Text text="buttons.submitBtn"/>
+                </Button> :
+                <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
+                  <Text text="buttons.submitBtn"/>
+                </Button>
+              :
+              <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
+                <Text text="buttons.submitBtn"/>
+              </Button>
+            }
           </Form>
         </CardBody>
       </Fragment>
@@ -246,8 +292,6 @@ export default class WorkUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: false },
-            { name: this.state.data.number, active: true }]}
           className="TablePage"
         >
           <Container>
