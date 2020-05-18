@@ -34,7 +34,10 @@ registerLang('en', {
     question: 'question',
     payment: 'payment',
     bills: 'bills',
-    profile: 'profile'
+    profile: 'profile',
+    service: 'service',
+    order: 'orders',
+    work: 'work\'s'
   },
   paymentList: {
     tableHeader: {
@@ -66,6 +69,18 @@ registerLang('en', {
       editBtn: 'Edit',
       deleteBtn: 'Delete'
     }
+  },
+  orderList: {
+    tableHeader: {
+      apartment: 'Apartment',
+      execStatus: 'Execution status',
+      payStatus: 'Pay status',
+      warning: 'Warning',
+      workName: 'Work name',
+      actions: 'Actions',
+      editBtn: 'Edit'
+    },
+    addBtn: 'Add order'
   },
   houseDelete: {
     text: 'Are you sure you want to remove house'
@@ -169,6 +184,18 @@ registerLang('en', {
       title: 'New news'
     }
   },
+  workList: {
+    tableHeader: {
+      title: 'Works',
+      name: 'Work name',
+      priceCode: 'Price code',
+      price: 'Price',
+      duration: 'Duration',
+      actions: 'Actions'
+    },
+    emptyDuration: 'Duration empty',
+    addBtn: 'Add work'
+  },
   newsDelete: {
     text: 'Are you sure you want to remove news'
   },
@@ -214,7 +241,10 @@ registerLang('ua', {
     question: 'запитання',
     payment: 'платежі',
     bills: 'рахунки',
-    profile: 'профіль'
+    profile: 'профіль',
+    service: 'сервісна служба',
+    order: 'замовлення',
+    work: 'роботи'
   },
   paymentList: {
     tableHeader: {
@@ -257,6 +287,18 @@ registerLang('ua', {
     newHouse: {
       title: 'Новий будинок'
     }
+  },
+  orderList: {
+    tableHeader: {
+      apartment: 'Апартаменти',
+      execStatus: 'Статус виконання',
+      payStatus: 'Статус оплати',
+      warning: 'Зауваження',
+      workName: 'Робота',
+      actions: 'Дії',
+      editBtn: 'Редагувати'
+    },
+    addBtn: 'Додати замовлення'
   },
   houseDelete: {
     text: 'Дійсно бажаєте видалити будинок'
@@ -351,6 +393,25 @@ registerLang('ua', {
   },
   newsDelete: {
     text: 'Дійсно бажаєте видалити новину'
+  },
+  workList: {
+    tableHeader: {
+      title: 'Роботи',
+      name: 'Назва',
+      priceCode: 'Пункт кошторису',
+      price: 'Ціна',
+      duration: 'Тривалість',
+      actions: 'Дії'
+    },
+    emptyDuration: 'Тривалість відсутня',
+    addBtn: 'Додати роботу'
+  },
+  workForm: {
+    name: 'Робота',
+    priceCode: 'Пункт кошторису',
+    price: 'Вартість',
+    description: 'Описання',
+    duration: 'Тривалість'
   },
   buttons: {
     submitBtn: 'Зберегти',
