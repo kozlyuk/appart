@@ -38,7 +38,7 @@ export default class ServiceListing extends React.Component {
 
   componentDidMount() {
     if (this.context) {
-      axios(`${process.env.REACT_APP_SERVICES}${this.context.apartment[0].pk}/`, {
+      axios(`${process.env.REACT_APP_ORDER}?apartment=${this.context.apartment[0].pk}`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }

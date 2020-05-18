@@ -2,12 +2,15 @@ import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import React from 'react';
 import {
   MdAttachMoney,
+  MdBuild,
   MdDashboard,
+  MdEvent,
   MdExtension,
   MdKeyboardArrowDown,
   MdPayment,
   MdWeb,
-  MdWidgets
+  MdWidgets,
+  MdWork
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
@@ -32,12 +35,18 @@ const navItems = [
   { to: '/bill', name: <Text text="sidebar.bills"/>, exact: true, Icon: MdAttachMoney }
 ];
 
+const serviceComponents = [
+  { to: '/order', name: <Text text="sidebar.order"/>, exact: false, Icon: MdEvent },
+  { to: '/work', name: <Text text="sidebar.work"/>, exact: false, Icon: MdWork }
+];
+
 const bem = bn.create('sidebar');
 
 class Sidebar extends React.Component {
   state = {
     isOpenComponentCondominium: false,
     isOpenComponentNotice: false,
+    isOpenComponentService: false,
     isOpenContents: true,
     isOpenPages: true
   };
@@ -110,6 +119,45 @@ class Sidebar extends React.Component {
             </NavItem>
             <Collapse isOpen={this.state.isOpenComponentCondominium}>
               {condominiumComponents.map(({ to, name, exact, Icon }, index) => (
+                <NavItem key={index} className={bem.e('nav-item')}>
+                  <BSNavLink
+                    id={`navItem-${name}-${index}`}
+                    className="text-uppercase"
+                    tag={NavLink}
+                    to={to}
+                    activeClassName="active"
+                    exact={exact}
+                  >
+                    <Icon className={bem.e('nav-item-icon')}/>
+                    <span className="">{name}</span>
+                  </BSNavLink>
+                </NavItem>
+              ))}
+            </Collapse>
+            <NavItem
+              className={bem.e('nav-item')}
+              onClick={this.handleClick('ComponentService')}
+            >
+              <BSNavLink className={bem.e('nav-item-collapse')}>
+                <div className="d-flex">
+                  <MdBuild className={bem.e('nav-item-icon')}/>
+                  <span className="align-self-start text-uppercase"><Text text="sidebar.service"/></span>
+                </div>
+                <MdKeyboardArrowDown
+                  className={bem.e('nav-item-icon')}
+                  style={{
+                    padding: 0,
+                    transform: this.state.isOpenComponentCondominium
+                      ? 'rotate(0deg)'
+                      : 'rotate(-90deg)',
+                    transitionDuration: '0.3s',
+                    transitionProperty: 'transform'
+                  }}
+                />
+              </BSNavLink>
+            </NavItem>
+            <Collapse isOpen={this.state.isOpenComponentService}>
+              {serviceComponents.map(({ to, name, exact, Icon }, index) => (
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
                     id={`navItem-${name}-${index}`}
