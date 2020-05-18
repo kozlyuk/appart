@@ -49,7 +49,7 @@ export default class PaymentList extends AbstractListView {
         <tbody>
         {this.state.data.map((payment) => (
           <tr key={payment.pk} align="center">
-            <td>{payment.apartment}</td>
+            <td>{payment.apartment_name}</td>
             <td>{payment.value}</td>
             <td width="15%">
               <Link to={`payment/${payment.pk}/edit`}>
@@ -94,7 +94,7 @@ export default class PaymentList extends AbstractListView {
             <Col>
               <Card className="mb-3">
                 <CardHeader>
-                  <Text text="sidebar.user"/>
+                  <Text text="sidebar.payment"/>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

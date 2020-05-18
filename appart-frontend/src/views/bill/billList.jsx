@@ -59,7 +59,7 @@ export default class BillList extends AbstractListView {
         <tbody>
         {this.state.data.map((bill) => (
           <tr key={bill.pk} align="center">
-            <td>{bill.apartment}</td>
+            <td>{bill.apartment_name}</td>
             <td>{bill.number}</td>
             <td>{bill.purpose}</td>
             <td width="15%">

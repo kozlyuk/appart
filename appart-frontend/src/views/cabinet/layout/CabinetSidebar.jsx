@@ -6,9 +6,9 @@
  */
 
 import React from 'react';
-import Slide from 'react-reveal/Slide';
 import { NavLink } from 'react-router-dom';
 import { MdAssignment, MdAttachMoney, MdBuild, MdPayment } from 'react-icons/md';
+import { Slide } from 'react-reveal';
 
 export default class CabinetSidebar extends React.Component {
 
@@ -34,15 +34,15 @@ export default class CabinetSidebar extends React.Component {
               <li className="nav-item">
                 <NavLink exact activeClassName='active'
                          style={linkStyle}
-                         to="/cabinet/payments"
-                         className="nav-link"><MdPayment/>&nbsp;Рахунки
+                         to="/cabinet/bills"
+                         className="nav-link"><MdAttachMoney/>&nbsp;Рахунки
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink exact activeClassName='active'
                          style={linkStyle}
-                         to="/cabinet/bills"
-                         className="nav-link"><MdAttachMoney/>&nbsp;Оплати
+                         to="/cabinet/payments"
+                         className="nav-link"><MdPayment/>&nbsp;Оплати
                 </NavLink>
               </li>
               <li className="nav-item">
