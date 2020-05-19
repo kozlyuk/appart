@@ -18,12 +18,14 @@ class PaymentServiceSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True)
     payment_type = serializers.CharField(source='get_payment_type_display')
+    apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:
         model = Payment
         fields = [
             "pk",
             "apartment",
+            "apartment_name",
             "payment_service",
             "payment_type",
             "date",
@@ -34,7 +36,8 @@ class PaymentSerializer(serializers.ModelSerializer):
     @staticmethod
     def setup_eager_loading(queryset):
         """ optimizing "to-many" relationships with prefetch_related """
-        queryset = queryset.prefetch_related('paymentservice_set')
+        queryset = queryset.prefetch_related('paymentservice_set') \
+                           .select_related('apartment')
         return queryset
 
 
@@ -56,12 +59,14 @@ class BillLineSerializer(serializers.ModelSerializer):
 class BillSerializer(serializers.ModelSerializer):
     bill_lines = BillLineSerializer(source='billline_set', many=True)
     purpose = serializers.SerializerMethodField()
+    apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:
         model = Bill
         fields = [
             "pk",
             "apartment",
+            "apartment_name",
             "number",
             "total_value",
             "purpose",
@@ -75,7 +80,8 @@ class BillSerializer(serializers.ModelSerializer):
     @staticmethod
     def setup_eager_loading(queryset):
         """ optimizing "to-many" relationships with prefetch_related """
-        queryset = queryset.prefetch_related('billline_set')
+        queryset = queryset.prefetch_related('billline_set') \
+                           .select_related('apartment')
         return queryset
 
 

@@ -273,7 +273,6 @@ export default class AbstractFormView extends React.Component {
     } else {
       console.log(this._dataUrl);
       this.setState({
-        data: 'new',
         url: this._postUrl
       });
     }
