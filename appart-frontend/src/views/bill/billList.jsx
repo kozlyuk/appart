@@ -50,7 +50,7 @@ export default class BillList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th width="2%">Апартаменти</th>
+          <th>Апартаменти</th>
           <th>Номер</th>
           <th>Призначення</th>
           <th>Дії</th>
@@ -59,7 +59,7 @@ export default class BillList extends AbstractListView {
         <tbody>
         {this.state.data.map((bill) => (
           <tr key={bill.pk} align="center">
-            <td>{bill.apartment}</td>
+            <td>{bill.apartment_name}</td>
             <td>{bill.number}</td>
             <td>{bill.purpose}</td>
             <td width="15%">

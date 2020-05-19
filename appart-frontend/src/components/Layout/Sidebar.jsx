@@ -31,8 +31,8 @@ const condominiumComponents = [
 const navItems = [
   { to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard },
   { to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb },
-  { to: '/payment', name: <Text text="sidebar.payment"/>, exact: true, Icon: MdPayment },
-  { to: '/bill', name: <Text text="sidebar.bills"/>, exact: true, Icon: MdAttachMoney }
+  { to: '/bill', name: <Text text="sidebar.bills"/>, exact: true, Icon: MdAttachMoney },
+  { to: '/payment', name: <Text text="sidebar.payment"/>, exact: true, Icon: MdPayment }
 ];
 
 const serviceComponents = [
