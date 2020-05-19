@@ -72,6 +72,7 @@ class GetUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "avatar",
+            "lang"
         ]
 
     def get_avatar(self, obj):
