@@ -41,7 +41,7 @@ class CabinetLayout extends React.Component {
   render() {
     const { children } = this.props;
     return (
-      <div className="container-fluid p-0">
+      <div className="container-fluid p-0 main-container">
         <div className="d-flex flex-row ">
           <Sidebar isOpen={this.state.navbarIsOpen}/>
           <div className="container-fluid bg-light">
