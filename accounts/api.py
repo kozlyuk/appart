@@ -38,6 +38,13 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class UserWithoutPagination(UserViewSet):
+    """ViewSet for the User class
+    Without pagination
+    """
+    pagination_class = None
+
+
 class GetUser(views.APIView):
     """
     Return current authentificated User
@@ -167,16 +174,14 @@ class Activate(views.APIView):
 
 class SetLang(views.APIView):
     """
-    Return User object by given in URL mobile_number
-    or return status.HTTP_404_NOT_FOUND if it isn`t exist.
+    Sets current logged user lang.
     """
-
     def get(self, request, lang):
-        # return user serialized data
+        # create list of lang_choices
         lang_list = []
         for key, value in User.LANG_CHOICES:
             lang_list.append(key)
-
+        # if lang in lang_list change user lang
         if lang in lang_list:
             request.user.lang = lang
             request.user.save()
