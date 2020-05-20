@@ -21,6 +21,11 @@ class User(AbstractUser):
     """
     phone_regex = RegexValidator(regex=r'^\d{10}$', message=_("Mobile number must contain 10 digits"))
 
+    LANG_CHOICES = (
+        ('en', 'en_us'),
+        ('uk', 'uk'),
+    )
+
     #  Fields
     username = None
     mobile_number = models.CharField(_('Mobile number'), max_length=10, validators=[phone_regex], unique=True)
@@ -28,6 +33,7 @@ class User(AbstractUser):
     birth_date = models.DateField(_('Birth date'), null=True, blank=True)
     avatar = models.ImageField(_('Photo'), upload_to=avatar_directory_path, default='avatars/no_image.jpg', blank=True)
     is_registered = models.BooleanField(_('Registered'), default=False)
+    lang = models.CharField(_('Interface language'), max_length=2, choices=LANG_CHOICES, default='uk')
 
     USERNAME_FIELD = 'mobile_number'
     REQUIRED_FIELDS = ['email']
