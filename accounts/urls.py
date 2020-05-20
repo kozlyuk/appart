@@ -8,6 +8,7 @@ from accounts import api
 
 router = routers.DefaultRouter()
 router.register("user", api.UserViewSet, basename='User')
+router.register("user_wop", api.UserWithoutPagination, basename='user_wop')
 
 urlpatterns = [
 

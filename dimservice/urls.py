@@ -20,4 +20,5 @@ urlpatterns = (
 
     path("api/v1/get_exec_choices/", api.ExecStatusChoices.as_view()),
     path("api/v1/get_payment_choices/", api.PaymentStatusChoices.as_view()),
+    path("api/v1/get_execution_choices/", api.ExecutionStatusChoices.as_view()),
 )
