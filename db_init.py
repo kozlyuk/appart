@@ -1,5 +1,6 @@
 """ Create initial database """
 from datetime import date, timedelta
+from django.contrib.auth.models import Group
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from payments.models import Service
@@ -98,22 +99,23 @@ create_area_bills(date.today())
 
 print("Initial Bills created")
 
-WORKS = [['Послуги сантехніка 1 кат.', '1.1', 300, 1],
-         ['Послуги сантехніка 2 кат.', '1.2', 500, 2],
-         ['Послуги сантехніка 3 кат.', '1.3', 700, 3],
-         ['Послуги електрика 1 кат.', '2.1', 200, 1],
-         ['Послуги електрика 2 кат.', '2.2', 400, 2],
-         ['Послуги електрика 3 кат.', '2.3', 600, 3],
-         ['Ремонт кондиціонера 1 кат.', '3.1', 500, 1],
-         ['Ремонт кондиціонера 2 кат.', '3.2', 750, 2],
-         ['Ремонт кондиціонера 3 кат.', '3.3', 1000, 3],
-]
+WORKS = [['Послуги сантехніка', '1.1', 300, 1, True],
+         ['Послуги сантехніка 2 кат.', '1.2', 500, 2, False],
+         ['Послуги сантехніка 3 кат.', '1.3', 700, 3, False],
+         ['Послуги електрика', '2.1', 200, 1, True],
+         ['Послуги електрика 2 кат.', '2.2', 400, 2, False],
+         ['Послуги електрика 3 кат.', '2.3', 600, 3, False],
+         ['Ремонт кондиціонера', '3.1', 500, 1, True],
+         ['Ремонт кондиціонера 2 кат.', '3.2', 750, 2, False],
+         ['Ремонт кондиціонера 3 кат.', '3.3', 1000, 3, False],
+         ]
 
 for work in WORKS:
     work_obj = Work.objects.create(name=work[0],
                                    price_code=work[1],
                                    price=work[2],
-                                   duration=timedelta(hours=work[3]))
+                                   duration=timedelta(hours=work[3]),
+                                   is_basic=work[4])
 
     for apartment in apartments:
         Order.objects.create(apartment=apartment,
@@ -121,3 +123,12 @@ for work in WORKS:
                              created_by=user)
 
 print("Initial Works and Orders created")
+
+
+# Create user groups
+Group.objects.create(name='Менеджери')
+Group.objects.create(name='Диспетчери')
+Group.objects.create(name='Резиденти')
+Group.objects.create(name='Майстри')
+
+print("User groups created")
