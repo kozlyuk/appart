@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
 export default class InputWithLabel extends React.Component {
   /**
@@ -28,6 +28,8 @@ export default class InputWithLabel extends React.Component {
           type={this.props.type}
           defaultValue={this.props.defaultValue}
         />
+        {this.props.helpText &&
+        <FormText>{this.props.helpText}</FormText>}
       </FormGroup>
     );
   }
