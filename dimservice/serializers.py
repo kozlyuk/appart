@@ -40,12 +40,14 @@ class OrderSerializer(serializers.ModelSerializer):
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
     house = serializers.CharField(source='apartment.house.pk', required=False)
     execution_set = ExecutionSerializer(many=True, required=False)
+    apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:
         model = Order
         fields = [
             "pk",
             "apartment",
+            "apartment_name",
             "house",
             "work",
             "work_name",
