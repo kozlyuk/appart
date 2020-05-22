@@ -9,6 +9,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { MdAssignment, MdAttachMoney, MdBuild, MdPayment } from 'react-icons/md';
 import { Slide } from 'react-reveal';
+import logo200Image from '../../../assets/img/logo/logo_main.png';
 
 export default class CabinetSidebar extends React.Component {
 
@@ -21,7 +22,13 @@ export default class CabinetSidebar extends React.Component {
             <NavLink exact activeClassName='active'
                      to="/cabinet"
                      className="navbar-brand">
-              Дім онлайн
+              <img
+                src={logo200Image}
+                width="auto"
+                height="60"
+                className="ml-auto mr-auto"
+                alt=""
+              />
             </NavLink>
           </div>
           <nav className="nav-tabs nav_menu" style={{ cursor: 'pointer' }}>
@@ -55,7 +62,7 @@ export default class CabinetSidebar extends React.Component {
             </ul>
           </nav>
         </div>
-       </Slide>
+      </Slide>
     );
   }
 }
