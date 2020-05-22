@@ -193,6 +193,15 @@ export default class AbstractFormView extends React.Component {
   }
 
   /**
+   * Submit secondary requests.
+   *
+   * @return {*}
+   */
+  secondaryRequests(response) {
+    return void 0;
+  }
+
+  /**
    * Handle submit
    *
    * @param event
@@ -207,6 +216,7 @@ export default class AbstractFormView extends React.Component {
       },
       data: this.submitData(event.target)
     }).then((response) => {
+      this.secondaryRequests(response);
       let successMessage = '';
       if (typeof response.data == 'string') {
         successMessage = response.data;

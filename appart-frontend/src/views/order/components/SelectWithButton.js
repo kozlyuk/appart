@@ -5,12 +5,29 @@
  * @copyright       2020 ITEL-Service
  */
 import React from 'react';
-import { Button, Col, FormGroup, FormText, Input, Label, Row } from 'reactstrap';
+import { Button, Col, FormFeedback, FormGroup, FormText, Input, Label, Row } from 'reactstrap';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default class SelectWithButton extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  _triggerDeleteModal(id) {
+    Swal.fire({
+      title: 'Дійсно бажаєте видалити виконавця?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Ні',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Так!'
+    }).then((result) => {
+      if (result.value) {
+        this._sendDeleteRequest(id);
+      }
+    });
   }
 
   /**
@@ -37,7 +54,6 @@ export default class SelectWithButton extends React.Component {
     } else {
       this.props.callback(this.props.index);
     }
-
   };
 
   render() {
@@ -48,6 +64,7 @@ export default class SelectWithButton extends React.Component {
           <Col xl="10" className="mb-0">
             <Input
               {...this.props}
+              invalid={!!this.props.error}
               onChange={this.props.changeHandler}
               name={this.props.name}
               id={this.props.name}
@@ -55,10 +72,11 @@ export default class SelectWithButton extends React.Component {
             >
               {this.props.children}
             </Input>
+            <FormFeedback>{this.props.error}</FormFeedback>
           </Col>
           <Col className="mb-0">
             <Button className="btn-danger" style={{ width: '100%' }}
-                    onClick={() => this._sendDeleteRequest(this.props.id)}>{this.props.buttonText}</Button>
+                    onClick={() => this._triggerDeleteModal(this.props.id)}>{this.props.buttonText}</Button>
           </Col>
         </Row>
         {this.props.helpText &&

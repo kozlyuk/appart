@@ -150,12 +150,12 @@ export default class OrderList extends AbstractListView {
             <Col>
               <Card className="mb-3">
                 <CardHeader>
-                  <Text text="sidebar.house"/>
-                  {/*<Link to="/house/new">*/}
-                  {/*  <Button size="sm" className="float-right" color="success">*/}
-                  {/*    <Text text="houseList.addBtn"/>*/}
-                  {/*  </Button>*/}
-                  {/*</Link>*/}
+                  <Text text="sidebar.order"/>
+                  <Link to="/order/new">
+                    <Button size="sm" className="float-right" color="success">
+                      <Text text="orderList.addBtn"/>
+                    </Button>
+                  </Link>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

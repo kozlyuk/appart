@@ -1,6 +1,4 @@
-/**
- * Bill update view
- *
+/*
  * @author          Andrey Perestyuk (Arrathilar)
  * @email-primary   a.perestyuk@itel.rv.ua
  * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
@@ -21,7 +19,6 @@ import styles from './styles/delimiter.module.css';
 import DataInput from './components/DataInput';
 import Swal from 'sweetalert2';
 import SelectWithButton from './components/SelectWithButton';
-import OrderController from '../../controllers/OrderController';
 
 export default class OrderForm extends AbstractFormView {
   /**
@@ -32,7 +29,7 @@ export default class OrderForm extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
-      executorFormsetQuantity: 0,
+      executorFormsetQuantity: null,
       // data objects
       orderData: null,
       worksData: null,
@@ -40,16 +37,7 @@ export default class OrderForm extends AbstractFormView {
       execChoices: null,
       paymentChoices: null,
       apartmentsData: null,
-      isApartmentSelectShow: false,
-      fieldError: {
-        house: null,
-        apartment: null,
-        work: null,
-        exec_status: null,
-        pay_status: null,
-        information: null,
-        warning: null
-      }
+      isApartmentSelectShow: false
     };
 
     /**
@@ -59,39 +47,87 @@ export default class OrderForm extends AbstractFormView {
      * @private
      */
     this._user = new Auth();
-    this.OrderController = new OrderController(this.props.match.params.id);
-    if (this.props.match.id) {
+    this.dataUrl = process.env.REACT_APP_ORDER;
+    if (this.props.match) {
       /**
        * @type {string}
        * @private
        */
       this._postUrl = process.env.REACT_APP_ORDER + this.props.match.params.id + '/';
-      this.dataUrl = process.env.REACT_APP_ORDER;
-      this.requestType = 'put';
-    } else {
-      /**
-       * @type {string}
-       * @private
-       */
-      this._postUrl = process.env.REACT_APP_ORDER;
-      this.requestType = 'post';
     }
     this._onHouseItemSelect = this._onHouseItemSelect.bind(this);
+    this.requestType = 'put';
     this.successRedirect = '/order';
     this._successButton = 'Повернутися до списку замовлень';
   }
 
   componentDidMount() {
+    const orderEndpoint = process.env.REACT_APP_ORDER + this.props.match.params.id + '/';
+    const workEndpoint = process.env.REACT_APP_WORKS_WITHOUT_PAGINATION;
+    const housesEndpoint = process.env.REACT_APP_HOUSES_WITHOUT_PAGINATION;
+    const execChoicesEndpoint = process.env.REACT_APP_EXECUTION_CHOICES;
+    const paymentChoicesEndpoint = process.env.REACT_APP_PAYMENT_CHOICES;
+    const usersChoicesEndpoint = process.env.REACT_APP_USERS_WITHOUT_PAGINATION;
+    const executorChoicesEndpoint = process.env.REACT_APP_EXECUTOR_CHOICES;
+    const headers = {
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    };
 
-    Promise.all(this.OrderController.getPromiseValues())
+    /**
+     * Execution choices promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const execChoicesPromise = axios.get(execChoicesEndpoint, headers);
+    /**
+     * Payment choices promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const paymentChoicesPromise = axios.get(paymentChoicesEndpoint, headers);
+    /**
+     * Users choices promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const usersChoicesPromise = axios.get(usersChoicesEndpoint, headers);
+    /**
+     * Executor choices promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const executorChoicesPromise = axios.get(executorChoicesEndpoint, headers);
+    /**
+     * Order promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const orderPromise = axios.get(orderEndpoint, headers);
+    /**
+     * Works promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const worksPromise = axios.get(workEndpoint, headers);
+    /**
+     * Houses promise
+     * @type {Promise<AxiosResponse<object>>}
+     */
+    const housesPromise = axios.get(housesEndpoint, headers);
+
+    Promise.all([
+      orderPromise,
+      worksPromise,
+      housesPromise,
+      execChoicesPromise,
+      paymentChoicesPromise,
+      usersChoicesPromise,
+      executorChoicesPromise
+    ])
       .then(axios.spread((
+        order,
         works,
         houses,
         execChoices,
         paymentChoices,
         usersChoices,
-        executorChoices,
-        order
+        executorChoices
       ) => {
         // set quantity of formsets to state before rendering component.
         if (order) {
@@ -100,17 +136,14 @@ export default class OrderForm extends AbstractFormView {
           });
         }
         this._setData(
+          order,
           works,
           houses,
           execChoices,
           paymentChoices,
           usersChoices,
-          executorChoices,
-          order
+          executorChoices
         );
-        if (order && order.data.house) {
-          this._loadApartments(order.data.house);
-        }
       }))
       .catch(error => {
         this._setError(error);
@@ -129,15 +162,16 @@ export default class OrderForm extends AbstractFormView {
    * @param {AxiosResponse<Object>} executorChoices
    */
   _setData(
+    order,
     works,
     houses,
     execChoices,
     paymentChoices,
     usersChoices,
-    executorChoices,
-    order = { data: { execution_set: [] } }
+    executorChoices
   ) {
     this.setState({
+      orderData: order.data,
       executorsPk: this.parseExecutors(order.data.execution_set),
       worksData: works.data,
       housesData: houses.data,
@@ -145,23 +179,16 @@ export default class OrderForm extends AbstractFormView {
       paymentChoices: paymentChoices.data,
       usersChoices: usersChoices.data,
       executorChoices: executorChoices.data,
-      orderData: order.data,
       isLoaded: true
     });
   }
 
-  /**
-   * Clear formset data when pressing delete button.
-   *
-   * @param id
-   */
   deleteSuccess = (id) => {
     const { orderData } = { ...this.state };
     orderData.execution_set.splice(id, 1);
     this.setState({
       orderData: orderData
     });
-    this._decreaseFormsetQuantity();
   };
 
   /**
@@ -193,15 +220,16 @@ export default class OrderForm extends AbstractFormView {
   }
 
   /**
-   * Collect data before submit.
+   * Collect data before submit
    *
    * @param target
-   * @return {Promise<FormData>}
+   * @returns {FormData}
    */
   submitData(target) {
     let orderForm = new FormData(document.forms.orderForm);
     // let executorForm = new FormData(document.forms.executorForm);
     orderForm.delete('house');
+    this.submitExecutors();
 
     return orderForm;
   }
@@ -211,7 +239,7 @@ export default class OrderForm extends AbstractFormView {
    *
    * @return {object}
    */
-  collectFormsetData = (orderPk) => {
+  collectFormsetData = () => {
     if (this.state.executorFormsetQuantity) {
       let counter = this.state.executorFormsetQuantity;
       let executorArray = [];
@@ -219,8 +247,8 @@ export default class OrderForm extends AbstractFormView {
         const form = `executorForm-${counter}`;
         const formset = new FormData(document.getElementById(form));
         let executions = {
-          'pk': parseInt(formset.get('pk')),
-          'order': this.state.orderData.pk || orderPk,
+          'pk': formset.get('pk'),
+          'order': this.state.orderData.pk,
           'executor': formset.get('executor'),
           'exec_status': formset.get('exec_status'),
           'scheduled_time': formset.get(`scheduled_time_${counter - 1}`)
@@ -237,59 +265,48 @@ export default class OrderForm extends AbstractFormView {
     }
   };
 
-  /**
-   * Secondary request.
-   *
-   * @return {*}
-   */
-  secondaryRequests(response) {
-    super.secondaryRequests();
-    this.submitExecutors(response.data.pk);
-  }
-
-  submitExecutors = (orderPk) => {
-    const formsetData = this.collectFormsetData(orderPk);
+  submitExecutors = () => {
+    const formsetData = this.collectFormsetData();
     let counter = this.state.executorFormsetQuantity;
     /**
      * @return {array}
      * @param {number} counter
      * @param {array} data
      */
-    const submitData = async (counter, data) => {
-      if (counter) {
-        const executorPk = parseInt(data[counter - 1].pk);
-        axios({
-          method: this._isExecutorExist(executorPk) ? 'put' : 'post',
-          url: this._isExecutorExist(executorPk) ? `${process.env.REACT_APP_EXECUTIONS}${data[counter - 1].pk}/` : process.env.REACT_APP_EXECUTIONS,
-          headers: {
-            'Authorization': 'Token ' + this._user.getAuthToken()
-          },
-          data: data[counter - 1]
-        }).then((response) => {
-        })
-          .catch((error) => {
-            this.setState({
-              fieldError: error.response.data
-            });
-            let errorArr = [];
-            for (let i in error.response.data) {
-              errorArr.push(error.response.data[i]);
-            }
-            const errorString = (errorArr.map(item => {
-              const errorValue = item[0].toString();
-              return (`<div>${errorValue}</div>`);
-            }));
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              html: errorString.join('')
-            });
+    const submitData = (counter, data) => {
+      const executorPk = parseInt(data[counter - 1].executor);
+      const isExecutorExist = this._isExecutorExist(executorPk);
+      axios({
+        method: this._isExecutorExist(executorPk) ? 'put' : 'post',
+        url: this._isExecutorExist(executorPk) ? `${process.env.REACT_APP_EXECUTIONS}${data[counter - 1].pk}/` : process.env.REACT_APP_EXECUTIONS,
+        headers: {
+          'Authorization': 'Token ' + this._user.getAuthToken()
+        },
+        data: data[counter - 1]
+      }).then((response) => {
+      })
+        .catch((error) => {
+          this.setState({
+            fieldError: error.response.data
           });
-        if (counter === 1) {
-          return data;
-        } else {
-          return submitData(counter - 1, data);
-        }
+          let errorArr = [];
+          for (let i in error.response.data) {
+            errorArr.push(error.response.data[i]);
+          }
+          const errorString = (errorArr.map(item => {
+            const errorValue = item[0].toString();
+            return (`<div>${errorValue}</div>`);
+          }));
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            html: errorString.join('')
+          });
+        });
+      if (counter === 1) {
+        return data;
+      } else {
+        return submitData(counter - 1, data);
       }
     };
     submitData(counter, formsetData);
@@ -303,7 +320,6 @@ export default class OrderForm extends AbstractFormView {
    * @private
    */
   _isExecutorExist = (executorPk) => {
-    console.log(executorPk, this.state.executorsPk);
     return this.state.executorsPk.includes(executorPk);
   };
 
@@ -315,7 +331,7 @@ export default class OrderForm extends AbstractFormView {
   parseExecutors = (data) => {
     let executorsArray = [];
     data.map(executor => {
-      executorsArray.push(executor.pk);
+      executorsArray.push(executor.executor);
     });
     return executorsArray;
   };
@@ -359,7 +375,7 @@ export default class OrderForm extends AbstractFormView {
   };
 
   /**
-   * Increase formset quantity.
+   * Increase formset quantity
    *
    * @param e
    * @private
@@ -372,28 +388,14 @@ export default class OrderForm extends AbstractFormView {
     }));
   };
 
-  /**
-   * Decrease formset quantity.
-   *
-   * @param e
-   * @private
-   */
-  _decreaseFormsetQuantity = (e) => {
-    // decrease formset counter.
-    this.setState(prevState => ({
-      executorFormsetQuantity: --prevState.executorFormsetQuantity
-    }));
-  };
-
   content() {
     return (
       <Fragment>
-        <CardHeader>{this.state.orderData.work_name || 'Нове замовлення'}</CardHeader>
+        <CardHeader>{this.state.orderData.work_name}</CardHeader>
         <CardBody>
           <Form id="orderForm" onSubmit={this.handleSubmit}>
             <SelectWithChoices changeHandler={this._onHouseItemSelect}
                                label="Будинок" name="house"
-                               error={this.state.fieldError.house}
                                helpText={!this.state.isApartmentSelectShow && 'Для вибору номеру апартаментів спочатку виберіть будинок'}
             >
               {this.state.housesData.map(house => (
@@ -406,7 +408,7 @@ export default class OrderForm extends AbstractFormView {
               ))}
             </SelectWithChoices>
             {this.state.isApartmentSelectShow ?
-              <SelectWithChoices label="Апартаменти" name="apartment" error={this.state.fieldError.apartment}>
+              <SelectWithChoices label="Апартаменти" name="apartment">
                 {this.state.apartmentsData.map(apartment => (
                   <option selected={this.state.orderData.apartment === apartment.pk} key={apartment.pk}
                           value={apartment.pk}>
@@ -416,24 +418,23 @@ export default class OrderForm extends AbstractFormView {
               </SelectWithChoices>
               :
               <SelectWithChoices type="text" label="Апартаменти" name="apartment" disabled
-                                 error={this.state.fieldError.apartment}
                                  value={this.state.orderData.apartment_name}/>
             }
-            <SelectWithChoices label="Робота" name="work" error={this.state.fieldError.work}>
+            <SelectWithChoices label="Робота" name="work">
               {this.state.worksData.map(work => (
                 <option key={work.pk} value={work.pk}>
                   {work.name}
                 </option>
               ))}
             </SelectWithChoices>
-            <SelectWithChoices label="Статус виконання" name="exec_status" error={this.state.fieldError.exec_status}>
+            <SelectWithChoices label="Статус виконання" name="exec_status">
               {this.state.execChoices[0].map(item => (
                 <option selected={this.state.orderData.exec_status === item[1]} key={item[0]} value={item[1]}>
                   {item[1]}
                 </option>
               ))}
             </SelectWithChoices>
-            <SelectWithChoices label="Статус оплати" name="pay_status" error={this.state.fieldError.pay_status}>
+            <SelectWithChoices label="Статус оплати" name="pay_status">
               {this.state.paymentChoices[0].map(item => (
                 <option selected={this.state.orderData.pay_status === item[1]} key={item[0]} value={item[1]}>
                   {item[1]}
@@ -445,13 +446,11 @@ export default class OrderForm extends AbstractFormView {
                             type={'textarea'}
                             defaultValue={this.state.orderData.information}
                             helpText={'Додатковий коментар'}
-                            error={this.state.fieldError.information}
             />
             <InputWithLabel name={'warning'}
                             label={'Зауваження'}
                             type={'textarea'}
                             defaultValue={this.state.orderData.warning}
-                            error={this.state.fieldError.warning}
             />
           </Form>
           <hr/>
@@ -460,7 +459,6 @@ export default class OrderForm extends AbstractFormView {
             <Form id={`executorForm-${index + 1}`}>
               <hr/>
               <input id="pk" name="pk" type="hidden" value={executor.pk}/>
-              {(!executor.isEditable) && <input id="executor" name="executor" type="hidden" value={executor.executor}/>}
               <SelectWithButton label="Виконавець" name="executor"
                                 disabled={(!executor.isEditable)}
                                 index={index}
@@ -524,6 +522,8 @@ export default class OrderForm extends AbstractFormView {
 
       return (
         <Page
+          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: false },
+            { name: this.state.orderData.number, active: true }]}
           className="TablePage"
         >
           <Container>

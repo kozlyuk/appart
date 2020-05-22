@@ -5,7 +5,7 @@
  * @copyright       2020 ITEL-Service
  */
 import React from 'react';
-import { FormGroup, FormText, Input, Label } from 'reactstrap';
+import { FormFeedback, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 export default class SelectWithChoices extends React.Component {
 
@@ -15,6 +15,7 @@ export default class SelectWithChoices extends React.Component {
         <Label for={this.props.name}>{this.props.label}</Label>
         <Input
           {...this.props}
+          invalid={!!this.props.error}
           onChange={this.props.changeHandler}
           name={this.props.name}
           id={this.props.name}
@@ -22,6 +23,7 @@ export default class SelectWithChoices extends React.Component {
         >
           {this.props.children}
         </Input>
+        <FormFeedback>{this.props.error}</FormFeedback>
         {this.props.helpText &&
         <FormText>{this.props.helpText}</FormText>}
       </FormGroup>

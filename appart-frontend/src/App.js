@@ -221,12 +221,11 @@ class App extends React.Component {
                       <Switch>
                         <Route exact path="/work/new" component={WorkUpdate}/>
                         <Route exact path="/work/:id/edit" component={WorkUpdate}/>
-                        {/*<Route exact path="/work/:id/delete" component={NewsDelete}/>*/}
                       </Switch>
                       <Route exact path="/order" component={OrderList}/>
                       <Switch>
+                        <Route exact path="/order/new" component={OrderForm}/>
                         <Route exact path="/order/:id/edit" component={OrderForm}/>
-                        {/*<Route exact path="/news/:id/delete" component={NewsDelete}/>*/}
                       </Switch>
                       <Route exact path="/payment" component={PaymentList}/>
                       <Switch>
