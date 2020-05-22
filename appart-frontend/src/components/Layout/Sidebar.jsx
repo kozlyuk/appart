@@ -1,4 +1,5 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import logo200Image from 'assets/img/logo/logo_small_white.png';
 import React from 'react';
 import {
   MdAttachMoney,
@@ -67,16 +68,13 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground}/>
         <div className={bem.e('content')}>
           <Navbar>
-            {/*<img*/}
-            {/*  src={logo200Image}*/}
-            {/*  width="auto"*/}
-            {/*  height="50"*/}
-            {/*  className="ml-auto mr-auto"*/}
-            {/*  alt=""*/}
-            {/*/>*/}
-            <div className="container">
-              <h2 className="m-auto">Дім онлайн</h2>
-            </div>
+            <img
+              src={logo200Image}
+              width="auto"
+              height="70"
+              className="ml-auto mr-auto"
+              alt=""
+            />
           </Navbar>
           <Nav vertical>
             {navItems.map(({ to, name, exact, Icon }, index) => (
