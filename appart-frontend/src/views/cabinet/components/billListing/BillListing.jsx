@@ -79,10 +79,10 @@ export default class BillListing extends React.Component {
           <table className="table bg-white table-striped">
             <thead className="one">
             <tr className="">
-              <th className="text-center" scope="col">Номер рахунку</th>
-              <th className="text-center" scope="col">Виписаний</th>
-              <th className="text-center" scope="col">Сума</th>
-              <th className="text-center" scope="col">Дії</th>
+              <th className="text-center" scope="col"><Text text="cabinet.billCard.billNumber"/></th>
+              <th className="text-center" scope="col"><Text text="cabinet.billCard.billDate"/></th>
+              <th className="text-center" scope="col"><Text text="cabinet.billCard.billValue"/></th>
+              <th className="text-center" scope="col"><Text text="cabinet.billCard.actions"/></th>
             </tr>
             </thead>
             <tbody>

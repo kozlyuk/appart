@@ -8,6 +8,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
+import { Text } from 'react-easy-i18n';
 
 export default class NewOrderButton extends React.Component {
   render() {
@@ -17,8 +18,7 @@ export default class NewOrderButton extends React.Component {
           <Link to="/cabinet/order/new">
             <button type="submit"
                     className="btn btn-success btn-order shadow-sm m-2 justify-content-start"><MdAdd
-              size="1.2em"/> Створтити
-              замовлення
+              size="1.2em"/><Text text='cabinet.orderCard.createOrder'/>
             </button>
           </Link>
         </div>

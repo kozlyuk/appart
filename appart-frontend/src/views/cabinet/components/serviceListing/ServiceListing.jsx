@@ -78,10 +78,10 @@ export default class ServiceListing extends React.Component {
             <table className="table bg-white table-striped">
               <thead className="one">
               <tr className="">
-                <th className="text-center" scope="col">Назва роботи</th>
-                <th className="text-center" scope="col">Статус виконання</th>
-                <th className="text-center" scope="col">Статус оплати</th>
-                <th className="text-center" scope="col">Дата створення</th>
+                <th className="text-center" scope="col"><Text text='cabinet.orderCard.workName'/></th>
+                <th className="text-center" scope="col"><Text text='cabinet.orderCard.execStatus'/></th>
+                <th className="text-center" scope="col"><Text text='cabinet.orderCard.payStatus'/></th>
+                <th className="text-center" scope="col"><Text text='cabinet.orderCard.created'/></th>
               </tr>
               </thead>
               <tbody>

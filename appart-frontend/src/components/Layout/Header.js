@@ -29,6 +29,7 @@ import {
 } from 'react-icons/md';
 import bn from 'utils/bemnames';
 import { UserConsumer } from '../../globalContext/userContext';
+import { LangConsumer } from '../../globalContext/langContext';
 
 const bem = bn.create('header');
 
@@ -71,6 +72,8 @@ class Header extends React.Component {
       isOpenUserCardPopover: !this.state.isOpenUserCardPopover
     });
   };
+
+  static contextType = LangConsumer;
 
   handleSidebarControlButton = event => {
     event.preventDefault();
@@ -140,6 +143,7 @@ class Header extends React.Component {
           <UserConsumer>
             {({ email, is_superuser, avatar, first_name, last_name }) => (
               <NavItem>
+                {console.log(this.context)}
                 <NavLink id="Popover2">
                   {is_superuser &&
                   <Badge pill className="mr-2"
@@ -175,6 +179,12 @@ class Header extends React.Component {
                         </ListGroupItem>
                         <ListGroupItem tag="button" action className="border-light">
                           <MdSettingsApplications/> Settings
+                        </ListGroupItem>
+                        <ListGroupItem tag="button" action className="border-light" onClick={() => this.context('en')}>
+                          <MdSettingsApplications/> English version
+                        </ListGroupItem>
+                        <ListGroupItem tag="button" action className="border-light" onClick={() => this.context('uk')}>
+                          <MdSettingsApplications/> Українська версія
                         </ListGroupItem>
                         <ListGroupItem tag="button" action className="border-light" onClick={() => {
                           this.user.logout();
