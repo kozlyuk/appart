@@ -16,6 +16,7 @@ import BillList from './views/bill/billList';
 import BillUpdate from './views/bill/billUpdate';
 import OrderNew from './views/order/OrderNew';
 import { UserProvider } from './globalContext/userContext';
+import { LangProvider } from './globalContext/langContext';
 import CabinetLayout from './components/Layout/CabinetLayout';
 import PaymentListing from './views/cabinet/components/paymentListing/PaymentListing';
 import BillListing from './views/cabinet/components/billListing/BillListing';
@@ -25,6 +26,7 @@ import WorkList from './views/work/WorkList';
 import WorkUpdate from './views/work/WorkUpdate';
 import OrderList from './views/order/OrderList';
 import OrderForm from './views/order/OrderForm';
+import { setCurrentLocale } from 'react-easy-i18n';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/list'));
@@ -60,6 +62,41 @@ class App extends React.Component {
     this.user = new Auth();
   }
 
+  changeLang = (lang, args = 'reload') => {
+    axios(`${process.env.REACT_APP_CHANGE_LANG}${lang}/`, {
+      headers: {
+        'Authorization': 'Token ' + this.user.getAuthToken()
+      }
+    })
+      .then(
+        (response) => {
+          this.setLang(lang);
+          if (args === 'reload') {
+            window.location.reload(false);
+          }
+        });
+
+  };
+
+  setLang = (lang) => {
+    setCurrentLocale(lang);
+    this.setState({});
+  };
+
+  checkLang = (lang) => {
+    switch (lang) {
+      case 'uk':
+        this.setLang('uk');
+        break;
+      case 'en':
+        this.setLang('en');
+        break;
+      default:
+        this.setLang('uk');
+        break;
+    }
+  };
+
   componentDidMount() {
     axios(process.env.REACT_APP_USER_DATA, {
       headers: {
@@ -75,7 +112,11 @@ class App extends React.Component {
             });
 
           } else if (response.status < 400) {
+            if (response.data.lang) {
+              this.checkLang(response.data.lang);
+            }
             this.setState({
+              lang: response.data.lang,
               isAuthenticate: true,
               user: response.data
             });
@@ -115,137 +156,139 @@ class App extends React.Component {
     } else {
 
       return (
-        <Fragment>
-          <UserProvider value={this.state.user}>
-            <BrowserRouter>
-              <GAListener>
-                <Switch>
-                  <LayoutRoute
-                    exact
-                    path="/cabinet"
-                    layout={CabinetLayout}
-                    component={(props) => (
-                      <Notice {...props}/>
-                    )}/>
-                  <LayoutRoute
-                    exact
-                    path="/cabinet/bills"
-                    layout={CabinetLayout}
-                    component={(props) => (
-                      <BillListing {...props}/>
-                    )}/>
-                  <LayoutRoute
-                    exact
-                    path="/cabinet/payments"
-                    layout={CabinetLayout}
-                    component={(props) => (
-                      <PaymentListing {...props}/>
-                    )}/>
-                  <LayoutRoute
-                    exact
-                    path="/cabinet/service"
-                    layout={CabinetLayout}
-                    component={(props) => (
-                      <ServiceListing {...props}/>
-                    )}/>
-                  <LayoutRoute
-                    exact
-                    path="/cabinet/order/new"
-                    layout={CabinetLayout}
-                    component={props => (
-                      <OrderNew {...props} user={this.state.user}/>
-                    )}
-                  />
-                  <LayoutRoute
-                    exact
-                    path="/registration"
-                    layout={EmptyLayout}
-                    component={props => (
-                      <RegistrationForm {...props} authState={STATE_SIGNUP}/>
-                    )}
-                  />
-                  <LayoutRoute
-                    exact
-                    path="/login"
-                    layout={EmptyLayout}
-                    component={props => (
-                      <AuthPage {...props} authState={STATE_LOGIN}/>
-                    )}
-                  />
-                  <LayoutRoute
-                    exact
-                    path="/signup"
-                    layout={EmptyLayout}
-                    component={props => (
-                      <AuthPage {...props} authState={STATE_SIGNUP}/>
-                    )}
-                  />
-                  <React.Suspense fallback={<PageSpinner/>}>
-                    <MainLayout breakpoint={this.props.breakpoint}>
-                      <Route exact path="/" component={DashboardPage}/>
-                      <Route exact path="/user" component={UserList}/>
-                      <Switch>
-                        <Route exact path="/user/new" component={UserNew}/>
-                        <Route exact path="/user/:id/edit" component={UserUpdate}/>
-                        <Route exact path="/user/:id/delete" component={UserDelete}/>
-                        <Route exact path="/user/:id" component={UserDetail}/>
-                      </Switch>
-                      <Route exact path="/house" component={HouseList}/>
-                      <Switch>
-                        <Route exact path="/house/new" component={HouseNew}/>
-                        <Route exact path="/house/:id/edit" component={HouseUpdate}/>
-                        <Route exact path="/house/:id/delete" component={HouseDelete}/>
-                      </Switch>
-                      <Route exact path="/apartment"
-                             component={props => (
-                               <ApartmentList {...props}/>
-                             )}/>
-                      <Switch>
-                        <Route exact path="/apartment/new" component={ApartmentNew}/>
-                        <Route exact path="/apartment/:id/edit" component={ApartmentUpdate}/>
-                        <Route exact path="/apartment/:id/delete" component={ApartmentDelete}/>
-                      </Switch>
-                      <Route exact path="/choice" component={ChoiceList}/>
-                      <Switch>
-                        <Route exact path="/choice/new" component={ChoiceNew}/>
-                        <Route exact path="/choice/:id/edit" component={ChoiceUpdate}/>
-                        <Route exact path="/choice/:id/delete" component={ChoiceDelete}/>
-                      </Switch>
-                      <Route exact path="/news" component={NewsList}/>
-                      <Switch>
-                        <Route exact path="/news/new" component={NewsNew}/>
-                        <Route exact path="/news/:id/edit" component={NewsUpdate}/>
-                        <Route exact path="/news/:id/delete" component={NewsDelete}/>
-                      </Switch>
-                      <Route exact path="/work" component={WorkList}/>
-                      <Switch>
-                        <Route exact path="/work/new" component={WorkUpdate}/>
-                        <Route exact path="/work/:id/edit" component={WorkUpdate}/>
-                      </Switch>
-                      <Route exact path="/order" component={OrderList}/>
-                      <Switch>
-                        <Route exact path="/order/new" component={OrderForm}/>
-                        <Route exact path="/order/:id/edit" component={OrderForm}/>
-                      </Switch>
-                      <Route exact path="/payment" component={PaymentList}/>
-                      <Switch>
-                        <Route exact path="/payment/:id/edit" component={PaymentUpdate}/>
-                      </Switch>
-                      <Route exact path="/bill" component={BillList}/>
-                      <Switch>
-                        <Route exact path="/bill/:id/edit" component={BillUpdate}/>
-                      </Switch>
-                      {/*<Route path="*">*/}
-                      {/*  <div>test</div>*/}
-                      {/*</Route>*/}
-                    </MainLayout>
-                    {/*<Redirect to="/"/>*/}
-                  </React.Suspense>
-                </Switch>
-              </GAListener>
-            </BrowserRouter>
-          </UserProvider>
-        </Fragment>
+        <LangProvider value={this.changeLang}>
+          <Fragment>
+            <UserProvider value={this.state.user}>
+              <BrowserRouter>
+                <GAListener>
+                  <Switch>
+                    <LayoutRoute
+                      exact
+                      path="/cabinet"
+                      layout={CabinetLayout}
+                      component={(props) => (
+                        <Notice {...props}/>
+                      )}/>
+                    <LayoutRoute
+                      exact
+                      path="/cabinet/bills"
+                      layout={CabinetLayout}
+                      component={(props) => (
+                        <BillListing {...props}/>
+                      )}/>
+                    <LayoutRoute
+                      exact
+                      path="/cabinet/payments"
+                      layout={CabinetLayout}
+                      component={(props) => (
+                        <PaymentListing {...props}/>
+                      )}/>
+                    <LayoutRoute
+                      exact
+                      path="/cabinet/service"
+                      layout={CabinetLayout}
+                      component={(props) => (
+                        <ServiceListing {...props}/>
+                      )}/>
+                    <LayoutRoute
+                      exact
+                      path="/cabinet/order/new"
+                      layout={CabinetLayout}
+                      component={props => (
+                        <OrderNew {...props} user={this.state.user}/>
+                      )}
+                    />
+                    <LayoutRoute
+                      exact
+                      path="/registration"
+                      layout={EmptyLayout}
+                      component={props => (
+                        <RegistrationForm {...props} authState={STATE_SIGNUP}/>
+                      )}
+                    />
+                    <LayoutRoute
+                      exact
+                      path="/login"
+                      layout={EmptyLayout}
+                      component={props => (
+                        <AuthPage {...props} authState={STATE_LOGIN}/>
+                      )}
+                    />
+                    <LayoutRoute
+                      exact
+                      path="/signup"
+                      layout={EmptyLayout}
+                      component={props => (
+                        <AuthPage {...props} authState={STATE_SIGNUP}/>
+                      )}
+                    />
+                    <React.Suspense fallback={<PageSpinner/>}>
+                      <MainLayout breakpoint={this.props.breakpoint}>
+                        <Route exact path="/" component={DashboardPage}/>
+                        <Route exact path="/user" component={UserList}/>
+                        <Switch>
+                          <Route exact path="/user/new" component={UserNew}/>
+                          <Route exact path="/user/:id/edit" component={UserUpdate}/>
+                          <Route exact path="/user/:id/delete" component={UserDelete}/>
+                          <Route exact path="/user/:id" component={UserDetail}/>
+                        </Switch>
+                        <Route exact path="/house" component={HouseList}/>
+                        <Switch>
+                          <Route exact path="/house/new" component={HouseNew}/>
+                          <Route exact path="/house/:id/edit" component={HouseUpdate}/>
+                          <Route exact path="/house/:id/delete" component={HouseDelete}/>
+                        </Switch>
+                        <Route exact path="/apartment"
+                               component={props => (
+                                 <ApartmentList {...props}/>
+                               )}/>
+                        <Switch>
+                          <Route exact path="/apartment/new" component={ApartmentNew}/>
+                          <Route exact path="/apartment/:id/edit" component={ApartmentUpdate}/>
+                          <Route exact path="/apartment/:id/delete" component={ApartmentDelete}/>
+                        </Switch>
+                        <Route exact path="/choice" component={ChoiceList}/>
+                        <Switch>
+                          <Route exact path="/choice/new" component={ChoiceNew}/>
+                          <Route exact path="/choice/:id/edit" component={ChoiceUpdate}/>
+                          <Route exact path="/choice/:id/delete" component={ChoiceDelete}/>
+                        </Switch>
+                        <Route exact path="/news" component={NewsList}/>
+                        <Switch>
+                          <Route exact path="/news/new" component={NewsNew}/>
+                          <Route exact path="/news/:id/edit" component={NewsUpdate}/>
+                          <Route exact path="/news/:id/delete" component={NewsDelete}/>
+                        </Switch>
+                        <Route exact path="/work" component={WorkList}/>
+                        <Switch>
+                          <Route exact path="/work/new" component={WorkUpdate}/>
+                          <Route exact path="/work/:id/edit" component={WorkUpdate}/>
+                        </Switch>
+                        <Route exact path="/order" component={OrderList}/>
+                        <Switch>
+                          <Route exact path="/order/new" component={OrderForm}/>
+                          <Route exact path="/order/:id/edit" component={OrderForm}/>
+                        </Switch>
+                        <Route exact path="/payment" component={PaymentList}/>
+                        <Switch>
+                          <Route exact path="/payment/:id/edit" component={PaymentUpdate}/>
+                        </Switch>
+                        <Route exact path="/bill" component={BillList}/>
+                        <Switch>
+                          <Route exact path="/bill/:id/edit" component={BillUpdate}/>
+                        </Switch>
+                        {/*<Route path="*">*/}
+                        {/*  <div>test</div>*/}
+                        {/*</Route>*/}
+                      </MainLayout>
+                      {/*<Redirect to="/"/>*/}
+                    </React.Suspense>
+                  </Switch>
+                </GAListener>
+              </BrowserRouter>
+            </UserProvider>
+          </Fragment>
+        </LangProvider>
       );
     }
   }

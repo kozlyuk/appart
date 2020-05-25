@@ -80,10 +80,10 @@ export default class PaymentListing extends React.Component {
           <table className="table bg-white table-striped ">
             <thead className="one">
             <tr className="" onClick={this.toggle}>
-              <th className="text-center" scope="col">Тип оплати</th>
-              <th className="text-center" scope="col">Період</th>
-              <th className="text-center" scope="col">Сума</th>
-              <th className="text-center" scope="col">Опис</th>
+              <th className="text-center" scope="col"><Text text='cabinet.paymentCard.paymentType'/></th>
+              <th className="text-center" scope="col"><Text text='cabinet.paymentCard.period'/></th>
+              <th className="text-center" scope="col"><Text text='cabinet.paymentCard.paymentValue'/></th>
+              <th className="text-center" scope="col"><Text text='cabinet.paymentCard.detail'/></th>
             </tr>
             </thead>
             <tbody>

@@ -45,6 +45,7 @@ const bem = bn.create('sidebar');
 
 class Sidebar extends React.Component {
   state = {
+    isOpenGlobalMenu: true,
     isOpenComponentCondominium: false,
     isOpenComponentNotice: false,
     isOpenComponentService: false,

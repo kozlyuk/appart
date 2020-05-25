@@ -1,4 +1,4 @@
-import { registerLang, setCurrentLocale } from 'react-easy-i18n';
+import { registerLang } from 'react-easy-i18n';
 
 registerLang('en', {
   global: {
@@ -199,6 +199,43 @@ registerLang('en', {
   newsDelete: {
     text: 'Are you sure you want to remove news'
   },
+  cabinet: {
+    debt: 'Debt',
+    house: 'House',
+    company: 'Company',
+    userCard: {
+      administration: 'Administration',
+      profile: 'My profile',
+      cabinet: 'Cabinet',
+      logOut: 'Log out'
+    },
+    sidebar: {
+      notifications: 'Notifications',
+      bills: 'Bills',
+      payments: 'Payments',
+      services: 'Services'
+    },
+    billCard: {
+      pay: 'Pay',
+      billNumber: 'Bill number',
+      billDate: 'Bill date',
+      billValue: 'Bill value',
+      actions: 'Actions'
+    },
+    paymentCard: {
+      paymentType: 'Payment type',
+      period: 'Period',
+      paymentValue: 'Payment value',
+      detail: 'Detail'
+    },
+    orderCard: {
+      createOrder: 'Create order',
+      workName: 'Work name',
+      execStatus: 'Execution status',
+      payStatus: 'Payment status',
+      created: 'Created'
+    }
+  },
   buttons: {
     submitBtn: 'Save',
     returnBtn: 'Return',
@@ -207,7 +244,7 @@ registerLang('en', {
   },
   user: 'User'
 });
-registerLang('ua', {
+registerLang('uk', {
   global: {
     loading: 'Завантаження...',
     error: 'Помилка',
@@ -413,6 +450,45 @@ registerLang('ua', {
     description: 'Описання',
     duration: 'Тривалість'
   },
+
+  cabinet: {
+    debt: 'Заборгованість',
+    house: 'Будинок',
+    company: 'Компанія',
+    userCard: {
+      administration: 'Адміністрування',
+      profile: 'Мій профіль',
+      cabinet: 'Персональний кабінет',
+      logOut: 'Вийти'
+    },
+    sidebar: {
+      notifications: 'Сповіщення',
+      bills: 'Рахунки',
+      payments: 'Оплати',
+      services: 'Сервісна служба'
+    },
+    billCard: {
+      pay: 'Оплатити',
+      billNumber: 'Номер рахунку',
+      billDate: 'Виписаний',
+      billValue: 'Сума',
+      actions: 'Дії'
+    },
+    paymentCard: {
+      paymentType: 'Тип оплати',
+      period: 'Період',
+      paymentValue: 'Сума',
+      detail: 'Опис'
+    },
+    orderCard: {
+      createOrder: 'Створити замовлення',
+      workName: 'Назва роботи',
+      execStatus: 'Статус виконання',
+      payStatus: 'Статус оплати',
+      created: 'Дата створення'
+    }
+  },
+
   buttons: {
     submitBtn: 'Зберегти',
     returnBtn: 'Назад',
@@ -420,5 +496,3 @@ registerLang('ua', {
     deleteBtn: 'Видалити'
   }
 });
-
-setCurrentLocale('ua');

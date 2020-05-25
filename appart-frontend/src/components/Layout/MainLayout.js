@@ -27,7 +27,7 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdImportantDevices/>,
-        message: 'Welome to Apart dashboard!',
+        message: 'Welcome to Apart dashboard!',
         level: 'info'
       });
     }, 1500);
