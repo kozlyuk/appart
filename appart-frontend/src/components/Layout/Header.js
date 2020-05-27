@@ -29,10 +29,16 @@ import {
 } from 'react-icons/md';
 import bn from 'utils/bemnames';
 import { UserConsumer } from '../../globalContext/userContext';
-import { LangConsumer } from '../../globalContext/langContext';
+import { LangContext } from '../../globalContext/langContext';
 
+/**
+ * @type {header}
+ */
 const bem = bn.create('header');
 
+/**
+ * @type {function(...[*]=)}
+ */
 const MdNotificationsActiveWithBadge = withBadge({
   size: 'md',
   color: 'primary',
@@ -73,7 +79,7 @@ class Header extends React.Component {
     });
   };
 
-  static contextType = LangConsumer;
+  static contextType = LangContext;
 
   handleSidebarControlButton = event => {
     event.preventDefault();
@@ -93,24 +99,8 @@ class Header extends React.Component {
           </Button>
         </Nav>
         <Nav navbar>
-          {/*{this.props.breadcrumbs && (*/}
-          {/*  <Breadcrumb className={bem.e('breadcrumb')}>*/}
-          {/*    <BreadcrumbItem><Text text="sidebar.home"/></BreadcrumbItem>*/}
-          {/*    {this.props.breadcrumbs.length &&*/}
-          {/*    this.props.breadcrumbs.map(({ name, active }, index) => (*/}
-          {/*      <BreadcrumbItem key={index} active={active}>*/}
-          {/*        <Link to="/test">*/}
-          {/*          {name}*/}
-          {/*        </Link>*/}
-          {/*      </BreadcrumbItem>*/}
-          {/*    ))}*/}
-          {/*  </Breadcrumb>*/}
-          {/*)}*/}
           <Breadcrumbs/>
         </Nav>
-
-        {/*  <SearchInput />*/}
-        {/*</Nav>*/}
 
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">
@@ -143,7 +133,6 @@ class Header extends React.Component {
           <UserConsumer>
             {({ email, is_superuser, avatar, first_name, last_name }) => (
               <NavItem>
-                {console.log(this.context)}
                 <NavLink id="Popover2">
                   {is_superuser &&
                   <Badge pill className="mr-2"

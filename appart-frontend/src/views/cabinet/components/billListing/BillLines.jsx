@@ -83,17 +83,15 @@ export default class BillLines extends React.Component {
 
   render() {
     return (
-      <>
-        <tr style={{ cursor: 'pointer' }}>
-          <td>{this.props.item.number}</td>
-          <td className="text-center">{this.props.item.period}</td>
-          <td className="text-center">{this.props.item.total_value}</td>
-          <td className="text-center">
-            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
-              text="cabinet.billCard.pay"/></button>
-          </td>
-        </tr>
-      </>
+      <tr style={{ cursor: 'pointer' }}>
+        <td>{this.props.item.number}</td>
+        <td className="text-center">{this.props.item.period}</td>
+        <td className="text-center">{this.props.item.total_value}</td>
+        <td className="text-center">
+          <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
+            text="cabinet.billCard.pay"/></button>
+        </td>
+      </tr>
     );
   }
 }

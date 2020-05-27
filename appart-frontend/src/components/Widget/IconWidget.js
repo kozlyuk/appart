@@ -3,19 +3,30 @@ import PropTypes from 'utils/propTypes';
 
 import classNames from 'classnames';
 
-import { Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { Card, CardBody, CardSubtitle, CardTitle } from 'reactstrap';
 
+/**
+ * @param bgColor
+ * @param Icon
+ * @param iconProps
+ * @param title
+ * @param subtitle
+ * @param className
+ * @param restProps
+ * @return {*}
+ * @constructor
+ */
 const IconWidget = ({
-  bgColor,
-  icon: Icon,
-  iconProps,
-  title,
-  subtitle,
-  className,
-  ...restProps
-}) => {
+                      bgColor,
+                      icon: Icon,
+                      iconProps,
+                      title,
+                      subtitle,
+                      className,
+                      ...restProps
+                    }) => {
   const classes = classNames('cr-widget', className, {
-    [`bg-${bgColor}`]: bgColor,
+    [`bg-${bgColor}`]: bgColor
   });
   return (
     <Card inverse className={classes} {...restProps}>
@@ -35,13 +46,13 @@ IconWidget.propTypes = {
   icon: PropTypes.component,
   iconProps: PropTypes.object,
   title: PropTypes.string,
-  subtitle: PropTypes.string,
+  subtitle: PropTypes.string
 };
 
 IconWidget.defaultProps = {
   bgColor: 'primary',
   icon: 'span',
-  iconProps: { size: 50 },
+  iconProps: { size: 50 }
 };
 
 export default IconWidget;

@@ -12,7 +12,7 @@ import Auth from '../../../auth/auth';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import CabinetBreadcrumbs from '../../../breadcrumbs/CabinetBreadcrumbs';
-import { LangConsumer } from '../../../globalContext/langContext';
+import { LangContext } from '../../../globalContext/langContext';
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ export default class Navbar extends React.Component {
       );
   }
 
-  static contextType = LangConsumer;
+  static contextType = LangContext;
 
   render() {
     const userCardToggleClass = (this.props.isCardToggled ?

@@ -155,7 +155,6 @@ export default class UserList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
           className="TablePage"
         >
           <UserFilter

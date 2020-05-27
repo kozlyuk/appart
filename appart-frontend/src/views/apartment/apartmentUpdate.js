@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import {
   Alert,
+  Button,
   ButtonToolbar,
   Card,
   CardBody,
@@ -14,7 +15,6 @@ import {
   Row
 } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
-import Button from 'reactstrap/es/Button';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
 import ApartmentPhoneChecker from '../../utils/apartmentPhoneChecker';
@@ -59,7 +59,9 @@ export default class ApartmentUpdate extends AbstractFormView {
       houseWithResident: false
     };
     this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
-    this._postUrl = process.env.REACT_APP_APARTMENTS_URL + this.props.match.params.id + '/';
+    if (this.props.match) {
+      this._postUrl = process.env.REACT_APP_APARTMENTS_URL + this.props.match.params.id + '/';
+    }
     this.requestType = 'put';
     this.addResidentToAppartment.bind(this);
     this.successRedirect = '/apartment';
@@ -380,8 +382,6 @@ export default class ApartmentUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: false },
-            { name: this.state.data.pk, active: true }]}
           className="TablePage"
         >
           <Row>

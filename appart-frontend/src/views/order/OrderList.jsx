@@ -67,7 +67,7 @@ export default class OrderList extends AbstractListView {
         <tbody>
         {this.state.data.map((order) => (
           <tr key={order.pk} align="center">
-            <td>{order.apartment}</td>
+            <td>{order.apartment_name}</td>
             {order.exec_status === 'New' ?
               <td>
                 <MdFiberManualRecord
@@ -139,7 +139,6 @@ export default class OrderList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.house"/>, active: true }]}
           className="TablePage"
         >
           <HouseFilter

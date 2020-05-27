@@ -9,7 +9,7 @@ import React from 'react';
 import axios from 'axios';
 import Auth from '../../../../auth/auth';
 import { Text } from 'react-easy-i18n';
-import { UserConsumer } from '../../../../globalContext/userContext';
+import { UserContext } from '../../../../globalContext/userContext';
 import PaymentLines from './PaymentLines';
 
 export default class PaymentListing extends React.Component {
@@ -35,7 +35,7 @@ export default class PaymentListing extends React.Component {
    *
    * @type {React.Consumer<{}>}
    */
-  static contextType = UserConsumer;
+  static contextType = UserContext;
 
   componentDidMount() {
     if (this.context) {
@@ -88,9 +88,7 @@ export default class PaymentListing extends React.Component {
             </thead>
             <tbody>
             {this.state.data.map((item) => (
-              <>
-                <PaymentLines payment={item} isOpen={this.state.isOpen}/>
-              </>
+              <PaymentLines key={item.pk} payment={item} isOpen={this.state.isOpen}/>
             ))}
             {/*{this.state.data.map((item) => (*/}
             {/*  */}

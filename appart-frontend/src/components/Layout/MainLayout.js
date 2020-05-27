@@ -5,12 +5,18 @@ import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
 
 class MainLayout extends React.Component {
+  /**
+   * @return {boolean}
+   */
   static isSidebarOpen() {
     return document
       .querySelector('.cr-sidebar')
       .classList.contains('cr-sidebar--open');
   }
 
+  /**
+   * @param breakpoint
+   */
   componentWillReceiveProps({ breakpoint }) {
     if (breakpoint !== this.props.breakpoint) {
       this.checkBreakpoint(breakpoint);
@@ -47,6 +53,10 @@ class MainLayout extends React.Component {
     }
   };
 
+  /**
+   * @param breakpoint
+   * @return {void | undefined}
+   */
   checkBreakpoint(breakpoint) {
     switch (breakpoint) {
       case 'xs':
@@ -61,6 +71,9 @@ class MainLayout extends React.Component {
     }
   }
 
+  /**
+   * @param openOrClose
+   */
   openSidebar(openOrClose) {
     if (openOrClose === 'open') {
       return document
