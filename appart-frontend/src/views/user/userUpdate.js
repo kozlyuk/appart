@@ -287,44 +287,6 @@ export default class UserUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
-            {/*<FormGroup>*/}
-            {/*  <Label for="birthday"><Text text="userForm.birthDate"/></Label>*/}
-            {/*  {this.state.errors.birthday.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.birthday}</FormText>}*/}
-            {/*  <Input*/}
-            {/*    className={this.state.fieldError.birth_date && 'is-invalid'}*/}
-            {/*    type="date"*/}
-            {/*    name="birthday"*/}
-            {/*    defaultValue={this.state.data.birth_date}*/}
-            {/*    onChange={this.handleChange}*/}
-            {/*  />*/}
-            {/*  {this.state.fieldError.birth_date &&*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {this.state.fieldError.birth_date}*/}
-            {/*  </div>*/}
-            {/*  }*/}
-            {/*</FormGroup>*/}
-            {/*<FormGroup>*/}
-            {/*  <Label for="avatar"><Text text="userForm.avatar"/></Label>*/}
-            {/*  {this.state.errors.avatarFormat.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}*/}
-            {/*  {this.state.errors.avatarSize.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.avatarSize}</FormText>}*/}
-            {/*  <Input*/}
-            {/*    className={this.state.fieldError.avatar && 'is-invalid'}*/}
-            {/*    type="file"*/}
-            {/*    name="avatar"*/}
-            {/*    onChange={this.handleChange}*/}
-            {/*  />*/}
-            {/*  {this.state.fieldError.avatar &&*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {this.state.fieldError.avatar}*/}
-            {/*  </div>*/}
-            {/*  }*/}
-            {/*</FormGroup>*/}
             <FormGroup>
               <Label for="exampleCheckbox">Права доступу</Label>
               <div>
@@ -399,8 +361,6 @@ export default class UserUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: false },
-            { name: this.state.data.first_name + ' ' + this.state.data.last_name, active: true }]}
           className="TablePage"
         >
           <Container>

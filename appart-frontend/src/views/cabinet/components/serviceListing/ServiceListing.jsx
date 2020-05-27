@@ -9,7 +9,7 @@ import axios from 'axios';
 import Auth from '../../../../auth/auth';
 import { Text } from 'react-easy-i18n';
 import NewOrderButton from '../newOrderButton/NewOrderButton';
-import { UserConsumer } from '../../../../globalContext/userContext';
+import { UserContext } from '../../../../globalContext/userContext';
 
 export default class ServiceListing extends React.Component {
   /**
@@ -34,7 +34,7 @@ export default class ServiceListing extends React.Component {
    *
    * @type {React.Consumer<{}>}
    */
-  static contextType = UserConsumer;
+  static contextType = UserContext;
 
   componentDidMount() {
     if (this.context) {

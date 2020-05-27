@@ -295,8 +295,6 @@ export default class HouseUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.house"/>, active: false },
-            { name: this.state.data.name, active: true }]}
           className="TablePage"
         >
           <Container>

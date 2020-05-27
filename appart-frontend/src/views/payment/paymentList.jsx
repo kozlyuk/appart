@@ -83,7 +83,6 @@ export default class PaymentList extends AbstractListView {
     } else {
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: true }]}
           className="TablePage"
         >
           <PaymentFilter

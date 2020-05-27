@@ -6,6 +6,13 @@ import { Container } from 'reactstrap';
 
 const bem = bn.create('content');
 
+/**
+ * @param Tag
+ * @param className
+ * @param restProps
+ * @return {*}
+ * @constructor
+ */
 const Content = ({ tag: Tag, className, ...restProps }) => {
   const classes = bem.b(className);
 
@@ -13,7 +20,7 @@ const Content = ({ tag: Tag, className, ...restProps }) => {
 };
 
 Content.defaultProps = {
-  tag: Container,
+  tag: Container
 };
 
 export default Content;

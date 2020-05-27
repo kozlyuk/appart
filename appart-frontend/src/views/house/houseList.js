@@ -130,7 +130,6 @@ export default class HouseList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.house"/>, active: true }]}
           className="TablePage"
         >
           <HouseFilter

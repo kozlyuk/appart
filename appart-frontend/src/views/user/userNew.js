@@ -310,49 +310,6 @@ export default class UserNew extends AbstractFormView {
               </div>
               }
             </FormGroup>
-            {/*<FormGroup>*/}
-            {/*  <Label for="birthday"><Text text="userForm.birthDate"/></Label>*/}
-            {/*  {this.state.errors.birthday.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.birthday}</FormText>}*/}
-            {/*  <Input*/}
-            {/*    className={this.state.fieldError.birth_date && 'is-invalid'}*/}
-            {/*    type="date"*/}
-            {/*    name="birthday"*/}
-            {/*    id="birthday"*/}
-            {/*    onChange={this.handleChange}*/}
-            {/*  />*/}
-            {/*  {this.state.fieldError.birth_date &&*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {this.state.fieldError.birth_date}*/}
-            {/*  </div>*/}
-            {/*  }*/}
-            {/*</FormGroup>*/}
-            {/*<FormGroup>*/}
-            {/*  <Label for="avatar"><Text text="userForm.avatar"/></Label>*/}
-            {/*  {this.state.errors.avatarFormat.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.avatarFormat}</FormText>}*/}
-            {/*  {this.state.errors.avatarSize.length > 0 &&*/}
-            {/*  // error field*/}
-            {/*  <FormText color="danger">{this.state.errors.avatarSize}</FormText>}*/}
-            {/*  <Input*/}
-            {/*    className={this.state.fieldError.avatar && 'is-invalid'}*/}
-            {/*    type="file"*/}
-            {/*    id="avatar"*/}
-            {/*    name="avatar"*/}
-            {/*    onChange={this.handleChange}*/}
-            {/*  />*/}
-            {/*  {this.state.fieldError.avatar &&*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {this.state.fieldError.avatar}*/}
-            {/*  </div>*/}
-            {/*  }*/}
-            {/*  <FormText color="muted">*/}
-            {/*    /!*This is some placeholder block-level help text for the above*!/*/}
-            {/*    /!*input. It's a bit lighter and easily wraps to a new line.*!/*/}
-            {/*  </FormText>*/}
-            {/*</FormGroup>*/}
             <FormGroup>
               <Label for="exampleCheckbox">Права доступу</Label>
               <div>
@@ -424,8 +381,6 @@ export default class UserNew extends AbstractFormView {
           </Card>
           :
           <Page
-            breadcrumbs={[{ name: <Text text="sidebar.user"/>, active: false },
-              { name: <Text text="userForm.newUser.title"/>, active: true }]}
             className="TablePage"
           >
             <Container>

@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
 
 class AuthForm extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,20 +25,33 @@ class AuthForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * @return {boolean}
+   */
   get isLogin() {
     return this.props.authState === STATE_LOGIN;
   }
 
+  /**
+   * @return {boolean}
+   */
   get isSignup() {
     return this.props.authState === STATE_SIGNUP;
   }
 
+  /**
+   * @param authState
+   * @return {function(...[*]=)}
+   */
   changeAuthState = authState => event => {
     event.preventDefault();
 
     this.props.onChangeAuthState(authState);
   };
 
+  /**
+   * @param event
+   */
   handleSubmit = event => {
     event.preventDefault();
     let user = new Auth();

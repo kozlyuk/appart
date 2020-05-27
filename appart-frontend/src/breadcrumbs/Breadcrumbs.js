@@ -2,14 +2,6 @@ import React from 'react';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { Link } from 'react-router-dom';
 
-// const CustomBreadcrumb = ({ name }) => (
-//   <Text text="sidebar.user"/>
-// );
-//
-// const routes = [
-//   { path: '/user', breadcrumb: 'user' }
-// ];
-
 /**
  * Breadcrumbs hoc for dashboard
  *

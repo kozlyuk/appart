@@ -13,6 +13,12 @@ import './cabinet.css';
 
 class CabinetLayout extends React.Component {
 
+  /**
+   * Cabinet layout constructor.
+   *
+   * @param props
+   * @param user
+   */
   constructor(props, user) {
     super(props);
     this.user = user;
@@ -22,7 +28,9 @@ class CabinetLayout extends React.Component {
     };
   }
 
-
+  /**
+   * Navbar toggler.
+   */
   navbarToggle = () => {
     const { navbarIsOpen } = this.state;
     this.setState({
@@ -30,7 +38,9 @@ class CabinetLayout extends React.Component {
     });
   };
 
-
+  /**
+   * User card toggler.
+   */
   userCardToggle = () => {
     const { userCardIsOpen } = this.state;
     this.setState({

@@ -392,23 +392,28 @@ export default class OrderForm extends AbstractFormView {
         <CardBody>
           <Form id="orderForm" onSubmit={this.handleSubmit}>
             <SelectWithChoices changeHandler={this._onHouseItemSelect}
+                               defaultValue={this.state.orderData.house}
                                label="Будинок" name="house"
                                error={this.state.fieldError.house}
                                helpText={!this.state.isApartmentSelectShow && 'Для вибору номеру апартаментів спочатку виберіть будинок'}
             >
               {this.state.housesData.map(house => (
-                <option selected={parseInt(this.state.orderData.house) === house.pk}
-                        key={house.pk}
-                        value={house.pk}
+                <option
+                  key={house.pk}
+                  value={house.pk}
                 >
                   {house.name}
                 </option>
               ))}
             </SelectWithChoices>
             {this.state.isApartmentSelectShow ?
-              <SelectWithChoices label="Апартаменти" name="apartment" error={this.state.fieldError.apartment}>
+              <SelectWithChoices
+                label="Апартаменти" name="apartment"
+                error={this.state.fieldError.apartment}
+                defaultValue={this.state.orderData.apartment}
+              >
                 {this.state.apartmentsData.map(apartment => (
-                  <option selected={this.state.orderData.apartment === apartment.pk} key={apartment.pk}
+                  <option key={apartment.pk}
                           value={apartment.pk}>
                     Апартаменти №: {apartment.number} {apartment.resident_name && `Житель: ${apartment.resident_name}`}
                   </option>
@@ -426,16 +431,26 @@ export default class OrderForm extends AbstractFormView {
                 </option>
               ))}
             </SelectWithChoices>
-            <SelectWithChoices label="Статус виконання" name="exec_status" error={this.state.fieldError.exec_status}>
+            <SelectWithChoices
+              label="Статус виконання"
+              name="exec_status"
+              error={this.state.fieldError.exec_status}
+              defaultValue={this.state.orderData.exec_status}
+            >
               {this.state.execChoices[0].map(item => (
-                <option selected={this.state.orderData.exec_status === item[1]} key={item[0]} value={item[1]}>
+                <option key={item[0]} value={item[1]}>
                   {item[1]}
                 </option>
               ))}
             </SelectWithChoices>
-            <SelectWithChoices label="Статус оплати" name="pay_status" error={this.state.fieldError.pay_status}>
+            <SelectWithChoices
+              label="Статус оплати"
+              name="pay_status"
+              error={this.state.fieldError.pay_status}
+              defaultValue={this.state.orderData.pay_status}
+            >
               {this.state.paymentChoices[0].map(item => (
-                <option selected={this.state.orderData.pay_status === item[1]} key={item[0]} value={item[1]}>
+                <option key={item[0]} value={item[1]}>
                   {item[1]}
                 </option>
               ))}

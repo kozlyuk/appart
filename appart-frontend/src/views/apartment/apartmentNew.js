@@ -342,8 +342,6 @@ export default class ApartmentNew extends AbstractFormView {
     } else {
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: false },
-            { name: <Text text="apartmentForm.newApartment.title"/>, active: true }]}
           className="TablePage"
         >
           <Row>

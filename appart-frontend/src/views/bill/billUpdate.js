@@ -157,22 +157,6 @@ export default class BillUpdate extends AbstractFormView {
                 disabled
               />
             </FormGroup>
-            {/*<ListGroup className="mb-3">*/}
-            {/*  /!*{this.state.data.bill_lines.map(item => {*!/*/}
-            {/*  /!*  return (*!/*/}
-            {/*  /!*    <>*!/*/}
-            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
-            {/*  /!*        Попередня заборгованість <Badge pill>{item.previous_debt}</Badge>*!/*/}
-            {/*  /!*      </ListGroupItem>*!/*/}
-            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
-            {/*  /!*        Загальна заборгованість <Badge pill>{item.total_debt}</Badge>*!/*/}
-            {/*  /!*      </ListGroupItem>*!/*/}
-            {/*  /!*      <ListGroupItem className="justify-content-between">*!/*/}
-            {/*  /!*        Загально <Badge pill>{item.value}</Badge>*!/*/}
-            {/*  /!*      </ListGroupItem>*!/*/}
-            {/*  /!*    </>);*!/*/}
-            {/*  /!*})}*!/*/}
-            {/*</ListGroup>*/}
             <Link to="/bill">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
@@ -204,8 +188,6 @@ export default class BillUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: false },
-            { name: this.state.data.number, active: true }]}
           className="TablePage"
         >
           <Container>

@@ -137,7 +137,6 @@ export default class ApartmentList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.apartment"/>, active: true }]}
           className="TablePage"
         >
           <ApartmentFilter
