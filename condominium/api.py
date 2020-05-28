@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
 from condominium.models import Company, House, Apartment
 from condominium.serializers import CompanySerializer, HouseSerializer, ApartmentSerializer
@@ -52,6 +52,7 @@ class HouseViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
     serializer_class = HouseSerializer
+    permission_class = permissions.AllowAny
 
     def get_queryset(self):
         queryset = House.objects.all()

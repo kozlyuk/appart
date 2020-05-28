@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
 from messaging.tasks import send_email
+from django.contrib.auth.models import Group
 
 from accounts.serializers import UserSerializer, GetUserSerializer
 from accounts.models import User
@@ -188,3 +189,13 @@ class SetLang(views.APIView):
             message = _('Inteface language changed to ') + lang
             return Response(message, status=status.HTTP_200_OK)
         return Response(_('Wrong data'), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GroupChoices(views.APIView):
+    """
+    Send JSON list of User groups
+    """
+    def get(self, request):
+        # Sending JSON list EXEC_STATUS_CHOICES
+        json_data = [Group.objects.values_list('name', flat=True)]
+        return Response(json_data, status=status.HTTP_200_OK)
