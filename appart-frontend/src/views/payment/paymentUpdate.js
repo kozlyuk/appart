@@ -175,18 +175,6 @@ export default class PaymentUpdate extends AbstractFormView {
                 readOnly
               />
             </FormGroup>
-            {/*<FormGroup>*/}
-            {/*  <Label for="payment_service">Services</Label>*/}
-            {/*  <Input*/}
-            {/*    type="text"*/}
-            {/*    name="payment_service"*/}
-            {/*    defaultValue={this.state.data.payment_service.map(item => {*/}
-            {/*      return ' ' + item.service + ' value: ' + item.value;*/}
-            {/*    })}*/}
-            {/*    onChange={this.handleChange}*/}
-            {/*    readOnly*/}
-            {/*  />*/}
-            {/*</FormGroup>*/}
             <FormGroup>
               <Label for="payment_type">Тип оплати</Label>
               <Input
@@ -259,8 +247,6 @@ export default class PaymentUpdate extends AbstractFormView {
 
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.payment"/>, active: false },
-            { name: this.state.data.first_name + ' ' + this.state.data.last_name, active: true }]}
           className="TablePage"
         >
           <Container>

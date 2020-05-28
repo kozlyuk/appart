@@ -148,7 +148,10 @@ export default class BillCard extends React.Component <BillCardPropsInterface, {
             {this.billTotalValue}
           </td>
           <td className="text-center">
-            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}>Оплатити</button>
+            {/*
+            // @ts-ignore*/}
+            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
+              text="cabinet.billCard.pay"/></button>
           </td>
         </tr>
         <Collapse tag="tr" isOpen={isOpen}>

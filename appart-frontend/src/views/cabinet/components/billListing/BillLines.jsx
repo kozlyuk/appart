@@ -8,6 +8,7 @@
 import React from 'react';
 import Auth from '../../../../auth/auth';
 import axios from 'axios';
+import { Text } from 'react-easy-i18n';
 
 export default class BillLines extends React.Component {
 
@@ -82,16 +83,15 @@ export default class BillLines extends React.Component {
 
   render() {
     return (
-      <>
-        <tr style={{ cursor: 'pointer' }}>
-          <td>{this.props.item.number}</td>
-          <td className="text-center">{this.props.item.period}</td>
-          <td className="text-center">{this.props.item.total_value}</td>
-          <td className="text-center">
-            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}>Оплатити</button>
-          </td>
-        </tr>
-      </>
+      <tr style={{ cursor: 'pointer' }}>
+        <td>{this.props.item.number}</td>
+        <td className="text-center">{this.props.item.period}</td>
+        <td className="text-center">{this.props.item.total_value}</td>
+        <td className="text-center">
+          <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
+            text="cabinet.billCard.pay"/></button>
+        </td>
+      </tr>
     );
   }
 }

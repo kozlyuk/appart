@@ -1,4 +1,5 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import logo200Image from 'assets/img/logo/logo_small_white.png';
 import React from 'react';
 import {
   MdAttachMoney,
@@ -17,17 +18,26 @@ import { Collapse, Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap
 import bn from 'utils/bemnames';
 import { Text } from 'react-easy-i18n';
 
+/**
+ * @type {{backgroundImage: string, backgroundSize: string, backgroundRepeat: string}}
+ */
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat'
 };
 
+/**
+ * @type {({name: *, exact: boolean, to: string, Icon: }|{name: *, exact: boolean, to: string, Icon: })[]}
+ */
 const condominiumComponents = [
   { to: '/house', name: <Text text="sidebar.house"/>, exact: false, Icon: MdWidgets },
   { to: '/apartment', name: <Text text="sidebar.apartment"/>, exact: false, Icon: MdWidgets }
 ];
 
+/**
+ * @type {({name: *, exact: boolean, to: string, Icon: }|{name: *, exact: boolean, to: string, Icon: }|{name: *, exact: boolean, to: string, Icon: }|{name: *, exact: boolean, to: string, Icon: })[]}
+ */
 const navItems = [
   { to: '/', name: <Text text="sidebar.home"/>, exact: true, Icon: MdDashboard },
   { to: '/user', name: <Text text="sidebar.user"/>, exact: false, Icon: MdWeb },
@@ -35,15 +45,22 @@ const navItems = [
   { to: '/payment', name: <Text text="sidebar.payment"/>, exact: true, Icon: MdPayment }
 ];
 
+/**
+ * @type {({name: *, exact: boolean, to: string, Icon: }|{name: *, exact: boolean, to: string, Icon: })[]}
+ */
 const serviceComponents = [
   { to: '/order', name: <Text text="sidebar.order"/>, exact: false, Icon: MdEvent },
   { to: '/work', name: <Text text="sidebar.work"/>, exact: false, Icon: MdWork }
 ];
 
+/**
+ * @type {sidebar}
+ */
 const bem = bn.create('sidebar');
 
 class Sidebar extends React.Component {
   state = {
+    isOpenGlobalMenu: true,
     isOpenComponentCondominium: false,
     isOpenComponentNotice: false,
     isOpenComponentService: false,
@@ -51,6 +68,10 @@ class Sidebar extends React.Component {
     isOpenPages: true
   };
 
+  /**
+   * @param name
+   * @return {function(...[*]=)}
+   */
   handleClick = name => () => {
     this.setState(prevState => {
       const isOpen = prevState[`isOpen${name}`];
@@ -67,16 +88,13 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground}/>
         <div className={bem.e('content')}>
           <Navbar>
-            {/*<img*/}
-            {/*  src={logo200Image}*/}
-            {/*  width="auto"*/}
-            {/*  height="50"*/}
-            {/*  className="ml-auto mr-auto"*/}
-            {/*  alt=""*/}
-            {/*/>*/}
-            <div className="container">
-              <h2 className="m-auto">Дім онлайн</h2>
-            </div>
+            <img
+              src={logo200Image}
+              width="auto"
+              height="70"
+              className="ml-auto mr-auto"
+              alt=""
+            />
           </Navbar>
           <Nav vertical>
             {navItems.map(({ to, name, exact, Icon }, index) => (

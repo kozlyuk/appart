@@ -94,7 +94,6 @@ export default class BillList extends AbstractListView {
     } else {
       return (
         <Page
-          breadcrumbs={[{ name: <Text text="sidebar.bills"/>, active: true }]}
           className="TablePage"
         >
           <BillFilter

@@ -12,6 +12,7 @@ import Auth from '../../../auth/auth';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import CabinetBreadcrumbs from '../../../breadcrumbs/CabinetBreadcrumbs';
+import { LangContext } from '../../../globalContext/langContext';
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -63,6 +64,8 @@ export default class Navbar extends React.Component {
       );
   }
 
+  static contextType = LangContext;
+
   render() {
     const userCardToggleClass = (this.props.isCardToggled ?
       'dropdown-menu dropdown-menu-right align-self-center show'
@@ -92,14 +95,14 @@ export default class Navbar extends React.Component {
               <p/>
             </div>
             <div className=" alert alert-success align-self-center p-1 mb-0 mx-auto" role="alert">
-              Заборгованість: {this.state.data}
+              <Text text="cabinet.debt"/>: {this.state.data}
             </div>
             <ul className="navbar-nav">
               <li className="nav-item  align-self-center ">
-                <a href={process.env.REACT_APP_HOUSE_URL} className="nav-link">House</a>
+                <a href={process.env.REACT_APP_HOUSE_URL} className="nav-link"><Text text="cabinet.house"/></a>
               </li>
               <li className="nav-item   align-self-center ">
-                <a href={process.env.REACT_APP_COMPANY_URL} className="nav-link">Company</a>
+                <a href={process.env.REACT_APP_COMPANY_URL} className="nav-link"><Text text="cabinet.company"/></a>
               </li>
               <li className="dropdown nav-item my-auto " style={{ maxWidth: '70px' }}>
                 <button onClick={this.props.toggleUserCard} className="btn dropdown-toggle " href="#" role="button"
@@ -116,17 +119,27 @@ export default class Navbar extends React.Component {
                     <div className="card-title">{this.props.userFirstName} {this.props.userLastName}</div>
                     <div className="card-subtitle">{this.props.userEmail}</div>
                   </div>
-                  <Link className="dropdown-item" to="/">Адміністрування</Link>
-                  <a className="dropdown-item disabled">
-                    <del>Мій профіль</del>
+                  <Link className="dropdown-item" to="/">
+                    <Text text="cabinet.userCard.administration"/>
+                  </Link>
+                  <a style={{ cursor: 'pointer' }} className="dropdown-item"
+                     onClick={() => this.context('en', 'noReload')}>
+                    English version
+                  </a>
+                  <a style={{ cursor: 'pointer' }} className="dropdown-item"
+                     onClick={() => this.context('uk', 'noReload')}>
+                    Українська версія
                   </a>
                   <a className="dropdown-item disabled">
-                    <del>Персональний кабінет</del>
+                    <del><Text text="cabinet.userCard.profile"/></del>
+                  </a>
+                  <a className="dropdown-item disabled">
+                    <del><Text text="cabinet.userCard.cabinet"/></del>
                   </a>
                   <div className="dropdown-divider"/>
                   <a className="dropdown-item" style={{ cursor: 'pointer' }} onClick={() => {
                     this.user.logout();
-                  }}>Вийти</a>
+                  }}><Text text="cabinet.userCard.logOut"/></a>
                 </div>
               </li>
             </ul>

@@ -7,7 +7,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardText,
   Col,
   Modal,
   ModalBody,
@@ -20,20 +19,19 @@ import { Text } from 'react-easy-i18n';
 import UserCard from '../../components/Card/UserCard';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import UserFilter from './filter/UserFilter';
 import PageSpinner from '../../components/PageSpinner';
-import { FaCheck } from 'react-icons/fa';
-import { MdClose } from 'react-icons/md';
+import HouseFilter from './filter/OrderFilter';
+import { MdFiberManualRecord } from 'react-icons/md';
 
 
-export default class UserList extends AbstractListView {
+export default class OrderList extends AbstractListView {
   /**
    *
    * @param props
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_USERS_URL;
+    this.dataUrl = process.env.REACT_APP_ORDER;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
@@ -58,43 +56,34 @@ export default class UserList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="userList.tableHeader.avatar"/></th>
-          <th><Text text="userList.tableHeader.firstName"/></th>
-          <th><Text text="userList.tableHeader.lastName"/></th>
-          <th>Активний</th>
-          <th>Персонал</th>
-          {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
-          <th><Text text="userList.tableHeader.actions"/></th>
+          <th><Text text="orderList.tableHeader.apartment"/></th>
+          <th><Text text="orderList.tableHeader.execStatus"/></th>
+          <th><Text text="orderList.tableHeader.payStatus"/></th>
+          <th><Text text="orderList.tableHeader.warning"/></th>
+          <th><Text text="orderList.tableHeader.workName"/></th>
+          <th><Text text="orderList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
-        {this.state.data.map((user) => (
-          <tr key={user.pk} align="center">
-            <td width="2%">
-              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={user.avatar}
-                   alt="avatar"/>
-            </td>
-            <td>{user.first_name}</td>
-            <td>{user.last_name}</td>
-            <td>
-              {user.is_active ?
-                <FaCheck className="text-success"/>
-                :
-                <MdClose className="text-danger"/>
-              }
-            </td>
-            <td>
-              {user.is_staff ?
-                <FaCheck className="text-success"/>
-                :
-                <MdClose className="text-danger"/>
-              }
-            </td>
-            {/*<td>{user.birth_date}</td>*/}
+        {this.state.data.map((order) => (
+          <tr key={order.pk} align="center">
+            <td>{order.apartment_name}</td>
+            {order.exec_status === 'New' ?
+              <td>
+                <MdFiberManualRecord
+                  color={'#45b649'}
+                  style={{ marginBottom: '2px' }}
+                  size={12}
+                /> {order.exec_status}
+              </td> :
+              <td>{order.exec_status}</td>}
+            <td>{order.pay_status}</td>
+            <td>{order.warning}</td>
+            <td>{order.work_name}</td>
             <td width="15%">
-              <Link to={`user/${user.pk}/edit`}>
+              <Link to={`order/${order.pk}/edit`}>
                 <Badge color="warning" className="mr-1">
-                  <Text text="userList.tableHeader.editBtn"/>
+                  <Text text="orderList.tableHeader.editBtn"/>
                 </Badge>
               </Link>
             </td>
@@ -103,23 +92,18 @@ export default class UserList extends AbstractListView {
               isOpen={this.state.modal}
               toggle={this.toggle()}
               className={this.props.className}>
-              <ModalHeader toggle={this.toggle()}>{user.first_name} {user.last_name}</ModalHeader>
+              <ModalHeader toggle={this.toggle()}>{order.name}</ModalHeader>
               <ModalBody>
                 <Col md={12}>
                   <UserCard
-                    avatar={user.avatar}
-                    title={user.first_name}
-                    subtitle={user.last_name}
-                    text={user.email}
+                    avatar={order.logo}
+                    title={order.name}
+                    subtitle={order.address}
+                    text={order.description}
                     style={{
                       height: 300
                     }}
                   >
-                    <CardBody className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-                      {user.mobile_number ?
-                        <CardText><Text text="userDetail.mobileNumber"/> : {user.mobile_number}</CardText> : <></>}
-
-                    </CardBody>
                   </UserCard>
                 </Col>
               </ModalBody>
@@ -157,7 +141,7 @@ export default class UserList extends AbstractListView {
         <Page
           className="TablePage"
         >
-          <UserFilter
+          <HouseFilter
             filterSearchHandler={this.filterSearchHandler}
             isLoaded={true}
           />
@@ -165,10 +149,10 @@ export default class UserList extends AbstractListView {
             <Col>
               <Card className="mb-3">
                 <CardHeader>
-                  <Text text="sidebar.user"/>
-                  <Link to="/user/new">
+                  <Text text="sidebar.order"/>
+                  <Link to="/order/new">
                     <Button size="sm" className="float-right" color="success">
-                      <Text text="userList.addBtn"/>
+                      <Text text="orderList.addBtn"/>
                     </Button>
                   </Link>
                 </CardHeader>
