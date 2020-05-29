@@ -197,5 +197,5 @@ class GroupChoices(views.APIView):
     """
     def get(self, request):
         # Sending JSON list EXEC_STATUS_CHOICES
-        json_data = [Group.objects.values_list('name', flat=True)]
+        json_data = [Group.objects.values_list('pk', 'name')]
         return Response(json_data, status=status.HTTP_200_OK)
