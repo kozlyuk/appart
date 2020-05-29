@@ -388,14 +388,15 @@ export default class OrderForm extends AbstractFormView {
   content() {
     return (
       <Fragment>
-        <CardHeader>{this.state.orderData.work_name || 'Нове замовлення'}</CardHeader>
+        <CardHeader>{this.state.orderData.work_name || <Text text="orderForm.newOrderHeader"/>}</CardHeader>
         <CardBody>
           <Form id="orderForm" onSubmit={this.handleSubmit}>
             <SelectWithChoices changeHandler={this._onHouseItemSelect}
                                defaultValue={this.state.orderData.house}
-                               label="Будинок" name="house"
+                               label={<Text text="orderForm.house"/>}
+                               name="house"
                                error={this.state.fieldError.house}
-                               helpText={!this.state.isApartmentSelectShow && 'Для вибору номеру апартаментів спочатку виберіть будинок'}
+                               helpText={!this.state.isApartmentSelectShow && <Text text="orderForm.houseHelpText"/>}
             >
               {this.state.housesData.map(house => (
                 <option
@@ -408,23 +409,32 @@ export default class OrderForm extends AbstractFormView {
             </SelectWithChoices>
             {this.state.isApartmentSelectShow ?
               <SelectWithChoices
-                label="Апартаменти" name="apartment"
+                label={<Text text="orderForm.apartment"/>}
+                name="apartment"
                 error={this.state.fieldError.apartment}
                 defaultValue={this.state.orderData.apartment}
               >
                 {this.state.apartmentsData.map(apartment => (
                   <option key={apartment.pk}
                           value={apartment.pk}>
-                    Апартаменти №: {apartment.number} {apartment.resident_name && `Житель: ${apartment.resident_name}`}
+                    №: {apartment.number} {apartment.resident_name && `${apartment.resident_name}`}
                   </option>
                 ))}
               </SelectWithChoices>
               :
-              <SelectWithChoices type="text" label="Апартаменти" name="apartment" disabled
-                                 error={this.state.fieldError.apartment}
-                                 value={this.state.orderData.apartment_name}/>
+              <SelectWithChoices
+                type="text"
+                label={<Text text="orderForm.apartment"/>}
+                name="apartment" disabled
+                error={this.state.fieldError.apartment}
+                value={this.state.orderData.apartment_name}
+              />
             }
-            <SelectWithChoices label="Робота" name="work" error={this.state.fieldError.work}>
+            <SelectWithChoices
+              label={<Text text="orderForm.work"/>}
+              name="work"
+              error={this.state.fieldError.work}
+            >
               {this.state.worksData.map(work => (
                 <option key={work.pk} value={work.pk}>
                   {work.name}
@@ -432,7 +442,7 @@ export default class OrderForm extends AbstractFormView {
               ))}
             </SelectWithChoices>
             <SelectWithChoices
-              label="Статус виконання"
+              label={<Text text="orderForm.execStatus"/>}
               name="exec_status"
               error={this.state.fieldError.exec_status}
               defaultValue={this.state.orderData.exec_status}
@@ -444,7 +454,7 @@ export default class OrderForm extends AbstractFormView {
               ))}
             </SelectWithChoices>
             <SelectWithChoices
-              label="Статус оплати"
+              label={<Text text="orderForm.payStatus"/>}
               name="pay_status"
               error={this.state.fieldError.pay_status}
               defaultValue={this.state.orderData.pay_status}
@@ -455,18 +465,20 @@ export default class OrderForm extends AbstractFormView {
                 </option>
               ))}
             </SelectWithChoices>
-            <InputWithLabel name={'information'}
-                            label={'Інформація'}
-                            type={'textarea'}
-                            defaultValue={this.state.orderData.information}
-                            helpText={'Додатковий коментар'}
-                            error={this.state.fieldError.information}
+            <InputWithLabel
+              name={'information'}
+              label={<Text text="orderForm.information"/>}
+              type={'textarea'}
+              defaultValue={this.state.orderData.information}
+              helpText={<Text text="orderForm.informationHelpText"/>}
+              error={this.state.fieldError.information}
             />
-            <InputWithLabel name={'warning'}
-                            label={'Зауваження'}
-                            type={'textarea'}
-                            defaultValue={this.state.orderData.warning}
-                            error={this.state.fieldError.warning}
+            <InputWithLabel
+              name={'warning'}
+              label={<Text text="orderForm.warning"/>}
+              type={'textarea'}
+              defaultValue={this.state.orderData.warning}
+              error={this.state.fieldError.warning}
             />
           </Form>
           <hr/>
@@ -476,28 +488,37 @@ export default class OrderForm extends AbstractFormView {
               <hr/>
               <input id="pk" name="pk" type="hidden" value={executor.pk}/>
               {(!executor.isEditable) && <input id="executor" name="executor" type="hidden" value={executor.executor}/>}
-              <SelectWithButton label="Виконавець" name="executor"
-                                disabled={(!executor.isEditable)}
-                                index={index}
-                                id={executor.pk}
-                                token={this._user.getAuthToken()}
-                                callback={this.deleteSuccess}
-                                buttonText={'Видалити'}>
+              <SelectWithButton
+                label={<Text text="orderForm.executorsSet.executor"/>}
+                name="executor"
+                disabled={(!executor.isEditable)}
+                index={index}
+                id={executor.pk}
+                token={this._user.getAuthToken()}
+                callback={this.deleteSuccess}
+                buttonText={<Text text="buttons.deleteBtn"/>}
+              >
                 {this.state.usersChoices.map(item => (
                   <option selected={executor.executor === item.pk} key={item.pk} value={item.pk}>
                     {`${item.first_name} ${item.last_name}`}
                   </option>
                 ))}
               </SelectWithButton>
-              <SelectWithChoices label="Статус виконання" name="exec_status">
+              <SelectWithChoices
+                label={<Text text="orderForm.execStatus"/>}
+                name="exec_status"
+              >
                 {this.state.executorChoices[0].map(item => (
                   <option selected={executor.exec_status === item[1]} key={item[0]} value={item[1]}>
                     {item[1]}
                   </option>
                 ))}
               </SelectWithChoices>
-              <DataInput label={'Запланований час'} name={`scheduled_time_${index}`}
-                         value={executor.scheduled_time} helpText={'Плановий час закінчення роботи'}
+              <DataInput
+                label={<Text text="orderForm.executorsSet.scheduledTime"/>}
+                name={`scheduled_time_${index}`}
+                value={executor.scheduled_time}
+                helpText={<Text text="orderForm.executorsSet.scheduledTimeHelpText"/>}
               />
             </Form>
           ))}

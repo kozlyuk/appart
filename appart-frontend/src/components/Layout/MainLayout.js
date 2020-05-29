@@ -3,6 +3,7 @@ import React from 'react';
 import { MdImportantDevices } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
+import { Text } from 'react-easy-i18n';
 
 class MainLayout extends React.Component {
   /**
@@ -33,8 +34,9 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdImportantDevices/>,
-        message: 'Welcome to Apart dashboard!',
-        level: 'info'
+        message: <Text text="global.welcomeNotification"/>,
+        level: 'info',
+        position: 'br'
       });
     }, 1500);
 

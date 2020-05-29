@@ -108,7 +108,7 @@ export default class BillUpdate extends AbstractFormView {
         <CardBody>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="apartment">Апартаменти</Label>
+              <Label for="apartment"><Text text="billForm.apartment"/></Label>
               <Input
                 name="apartment"
                 type="text"
@@ -118,7 +118,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="number">Номер</Label>
+              <Label for="number"><Text text="billForm.apartmentNumber"/></Label>
               <Input
                 type="text"
                 name="number"
@@ -128,7 +128,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="total_value">Загальна вартість</Label>
+              <Label for="total_value"><Text text="billForm.totalValue"/></Label>
               <Input
                 type="number"
                 name="total_value"
@@ -138,7 +138,7 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="period">Період</Label>
+              <Label for="period"><Text text="billForm.period"/></Label>
               <Input
                 type="text"
                 name="period"
@@ -148,10 +148,10 @@ export default class BillUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="period">Призначення</Label>
+              <Label for="purpose"><Text text="billForm.purpose"/></Label>
               <Input
                 type="text"
-                name="period"
+                name="purpose"
                 defaultValue={this.state.data.purpose}
                 onChange={this.handleChange}
                 disabled

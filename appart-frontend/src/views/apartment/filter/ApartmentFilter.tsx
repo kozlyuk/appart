@@ -70,7 +70,7 @@ export default class ApartmentFilter extends React.Component<FilterInterface, {}
           <Col md={6}>
             <Form inline className="mx-auto mb-2" onSubmit={filterSearchHandler}>
               <FormGroup style={{ width: '100%' }}>
-                <Label sm={2} for="search">Пошук</Label>
+                <Label sm={2} for="search"><Text text="global.search"/></Label>
                 <Col className="col-sm-8 pr-0 pl-0">
                   <Input
                     style={{ width: '100%' }}
@@ -81,7 +81,7 @@ export default class ApartmentFilter extends React.Component<FilterInterface, {}
                   />
                 </Col>
                 <Col className="col-sm-2 pr-0 pl-0">
-                  <Button size="sm" className="ml-2" type="submit" color="primary">Пошук</Button>
+                  <Button size="sm" className="ml-2" type="submit" color="primary"><Text text="global.search"/></Button>
                 </Col>
               </FormGroup>
             </Form>

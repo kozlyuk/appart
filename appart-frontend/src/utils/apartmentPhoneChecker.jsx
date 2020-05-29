@@ -159,7 +159,9 @@ export default class ApartmentPhoneChecker extends React.Component {
               <CardText>
                 <p>email: <strong>{this.state.responseData.email}</strong></p>
                 {/*<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>*/}
-                <Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
+                <Button onClick={this.addUserPkToForm} color="success">
+                  <Text text="phoneChecker.addUser"/>
+                </Button>
               </CardText>
             </CardBody>
           </Card>
@@ -168,7 +170,7 @@ export default class ApartmentPhoneChecker extends React.Component {
     } else if (this.state.userDoesNotExist) {
       responseData = (
         <Alert className="mt-2" color="danger">
-          Користувач з номером {this.state.mobileNumber} відсутній в базі.
+          <Text text="phoneChecker.userDoesNotExist" params={{ user: this.state.mobileNumber }}/>
         </Alert>
       );
     }
@@ -189,7 +191,9 @@ export default class ApartmentPhoneChecker extends React.Component {
             <CardText>
               <p>email: <strong>{this.state.responseData.email}</strong></p>
               {/*<p>birth_date: <strong>{this.state.responseData.birth_date}</strong></p>*/}
-              <Button onClick={this.addUserPkToForm} color="success">Додати користувача до апартаментів</Button>
+              <Button onClick={this.addUserPkToForm} color="success">
+                <Text text="phoneChecker.addUser"/>
+              </Button>
             </CardText>
           </CardBody>
         </Card>
@@ -197,24 +201,24 @@ export default class ApartmentPhoneChecker extends React.Component {
     } else if (this.state.userDoesNotExist) {
       userInfo = (
         <Alert className="mt-2" color="danger">
-          Користувач з номером {this.state.mobileNumber} відсутній в базі.
+          <Text text="phoneChecker.userDoesNotExist" params={{ user: this.state.mobileNumber }}/>
         </Alert>
       );
     } else {
       userInfo = ('');
     }
 
-    let buttonText = 'Введіть номер телефону для перевірки користувача';
+    let buttonText = <Text text="phoneChecker.placeholder"/>;
     let ifButtonDisabled = true;
     if (this.state.errors.mobileNumber.length === 0) {
-      buttonText = 'Перевірити';
+      buttonText = <Text text="phoneChecker.check"/>;
       ifButtonDisabled = false;
     }
 
     const userCanNotExist = (
       <Fragment>
         <FormGroup>
-          <Label for="phoneNumber">Введіть номер телефону жителя, щоб підв'язати його до апартаментів</Label>
+          <Label for="phoneNumber"><Text text="phoneChecker.placeholder"/></Label>
           {this.state.errors.mobileNumber.length > 0 &&
           // error field
           <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}
@@ -250,7 +254,7 @@ export default class ApartmentPhoneChecker extends React.Component {
       return (
         <Fragment>
           <FormGroup>
-            <Label for="phoneNumber">Номер телефону жителя</Label>
+            <Label for="phoneNumber"><Text text="phoneChecker.number"/></Label>
             {this.state.errors.mobileNumber.length > 0 &&
             // error field
             <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}

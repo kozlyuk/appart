@@ -29,7 +29,7 @@ import OrderForm from './views/order/OrderForm';
 import { setCurrentLocale } from 'react-easy-i18n';
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
-const UserList = React.lazy(() => import('./views/user/list'));
+const UserList = React.lazy(() => import('./views/user/UserList'));
 const UserDetail = React.lazy(() => import('./views/user/userDetail'));
 const UserUpdate = React.lazy(() => import('./views/user/userUpdate'));
 const UserNew = React.lazy(() => import('./views/user/userNew'));

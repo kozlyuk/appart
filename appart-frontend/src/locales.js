@@ -4,6 +4,8 @@ registerLang('en', {
   global: {
     loading: 'Loading...',
     error: 'Error',
+    search: 'Search',
+    welcomeNotification: 'Welcome to Dim Online!',
     validateErrors: {
       emptyField: 'The field can not be empty!',
       incorrectNumber: 'Please enter the correct quantity!',
@@ -46,6 +48,14 @@ registerLang('en', {
       actions: 'Actions'
     }
   },
+  paymentForm: {
+    header: 'Payment for apartment:',
+    apartment: 'Apartment',
+    paymentType: 'Payment type',
+    date: 'Date',
+    value: 'Value',
+    purpose: 'Purpose:'
+  },
   userList: {
     addBtn: 'Add new user',
     tableHeader: {
@@ -53,6 +63,8 @@ registerLang('en', {
       lastName: 'Last name',
       avatar: 'Avatar image',
       birthDate: 'Birth date',
+      isActive: 'Active',
+      isPersonal: 'Personal',
       actions: 'Actions',
       editBtn: 'Edit',
       deleteBtn: 'Delete'
@@ -105,6 +117,11 @@ registerLang('en', {
     birthDate: 'Birth date',
     avatar: 'Avatar image',
     theme: 'Theme',
+    permissions: 'Permissions',
+    isActive: 'Active',
+    isActiveHelpText: 'The user will have access to the personal page',
+    isStaff: 'Staff',
+    isStaffHelpText: 'The user will have access to admin page',
     newUser: {
       title: 'New user'
     }
@@ -133,13 +150,21 @@ registerLang('en', {
     area: 'Area',
     resident: 'Resident number',
     residentCount: 'Resident count',
-    description: 'description',
+    description: 'Description',
+    successUserAddMessage: 'If you save the form, the user with the number :user will be added to the apartment.',
     newApartment: {
       title: 'New apartment'
     }
   },
   apartmentDelete: {
     text: 'Are you sure you want to remove apartment'
+  },
+  phoneChecker: {
+    number: 'User phone number',
+    placeholder: 'Enter the phone number of the resident to link him to the apartment',
+    addUser: 'Add user to apartment',
+    userDoesNotExist: 'User with number :user is not in the database.',
+    check: 'Check'
   },
   choiceList: {
     addBtn: 'Add new choice ',
@@ -196,8 +221,54 @@ registerLang('en', {
     emptyDuration: 'Duration empty',
     addBtn: 'Add work'
   },
+  workForm: {
+    name: 'Work',
+    priceCode: 'Price code',
+    price: 'Price',
+    description: 'Description',
+    duration: 'Duration'
+  },
   newsDelete: {
     text: 'Are you sure you want to remove news'
+  },
+  billList: {
+    tableHeader: {
+      apartment: 'Apartment',
+      apartmentNumber: 'Number',
+      purpose: 'Purpose',
+      actions: 'Actions'
+    },
+    detail: 'Detail'
+  },
+  billForm: {
+    apartment: 'Apartment',
+    apartmentNumber: 'Number',
+    totalValue: 'Total value',
+    period: 'Period',
+    purpose: 'Purpose'
+  },
+  orderForm: {
+    newOrderHeader: 'New order',
+    house: 'House',
+    houseHelpText: 'To select an apartment number, first select a house',
+    apartment: 'Apartment',
+    work: 'Work',
+    execStatus: 'Execution status',
+    payStatus: 'Pay status',
+    information: 'Information',
+    informationHelpText: 'Additional comment',
+    warning: 'Comment',
+    executorsSet: {
+      header: 'Executors',
+      executor: 'Executor',
+      scheduledTime: 'Sheduled time',
+      scheduledTimeHelpText: 'Scheduled end time'
+    },
+    selectValues: {
+      apartment: 'Apartment №: :number',
+      resident: 'Resident:'
+    },
+    description: 'Description'
   },
   cabinet: {
     debt: 'Debt',
@@ -237,6 +308,8 @@ registerLang('en', {
     }
   },
   buttons: {
+    yes: 'Yes',
+    no: 'No',
     submitBtn: 'Save',
     returnBtn: 'Return',
     closeBtn: 'Close',
@@ -248,6 +321,8 @@ registerLang('uk', {
   global: {
     loading: 'Завантаження...',
     error: 'Помилка',
+    search: 'Пошук',
+    welcomeNotification: 'Вітаємо в Дім Онлайн!',
     validateErrors: {
       emptyField: 'Поле не може бути пустим!',
       incorrectNumber: 'Вкажіть вірну кількість!',
@@ -290,6 +365,14 @@ registerLang('uk', {
       actions: 'Дії'
     }
   },
+  paymentForm: {
+    header: 'Платіж для апартаментів:',
+    apartment: 'Апартаменти',
+    paymentType: 'Тип платежу',
+    date: 'Дата',
+    value: 'Вартість',
+    purpose: 'Призначення:'
+  },
   userList: {
     addBtn: 'Додати нового користувача',
     tableHeader: {
@@ -297,6 +380,8 @@ registerLang('uk', {
       lastName: 'Прізвище',
       avatar: 'Аватар',
       birthDate: 'Дата народження',
+      isActive: 'Активний',
+      isPersonal: 'Персонал',
       actions: 'Дії',
       editBtn: 'Редагувати',
       deleteBtn: 'Видалити'
@@ -349,6 +434,11 @@ registerLang('uk', {
     birthDate: 'Дата народження',
     avatar: 'Аватар',
     theme: 'Тема',
+    permissions: 'Права доступу',
+    isStaff: 'Персонал',
+    isStaffHelpText: 'Користувач матиме доступ до адмін сторінки',
+    isActive: 'Активний',
+    isActiveHelpText: 'Користувач матиме доступ до особистого кабінету',
     newUser: {
       title: 'Новий користувач'
     }
@@ -378,12 +468,20 @@ registerLang('uk', {
     resident: 'Номер телефону жителя',
     residentCount: 'Кількість жителів',
     description: 'Описання',
+    successUserAddMessage: 'При збереженні форми, користувача з номером :user буде додано до апартаментів.',
     newApartment: {
       title: 'Нові апартаменти'
     }
   },
   apartmentDelete: {
     text: 'Дійсно бажаєте видалити апартаменти'
+  },
+  phoneChecker: {
+    number: 'Номер телефону жителя',
+    placeholder: 'Введіть номер телефону жителя, щоб підв\'язати його до апартаментів',
+    addUser: 'Додати користувача до апартаментів',
+    userDoesNotExist: 'Користувач з номером :user відсутній в базі.',
+    check: 'Перевірити'
   },
   choiceList: {
     addBtn: 'Додати варіант вибору ',
@@ -450,7 +548,48 @@ registerLang('uk', {
     description: 'Описання',
     duration: 'Тривалість'
   },
-
+  billList: {
+    tableHeader: {
+      apartment: 'Апартаменти',
+      apartmentNumber: 'Номер',
+      purpose: 'Призначення',
+      actions: 'Дії'
+    },
+    detail: 'Деталі'
+  },
+  billForm: {
+    apartment: 'Апартаменти',
+    apartmentNumber: 'Номер',
+    totalValue: 'Загальна вартість',
+    period: 'Період',
+    purpose: 'Призначення'
+  },
+  orderForm: {
+    newOrderHeader: 'Нове замовлення',
+    house: 'Будинок',
+    houseHelpText: 'Для вибору номеру апартаментів спочатку виберіть будинок',
+    apartment: 'Апартаменти',
+    work: 'Робота',
+    execStatus: 'Статус виконання',
+    payStatus: 'Статус оплати',
+    information: 'Інформація',
+    informationHelpText: 'Додатковий коментар',
+    warning: 'Зауваження',
+    executorsSet: {
+      header: 'Виконавці',
+      executor: 'Виконавець',
+      scheduledTime: 'Запланований час',
+      scheduledTimeHelpText: 'Плановий час закінчення роботи'
+    },
+    deleteModal: {
+      title: 'Дійсно бажаєте видалити виконавця?'
+    },
+    selectValues: {
+      apartment: 'Апартаменти №: :number',
+      resident: 'Житель:'
+    },
+    description: 'Опис'
+  },
   cabinet: {
     debt: 'Заборгованість',
     house: 'Будинок',
@@ -488,8 +627,9 @@ registerLang('uk', {
       created: 'Дата створення'
     }
   },
-
   buttons: {
+    yes: 'Так',
+    no: 'Ні',
     submitBtn: 'Зберегти',
     returnBtn: 'Назад',
     closeBtn: 'Закрити',
