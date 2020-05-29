@@ -143,7 +143,10 @@ export default class OrderNew extends AbstractFormView {
             <form id="newOrder" onSubmit={this.handleSubmit}>
               <div className="form-group form-group-cabinet row align-items-center  ">
                 <label htmlFor="work"
-                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Назва роботи</label>
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right"
+                >
+                  <Text text="orderForm.work"/>
+                </label>
                 <div className="col-sm-8  my-3">
                   <Input
                     className="form-control form-control-custom"
@@ -162,7 +165,9 @@ export default class OrderNew extends AbstractFormView {
 
               <div className="form-group form-group-cabinet row align-items-center">
                 <label htmlFor="apartment"
-                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Номер апартаментів</label>
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right">
+                  <Text text="orderForm.apartment"/>
+                </label>
                 <div className="col-sm-8  my-3">
                   <Input
                     className="form-control form-control-custom"
@@ -180,7 +185,9 @@ export default class OrderNew extends AbstractFormView {
               </div>
               <div className="form-group form-group-cabinet row align-items-center">
                 <label htmlFor="information"
-                       className="col-sm-4 col row-form-label pr-4 text-sm-right">Опис</label>
+                       className="col-sm-4 col row-form-label pr-4 text-sm-right">
+                  <Text text="orderForm.description"/>
+                </label>
                 <div className="col-sm-8  my-3">
                   <Input
                     className={this.state.errors.description.length ? 'form-control form-control-custom is-invalid' : 'form-control form-control-custom'}
@@ -203,7 +210,9 @@ export default class OrderNew extends AbstractFormView {
                   </Link>
                 </div>
                 <div className="col-sm-8 ">
-                  <button type="submit" className="btn btn-success mt-3 btn-add">Надіслати</button>
+                  <button type="submit" className="btn btn-success mt-3 btn-add">
+                    <Text text="buttons.submitBtn"/>
+                  </button>
                 </div>
               </div>
             </form>

@@ -42,14 +42,14 @@ export default class HouseFilter extends React.Component<FilterInterface, {}> {
         <Row form>
           <Form inline className="mx-auto mb-2" onSubmit={filterSearchHandler}>
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-              <Label className="mr-sm-2" for="search">Пошук</Label>
+              <Label className="mr-sm-2" for="search"><Text text="global.search"/></Label>
               <Input
                 type="text"
                 name="search"
                 filterquery="filter"
                 id="search"
               />
-              <Button className="ml-2" type="submit" color="primary">Пошук</Button>
+              <Button className="ml-2" type="submit" color="primary"><Text text="global.search"/></Button>
             </FormGroup>
           </Form>
         </Row>

@@ -162,11 +162,11 @@ export default class PaymentUpdate extends AbstractFormView {
   content() {
     return (
       <Fragment>
-        <CardHeader>Payment</CardHeader>
+        <CardHeader><Text text="paymentForm.header"/> {this.state.data.apartment}</CardHeader>
         <CardBody>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="apartment">Апартаменти</Label>
+              <Label for="apartment"><Text text="paymentForm.apartment"/></Label>
               <Input
                 name="apartment"
                 type="text"
@@ -176,7 +176,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="payment_type">Тип оплати</Label>
+              <Label for="payment_type"><Text text="paymentForm.paymentType"/></Label>
               <Input
                 type="text"
                 name="payment_type"
@@ -186,7 +186,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="date">Дата</Label>
+              <Label for="date"><Text text="paymentForm.date"/></Label>
               <Input
                 type="text"
                 name="date"
@@ -196,7 +196,7 @@ export default class PaymentUpdate extends AbstractFormView {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="value">Вартість</Label>
+              <Label for="value"><Text text="paymentForm.value"/></Label>
               <Input
                 type="text"
                 name="value"
@@ -207,7 +207,8 @@ export default class PaymentUpdate extends AbstractFormView {
             </FormGroup>
             {!this.state.data.payment_service &&
             <ListGroup className="mb-3">
-              <ListGroupItem disabled className="justify-content-between">Призначення:</ListGroupItem>
+              <ListGroupItem disabled className="justify-content-between"><Text
+                text="paymentForm.purpose"/></ListGroupItem>
               {this.state.data.payment_service.map(item => {
                 return (
                   <ListGroupItem className="justify-content-between">{item.service} <Badge

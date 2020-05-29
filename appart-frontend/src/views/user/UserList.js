@@ -61,8 +61,8 @@ export default class UserList extends AbstractListView {
           <th><Text text="userList.tableHeader.avatar"/></th>
           <th><Text text="userList.tableHeader.firstName"/></th>
           <th><Text text="userList.tableHeader.lastName"/></th>
-          <th>Активний</th>
-          <th>Персонал</th>
+          <th><Text text="userList.tableHeader.isActive"/></th>
+          <th><Text text="userList.tableHeader.isPersonal"/></th>
           {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
           <th><Text text="userList.tableHeader.actions"/></th>
         </tr>

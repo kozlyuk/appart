@@ -220,7 +220,7 @@ export default class ApartmentNew extends AbstractFormView {
             }
             {this.state.addedUserToForm &&
             <Alert className="mt-2" color="success">
-              При збереженні форми, користувача з номером {this.state.residentIsPinned} буде додано до апартаментів.
+              <Text text="apartmentForm.successUserAddMessage" params={{ user: this.state.residentIsPinned }}/>
             </Alert>
             }
             <FormGroup>

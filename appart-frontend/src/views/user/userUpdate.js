@@ -288,29 +288,29 @@ export default class UserUpdate extends AbstractFormView {
               }
             </FormGroup>
             <FormGroup>
-              <Label for="exampleCheckbox">Права доступу</Label>
+              <Label for="exampleCheckbox"><Text text="userForm.permissions"/></Label>
               <div>
                 <CustomInput
                   type="switch"
                   id="is_active"
-                  name="is_active"
+                  name={<Text text="userForm.isActive"/>}
                   label="Активний"
                   checked={this.state.data.is_active}
                   onChange={() => this.switchToggler(this, 'is_active')}
                 />
                 <FormText color="muted">
-                  Користувач матиме доступ до особистого кабінету
+                  <Text text="userForm.isActiveHelpText"/>
                 </FormText>
                 <CustomInput
                   type="switch"
                   id="is_staff"
                   name="is_staff"
-                  label="Персонал"
+                  label={<Text text="userForm.isStaff"/>}
                   checked={this.state.data.is_staff}
                   onChange={() => this.switchToggler(this, 'is_staff')}
                 />
                 <FormText color="muted">
-                  Користувач матиме доступ до адмін сторінки
+                  <Text text="userForm.isStaffHelpText"/>
                 </FormText>
               </div>
             </FormGroup>
