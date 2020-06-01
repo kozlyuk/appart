@@ -16,6 +16,8 @@ import {
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
+import axios from 'axios';
+import Auth from '../../auth/auth';
 
 /**
  * ugly regular expression for validate length of phone number
@@ -44,6 +46,9 @@ export default class UserNew extends AbstractFormView {
       // validation fields
       password: '',
       mobileNumber: '',
+      groups: [],
+      selectedGroups: [],
+      isLoaded: false,
       data: {
         is_active: false,
         is_staff: false
@@ -73,6 +78,7 @@ export default class UserNew extends AbstractFormView {
     this.requestType = 'post';
     this.successRedirect = '/user';
     this._successButton = 'Повернутися до списку користувачів';
+    this._user = new Auth();
   }
 
   /**
@@ -100,10 +106,14 @@ export default class UserNew extends AbstractFormView {
    */
   submitData(target) {
     const userFormData = new FormData(document.forms.userCreate);
+    const grops = [
+      this.state.selectedGroups
+    ];
     userFormData.delete('is_staff');
     userFormData.delete('is_active');
     userFormData.append('is_staff', this.state.data.is_staff);
     userFormData.append('is_active', this.state.data.is_active);
+    userFormData.append('groups', grops);
     return userFormData;
   }
 
@@ -132,6 +142,13 @@ export default class UserNew extends AbstractFormView {
         break;
     }
   }
+
+  onSelectChange = (e) => {
+    const values = [...e.target.selectedOptions].map(opt => opt.value);
+    this.setState({
+      selectedGroups: values
+    });
+  };
 
   /**
    * Form field validation
@@ -208,6 +225,26 @@ export default class UserNew extends AbstractFormView {
         }
       });
     }
+  }
+
+  componentDidMount() {
+    axios({
+      method: 'get',
+      url: process.env.REACT_APP_GROUPS,
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(response => {
+        this.setState({
+          isLoaded: true,
+          groups: response.data[0]
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+    return super.componentDidMount();
   }
 
   content() {
@@ -310,8 +347,9 @@ export default class UserNew extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            <hr/>
             <FormGroup>
-              <Label for="exampleCheckbox"><Text text="userForm.permissions"/></Label>
+              <Label for=""><Text text="userForm.permissions"/></Label>
               <div>
                 <CustomInput
                   type="switch"
@@ -336,6 +374,21 @@ export default class UserNew extends AbstractFormView {
                   <Text text="userForm.isStaffHelpText"/>
                 </FormText>
               </div>
+            </FormGroup>
+            <FormGroup className="mt-3">
+              <Label fro="groups">Групи</Label>
+              <Input
+                required
+                onChange={this.onSelectChange}
+                type="select"
+                name="groups"
+                id="groups"
+                multiple
+              >
+                {this.state.groups.map(item => (
+                  <option key={item[0]} value={item[0]}>{item[1]}</option>
+                ))}
+              </Input>
             </FormGroup>
             {this.props.hasCloseBtn ?
               <Button color="warning" onClick={this.props.hasCloseBtn}>
@@ -373,24 +426,36 @@ export default class UserNew extends AbstractFormView {
    * @returns {*}
    */
   render() {
-    return (
-      <Fragment>
-        {this.props.containerDisable ?
-          <Card>
-            {this.content()}
-          </Card>
-          :
-          <Page
-            className="TablePage"
-          >
-            <Container>
-              <Card>
-                {this.content()}
-              </Card>
-            </Container>
-          </Page>
-        }
-      </Fragment>
-    );
+    const { error, isLoaded } = this.state;
+    if (error) {
+      return <div><Text text="global.error"/>: {error.message}</div>;
+    } else if (!isLoaded) {
+      return (
+        <div className="loaderWrapper text-center mt-4">
+          <h3 className="text-center text-muted">
+            <Text text="global.loading"/>
+          </h3>
+        </div>);
+    } else {
+      return (
+        <Fragment>
+          {this.props.containerDisable ?
+            <Card>
+              {this.content()}
+            </Card>
+            :
+            <Page
+              className="TablePage"
+            >
+              <Container>
+                <Card>
+                  {this.content()}
+                </Card>
+              </Container>
+            </Page>
+          }
+        </Fragment>
+      );
+    }
   }
 }
