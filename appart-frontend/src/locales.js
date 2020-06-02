@@ -1,4 +1,9 @@
-import { registerLang } from 'react-easy-i18n';
+import { registerFormatters, registerLang } from 'react-easy-i18n';
+
+registerFormatters({
+  firstUppercase: text => text.charAt(0).toUpperCase() + text.slice(1),
+  exclamation: text => text + '!'
+});
 
 registerLang('en', {
   global: {
@@ -314,6 +319,17 @@ registerLang('en', {
     returnBtn: 'Return',
     closeBtn: 'Close',
     deleteBtn: 'Delete'
+  },
+  breadcrumbsItems: {
+    edit: 'Edit',
+    new: 'New'
+  },
+  cabinetBreadcrumbs: {
+    home: 'Home',
+    service: 'Service',
+    payments: 'Payments',
+    bills: 'Bills',
+    orderNew: 'New order'
   },
   user: 'User'
 });
@@ -634,5 +650,16 @@ registerLang('uk', {
     returnBtn: 'Назад',
     closeBtn: 'Закрити',
     deleteBtn: 'Видалити'
+  },
+  breadcrumbsItems: {
+    edit: 'Редагування',
+    new: 'Новий'
+  },
+  cabinetBreadcrumbs: {
+    home: 'Домівка',
+    service: 'Сервісна служба',
+    payments: 'Рахунки',
+    bills: 'Оплати',
+    orderNew: 'Нове замовлення'
   }
 });
