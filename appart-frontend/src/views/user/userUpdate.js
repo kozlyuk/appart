@@ -26,6 +26,7 @@ import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
 import Page from '../../components/Page';
+import axios from 'axios';
 
 /**
  * ugly regular expression for validate length of phone number
@@ -55,6 +56,8 @@ export default class UserUpdate extends AbstractFormView {
       password: '',
       mobileNumber: '',
       // defaultInactiveBtn: true,
+      groups: [],
+      selectedGroups: [],
       errors: {
         mobileNumber: '',
         first_name: '',
@@ -109,11 +112,15 @@ export default class UserUpdate extends AbstractFormView {
    */
   submitData(target) {
     const userFormData = new FormData();
+    const grops = [
+      this.state.selectedGroups
+    ];
     // dict of all elements
     userFormData.append('mobile_number', target.mobileNumber.value);
     userFormData.append('first_name', target.firstName.value);
     userFormData.append('last_name', target.lastName.value);
     userFormData.append('email', target.email.value);
+    userFormData.append('groups', grops);
     // userFormData.append('birthday', target.birthday.value);
     userFormData.append('is_staff', this.state.data.is_staff);
     userFormData.append('is_active', this.state.data.is_active);
@@ -144,6 +151,13 @@ export default class UserUpdate extends AbstractFormView {
         break;
     }
   }
+
+  onSelectChange = (e) => {
+    const values = [...e.target.selectedOptions].map(opt => opt.value);
+    this.setState({
+      selectedGroups: values
+    });
+  };
 
   /**
    * Form field validation
@@ -206,6 +220,30 @@ export default class UserUpdate extends AbstractFormView {
 
     this.setState({ errors, [name]: value });
   };
+
+  /**
+   * @return {*}
+   */
+  componentDidMount() {
+    axios({
+      method: 'get',
+      url: process.env.REACT_APP_GROUPS,
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(response => {
+        this.setState({
+          groups: response.data[0]
+        });
+      })
+      .catch(error => {
+          console.log(error.response);
+        }
+      );
+
+    return super.componentDidMount();
+  }
 
   content() {
     return (
@@ -287,8 +325,9 @@ export default class UserUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            <hr/>
             <FormGroup>
-              <Label for="exampleCheckbox"><Text text="userForm.permissions"/></Label>
+              <Label for=""><Text text="userForm.permissions"/></Label>
               <div>
                 <CustomInput
                   type="switch"
@@ -313,6 +352,22 @@ export default class UserUpdate extends AbstractFormView {
                   <Text text="userForm.isStaffHelpText"/>
                 </FormText>
               </div>
+            </FormGroup>
+            <FormGroup className="mt-3">
+              <Label fro="groups">Групи</Label>
+              <Input
+                required
+                onChange={this.onSelectChange}
+                defaultValue={this.state.data.groups}
+                type="select"
+                name="groups"
+                id="groups"
+                multiple
+              >
+                {this.state.groups.map(item => (
+                  <option key={item[0]} value={item[0]}>{item[1]}</option>
+                ))}
+              </Input>
             </FormGroup>
             <ButtonToolbar>
               <Link to="/user">
