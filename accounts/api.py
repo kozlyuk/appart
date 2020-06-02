@@ -50,6 +50,7 @@ class GetUser(views.APIView):
     """
     Return current authentificated User
     """
+    queryset = User.objects.none()
 
     def get(self, request):
         serializer = GetUserSerializer(request.user, context={"request":request})
