@@ -1,14 +1,13 @@
 from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from accounts.models import User
 from condominium.models import Apartment
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = [
@@ -49,18 +48,19 @@ class UserSerializer(serializers.ModelSerializer):
         # updating user
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.mobile_number = validated_data.get('mobile_number', instance.mobile_number)
         instance.email = validated_data.get('email', instance.email)
         instance.is_active = validated_data.get('is_active', instance.is_active)
         instance.is_staff = validated_data.get('is_staff', instance.is_staff)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.save()
 
         # adding user to groups
         groups_data = validated_data.get('groups')
-        instance.groups.clear()
-        for group_data in groups_data:
-            instance.groups.add(group_data)
+        if groups_data:
+            instance.groups.clear()
+            for group_data in groups_data:
+                instance.groups.add(group_data)
         return instance
 
 
