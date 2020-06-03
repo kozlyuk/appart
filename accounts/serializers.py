@@ -7,14 +7,7 @@ from accounts.models import User
 from condominium.models import Apartment
 
 
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['pk', 'name']
-
-
 class UserSerializer(serializers.ModelSerializer):
-    groups = GroupSerializer(many=True, required=False)
 
     class Meta:
         model = User
@@ -85,7 +78,6 @@ class UserApartmentsSerializer(serializers.ModelSerializer):
 
 class GetUserSerializer(serializers.ModelSerializer):
     apartment = UserApartmentsSerializer(source='apartment_set', many=True)
-    groups = GroupSerializer(many=True)
     avatar = serializers.SerializerMethodField()
 
     class Meta:
