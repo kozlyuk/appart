@@ -105,6 +105,10 @@ export default class UserUpdate extends AbstractFormView {
     return Math.round((event.target.files[0].size / 1000)) < 5000;
   }
 
+  /**
+   * @param array
+   * @return {[]}
+   */
   strArrayToIntArray(array) {
     let resultArray = [];
     array.map(item => {
@@ -119,22 +123,19 @@ export default class UserUpdate extends AbstractFormView {
    * @returns {FormData}
    */
   submitData(target) {
-    const userFormData = new FormData();
     const groups = [
       this.strArrayToIntArray(this.state.selectedGroups)
     ];
-    // dict of all elements
-    userFormData.append('mobile_number', target.mobileNumber.value);
-    userFormData.append('first_name', target.firstName.value);
-    userFormData.append('last_name', target.lastName.value);
-    userFormData.append('email', target.email.value);
-    userFormData.append('groups', JSON.stringify(groups[0]));
-    // userFormData.append('birthday', target.birthday.value);
-    userFormData.append('is_staff', this.state.data.is_staff);
-    userFormData.append('is_active', this.state.data.is_active);
-    // if (target.avatar.files[0]) {
-    //   userFormData.append('avatar', target.avatar.files[0]);
-    // }
+    const userFormData = {
+      'mobile_number': target.mobileNumber.value,
+      'first_name': target.firstName.value,
+      'last_name': target.lastName.value,
+      'email': target.email.value,
+      'groups': groups[0],
+      'is_staff': this.state.data.is_staff,
+      'is_active': this.state.data.is_active
+    };
+
     return userFormData;
   }
 
@@ -263,7 +264,7 @@ export default class UserUpdate extends AbstractFormView {
   }
 
   /**
-   * @return {*}
+   * @return {Promise<*>}
    */
   async componentDidMount() {
     axios({
@@ -279,9 +280,8 @@ export default class UserUpdate extends AbstractFormView {
         });
       })
       .catch(error => {
-          console.log(error.response);
-        }
-      );
+        console.log(error.response);
+      });
 
     return super.componentDidMount();
   }
