@@ -8,7 +8,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env.prod.db
+      - ./.env.db
 ###########
 # BACKEND #
 ###########
@@ -19,9 +19,12 @@ services:
     command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
               '--worker-tmp-dir', '/dev/shm', '--workers', '2',
               '--threads', '4', '--worker-class', 'gthread']
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
-    # network_mode: "host"
 ############
 # FRONTEND #
 ############
@@ -47,6 +50,8 @@ services:
       context: .
     image: appart/celery:v1
     command: ['celery', '-A', 'appart', 'worker', '-l', 'info']
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
       - redis
@@ -54,8 +59,15 @@ services:
 # CELERY BEAT #
 ###############
   celery-beat:
-    build: .
+    build:
+      context: .
+    image: appart/celery-beat:v1
     command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
       - redis
+
+volumes:
+  postgres_data:

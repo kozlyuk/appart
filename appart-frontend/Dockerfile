@@ -3,7 +3,7 @@
 ###########
 
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node:14-alpine as build-stage
+FROM node:14 as build-stage
 
 # A directory within the virtualized Docker environment
 # Becomes more relevant when using Docker Compose later

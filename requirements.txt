@@ -16,10 +16,10 @@ django-celery-results==1.1.2    # https://github.com/celery/django-celery-result
 # django_auto_prefetching==0.1.8  # https://github.com/GeeWee/django-auto-prefetching
 git+https://github.com/liqpay/sdk-python             # https://github.com/liqpay/sdk-python
 
-# Prodiction tools
+# Production tools
 django-dotenv==1.4.2
 gunicorn==20.0.4
-# django-cors-headers==3.2.1      # https://github.com/adamchainz/django-cors-headers
+django-cors-headers==3.2.1      # https://github.com/adamchainz/django-cors-headers
 
 # Debuging tools
 django_silk==4.0.0               # https://github.com/jazzband/django-silk

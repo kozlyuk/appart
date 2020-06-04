@@ -17,9 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.conf.urls.static import static
-from appart.settings import MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATIC_ROOT
-from appart.settings_local import DEBUG
-
+from appart.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATIC_ROOT
 
 
 urlpatterns = [

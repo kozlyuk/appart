@@ -60,7 +60,8 @@ for resident in RESIDENTS:
                                             email=resident[3],
                                             password='Test12',
                                             first_name=resident[0],
-                                            last_name=resident[1]
+                                            last_name=resident[1],
+                                            is_active=True
                                             )
     residents_list.append(resident_obj)
 residents_list.append(user)
