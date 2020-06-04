@@ -18,6 +18,7 @@ urlpatterns = [
     path("api/v1/check_resident/<str:mobile_number>/", api.CheckResident.as_view(), name='check_resident'),
     path("api/v1/register/", api.Register.as_view(), name='register'),
     path("api/v1/activate/<str:uidb64>/<str:token>/", api.Activate.as_view(), name='activate'),
+    path("api/v1/get_acl/", api.GetACL.as_view(), name='get_acl'),
     path("api/v1/set_lang/<str:lang>/", api.SetLang.as_view(), name='set_lang'),
     path("api/v1/get_group_choices/", api.GroupChoices.as_view(), name='group_choices'),
 

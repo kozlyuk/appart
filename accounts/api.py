@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
 from messaging.tasks import send_email
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
 from accounts.serializers import UserSerializer, GetUserSerializer
 from accounts.models import User
@@ -172,6 +172,23 @@ class Activate(views.APIView):
         else:
             return Response(_('Activation link is invalid!'),
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetACL(views.APIView):
+    """
+    Sending JSON list of user permissions
+    """
+    @staticmethod
+    def get_user_permissions(user):
+        if user.is_superuser:
+            return Permission.objects.all()
+        return user.user_permissions.all() | Permission.objects.filter(group__user=user)
+
+    def get(self, request):
+        json_data = []
+        for perm in self.get_user_permissions(request.user):
+            json_data.append({perm.codename.split('_')[1]: perm.codename.split('_')[0]})
+        return Response(json_data, status=status.HTTP_200_OK)
 
 
 class SetLang(views.APIView):
