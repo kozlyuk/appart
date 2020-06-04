@@ -13,14 +13,15 @@ services:
 # BACKEND #
 ###########
   appart-back:
-    build:
-      context: .
+    build: .
     image: appart/back:v1
     command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
               '--worker-tmp-dir', '/dev/shm', '--workers', '2',
               '--threads', '4', '--worker-class', 'gthread']
     ports:
       - 8000:8000
+    volumes:
+      - .:/app
     env_file:
       - ./.env.dev
     depends_on:
@@ -46,10 +47,10 @@ services:
 # CELERY #
 ##########
   celery:
-    build:
-      context: .
-    image: appart/celery:v1
+    image: appart/back:v1
     command: ['celery', '-A', 'appart', 'worker', '-l', 'info']
+    volumes:
+      - .:/app
     env_file:
       - ./.env.dev
     depends_on:
@@ -59,10 +60,10 @@ services:
 # CELERY BEAT #
 ###############
   celery-beat:
-    build:
-      context: .
-    image: appart/celery-beat:v1
+    image: appart/back:v1
     command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
+    volumes:
+      - .:/app
     env_file:
       - ./.env.dev
     depends_on:

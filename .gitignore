@@ -48,3 +48,4 @@ yarn-error.log*
 /media/notice/
 /media/company/pictures/
 /appart-frontend/dist/
+celerybeat-schedule
