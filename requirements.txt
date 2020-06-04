@@ -10,7 +10,6 @@ django-widget-tweaks            # https://github.com/jazzband/django-widget-twea
 Jinja2                          # https://github.com/noirbizarre/jinja2
 viberbot==1.0.11                # https://viber.github.io/docs/api/python-bot-api/
 django-rest-auth==0.9.5         # https://github.com/Tivix/django-rest-auth
-django-cors-headers==3.2.1      # https://github.com/adamchainz/django-cors-headers
 celery==4.4.0                   # https://github.com/celery/celery
 redis==3.3.11                   # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
@@ -18,7 +17,9 @@ django-celery-results==1.1.2    # https://github.com/celery/django-celery-result
 git+https://github.com/liqpay/sdk-python             # https://github.com/liqpay/sdk-python
 
 # Prodiction tools
+django-dotenv==1.4.2
 gunicorn==20.0.4
+# django-cors-headers==3.2.1      # https://github.com/adamchainz/django-cors-headers
 
 # Debuging tools
 django_silk==4.0.0               # https://github.com/jazzband/django-silk
