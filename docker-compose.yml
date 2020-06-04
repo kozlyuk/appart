@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+############
+# POSTGRES #
+############
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+###########
+# BACKEND #
+###########
+  appart-back:
+    build:
+      context: .
+    image: appart/back:v1
+    command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
+              '--worker-tmp-dir', '/dev/shm', '--workers', '2',
+              '--threads', '4', '--worker-class', 'gthread']
+    depends_on:
+      - db
+    # network_mode: "host"
+############
+# FRONTEND #
+############
+  appart-front:
+    build:
+      context: ./appart-frontend
+    image: appart/front:v1
+    command: [nginx, '-g', 'daemon off;']
+    ports:
+      - 8080:80
+    depends_on:
+      - appart-back
+#########
+# REDIS #
+#########
+  redis:
+    image: "redis:alpine"
+##########
+# CELERY #
+##########
+  celery:
+    build:
+      context: .
+    image: appart/celery:v1
+    command: ['celery', '-A', 'appart', 'worker', '-l', 'info']
+    depends_on:
+      - db
+      - redis
+###############
+# CELERY BEAT #
+###############
+  celery-beat:
+    build: .
+    command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
+    depends_on:
+      - db
+      - redis

@@ -1,6 +1,6 @@
+psycopg2-binary==2.8.5
 Django==2.2.12
 djangorestframework==3.11.0
-psycopg2==2.8.4
 pytz==2019.3
 Pillow==6.2.1
 sqlparse
@@ -16,6 +16,9 @@ redis==3.3.11                   # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
 # django_auto_prefetching==0.1.8  # https://github.com/GeeWee/django-auto-prefetching
 git+https://github.com/liqpay/sdk-python             # https://github.com/liqpay/sdk-python
+
+# Prodiction tools
+gunicorn==20.0.4
 
 # Debuging tools
 django_silk==4.0.0               # https://github.com/jazzband/django-silk

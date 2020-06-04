@@ -8,6 +8,13 @@
 import React from 'react';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { Link } from 'react-router-dom';
+import { Text } from 'react-easy-i18n';
+
+const CabinetBreadcrumbsHome = () => (<Text text="cabinetBreadcrumbs.home" formatters="firstUppercase"/>);
+const CabinetBreadcrumbsService = () => (<Text text="cabinetBreadcrumbs.service" formatters="firstUppercase"/>);
+const CabinetBreadcrumbsPayments = () => (<Text text="cabinetBreadcrumbs.payments" formatters="firstUppercase"/>);
+const CabinetBreadcrumbsBills = () => (<Text text="cabinetBreadcrumbs.bills" formatters="firstUppercase"/>);
+const CabinetBreadcrumbsNewOrder = () => (<Text text="cabinetBreadcrumbs.orderNew" formatters="firstUppercase"/>);
 
 /**
  * Routes for cabinet breadcrumbs
@@ -16,12 +23,12 @@ import { Link } from 'react-router-dom';
  */
 const routes = [
   { path: '/' },
-  { path: '/cabinet', breadcrumb: 'Домівка' },
-  { path: '/cabinet/service', breadcrumb: 'Сервісна служба' },
-  { path: '/cabinet/payments', breadcrumb: 'Рахунки' },
-  { path: '/cabinet/bills', breadcrumb: 'Оплати' },
-  { path: '/cabinet/order', breadcrumb: 'Сервісна служба' },
-  { path: '/cabinet/order/new', breadcrumb: 'Нове замовлення' }
+  { path: '/cabinet', breadcrumb: CabinetBreadcrumbsHome },
+  { path: '/cabinet/service', breadcrumb: CabinetBreadcrumbsService },
+  { path: '/cabinet/payments', breadcrumb: CabinetBreadcrumbsPayments },
+  { path: '/cabinet/bills', breadcrumb: CabinetBreadcrumbsBills },
+  { path: '/cabinet/order', breadcrumb: CabinetBreadcrumbsService },
+  { path: '/cabinet/order/new', breadcrumb: CabinetBreadcrumbsNewOrder }
 ];
 
 const options = {

@@ -1,21 +1,13 @@
 from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from accounts.models import User
 from condominium.models import Apartment
 
 
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['name']
-
-
 class UserSerializer(serializers.ModelSerializer):
-    groups = GroupSerializer(many=True)
-
     class Meta:
         model = User
         fields = [
@@ -24,11 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "mobile_number",
             "email",
-            "groups",
             "is_active",
             "is_staff",
             "birth_date",
             "avatar",
+            "groups",
         ]
 
     def validate_email(self, value):
@@ -43,6 +35,34 @@ class UserSerializer(serializers.ModelSerializer):
             if User.objects.filter(email=value.lower()).exists():
                 raise serializers.ValidationError(message)
         return value
+
+    def create(self, validated_data):
+        # creating user and adding it to groups
+        groups_data = validated_data.pop('groups')
+        user = User.objects.create(**validated_data)
+        if groups_data:
+            for group_data in groups_data:
+                user.groups.add(group_data)
+        return user
+
+    def update(self, instance, validated_data):
+        # updating user
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.is_staff = validated_data.get('is_staff', instance.is_staff)
+        instance.birth_date = validated_data.get('birth_date', instance.birth_date)
+        instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.save()
+
+        # adding user to groups
+        groups_data = validated_data.get('groups')
+        if groups_data:
+            instance.groups.clear()
+            for group_data in groups_data:
+                instance.groups.add(group_data)
+        return instance
 
 
 class UserApartmentsSerializer(serializers.ModelSerializer):
@@ -59,7 +79,6 @@ class UserApartmentsSerializer(serializers.ModelSerializer):
 
 class GetUserSerializer(serializers.ModelSerializer):
     apartment = UserApartmentsSerializer(source='apartment_set', many=True)
-    groups = GroupSerializer(many=True)
     avatar = serializers.SerializerMethodField()
 
     class Meta:
