@@ -7,7 +7,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import os
-from appart.settings_local import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,9 +14,21 @@ BASE_DIR_JINJA = os.path.dirname(__file__)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get("DEBUG")
+
+SITE_URL = os.environ.get("SITE_URL")
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS")
+
+
 # Application definition
 
-INSTALLED_APPS += [
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,7 +47,7 @@ INSTALLED_APPS += [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'corsheaders', #need ot disable
+    # 'corsheaders',
     'font_awesome',
     'widget_tweaks',
     'django_celery_results',
@@ -47,7 +58,7 @@ INSTALLED_APPS += [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', #need ot disable
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -96,6 +107,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'appart.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("100Grad"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT"),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -122,17 +146,22 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
+# CORS settings
+# CORS_ORIGIN_WHITELIST = os.environ.get("CORS_ORIGIN_WHITELIST")
+
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
+
+# CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -149,8 +178,6 @@ REST_FRAMEWORK = {
     'DATE_FORMAT': "%Y-%m-%d",
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
@@ -201,3 +228,37 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # VARIABLES
 CURRENCY = 'грн.'
+
+# Email related settings
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+
+# Viber related settings
+VIBER_AUTH_TOKEN = os.environ.get("VIBER_AUTH_TOKEN")
+VIBER_BOT_NAME = os.environ.get("VIBER_BOT_NAME")
+VIBER_AVATAR = os.environ.get("VIBER_AVATAR")
+
+# LIQPAY related settings
+# REQUIRED:
+# Public_key - the identifier of the created company. For example: i00000000
+LIQPAY_PUBLIC_KEY = os.environ.get("LIQPAY_PUBLIC_KEY")
+# Private key of the created company (not available to anyone except your developer).
+# For example: a4825234f4bae72a0be04eafe9e8e2bada209255
+LIQPAY_PRIVATE_KEY = os.environ.get("LIQPAY_PRIVATE_KEY")
+# OPTIONAL:
+# Payment currency. Example value: USD, EUR, RUB, UAH, BYN, KZT.
+# Additional currencies can be added by company's request.
+# Default: UAH
+LIQPAY_DEFAULT_CURRENCY = os.environ.get("LIQPAY_DEFAULT_CURRENCY")
+# Language code
+# Default: uk
+LIQPAY_DEFAULT_LANGUAGE = os.environ.get("LIQPAY_DEFAULT_LANGUAGE")
+# Transaction type. Possible values: pay - payment, hold - amount of hold on sender's account,
+# subscribe - regular payment, paydonate - donation, auth - card preauth
+# Default: pay
+LIQPAY_DEFAULT_ACTION = os.environ.get("LIQPAY_DEFAULT_ACTION")

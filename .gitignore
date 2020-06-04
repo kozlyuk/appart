@@ -1,4 +1,5 @@
 venv/
+.env*
 .pki/
 .local/
 .config/
