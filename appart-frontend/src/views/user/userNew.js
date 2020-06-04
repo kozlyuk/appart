@@ -100,20 +100,36 @@ export default class UserNew extends AbstractFormView {
   }
 
   /**
+   * @param array
+   * @return {[]}
+   */
+  strArrayToIntArray(array) {
+    let resultArray = [];
+    array.map(item => {
+      resultArray.push(parseInt(item));
+    });
+    return resultArray;
+  }
+
+  /**
    *
    * @param target
    * @returns {FormData}
    */
   submitData(target) {
-    const userFormData = new FormData(document.forms.userCreate);
-    const grops = [
-      this.state.selectedGroups
+    const groups = [
+      this.strArrayToIntArray(this.state.selectedGroups)
     ];
-    userFormData.delete('is_staff');
-    userFormData.delete('is_active');
-    userFormData.append('is_staff', this.state.data.is_staff);
-    userFormData.append('is_active', this.state.data.is_active);
-    userFormData.append('groups', grops);
+    const userFormData = {
+      'mobile_number': target.mobile_number.value,
+      'first_name': target.first_name.value,
+      'last_name': target.last_name.value,
+      'email': target.email.value,
+      'groups': groups[0],
+      'is_staff': this.state.data.is_staff,
+      'is_active': this.state.data.is_active
+    };
+
     return userFormData;
   }
 
@@ -227,7 +243,10 @@ export default class UserNew extends AbstractFormView {
     }
   }
 
-  componentDidMount() {
+  /**
+   * @return {Promise<*>}
+   */
+  async componentDidMount() {
     axios({
       method: 'get',
       url: process.env.REACT_APP_GROUPS,
@@ -244,6 +263,7 @@ export default class UserNew extends AbstractFormView {
       .catch(error => {
         console.log(error.response);
       });
+
     return super.componentDidMount();
   }
 
@@ -255,7 +275,7 @@ export default class UserNew extends AbstractFormView {
           <Form id="userCreate" onSubmit={this.handleSubmit}>
             {this.props.mobileNumber ?
               <FormGroup>
-                <Label for="mobile_number"><Text text="userForm.mobileNumber"/></Label>
+                <Label for="mobileNumber"><Text text="userForm.mobileNumber"/></Label>
                 {this.state.errors.mobileNumber.length > 0 &&
                 // error field
                 <FormText color="danger">{this.state.errors.mobileNumber}</FormText>}

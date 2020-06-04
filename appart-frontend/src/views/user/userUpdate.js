@@ -106,27 +106,36 @@ export default class UserUpdate extends AbstractFormView {
   }
 
   /**
+   * @param array
+   * @return {[]}
+   */
+  strArrayToIntArray(array) {
+    let resultArray = [];
+    array.map(item => {
+      resultArray.push(parseInt(item));
+    });
+    return resultArray;
+  }
+
+  /**
    *
    * @param target
    * @returns {FormData}
    */
   submitData(target) {
-    const userFormData = new FormData();
-    const grops = [
-      this.state.selectedGroups
+    const groups = [
+      this.strArrayToIntArray(this.state.selectedGroups)
     ];
-    // dict of all elements
-    userFormData.append('mobile_number', target.mobileNumber.value);
-    userFormData.append('first_name', target.firstName.value);
-    userFormData.append('last_name', target.lastName.value);
-    userFormData.append('email', target.email.value);
-    userFormData.append('groups', grops);
-    // userFormData.append('birthday', target.birthday.value);
-    userFormData.append('is_staff', this.state.data.is_staff);
-    userFormData.append('is_active', this.state.data.is_active);
-    // if (target.avatar.files[0]) {
-    //   userFormData.append('avatar', target.avatar.files[0]);
-    // }
+    const userFormData = {
+      'mobile_number': target.mobileNumber.value,
+      'first_name': target.firstName.value,
+      'last_name': target.lastName.value,
+      'email': target.email.value,
+      'groups': groups[0],
+      'is_staff': this.state.data.is_staff,
+      'is_active': this.state.data.is_active
+    };
+
     return userFormData;
   }
 
@@ -152,12 +161,22 @@ export default class UserUpdate extends AbstractFormView {
     }
   }
 
-  onSelectChange = (e) => {
-    const values = [...e.target.selectedOptions].map(opt => opt.value);
+  /**
+   * @param event
+   */
+  onSelectChange = (event) => {
+    const values = [...event.target.selectedOptions].map(opt => opt.value);
+    console.log(values);
     this.setState({
       selectedGroups: values
     });
   };
+
+  saveGroups() {
+    this.setState({
+      selectedGroups: this.state.data.groups
+    });
+  }
 
   /**
    * Form field validation
@@ -221,10 +240,33 @@ export default class UserUpdate extends AbstractFormView {
     this.setState({ errors, [name]: value });
   };
 
+  loadData(dataUrl) {
+    axios(dataUrl, {
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            data: result.data
+          });
+          this.saveGroups();
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+  }
+
   /**
-   * @return {*}
+   * @return {Promise<*>}
    */
-  componentDidMount() {
+  async componentDidMount() {
     axios({
       method: 'get',
       url: process.env.REACT_APP_GROUPS,
@@ -238,9 +280,8 @@ export default class UserUpdate extends AbstractFormView {
         });
       })
       .catch(error => {
-          console.log(error.response);
-        }
-      );
+        console.log(error.response);
+      });
 
     return super.componentDidMount();
   }
