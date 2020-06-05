@@ -181,12 +181,9 @@ class GetACL(views.APIView):
     def get(self, request):
         json_data = {}
         perms = request.user.get_all_permissions()
-        object_list = [perm.split('_')[1] for perm in perms]
-        object_list = list(set(object_list))
+        object_list = list(set([perm.split('.')[1].split('_')[1] for perm in perms]))
         for perm in object_list:
             json_data[perm] = [p.split('.')[1].split('_')[0] for p in perms if p.endswith('_'+perm)]
-            if json_data[perm] == []:
-                json_data.pop(perm)
         return Response(json_data, status=status.HTTP_200_OK)
 
 

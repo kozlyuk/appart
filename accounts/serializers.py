@@ -39,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # creating user and adding it to groups
         groups_data = validated_data.pop('groups')
-        user = User.objects.create(**validated_data)
+        user = User.objects.create_user(**validated_data)
         if groups_data:
             for group_data in groups_data:
                 user.groups.add(group_data)

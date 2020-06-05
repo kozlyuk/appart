@@ -13,7 +13,7 @@ class CustomUserManager(BaseUserManager):
     for authentication instead of usernames.
     """
     def create_user(self, mobile_number, email, password=None,
-                    is_active=False, first_name='', last_name=''):
+                    is_active=False, is_staff=False, first_name='', last_name=''):
         """
         Creates and saves a User with the given mobile number, email and password.
         """
@@ -29,6 +29,7 @@ class CustomUserManager(BaseUserManager):
             mobile_number=mobile_number,
             email=self.normalize_email(email),
             is_active=is_active,
+            is_staff=is_staff,
             first_name=first_name,
             last_name=last_name
         )
