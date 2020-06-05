@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'dimservice.apps.DimserviceConfig',
     'templatetags',
     'bootstrap4',
+    'six',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',

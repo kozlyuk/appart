@@ -176,18 +176,17 @@ class Activate(views.APIView):
 
 class GetACL(views.APIView):
     """
-    Sending JSON list of user permissions
+    Sending JSON list of user permissions per objects
     """
-    @staticmethod
-    def get_user_permissions(user):
-        if user.is_superuser:
-            return Permission.objects.all()
-        return user.user_permissions.all() | Permission.objects.filter(group__user=user)
-
     def get(self, request):
-        json_data = []
-        for perm in self.get_user_permissions(request.user):
-            json_data.append({perm.codename.split('_')[1]: perm.codename.split('_')[0]})
+        json_data = {}
+        perms = request.user.get_all_permissions()
+        object_list = [perm.split('_')[1] for perm in perms]
+        object_list = list(set(object_list))
+        for perm in object_list:
+            json_data[perm] = [p.split('.')[1].split('_')[0] for p in perms if p.endswith('_'+perm)]
+            if json_data[perm] == []:
+                json_data.pop(perm)
         return Response(json_data, status=status.HTTP_200_OK)
 
 
