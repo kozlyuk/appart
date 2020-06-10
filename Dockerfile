@@ -3,10 +3,10 @@
 ###########
 
 # pull official base image
-FROM python:3.8.3-alpine as builder
+FROM python:3.8-alpine as builder
 
 # set work directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -20,7 +20,7 @@ RUN apk update && apk upgrade && \
 # Install dependencies
 COPY ./requirements.txt .
 RUN pip install --upgrade pip
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 #########
 # FINAL #
@@ -29,19 +29,30 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 # pull official base image
 FROM python:3.8-alpine
 
-# set work directory
-ENV APP_HOME=/app
+# create directory for the app user
+ENV APP_HOME=/home/app
+RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
+
+# create the app user
+RUN addgroup -S app && adduser -S app -G app
 
 # install dependencies
 RUN apk update && apk add libpq libjpeg
-COPY --from=builder /app/wheels /wheels
-COPY --from=builder /app/requirements.txt .
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
-
-# copy entrypoint-prod.sh
-# COPY ./entrypoint.prod.sh $APP_HOME
+RUN rm -rf /wheels
 
 # copy project
 COPY . $APP_HOME
+
+# chown all the files to the app user
+RUN chown -R app:app $APP_HOME
+
+# change to the app user
+USER app
+
+# run entrypoint.prod.sh
+# ENTRYPOINT ["/home/app/entrypoint.sh"]
