@@ -39,5 +39,4 @@ urlpatterns = [
 if DEBUG:
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
     urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
-
-urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))] #   Django silk
+    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))] #   Django silk

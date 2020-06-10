@@ -1,7 +1,6 @@
-.git*
-.env*
+.github
 .vscode
+.env*
 venv
 appart-frontend
 test*
-celerybeat-schedule
