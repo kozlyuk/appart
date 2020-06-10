@@ -21,6 +21,8 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PageSpinner from '../../components/PageSpinner';
 import HouseFilter from './filter/HouseFilter';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class HouseList extends AbstractListView {
@@ -33,6 +35,8 @@ export default class HouseList extends AbstractListView {
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -72,11 +76,15 @@ export default class HouseList extends AbstractListView {
             <td>{house.address}</td>
             <td>{house.apartments_count}</td>
             <td width="15%">
-              <Link to={`house/${house.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="houseList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.house} permissionName="change"
+              >
+                <Link to={`house/${house.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="houseList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
 
             <Modal
@@ -141,11 +149,15 @@ export default class HouseList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.house"/>
-                  <Link to="/house/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="houseList.addBtn"/>
-                    </Button>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.choice} permissionName="add"
+                  >
+                    <Link to="/house/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="houseList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

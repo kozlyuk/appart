@@ -1,4 +1,4 @@
-import AbstractListView from "../../generics/listViews/abstractListView";
+import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
 import {
@@ -15,10 +15,12 @@ import {
   Row,
   Table
 } from 'reactstrap';
-import {Text} from "react-easy-i18n";
-import UserCard from "../../components/Card/UserCard";
-import {Link} from "react-router-dom";
-import PageSpinner from "../../components/PageSpinner";
+import { Text } from 'react-easy-i18n';
+import UserCard from '../../components/Card/UserCard';
+import { Link } from 'react-router-dom';
+import PageSpinner from '../../components/PageSpinner';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class NewsList extends AbstractListView {
@@ -28,8 +30,10 @@ export default class NewsList extends AbstractListView {
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_NEWS_URL
+    this.dataUrl = process.env.REACT_APP_NEWS_URL;
   }
+
+  static contextType = PermissionContext;
 
   /**
    *
@@ -53,16 +57,24 @@ export default class NewsList extends AbstractListView {
             <td>{news.news_status}</td>
             <td>{news.actual_from} - {news.actual_to}</td>
             <td width="15%">
-              <Link to={`news/${news.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="newsList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
-              <Link to={`news/${news.pk}/delete`}>
-                <Badge color="danger" className="mr-1">
-                  <Text text="newsList.tableHeader.deleteBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.news} permissionName="change"
+              >
+                <Link to={`news/${news.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="newsList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
+              <PermissionComponent
+                aclList={this.context.choice} permissionName="delete"
+              >
+                <Link to={`news/${news.pk}/delete`}>
+                  <Badge color="danger" className="mr-1">
+                    <Text text="newsList.tableHeader.deleteBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
 
             <Modal
@@ -78,7 +90,7 @@ export default class NewsList extends AbstractListView {
                     subtitle={news.address}
                     text={news.description}
                     style={{
-                      height: 300,
+                      height: 300
                     }}
                   >
                   </UserCard>
@@ -94,7 +106,7 @@ export default class NewsList extends AbstractListView {
         ))}
         </tbody>
       </Table>
-    )
+    );
   }
 
   /**
@@ -102,7 +114,7 @@ export default class NewsList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -116,7 +128,7 @@ export default class NewsList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.news"/>, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.news"/>, active: true }]}
           className="TablePage"
         >
           <Row>
@@ -137,7 +149,7 @@ export default class NewsList extends AbstractListView {
             </Col>
           </Row>
         </Page>
-      )
+      );
     }
   }
 }
