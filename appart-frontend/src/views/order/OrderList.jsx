@@ -22,6 +22,8 @@ import Pagination from 'react-js-pagination';
 import PageSpinner from '../../components/PageSpinner';
 import HouseFilter from './filter/OrderFilter';
 import { MdFiberManualRecord } from 'react-icons/md';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class OrderList extends AbstractListView {
@@ -34,6 +36,8 @@ export default class OrderList extends AbstractListView {
     this.dataUrl = process.env.REACT_APP_ORDER;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -81,11 +85,15 @@ export default class OrderList extends AbstractListView {
             <td>{order.warning}</td>
             <td>{order.work_name}</td>
             <td width="15%">
-              <Link to={`order/${order.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="orderList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.order} permissionName="change"
+              >
+                <Link to={`order/${order.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="orderList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
 
             <Modal
@@ -150,11 +158,15 @@ export default class OrderList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.order"/>
-                  <Link to="/order/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="orderList.addBtn"/>
-                    </Button>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.order} permissionName="add"
+                  >
+                    <Link to="/order/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="orderList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
