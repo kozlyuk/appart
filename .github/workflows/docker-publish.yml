@@ -11,7 +11,7 @@ on:
       - v1
 
   # Run tests for any PRs.
-  pull_request:
+  # pull_request:
 
 env:
   # TODO: Change variable to your image's name.
@@ -73,5 +73,5 @@ jobs:
           # echo IMAGE_ID=$IMAGE_ID
           # echo VERSION=$VERSION
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID  #:$VERSION
           docker push $IMAGE_ID   #:$VERSION
