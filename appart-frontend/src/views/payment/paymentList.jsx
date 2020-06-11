@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PaymentFilter from './filter/PaymentFilter';
 import PageSpinner from '../../components/PageSpinner';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class PaymentList extends AbstractListView {
@@ -19,6 +21,8 @@ export default class PaymentList extends AbstractListView {
     this.dataUrl = process.env.REACT_APP_PAYMENT;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -52,11 +56,15 @@ export default class PaymentList extends AbstractListView {
             <td>{payment.apartment_name}</td>
             <td>{payment.value}</td>
             <td width="15%">
-              <Link to={`payment/${payment.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="userList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.payment} permissionName="change"
+              >
+                <Link to={`payment/${payment.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="userList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
           </tr>
         ))}

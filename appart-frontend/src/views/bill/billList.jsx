@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PageSpinner from '../../components/PageSpinner';
 import BillFilter from './filter/BillFilter';
+import PermissionComponent from '../../acl/PermissionComponent';
+import { PermissionContext } from '../../globalContext/PermissionContext';
 
 
 export default class BillList extends AbstractListView {
@@ -28,6 +30,8 @@ export default class BillList extends AbstractListView {
     this.dataUrl = process.env.REACT_APP_BILLS;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -63,11 +67,15 @@ export default class BillList extends AbstractListView {
             <td>{bill.number}</td>
             <td>{bill.purpose}</td>
             <td width="15%">
-              <Link to={`bill/${bill.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="billList.detail"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.bill} permissionName="view"
+              >
+                <Link to={`bill/${bill.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="billList.detail"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
           </tr>
         ))}

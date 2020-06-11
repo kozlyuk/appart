@@ -1,6 +1,8 @@
 # appart
 Automation system for apartments buildings.
 
+![Docker](https://github.com/kozlyuk/appart/workflows/Docker/badge.svg)
+
 ## Installing
 1. install Python3
 2. create virtual env ``` python3 -m venv /path/to/new/virtual/environment```

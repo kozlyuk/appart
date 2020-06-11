@@ -3,7 +3,7 @@ import GAListener from './components/GAListener';
 import { EmptyLayout, LayoutRoute, MainLayout } from './components/Layout';
 import PageSpinner from './components/PageSpinner';
 import AuthPage from './pages/AuthPage';
-import React, { Fragment } from 'react';
+import React from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
@@ -27,6 +27,10 @@ import WorkUpdate from './views/work/WorkUpdate';
 import OrderList from './views/order/OrderList';
 import OrderForm from './views/order/OrderForm';
 import { setCurrentLocale } from 'react-easy-i18n';
+import MainController from './controllers/MainController';
+import PermissionRoute from './acl/PermissionRoute';
+import { PermissionContext } from './globalContext/PermissionContext';
+
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const UserList = React.lazy(() => import('./views/user/UserList'));
@@ -60,8 +64,13 @@ class App extends React.Component {
       user: null
     };
     this.user = new Auth();
+    this.MainController = new MainController();
   }
 
+  /**
+   * @param lang
+   * @param args
+   */
   changeLang = (lang, args = 'reload') => {
     axios(`${process.env.REACT_APP_CHANGE_LANG}${lang}/`, {
       headers: {
@@ -78,11 +87,17 @@ class App extends React.Component {
 
   };
 
+  /**
+   * @param lang
+   */
   setLang = (lang) => {
     setCurrentLocale(lang);
     this.setState({});
   };
 
+  /**
+   * @param lang
+   */
   checkLang = (lang) => {
     switch (lang) {
       case 'uk':
@@ -97,36 +112,39 @@ class App extends React.Component {
     }
   };
 
-  componentDidMount() {
-    axios(process.env.REACT_APP_USER_DATA, {
-      headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
-      }
-    })
-      .then(
-        (response) => {
-          console.log(response.status);
-          if (response.status >= 400) {
-            this.setState({
-              isAuthenticate: false
-            });
+  /**
+   * Set data to state
+   *
+   * @param user
+   * @param acl
+   */
+  _setData(
+    user,
+    acl
+  ) {
+    this.setState({
+      user: user,
+      acl: acl,
+      isAuthenticate: true,
+      isLoaded: true
+    });
+  }
 
-          } else if (response.status < 400) {
-            if (response.data.lang) {
-              this.checkLang(response.data.lang);
-            }
-            this.setState({
-              lang: response.data.lang,
-              isAuthenticate: true,
-              user: response.data
-            });
-          }
-        });
-    setTimeout(() => {
-      this.setState({
-        isLoading: false
+  componentDidMount() {
+    Promise.all(this.MainController.getPromiseValues())
+      .then(axios.spread((
+        user,
+        acl
+      ) => {
+        console.log(acl.data);
+        this._setData(
+          user.data,
+          acl.data
+        );
+      }))
+      .catch(error => {
+        console.log(error);
       });
-    }, 1000);
   }
 
   render() {
@@ -157,8 +175,8 @@ class App extends React.Component {
 
       return (
         <LangProvider value={this.changeLang}>
-          <Fragment>
-            <UserProvider value={this.state.user}>
+          <UserProvider value={this.state.user}>
+            <PermissionContext.Provider value={this.state.acl}>
               <BrowserRouter>
                 <GAListener>
                   <Switch>
@@ -168,28 +186,32 @@ class App extends React.Component {
                       layout={CabinetLayout}
                       component={(props) => (
                         <Notice {...props}/>
-                      )}/>
+                      )}
+                    />
                     <LayoutRoute
                       exact
                       path="/cabinet/bills"
                       layout={CabinetLayout}
                       component={(props) => (
                         <BillListing {...props}/>
-                      )}/>
+                      )}
+                    />
                     <LayoutRoute
                       exact
                       path="/cabinet/payments"
                       layout={CabinetLayout}
                       component={(props) => (
                         <PaymentListing {...props}/>
-                      )}/>
+                      )}
+                    />
                     <LayoutRoute
                       exact
                       path="/cabinet/service"
                       layout={CabinetLayout}
                       component={(props) => (
                         <ServiceListing {...props}/>
-                      )}/>
+                      )}
+                    />
                     <LayoutRoute
                       exact
                       path="/cabinet/order/new"
@@ -225,57 +247,150 @@ class App extends React.Component {
                     <React.Suspense fallback={<PageSpinner/>}>
                       <MainLayout breakpoint={this.props.breakpoint}>
                         <Route exact path="/" component={DashboardPage}/>
-                        <Route exact path="/user" component={UserList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="user" permissionName="view" exact
+                          path="/user" component={UserList}
+                        />
                         <Switch>
-                          <Route exact path="/user/new" component={UserNew}/>
-                          <Route exact path="/user/:id/edit" component={UserUpdate}/>
-                          <Route exact path="/user/:id/delete" component={UserDelete}/>
-                          <Route exact path="/user/:id" component={UserDetail}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="user" permissionName="add"
+                            exact path="/user/new" component={UserNew}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="user" permissionName="change"
+                            exact path="/user/:id/edit" component={UserUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="user" permissionName="delete"
+                            exact path="/user/:id/delete" component={UserDelete}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="user" permissionName="view"
+                            exact path="/user/:id" component={UserDetail}
+                          />
                         </Switch>
-                        <Route exact path="/house" component={HouseList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="house" permissionName="view"
+                          exact path="/house" component={HouseList}
+                        />
                         <Switch>
-                          <Route exact path="/house/new" component={HouseNew}/>
-                          <Route exact path="/house/:id/edit" component={HouseUpdate}/>
-                          <Route exact path="/house/:id/delete" component={HouseDelete}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="house" permissionName="add"
+                            exact path="/house/new" component={HouseNew}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="house" permissionName="change"
+                            exact path="/house/:id/edit" component={HouseUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="house" permissionName="delete"
+                            exact path="/house/:id/delete" component={HouseDelete}
+                          />
                         </Switch>
-                        <Route exact path="/apartment"
-                               component={props => (
-                                 <ApartmentList {...props}/>
-                               )}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="apartment" permissionName="view"
+                          exact path="/apartment"
+                          component={props => (
+                            <ApartmentList {...props}/>
+                          )}
+                        />
                         <Switch>
-                          <Route exact path="/apartment/new" component={ApartmentNew}/>
-                          <Route exact path="/apartment/:id/edit" component={ApartmentUpdate}/>
-                          <Route exact path="/apartment/:id/delete" component={ApartmentDelete}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="apartment" permissionName="add"
+                            exact path="/apartment/new" component={ApartmentNew}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="apartment" permissionName="change"
+                            exact path="/apartment/:id/edit" component={ApartmentUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="apartment" permissionName="delete"
+                            exact path="/apartment/:id/delete" component={ApartmentDelete}
+                          />
                         </Switch>
-                        <Route exact path="/choice" component={ChoiceList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="choice" permissionName="view"
+                          exact path="/choice" component={ChoiceList}
+                        />
                         <Switch>
-                          <Route exact path="/choice/new" component={ChoiceNew}/>
-                          <Route exact path="/choice/:id/edit" component={ChoiceUpdate}/>
-                          <Route exact path="/choice/:id/delete" component={ChoiceDelete}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="choice" permissionName="add"
+                            exact path="/choice/new" component={ChoiceNew}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="choice" permissionName="change"
+                            exact path="/choice/:id/edit" component={ChoiceUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="choice" permissionName="delete"
+                            exact path="/choice/:id/delete" component={ChoiceDelete}
+                          />
                         </Switch>
-                        <Route exact path="/news" component={NewsList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="news" permissionName="view"
+                          exact path="/news" component={NewsList}
+                        />
                         <Switch>
-                          <Route exact path="/news/new" component={NewsNew}/>
-                          <Route exact path="/news/:id/edit" component={NewsUpdate}/>
-                          <Route exact path="/news/:id/delete" component={NewsDelete}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="news" permissionName="add"
+                            exact path="/news/new" component={NewsNew}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="news" permissionName="change"
+                            exact path="/news/:id/edit" component={NewsUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="news" permissionName="delete"
+                            exact path="/news/:id/delete" component={NewsDelete}
+                          />
                         </Switch>
-                        <Route exact path="/work" component={WorkList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="work" permissionName="view"
+                          exact path="/work" component={WorkList}
+                        />
                         <Switch>
-                          <Route exact path="/work/new" component={WorkUpdate}/>
-                          <Route exact path="/work/:id/edit" component={WorkUpdate}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="work" permissionName="add"
+                            exact path="/work/new" component={WorkUpdate}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="work" permissionName="change"
+                            exact path="/work/:id/edit" component={WorkUpdate}
+                          />
                         </Switch>
-                        <Route exact path="/order" component={OrderList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="order" permissionName="view"
+                          exact path="/order" component={OrderList}
+                        />
                         <Switch>
-                          <Route exact path="/order/new" component={OrderForm}/>
-                          <Route exact path="/order/:id/edit" component={OrderForm}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="order" permissionName="add"
+                            exact path="/order/new" component={OrderForm}
+                          />
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="order" permissionName="change"
+                            exact path="/order/:id/edit" component={OrderForm}
+                          />
                         </Switch>
-                        <Route exact path="/payment" component={PaymentList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="payment" permissionName="view"
+                          exact path="/payment" component={PaymentList}
+                        />
                         <Switch>
-                          <Route exact path="/payment/:id/edit" component={PaymentUpdate}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="payment" permissionName="change"
+                            exact path="/payment/:id/edit" component={PaymentUpdate}
+                          />
                         </Switch>
-                        <Route exact path="/bill" component={BillList}/>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="bill" permissionName="view"
+                          exact path="/bill" component={BillList}
+                        />
                         <Switch>
-                          <Route exact path="/bill/:id/edit" component={BillUpdate}/>
+                          <PermissionRoute
+                            aclList={this.state.acl} modelName="bill" permissionName="change"
+                            exact path="/bill/:id/edit" component={BillUpdate}
+                          />
                         </Switch>
                         {/*<Route path="*">*/}
                         {/*  <div>test</div>*/}
@@ -286,8 +401,8 @@ class App extends React.Component {
                   </Switch>
                 </GAListener>
               </BrowserRouter>
-            </UserProvider>
-          </Fragment>
+            </PermissionContext.Provider>
+          </UserProvider>
         </LangProvider>
       );
     }
