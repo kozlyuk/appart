@@ -72,6 +72,7 @@ class BillSerializer(serializers.ModelSerializer):
             "purpose",
             "period",
             "bill_lines",
+            "is_active"
         ]
 
     def get_purpose(self, obj):

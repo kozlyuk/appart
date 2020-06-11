@@ -28,9 +28,9 @@ def create_area_bills(period):
         # create bill_line for every service
         for service in services:
             BillLine.objects.create(bill=bill,
-                            service=service,
-                            previous_debt=debt_for_service(apartment, service, period),
-                            value=debt_for_month(apartment, service))
+                                    service=service,
+                                    previous_debt=debt_for_service(apartment, service, period),
+                                    value=debt_for_month(apartment, service))
         # calculate total_value for Bill
         bill.total_value = bill.calc_total_value()
         bill.save()

@@ -52,9 +52,12 @@ INSTALLED_APPS = [
     'font_awesome',
     'widget_tweaks',
     'django_celery_results',
-    'silk'
-
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['silk',
+                    #    'django_extensions'
+                       ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
