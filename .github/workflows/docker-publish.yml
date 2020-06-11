@@ -8,14 +8,14 @@ on:
 
     # Publish `v1.2.3` tags as releases.
     tags:
-      - v1.1
+      - v1
 
   # Run tests for any PRs.
   pull_request:
 
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: appart-back
+  IMAGE_NAME: appart_back_v1
   DOCKER_REPO: kozlyuk/dimonline
 
 jobs:
