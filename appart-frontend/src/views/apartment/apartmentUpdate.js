@@ -393,14 +393,10 @@ export default class ApartmentUpdate extends AbstractFormView {
             <Col xl={5}>
               <Card>
                 <CardBody>
-                  <Form>
-                    <FormGroup>
-                      <ApartmentPhoneChecker
-                        data={this.state.data}
-                        addResidentToAppartment={this.addResidentToAppartment}
-                      />
-                    </FormGroup>
-                  </Form>
+                  <ApartmentPhoneChecker
+                    data={this.state.data}
+                    addResidentToAppartment={this.addResidentToAppartment}
+                  />
                 </CardBody>
               </Card>
             </Col>
