@@ -18,8 +18,10 @@ from notice.models import News
 class PaymentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Payment class
     Filter queryset by search string ('filter' get parameter)
-    Filter queryset by apartment and payment_type fields
-    ('apartment', 'payment_type' get parameters)
+    Filter queryset by house field ('house' get parameter)
+    Filter queryset by apartment field ('apartment' get parameter)
+    Filter queryset by service field ('service' get parameter)
+    Filter queryset by payment_type field ('payment_type' get parameter)
     Order queryset by any given field ('order' get parameter)
     """
 
@@ -28,7 +30,9 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Payment.objects.all()
         search_string = self.request.GET.get('filter', '').split()
+        house = self.request.GET.get('house')
         apartment = self.request.GET.get('apartment')
+        service = self.request.GET.get('service')
         payment_type = self.request.GET.getlist('payment_type')
         order = self.request.GET.get('order')
         for word in search_string:
@@ -36,8 +40,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
                                        Q(apartment__account_number__contains=word) |
                                        Q(apartment__number__contains=word))
 
+        if house:
+            queryset = queryset.filter(apartment__house=house)
         if apartment:
             queryset = queryset.filter(apartment=apartment)
+        if service:
+            queryset = queryset.filter(service=service)
         if payment_type:
             qs_union = Payment.objects.none()
             for payment in payment_type:
@@ -55,6 +63,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
 class BillViewSet(viewsets.ModelViewSet):
     """ViewSet for the Bill class
     Filter queryset by search string ('filter' get parameter)
+    Filter queryset by house field ('house' get parameter)
     Filter queryset by apartment field ('apartment' get parameter)
     Filter queryset by service field ('service' get parameter)
     Filter queryset by is_active field ('is_active' get parameter)
@@ -66,6 +75,7 @@ class BillViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Bill.objects.all()
         search_string = self.request.GET.get('filter', '').split()
+        house = self.request.GET.get('house')
         apartment = self.request.GET.get('apartment')
         service = self.request.GET.get('service')
         is_active = not self.request.GET.get('is_active') == "false"
@@ -75,6 +85,8 @@ class BillViewSet(viewsets.ModelViewSet):
                                        Q(apartment__number__contains=word) |
                                        Q(apartment__account_number__contains=word))
 
+        if house:
+            queryset = queryset.filter(apartment__house=house)
         if apartment:
             queryset = queryset.filter(apartment=apartment)
         if service:
