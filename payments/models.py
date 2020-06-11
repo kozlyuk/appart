@@ -77,6 +77,8 @@ class Bill(models.Model):
     """ Model contains bills for apartments """
     #  Relationships
     apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'), on_delete=models.PROTECT)
+    service = models.ManyToManyField(Service, through='BillLine',
+                                     verbose_name=_('Services'), blank=True)
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
