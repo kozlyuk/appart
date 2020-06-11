@@ -52,7 +52,7 @@ RESIDENTS = [['Resident', '1', '0000000001', 'resident1@gmail.com'],
              ['Resident', '8', '0000000008', 'resident8@gmail.com'],
              ['Resident', '9', '0000000009', 'resident9@gmail.com'],
              ['Resident', '10', '0000000010', 'resident10@gmail.com'],
-]
+             ]
 
 residents_list = []
 for resident in RESIDENTS:
