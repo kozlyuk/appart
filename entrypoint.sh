@@ -13,7 +13,7 @@ fi
 
 python manage.py migrate
 echo "Migrating completed"
-python manage.py collectstatic --no-input --clear
+python manage.py collectstatic --no-input
 echo "Collecting staticfiles completed"
 
 exec "$@"
