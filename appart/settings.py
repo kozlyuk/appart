@@ -56,7 +56,7 @@ INSTALLED_APPS = [
 
 if DEBUG:
     INSTALLED_APPS += ['silk',
-                    #    'django_extensions'
+                       #'django_extensions'
                        ]
 
 MIDDLEWARE = [
@@ -224,6 +224,12 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+
+# SMS related settings
+SMS_SERVER_URL = os.environ.get("SMS_SERVER_URL")
+SMS_TOKEN = os.environ.get("SMS_TOKEN")
+SMS_SENDER = os.environ.get("SMS_SENDER")
+OTP_SECRET = os.environ.get("OTP_SECRET")
 
 # Viber related settings
 VIBER_AUTH_TOKEN = os.environ.get("VIBER_AUTH_TOKEN")

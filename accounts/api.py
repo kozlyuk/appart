@@ -1,14 +1,16 @@
 import re
+import pyotp
 from django.utils.translation import ugettext_lazy as _
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.db.models import Q
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
+from django.contrib.auth.models import Group
+from django.conf import settings
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
-from messaging.tasks import send_email
-from django.contrib.auth.models import Group, Permission
+from messaging.tasks import send_email, send_sms
 
 from accounts.serializers import UserSerializer, GetUserSerializer
 from accounts.models import User
@@ -106,7 +108,7 @@ class Register(views.APIView):
     """
     Check if resident mobile number exists in DB.
     If post_data valid - updates user data and
-    sends confirmation email with token.
+    sends confirmation email with token and sms with otp.
     If resident don`t exists return status HTTP_404_NOT_FOUND.
     If post_data not valid return status HTTP_400_BAD_REQUEST.
     If user data  updated return status HTTP_200_OK.
@@ -134,6 +136,7 @@ class Register(views.APIView):
         # check if serializer is valid
         if serializer.is_valid():
             serializer.save()
+            # send activation email with token
             current_site = get_current_site(request)
             mail_subject = _('Activate your DimOnline account.')
             message = render_to_string('acc_active_email.html', {
@@ -143,12 +146,16 @@ class Register(views.APIView):
                 'token':account_activation_token.make_token(user),
             })
             send_email(mail_subject, message, to=[user.email]) # TODO add delay
+            # send activation sms with otp
+            hotp = pyotp.HOTP(settings.OTP_SECRET)
+            otp = hotp.at(user.pk)
+            send_sms([mobile_number], otp) # TODO add delay
             return Response(_('User registered'), status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Activate(views.APIView):
+class ActivateEmail(views.APIView):
     """
     Check actvation url and makes user active.
     If token is valid send HTTP_200_OK and make user active.
@@ -169,9 +176,33 @@ class Activate(views.APIView):
             user.save()
             return Response(_('Thank you for your email confirmation. Now you can login your account.'),
                             status=status.HTTP_200_OK)
-        else:
-            return Response(_('Activation link is invalid!'),
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response(_('Activation link is invalid!'),
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivateSMS(views.APIView):
+    """
+    Check actvation url and makes user active.
+    If token is valid send HTTP_200_OK and make user active.
+    If token is not valid send HTTP_400_BAD_REQUEST.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, mobile_number, otp):
+        # check if otp code is valid
+        try:
+            user = User.objects.get(mobile_number=mobile_number)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        hotp = pyotp.HOTP(settings.OTP_SECRET)
+        if user is not None and hotp.verify(otp, user.pk):
+            user.is_registered = True
+            user.is_active = True
+            user.save()
+            return Response(_('Thank you for your otp confirmation. Now you can login your account.'),
+                            status=status.HTTP_200_OK)
+        return Response(_('OTP code is invalid!'),
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetACL(views.APIView):
