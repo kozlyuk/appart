@@ -15,7 +15,7 @@ redis                           # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
 # django_auto_prefetching==0.1.8  # https://github.com/GeeWee/django-auto-prefetching
 git+https://github.com/liqpay/sdk-python    # https://github.com/liqpay/sdk-python
-pyotp==2.3.0                    # https://github.com/pyauth/pyotp
+pyotp==2.3.0                    # https://giRFthub.com/pyauth/pyotp
 
 # Production tools
 django-dotenv==1.4.2            # https://github.com/jpadilla/django-dotenv
