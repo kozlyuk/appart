@@ -139,8 +139,7 @@ export default class ApartmentList extends AbstractListView {
         <div className="loaderWrapper text-center mt-4">
           <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
-        </div>)
-        ;
+        </div>);
     } else {
 
       return (
