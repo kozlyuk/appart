@@ -5,13 +5,13 @@
  * @copyright       2020 ITEL-Service
  */
 
-import axios from 'axios';
 import Auth from '../auth/auth';
+import axios from 'axios';
 
-export default class MainController {
+export default class BillFilterController {
   constructor() {
     /**
-     *
+     * User object.
      *
      * @type {Auth}
      * @private
@@ -30,23 +30,22 @@ export default class MainController {
         'Authorization': 'Token ' + this._user.getAuthToken()
       }
     };
-
-    const getUserEndpoint = process.env.REACT_APP_USER_DATA;
+    const getHouseEndpoint = process.env.REACT_APP_HOUSES_WITHOUT_PAGINATION;
     /**
-     * Get user promise.
+     * Get house promise.
      * @type {Promise<AxiosResponse<object>>}
      */
-    const getUserPromise = axios.get(getUserEndpoint, headers);
+    const getHousePromise = axios.get(getHouseEndpoint, headers);
 
-    const getAclEndpoint = process.env.REACT_APP_GET_ACL;
+    const getServiceEndpoint = process.env.REACT_APP_SERVICES_WITHOUT_PAGINATION;
     /**
-     * Get user promise
+     * Get service promise.
      * @type {Promise<AxiosResponse<object>>}
      */
-    const getAclPromise = axios.get(getAclEndpoint, headers);
+    const getServicePromise = axios.get(getServiceEndpoint, headers);
 
     return [
-      getUserPromise, getAclPromise
+      getHousePromise, getServicePromise
     ];
   }
 }

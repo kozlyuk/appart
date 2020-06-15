@@ -130,6 +130,18 @@ export default class ApartmentList extends AbstractListView {
     );
   }
 
+  /**
+   * Paginator
+   *
+   * @param pageNumber
+   */
+  handlePageChange(pageNumber) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    this.setState({ activePage: pageNumber });
+    this.refreshData(pageNumber, `?filter=${searchQuery}&house=${houseQuery}`);
+  }
+
   render() {
     const { error, isLoaded } = this.state;
     if (error) {

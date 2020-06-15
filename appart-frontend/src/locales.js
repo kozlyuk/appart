@@ -10,6 +10,8 @@ registerLang('en', {
     loading: 'Loading...',
     error: 'Error',
     search: 'Search',
+    filter: 'Filter',
+    displayInactive: 'Display inactive',
     welcomeNotification: 'Welcome to Dim Online!',
     validateErrors: {
       emptyField: 'The field can not be empty!',
@@ -338,6 +340,8 @@ registerLang('uk', {
     loading: 'Завантаження...',
     error: 'Помилка',
     search: 'Пошук',
+    filter: 'Фільтр',
+    displayInactive: 'Відображати неактивні',
     welcomeNotification: 'Вітаємо в Дім Онлайн!',
     validateErrors: {
       emptyField: 'Поле не може бути пустим!',
