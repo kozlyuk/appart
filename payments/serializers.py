@@ -1,6 +1,22 @@
 from rest_framework import serializers
 
-from .models import Payment, Bill, Service, BillLine, PaymentService
+from payments.models import Payment, Bill, Service, BillLine, PaymentService
+from condominium.serializers import HouseSerializer
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    houses = HouseSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Service
+        fields = [
+            "pk",
+            "houses",
+            "name",
+            "description",
+            "uom_type",
+            "uom"
+        ]
 
 
 class PaymentServiceSerializer(serializers.ModelSerializer):
@@ -83,17 +99,3 @@ class BillSerializer(serializers.ModelSerializer):
         queryset = queryset.prefetch_related('billline_set') \
                            .select_related('apartment')
         return queryset
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Service
-        fields = [
-            "house",
-            "name",
-            "description",
-            "uom_type",
-            "rate",
-            "uom"
-        ]

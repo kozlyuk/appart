@@ -56,8 +56,8 @@ class Rate(models.Model):
 
     class Meta:
         unique_together = ('service', 'house')
-        verbose_name = _('Service')
-        verbose_name_plural = _('Services')
+        verbose_name = _('Rate')
+        verbose_name_plural = _('Rates')
 
     def __str__(self):
         return self.service + self.house
@@ -94,8 +94,8 @@ class MeterRecord(models.Model):
 
 
     class Meta:
-        verbose_name = _('Meter')
-        verbose_name_plural = _('Meters')
+        verbose_name = _('MeterRecord')
+        verbose_name_plural = _('MeterRecords')
 
     def __str__(self):
         return str(self.value)
