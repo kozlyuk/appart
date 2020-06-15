@@ -1,11 +1,10 @@
 from rest_framework import serializers
 
-from payments.models import Payment, Bill, Service, BillLine, PaymentService
+from payments.models import Payment, Bill, Service, Rate, BillLine, PaymentService
 from condominium.serializers import HouseSerializer
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    houses = HouseSerializer(read_only=True, many=True)
 
     class Meta:
         model = Service
@@ -16,6 +15,18 @@ class ServiceSerializer(serializers.ModelSerializer):
             "description",
             "uom_type",
             "uom"
+        ]
+
+
+class RateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Rate
+        fields = [
+            "service",
+            "house",
+            "rate",
+            "from_date"
         ]
 
 

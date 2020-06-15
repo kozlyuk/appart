@@ -7,17 +7,25 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from liqpay import LiqPay
 
-from payments.serializers import BillSerializer, PaymentSerializer, ServiceSerializer
-from payments.models import Bill, Payment, Service
+from payments.serializers import BillSerializer, PaymentSerializer, \
+                                 ServiceSerializer, RateSerializer
+from payments.models import Bill, Payment, Service, Rate
 from condominium.models import Apartment
 
 from notice.models import News
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    """ViewSet for the service class"""
+    """ViewSet for the Service class"""
 
     serializer_class = ServiceSerializer
     queryset = Service.objects.all()
+
+
+class RateViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Rate class"""
+
+    serializer_class = RateSerializer
+    queryset = Rate.objects.all()
 
 
 class PaymentViewSet(viewsets.ModelViewSet):

@@ -4,10 +4,12 @@ from django.urls import path, include
 from rest_framework import routers
 
 from payments.api import BillViewSet, PaymentViewSet, GetTotalDebt, \
-                         PayView, PayCallbackView, ServiceViewSet
+                         PayView, PayCallbackView, ServiceViewSet, \
+                         RateViewSet
 
 router = routers.DefaultRouter()
 router.register("service", ServiceViewSet, basename='Service')
+router.register("rate", RateViewSet, basename='Rate')
 router.register("bill", BillViewSet, basename='Bill')
 router.register("payment", PaymentViewSet, basename='Payment')
 
