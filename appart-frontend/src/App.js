@@ -136,7 +136,6 @@ class App extends React.Component {
         user,
         acl
       ) => {
-        console.log(acl.data);
         this._setData(
           user.data,
           acl.data

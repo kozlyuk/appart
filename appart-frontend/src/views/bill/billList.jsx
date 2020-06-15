@@ -22,16 +22,53 @@ import { PermissionContext } from '../../globalContext/PermissionContext';
 
 export default class BillList extends AbstractListView {
   /**
+   * Bill list constructor.
    *
    * @param props
    */
   constructor(props) {
     super(props);
+    this.state = {
+      searchQuery: '',
+      houseQuery: '',
+      serviceQuery: '',
+      isActiveQuery: true
+    };
     this.dataUrl = process.env.REACT_APP_BILLS;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
   static contextType = PermissionContext;
+
+  /**
+   * @return {string}
+   */
+  getQueryString() {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const isActiveQuery = this.state.isActiveQuery;
+    this.dataUrl = `${process.env.REACT_APP_BILLS}?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&is_active=${isActiveQuery}`;
+
+    return this.dataUrl;
+  }
+
+  /**
+   * Paginator
+   *
+   * @param pageNumber
+   */
+  handlePageChange(pageNumber) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const isActiveQuery = this.state.isActiveQuery;
+    this.setState({ activePage: pageNumber });
+    this.refreshData(
+      pageNumber,
+      `?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&is_active=${isActiveQuery}`
+    );
+  }
 
   /**
    * Search handler
@@ -40,10 +77,39 @@ export default class BillList extends AbstractListView {
    */
   filterSearchHandler(event) {
     event.preventDefault();
-    const queryName = event.target.search.getAttribute('filterquery');
     const searchValue = event.target.search.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
+    this.setState({
+      searchQuery: searchValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
   }
+
+  filterHouseHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      houseQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterServiceHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      serviceQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterIsActiveHandler = (event) => {
+    this.setState({
+      isActiveQuery: !this.state.isActiveQuery
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
 
   /**
    *
@@ -106,7 +172,10 @@ export default class BillList extends AbstractListView {
         >
           <BillFilter
             filterSearchHandler={this.filterSearchHandler}
-            isLoaded={true}
+            filterHouseHandler={this.filterHouseHandler}
+            filterServiceHandler={this.filterServiceHandler}
+            filterIsActiveHandler={this.filterIsActiveHandler}
+            isLoaded
           />
           <Row>
             <Col>
