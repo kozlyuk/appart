@@ -18,21 +18,49 @@ class Service(models.Model):
         (ByCounter, _('By counter'))
     )
     #  Relationships
-    house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
+    houses = models.ManyToManyField(House, through='Rate',
+                                    verbose_name=_('Houses'))
     #  Fields
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), max_length=255, unique=True)
     description = models.CharField(_('Description'), max_length=255, blank=True)
     uom_type = models.CharField(_('Measurement type'), max_length=2, choices=UOM_CHOICES, default='BA')
-    rate = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
     uom = models.CharField(_('Default units of measurement'), max_length=8, default=_('sq.m.'))
 
     class Meta:
-        unique_together = ('house', 'name')
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
 
     def __str__(self):
         return str(self.name)
+
+    def actual_rate(self):
+        """ return actual service rate for current date """
+        actual_rate = None
+        actual_from_date = None
+        for rate in self.rate_set.all():
+            if rate.from_date <= date.today():
+                if not actual_from_date or actual_from_date < rate.from_date:
+                    actual_from_date = rate.from_date
+                    actual_rate = rate.regular_price
+        return actual_rate
+
+
+class Rate(models.Model):
+    """ Model contains Rates """
+    #  Relationships
+    service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.CASCADE)
+    house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.CASCADE)
+    #  Fields
+    rate = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
+    from_date = models.DateField(_('Actual from'))
+
+    class Meta:
+        unique_together = ('service', 'house')
+        verbose_name = _('Service')
+        verbose_name_plural = _('Services')
+
+    def __str__(self):
+        return self.service + self.house
 
 
 class Meter(models.Model):
