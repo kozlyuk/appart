@@ -22,10 +22,26 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 class RateViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Rate class"""
+    """ViewSet for the Rate class
+    Filter queryset by house field ('house' get parameter)
+    Filter queryset by service field ('service' get parameter)
+    Order queryset by any given field ('order' get parameter)
+    """
 
     serializer_class = RateSerializer
-    queryset = Rate.objects.all()
+
+    def get_queryset(self):
+        queryset = Rate.objects.all()
+        house = self.request.GET.get('house')
+        service = self.request.GET.get('service')
+        order = self.request.GET.get('order')
+        if house:
+            queryset = queryset.filter(house=house)
+        if service:
+            queryset = queryset.filter(service=service)
+        if order:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 class PaymentViewSet(viewsets.ModelViewSet):

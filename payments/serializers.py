@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from payments.models import Payment, Bill, Service, Rate, BillLine, PaymentService
-from condominium.serializers import HouseSerializer
 
 
 class ServiceSerializer(serializers.ModelSerializer):
