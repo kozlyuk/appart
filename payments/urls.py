@@ -5,10 +5,11 @@ from rest_framework import routers
 
 from payments.api import BillViewSet, PaymentViewSet, GetTotalDebt, \
                          PayView, PayCallbackView, ServiceViewSet, \
-                         RateViewSet
+                         RateViewSet, ServiceWithoutPagination
 
 router = routers.DefaultRouter()
 router.register("service", ServiceViewSet, basename='Service')
+router.register("service_wop", ServiceWithoutPagination, basename='service_wop')
 router.register("rate", RateViewSet, basename='Rate')
 router.register("bill", BillViewSet, basename='Bill')
 router.register("payment", PaymentViewSet, basename='Payment')

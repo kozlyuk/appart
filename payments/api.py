@@ -21,6 +21,13 @@ class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
 
 
+class ServiceWithoutPagination(ServiceViewSet):
+    """ViewSet for the Service class
+    Without pagination
+    """
+    pagination_class = None
+
+
 class RateViewSet(viewsets.ModelViewSet):
     """ViewSet for the Rate class
     Filter queryset by house field ('house' get parameter)
