@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from django.contrib.auth.models import Group
 from accounts.models import User
 from condominium.models import Company, House, Apartment
-from payments.models import Service
+from payments.models import Service, Rate
 from payments.tasks import create_area_bills
 from dimservice.models import Work, Order
 
@@ -87,13 +87,14 @@ SERVICES = [['Управління будинком', 'Внески на упр�
 ]
 
 for service in SERVICES:
-    Service.objects.create(house=house,
-                           name=service[0],
-                           description=service[1],
-                           uom_type=service[2],
-                           rate=service[3],
-                           uom=service[4])
-
+    service = Service.objects.create(name=service[0],
+                                     description=service[1],
+                                     uom_type=service[2],
+                                     uom=service[4])
+    Rate.objects.create(house=house,
+                        service=service,
+                        rate=service[3],
+                        from_date=date.today())
 print("Initial Services created")
 
 create_area_bills(date.today())
