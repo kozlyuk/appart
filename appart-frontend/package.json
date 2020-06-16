@@ -64,7 +64,7 @@
     }
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "serve": "serve -s build",
     "deploy": "gh-pages -d build",
