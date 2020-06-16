@@ -136,6 +136,9 @@ class App extends React.Component {
         user,
         acl
       ) => {
+        if (user.data.lang) {
+          this.checkLang(user.data.lang);
+        }
         this._setData(
           user.data,
           acl.data
