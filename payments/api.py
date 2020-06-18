@@ -140,6 +140,7 @@ class BillLineViewSet(viewsets.ModelViewSet):
     """ViewSet for the BillLine class"""
 
     serializer_class = serializers.BillLineSerializer
+    pagination_class = None
     def get_queryset(self):
         return BillLine.objects.filter(bill=self.kwargs['bill_pk'])
 
