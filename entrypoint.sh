@@ -1,15 +1,15 @@
 #!/bin/sh
 
-# if [ "$DATABASE" = "postgres" ]
-# then
-#     echo "Connectiong to DB $DB_HOST $DB_PORT ..."
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Connectiong to DB $DB_HOST $DB_PORT ..."
 
-#     while ! nc -z $DB_HOST $DB_PORT; do
-#       sleep 0.1
-#     done
+    while ! nc -z $DB_HOST $DB_PORT; do
+      sleep 0.1
+    done
 
-#     echo "PostgreSQL started"
-# fi
+    echo "PostgreSQL started"
+fi
 
 python manage.py migrate
 echo "Migrating completed"

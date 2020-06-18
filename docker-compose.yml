@@ -1,78 +1,58 @@
 version: '3.8'
 services:
-############
-# POSTGRES #
-############
-  # db:
-  #   image: postgres:12-alpine
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   env_file:
-  #     - ./.env.db
 ###########
 # BACKEND #
 ###########
-  # appart-back:
-  #   build: .
-  #   image: &img appart/back:v1
-  #   command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
-  #             '--worker-tmp-dir', '/dev/shm', '--workers', '2',
-  #             '--threads', '4', '--worker-class', 'gthread']
-  #   # ports:
-  #   #   - 8000:8000
-  #   # volumes:
-  #   #   - .:/app
-  #   env_file:
-  #     - ./.env.prod
-  #   entrypoint: ['/home/app/entrypoint.sh']
-  #   network_mode: host
-  #   # depends_on:
-  #   #   - db
+  appart-back:
+    build: .
+    image: &img appart_back:latest
+    command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
+              '--worker-tmp-dir', '/dev/shm', '--workers', '2',
+              '--threads', '4', '--worker-class', 'gthread']
+    network_mode: host
+    # volumes:
+    #   - back_data:/home/app
+    env_file:
+      - ./.env.prod
+    entrypoint: ['/home/app/entrypoint.sh']
 ############
 # FRONTEND #
 ############
-  # appart-front:
-  #   build:
-  #     context: ./appart-frontend
-  #   image: appart/front:v1
-  #   command: [nginx, '-g', 'daemon off;']
-  #   # ports:
-  #   #   - 8080:8080
-  #   depends_on:
-  #     - appart-back
-  #   network_mode: host
-#########
-# REDIS #
-#########
-  redis:
-    image: "redis:alpine"
+  appart-front:
+    build:
+      context: ./appart-frontend
+    image: appart_front:latest
+    command: [nginx, '-g', 'daemon off;']
+    ports:
+      - 8002:8080
+    volumes:
+      - front_data:/usr/share/nginx/html
+    depends_on:
+      - appart-back
 ##########
 # CELERY #
 ##########
   celery:
     # build: .
-    image: kozlyuk/dimonline:appart_back_latest
+    image: *img
     command: ['celery', '-A', 'appart', 'worker', '-l', 'info']
+    network_mode: host
     # volumes:
     #   - .:/app
     env_file:
       - ./.env.prod
-    depends_on:
-      # - db
-      - redis
 ###############
 # CELERY BEAT #
 ###############
-  # celery-beat:
-  #   image: *img
-  #   command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
-  #   # volumes:
-  #   #   - .:/app
-  #   env_file:
-  #     - ./.env.prod
-  #   depends_on:
-  #     - db
-  #     - redis
+  celery-beat:
+    image: *img
+    command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
+    network_mode: host
+    # volumes:
+    #   - back_data:/home/app
+    env_file:
+      - ./.env.prod
 
-# volumes:
-#   postgres_data:
+volumes:
+  front_data:
+  # back_data:
