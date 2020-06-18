@@ -7,9 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from liqpay import LiqPay
 
-from payments.serializers import BillSerializer, PaymentSerializer, \
-                                 ServiceSerializer, RateSerializer
-from payments.models import Bill, Payment, Service, Rate
+from payments import serializers
+from payments.models import Bill, BillLine, Payment, Service, Rate
 from condominium.models import Apartment
 
 from notice.models import News
@@ -17,7 +16,7 @@ from notice.models import News
 class ServiceViewSet(viewsets.ModelViewSet):
     """ViewSet for the Service class"""
 
-    serializer_class = ServiceSerializer
+    serializer_class = serializers.ServiceSerializer
     queryset = Service.objects.all()
 
 
@@ -35,7 +34,7 @@ class RateViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = RateSerializer
+    serializer_class = serializers.RateSerializer
 
     def get_queryset(self):
         queryset = Rate.objects.all()
@@ -61,7 +60,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = PaymentSerializer
+    serializer_class = serializers.PaymentSerializer
 
     def get_queryset(self):
         queryset = Payment.objects.all()
@@ -106,7 +105,7 @@ class BillViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = BillSerializer
+    serializer_class = serializers.BillSerializer
 
     def get_queryset(self):
         queryset = Bill.objects.all()
@@ -135,6 +134,14 @@ class BillViewSet(viewsets.ModelViewSet):
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset
+
+
+class BillLineViewSet(viewsets.ModelViewSet):
+    """ViewSet for the BillLine class"""
+
+    serializer_class = serializers.BillLineSerializer
+    def get_queryset(self):
+        return BillLine.objects.filter(bill=self.kwargs['bill_pk'])
 
 
 class GetTotalDebt(APIView):

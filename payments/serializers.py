@@ -72,10 +72,17 @@ class BillLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = BillLine
         fields = [
+            "pk",
+            "service",
             "previous_debt",
             "value",
             "total_debt"
         ]
+
+    def create(self, validated_data):
+        bill = Bill.objects.get(pk=self.context["view"].kwargs["bill_pk"])
+        validated_data["bill"] = bill
+        return BillLine.objects.create(**validated_data)
 
     def get_total_debt(self, obj):
         return str(obj.previous_debt + obj.value)

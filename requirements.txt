@@ -10,6 +10,7 @@ django-widget-tweaks            # https://github.com/jazzband/django-widget-twea
 Jinja2                          # https://github.com/noirbizarre/jinja2
 viberbot                        # https://viber.github.io/docs/api/python-bot-api/
 django-rest-auth                # https://github.com/Tivix/django-rest-auth
+drf-nested-routers              # https://github.com/alanjds/drf-nested-routers
 celery                          # https://github.com/celery/celery
 redis                           # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
