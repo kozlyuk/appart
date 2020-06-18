@@ -80,16 +80,21 @@ class BillLineSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        # add billline to bill
         bill = Bill.objects.get(pk=self.context["view"].kwargs["bill_pk"])
         validated_data["bill"] = bill
-        return BillLine.objects.create(**validated_data)
+        billline = BillLine.objects.create(**validated_data)
+        # update bill total_value
+        bill.total_value += billline.total_debt()
+        bill.save()
+        return billline
 
     def get_total_debt(self, obj):
-        return str(obj.previous_debt + obj.value)
+        return str(obj.total_debt())
 
 
 class BillSerializer(serializers.ModelSerializer):
-    bill_lines = BillLineSerializer(source='billline_set', many=True)
+    bill_lines = BillLineSerializer(source='billline_set', many=True, required=False)
     purpose = serializers.SerializerMethodField()
     apartment_name = serializers.CharField(source='apartment', required=False)
 

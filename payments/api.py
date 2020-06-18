@@ -187,7 +187,7 @@ class PayView(APIView):
         except Bill.DoesNotExist:
             return Response(_('Bill with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
 
-        # aggregate total_debt from bills
+        # prepearing Liqpay data
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         params = {
             'action': settings.LIQPAY_DEFAULT_ACTION,

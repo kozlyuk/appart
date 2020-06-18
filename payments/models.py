@@ -146,7 +146,7 @@ class BillLine(models.Model):
         return str(self.value)
 
     def total_debt(self):
-        return str(self.previous_debt + self.value)
+        return self.previous_debt + self.value
 
 
 class Payment(models.Model):
