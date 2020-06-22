@@ -91,7 +91,8 @@ export default class Auth {
    */
   logout() {
     localStorage.removeItem('auth');
-    window.location.replace('/login');
+    window.location.replace('/dashboard');
+    
     return 0;
   }
 
