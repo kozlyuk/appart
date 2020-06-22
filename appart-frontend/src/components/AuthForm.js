@@ -70,7 +70,7 @@ class AuthForm extends React.Component {
     })
       .then(response => {
         localStorage.setItem('auth', 'key: ' + response.data.key);
-        window.location.reload(false);
+        window.location.assign('/dashboard');
       })
       .catch(error => {
         Swal.fire({
