@@ -13,7 +13,7 @@ import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
 import PaymentUpdate from './views/payment/paymentUpdate';
 import BillList from './views/bill/billList';
-import BillForm from './views/bill/billForm';
+import BillForm from './views/bill/billUpdate';
 import OrderNew from './views/order/OrderNew';
 import { UserProvider } from './globalContext/userContext';
 import { LangProvider } from './globalContext/langContext';
