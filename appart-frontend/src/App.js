@@ -229,50 +229,50 @@ class App extends React.Component {
                   />
                   <React.Suspense fallback={<PageSpinner/>}>
                     <MainLayout breakpoint={this.props.breakpoint}>
-                      <Route exact path="/" component={DashboardPage}/>
+                      <Route exact path="/dashboard/" component={DashboardPage}/>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="user" permissionName="view" exact
-                        path="/user" component={UserList}
+                        path="/dashboard/user" component={UserList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="user" permissionName="add"
-                          exact path="/user/new" component={UserNew}
+                          exact path="/dashboard/user/new" component={UserNew}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="user" permissionName="change"
-                          exact path="/user/:id/edit" component={UserUpdate}
+                          exact path="/dashboard/user/:id/edit" component={UserUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="user" permissionName="delete"
-                          exact path="/user/:id/delete" component={UserDelete}
+                          exact path="/dashboard/user/:id/delete" component={UserDelete}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="user" permissionName="view"
-                          exact path="/user/:id" component={UserDetail}
+                          exact path="/dashboard/user/:id" component={UserDetail}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="house" permissionName="view"
-                        exact path="/house" component={HouseList}
+                        exact path="/dashboard/house" component={HouseList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="house" permissionName="add"
-                          exact path="/house/new" component={HouseNew}
+                          exact path="/dashboard/house/new" component={HouseNew}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="house" permissionName="change"
-                          exact path="/house/:id/edit" component={HouseUpdate}
+                          exact path="/dashboard/house/:id/edit" component={HouseUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="house" permissionName="delete"
-                          exact path="/house/:id/delete" component={HouseDelete}
+                          exact path="/dashboard/house/:id/delete" component={HouseDelete}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="apartment" permissionName="view"
-                        exact path="/apartment"
+                        exact path="/dashboard/apartment"
                         component={props => (
                           <ApartmentList {...props}/>
                         )}
@@ -280,103 +280,103 @@ class App extends React.Component {
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="apartment" permissionName="add"
-                          exact path="/apartment/new" component={ApartmentNew}
+                          exact path="/dashboard/apartment/new" component={ApartmentNew}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="apartment" permissionName="change"
-                          exact path="/apartment/:id/edit" component={ApartmentUpdate}
+                          exact path="/dashboard/apartment/:id/edit" component={ApartmentUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="apartment" permissionName="delete"
-                          exact path="/apartment/:id/delete" component={ApartmentDelete}
+                          exact path="/dashboard/apartment/:id/delete" component={ApartmentDelete}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="choice" permissionName="view"
-                        exact path="/choice" component={ChoiceList}
+                        exact path="/dashboard/choice" component={ChoiceList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="choice" permissionName="add"
-                          exact path="/choice/new" component={ChoiceNew}
+                          exact path="/dashboard/choice/new" component={ChoiceNew}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="choice" permissionName="change"
-                          exact path="/choice/:id/edit" component={ChoiceUpdate}
+                          exact path="/dashboard/choice/:id/edit" component={ChoiceUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="choice" permissionName="delete"
-                          exact path="/choice/:id/delete" component={ChoiceDelete}
+                          exact path="/dashboard/choice/:id/delete" component={ChoiceDelete}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="news" permissionName="view"
-                        exact path="/news" component={NewsList}
+                        exact path="/dashboard/news" component={NewsList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="news" permissionName="add"
-                          exact path="/news/new" component={NewsNew}
+                          exact path="/dashboard/news/new" component={NewsNew}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="news" permissionName="change"
-                          exact path="/news/:id/edit" component={NewsUpdate}
+                          exact path="/dashboard/news/:id/edit" component={NewsUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="news" permissionName="delete"
-                          exact path="/news/:id/delete" component={NewsDelete}
+                          exact path="/dashboard/news/:id/delete" component={NewsDelete}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="work" permissionName="view"
-                        exact path="/work" component={WorkList}
+                        exact path="/dashboard/work" component={WorkList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="work" permissionName="add"
-                          exact path="/work/new" component={WorkUpdate}
+                          exact path="/dashboard/work/new" component={WorkUpdate}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="work" permissionName="change"
-                          exact path="/work/:id/edit" component={WorkUpdate}
+                          exact path="/dashboard/work/:id/edit" component={WorkUpdate}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="order" permissionName="view"
-                        exact path="/order" component={OrderList}
+                        exact path="/dashboard/order" component={OrderList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="order" permissionName="add"
-                          exact path="/order/new" component={OrderForm}
+                          exact path="/dashboard/order/new" component={OrderForm}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="order" permissionName="change"
-                          exact path="/order/:id/edit" component={OrderForm}
+                          exact path="/dashboard/order/:id/edit" component={OrderForm}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="payment" permissionName="view"
-                        exact path="/payment" component={PaymentList}
+                        exact path="/dashboard/payment" component={PaymentList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="payment" permissionName="change"
-                          exact path="/payment/:id/edit" component={PaymentUpdate}
+                          exact path="/dashboard/payment/:id/edit" component={PaymentUpdate}
                         />
                       </Switch>
                       <PermissionRoute
                         aclList={this.state.acl} modelName="bill" permissionName="view"
-                        exact path="/bill" component={BillList}
+                        exact path="/dashboard/bill" component={BillList}
                       />
                       <Switch>
                         <PermissionRoute
                           aclList={this.state.acl} modelName="bill" permissionName="add"
-                          exact path="/bill/new" component={BillForm}
+                          exact path="/dashboard/bill/new" component={BillForm}
                         />
                         <PermissionRoute
                           aclList={this.state.acl} modelName="bill" permissionName="change"
-                          exact path="/bill/:id/edit" component={BillForm}
+                          exact path="/dashboard/bill/:id/edit" component={BillForm}
                         />
                       </Switch>
                       {/*<Route path="*">*/}
