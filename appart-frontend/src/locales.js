@@ -245,6 +245,7 @@ registerLang('en', {
       purpose: 'Purpose',
       actions: 'Actions'
     },
+    addBtn: 'Add bill',
     detail: 'Detail'
   },
   billForm: {
@@ -575,6 +576,7 @@ registerLang('uk', {
       purpose: 'Призначення',
       actions: 'Дії'
     },
+    addBtn: 'Додати рахунок',
     detail: 'Деталі'
   },
   billForm: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import BillUpdate from './billUpdate';
+import BillForm from './billForm';
 
 it('renders without crashing', () => {
-  shallow(<BillUpdate/>);
+  shallow(<BillForm/>);
 });
