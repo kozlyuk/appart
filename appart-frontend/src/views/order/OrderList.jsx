@@ -161,7 +161,7 @@ export default class OrderList extends AbstractListView {
                   <PermissionComponent
                     aclList={this.context.order} permissionName="add"
                   >
-                    <Link to="/order/new">
+                    <Link to="order/new">
                       <Button size="sm" className="float-right" color="success">
                         <Text text="orderList.addBtn"/>
                       </Button>

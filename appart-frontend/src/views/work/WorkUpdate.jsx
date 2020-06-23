@@ -66,7 +66,7 @@ export default class WorkUpdate extends AbstractFormView {
        */
       this._postUrl = process.env.REACT_APP_WORKS;
     }
-    this.successRedirect = '/work';
+    this.successRedirect = '/dashboard/work';
     /**
      * @type {string}
      * @private
@@ -247,7 +247,7 @@ export default class WorkUpdate extends AbstractFormView {
                 </option>
               ))}
             </SelectWithChoices>
-            <Link to="/work">
+            <Link to="/dashboard/work">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

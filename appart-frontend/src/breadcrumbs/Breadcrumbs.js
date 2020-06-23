@@ -15,28 +15,29 @@ const BreadcrumbsNew = () => (<Text text="breadcrumbsItems.new" formatters="firs
 const BreadcrumbsEdit = () => (<Text text="breadcrumbsItems.edit" formatters="firstUppercase"/>);
 
 const routes = [
-  { path: '/', breadcrumb: BreadcrumbsHome },
-  { path: '/user', breadcrumb: BreadcrumbsUser },
-  { path: '/user/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/user/new', breadcrumb: BreadcrumbsNew },
-  { path: '/bill', breadcrumb: BreadcrumbsBill },
-  { path: '/bill/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/bill/new', breadcrumb: BreadcrumbsNew },
-  { path: '/payment', breadcrumb: BreadcrumbsPayment },
-  { path: '/payment/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/payment/new', breadcrumb: BreadcrumbsNew },
-  { path: '/house', breadcrumb: BreadcrumbsHouse },
-  { path: '/house/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/house/new', breadcrumb: BreadcrumbsNew },
-  { path: '/apartment', breadcrumb: BreadcrumbsApartment },
-  { path: '/apartment/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/apartment/new', breadcrumb: BreadcrumbsNew },
-  { path: '/order', breadcrumb: BreadcrumbsOrder },
-  { path: '/order/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/order/new', breadcrumb: BreadcrumbsNew },
-  { path: '/work', breadcrumb: BreadcrumbsWork },
-  { path: '/work/:id/edit', breadcrumb: BreadcrumbsEdit },
-  { path: '/work/new', breadcrumb: BreadcrumbsNew }
+  { path: '/' },
+  { path: '/dashboard/', breadcrumb: BreadcrumbsHome },
+  { path: '/dashboard/user', breadcrumb: BreadcrumbsUser },
+  { path: '/dashboard/user/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/user/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/bill', breadcrumb: BreadcrumbsBill },
+  { path: '/dashboard/bill/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/bill/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/payment', breadcrumb: BreadcrumbsPayment },
+  { path: '/dashboard/payment/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/payment/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/house', breadcrumb: BreadcrumbsHouse },
+  { path: '/dashboard/house/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/house/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/apartment', breadcrumb: BreadcrumbsApartment },
+  { path: '/dashboard/apartment/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/apartment/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/order', breadcrumb: BreadcrumbsOrder },
+  { path: '/dashboard/order/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/order/new', breadcrumb: BreadcrumbsNew },
+  { path: '/dashboard/work', breadcrumb: BreadcrumbsWork },
+  { path: '/dashboard/work/:id/edit', breadcrumb: BreadcrumbsEdit },
+  { path: '/dashboard/work/new', breadcrumb: BreadcrumbsNew }
 ];
 
 
@@ -63,4 +64,4 @@ const Breadcrumbs = ({ breadcrumbs }) => (
 );
 
 // export default withBreadcrumbs(routes)(Breadcrumbs);
-export default withBreadcrumbs(routes)(Breadcrumbs);
+export default withBreadcrumbs(routes, { excludePaths: ['/', '/no-breadcrumb/for-this-route'] })(Breadcrumbs);

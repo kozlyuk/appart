@@ -177,7 +177,7 @@ export default class UserList extends AbstractListView {
                   <PermissionComponent
                     aclList={this.context.user} permissionName="add"
                   >
-                    <Link to="/user/new">
+                    <Link to="user/new">
                       <Button size="sm" className="float-right" color="success">
                         <Text text="userList.addBtn"/>
                       </Button>
