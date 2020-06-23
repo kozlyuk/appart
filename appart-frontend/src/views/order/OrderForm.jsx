@@ -77,12 +77,11 @@ export default class OrderForm extends AbstractFormView {
       this.requestType = 'post';
     }
     this._onHouseItemSelect = this._onHouseItemSelect.bind(this);
-    this.successRedirect = '/order';
+    this.successRedirect = '/dashboard/order';
     this._successButton = 'Повернутися до списку замовлень';
   }
 
   componentDidMount() {
-
     Promise.all(this.OrderController.getPromiseValues())
       .then(axios.spread((
         works,
@@ -303,7 +302,6 @@ export default class OrderForm extends AbstractFormView {
    * @private
    */
   _isExecutorExist = (executorPk) => {
-    console.log(executorPk, this.state.executorsPk);
     return this.state.executorsPk.includes(executorPk);
   };
 
@@ -517,7 +515,7 @@ export default class OrderForm extends AbstractFormView {
               <DataInput
                 label={<Text text="orderForm.executorsSet.scheduledTime"/>}
                 name={`scheduled_time_${index}`}
-                value={executor.scheduled_time}
+                defaultValue={executor.scheduled_time}
                 helpText={<Text text="orderForm.executorsSet.scheduledTimeHelpText"/>}
               />
             </Form>
@@ -528,7 +526,7 @@ export default class OrderForm extends AbstractFormView {
                 <i className={styles.orSpacerSpanI}>+</i>
               </span>
           </div>
-          <Link to="/order">
+          <Link to="/dashboard/order">
             <Button color="warning">
               <Text text="buttons.returnBtn"/>
             </Button>

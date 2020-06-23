@@ -60,7 +60,7 @@ export default class ApartmentNew extends AbstractFormView {
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_APARTMENTS_URL;
     this.requestType = 'post';
-    this.successRedirect = '/apartment';
+    this.successRedirect = '/dashboard/apartment';
     this._successButton = 'Повернутися до списку апартаментів';
   }
 
@@ -299,7 +299,7 @@ export default class ApartmentNew extends AbstractFormView {
               }
             </FormGroup>
 
-            <Link to="/apartment">
+            <Link to="/dashboard/apartment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

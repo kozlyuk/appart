@@ -172,7 +172,7 @@ export default class ApartmentList extends AbstractListView {
                   <PermissionComponent
                     aclList={this.context.apartment} permissionName="add"
                   >
-                    <Link to="/apartment/new">
+                    <Link to="apartment/new">
                       <Button size="sm" className="float-right" color="success">
                         <Text text="apartmentList.addBtn"/>
                       </Button>
