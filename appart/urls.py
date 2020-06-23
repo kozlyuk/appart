@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.conf.urls.static import static
-from appart.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATICFILES_DIRS
+from appart.settings import DEBUG, MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATIC_ROOT
 
 
 urlpatterns = [
@@ -38,6 +38,6 @@ urlpatterns = [
 
 if DEBUG:
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
-    urlpatterns += static(STATIC_URL, document_root=STATICFILES_DIRS[0])
+    urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 
 urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))] #   Django silk

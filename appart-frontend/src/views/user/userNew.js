@@ -76,7 +76,7 @@ export default class UserNew extends AbstractFormView {
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_USERS_URL;
     this.requestType = 'post';
-    this.successRedirect = '/user';
+    this.successRedirect = '/dashboard/user';
     this._successButton = 'Повернутися до списку користувачів';
     this._user = new Auth();
   }
@@ -415,7 +415,7 @@ export default class UserNew extends AbstractFormView {
                 <Text text="buttons.closeBtn"/>
               </Button>
               :
-              <Link to="/user">
+              <Link to="/dashboard/user">
                 <Button color="warning">
                   <Text text="buttons.returnBtn"/>
                 </Button>

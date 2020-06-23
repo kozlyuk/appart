@@ -148,8 +148,9 @@ class Register(views.APIView):
             send_email(mail_subject, message, to=[user.email]) # TODO add delay
             # send activation sms with otp
             hotp = pyotp.HOTP(settings.OTP_SECRET)
+            mobile_number_international = '38' + mobile_number
             otp = hotp.at(user.pk)
-            send_sms([mobile_number], otp) # TODO add delay
+            send_sms([mobile_number_international], otp) # TODO add delay
             return Response(_('User registered'), status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

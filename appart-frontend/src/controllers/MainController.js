@@ -11,8 +11,6 @@ import Auth from '../auth/auth';
 export default class MainController {
   constructor() {
     /**
-     *
-     *
      * @type {Auth}
      * @private
      */

@@ -217,7 +217,7 @@ export default class PaymentUpdate extends AbstractFormView {
               })}
             </ListGroup>
             }
-            <Link to="/payment">
+            <Link to="/dashboard/payment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

@@ -165,7 +165,7 @@ export default class WorkList extends AbstractListView {
                   <PermissionComponent
                     aclList={this.context.work} permissionName="add"
                   >
-                    <Link to="/work/new">
+                    <Link to="work/new">
                       <Button size="sm" className="float-right" color="success">
                         <Text text="workList.addBtn"/>
                       </Button>
