@@ -420,13 +420,16 @@ export default class OrderForm extends AbstractFormView {
                 ))}
               </SelectWithChoices>
               :
-              <SelectWithChoices
-                type="text"
-                label={<Text text="orderForm.apartment"/>}
-                name="apartment" disabled
-                error={this.state.fieldError.apartment}
-                value={this.state.orderData.apartment_name}
-              />
+              <>
+                <input type={'hidden'} name="apartment" value={this.state.orderData.apartment}/>
+                <SelectWithChoices
+                  type="text"
+                  label={<Text text="orderForm.apartment"/>}
+                  name="apartment" disabled
+                  error={this.state.fieldError.apartment}
+                  value={this.state.orderData.apartment_name}
+                />
+              </>
             }
             <SelectWithChoices
               label={<Text text="orderForm.work"/>}
@@ -515,7 +518,7 @@ export default class OrderForm extends AbstractFormView {
               <DataInput
                 label={<Text text="orderForm.executorsSet.scheduledTime"/>}
                 name={`scheduled_time_${index}`}
-                defaultValue={executor.scheduled_time}
+                startValue={executor.scheduled_time}
                 helpText={<Text text="orderForm.executorsSet.scheduledTimeHelpText"/>}
               />
             </Form>

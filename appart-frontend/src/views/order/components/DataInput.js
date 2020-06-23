@@ -12,26 +12,33 @@ import DatePicker from 'reactstrap-date-picker';
 export default class DataInput extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      formattedValue: '',
+      value: this.props.startValue
+    };
   }
 
-  /**
-   * Date picker handle change.
-   *
-   * @param value
-   * @param formattedValue
-   */
-  _handleChange(value, formattedValue) {
-
+  handleChange(value, formattedValue) {
+    const withDash = formattedValue.replace(/\//mg, '-');
+    this.setState({
+      value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z"
+      formattedValue: withDash // Formatted String, ex: "11/19/2016"
+    });
   }
 
   render() {
     return (
       <FormGroup>
+        <input type={'hidden'} value={this.state.formattedValue} name={this.props.name + '-formatted'}/>
         <Label>{this.props.label}</Label>
-        <DatePicker id={this.props.name} name={this.props.name}
-                    showClearButton={false}
-                    value={this.props.value}
-                    onChange={this._handleChange}/>
+        <DatePicker
+          id={this.props.name} name={this.props.name}
+          value={this.state.value}
+          showClearButton={false}
+          dateFormat={'YYYY/MM/DD'}
+          onChange={(v, f) => this.handleChange(v, f)}
+          {...this.props}
+        />
         {this.props.helpText &&
         <FormText>{this.props.helpText}</FormText>
         }
