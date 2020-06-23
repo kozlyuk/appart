@@ -12,7 +12,7 @@ router.register("rate", api.RateViewSet, basename='Rate')
 router.register("bill", api.BillViewSet, basename='Bill')
 router.register("payment", api.PaymentViewSet, basename='Payment')
 
-bill_router = routers.NestedSimpleRouter(router, r'bill', lookup='bill')
+bill_router = routers.NestedDefaultRouter(router, r'bill', lookup='bill')
 bill_router.register(r'billline', api.BillLineViewSet, basename='BillLine')
 
 

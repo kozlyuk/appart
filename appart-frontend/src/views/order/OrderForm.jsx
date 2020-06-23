@@ -82,6 +82,7 @@ export default class OrderForm extends AbstractFormView {
   }
 
   componentDidMount() {
+
     Promise.all(this.OrderController.getPromiseValues())
       .then(axios.spread((
         works,
@@ -302,6 +303,7 @@ export default class OrderForm extends AbstractFormView {
    * @private
    */
   _isExecutorExist = (executorPk) => {
+    console.log(executorPk, this.state.executorsPk);
     return this.state.executorsPk.includes(executorPk);
   };
 
