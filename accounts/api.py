@@ -210,6 +210,8 @@ class GetACL(views.APIView):
     """
     Sending JSON list of user permissions per objects
     """
+    queryset = User.objects.none()
+
     def get(self, request):
         json_data = {}
         perms = request.user.get_all_permissions()
