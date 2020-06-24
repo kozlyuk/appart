@@ -5,12 +5,13 @@ import {
   MdAttachMoney,
   MdBuild,
   MdDashboard,
+  MdEqualizer,
   MdEvent,
   MdExtension,
   MdKeyboardArrowDown,
   MdMonetizationOn,
   MdPayment,
-  MdWeb,
+  MdSupervisorAccount,
   MdWidgets,
   MdWork
 } from 'react-icons/md';
@@ -93,9 +94,9 @@ class Sidebar extends React.Component {
     },
     {
       to: 'dashboard/service',
-      name: <Text text="sidebar.service"/>,
+      name: <Text text="sidebar.services"/>,
       exact: true,
-      Icon: MdPayment,
+      Icon: MdExtension,
       modelName: 'service',
       permissionName: 'view'
     },
@@ -103,7 +104,7 @@ class Sidebar extends React.Component {
       to: 'dashboard/rate',
       name: <Text text="sidebar.rate"/>,
       exact: true,
-      Icon: MdPayment,
+      Icon: MdEqualizer,
       modelName: 'rate',
       permissionName: 'view'
     }
@@ -125,7 +126,7 @@ class Sidebar extends React.Component {
       to: '/dashboard/user',
       name: <Text text="sidebar.user"/>,
       exact: false,
-      Icon: MdWeb,
+      Icon: MdSupervisorAccount,
       modelName: 'user',
       permissionName: 'view'
     }

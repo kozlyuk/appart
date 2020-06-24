@@ -46,6 +46,7 @@ registerLang('en', {
     bills: 'bills',
     profile: 'profile',
     service: 'service',
+    services: 'services',
     order: 'orders',
     work: 'work\'s',
     rate: 'rates'
@@ -379,6 +380,7 @@ registerLang('uk', {
     bills: 'рахунки',
     profile: 'профіль',
     service: 'сервісна служба',
+    services: 'сервіси',
     order: 'замовлення',
     work: 'роботи',
     rate: 'тарифи'
