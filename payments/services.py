@@ -1,25 +1,8 @@
 """ Business logic for payments app """
-from django.db.models import Sum
-
-from payments.models import Bill, BillLine
+from datetime import datetime
 
 
-
-def debt_for_month(apartment, service):
-    """ return previous debt of apartment for service """
-
-    return apartment.area * service.rate
-
-
-def total_debt(apartment):          # TODO
-    """ return previous debt of apartment for service """
-
-    BillLine.objects.filter(field_name__isnull=True).aggregate(Sum('field_name'))
-
-    return 0
-
-
-def debt_for_service(apartment, service, period):          # TODO
-    """ return previous debt of apartment for service """
-
-    return 0
+def last_day_of_month(any_day):
+    # reurl last day for given month
+    next_month = any_day.replace(day=28) + datetime.timedelta(days=4)
+    return next_month - datetime.timedelta(days=next_month.day)

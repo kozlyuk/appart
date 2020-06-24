@@ -20,7 +20,7 @@ class RateAdmin(admin.ModelAdmin):
     list_display = [
         "service",
         "house",
-        "rate",
+        "value",
         "from_date"
     ]
 

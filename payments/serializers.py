@@ -24,7 +24,7 @@ class RateSerializer(serializers.ModelSerializer):
         fields = [
             "service",
             "house",
-            "rate",
+            "value",
             "from_date"
         ]
 

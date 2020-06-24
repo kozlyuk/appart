@@ -162,11 +162,8 @@ class GetTotalDebt(APIView):
         except Apartment.DoesNotExist:
             return Response(_('Apartment with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
 
-        # aggregate total_debt from bills
-        total_debt = apartment.bill_set.filter(is_active=True) \
-                                       .aggregate(total_debt=Sum('total_value')) \
-                                       ['total_debt'] or 0
-        return Response(total_debt, status=status.HTTP_200_OK)
+        # return total_debt from apartment
+        return Response(apartment.current_total_debt(), status=status.HTTP_200_OK)
 
 
 class PayView(APIView):

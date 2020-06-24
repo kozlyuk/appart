@@ -1,12 +1,13 @@
 """  Models for Payments application  """
 
-from datetime import date
+from datetime import date, datetime
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
+from condominium.services import last_day_of_month
 
 
 class Service(models.Model):
@@ -33,16 +34,38 @@ class Service(models.Model):
     def __str__(self):
         return str(self.name)
 
-    def actual_rate(self):
+    def rate_for_month(self, period):
         """ return actual service rate for current date """
         actual_rate = None
         actual_from_date = None
         for rate in self.rate_set.all():
-            if rate.from_date <= date.today():
+            if rate.from_date <= period:
                 if not actual_from_date or actual_from_date < rate.from_date:
                     actual_from_date = rate.from_date
-                    actual_rate = rate.regular_price
+                    actual_rate = rate.value
         return actual_rate
+
+    def bills_sum(self, apartment, period):
+        """ return bills sum for appartment """
+        return self.billline_set.filter(bill__apartment=apartment,
+                                        bill__period__lte=last_day_of_month(period)) \
+                                .aggregate(bills_sum=Sum('value')) \
+                                ['bills_sum'] or 0
+
+    def payments_sum(self, apartment, period):
+        """ return payments sum for appartment """
+        return self.payment_set.filter(apartment=apartment,
+                                       date__lte=last_day_of_month(period)) \
+                               .aggregate(payments_sum=Sum('value')) \
+                               ['payments_sum'] or 0
+
+    def previous_debt(self, apartment, period):
+        """ return total debt of apartment """
+        return self.bills_sum(apartment, period) - self.payments_sum(apartment, period)
+
+    def debt_for_month(self, apartment, period):
+        """ return month's debt of apartment for service """
+        return apartment.area * self.rate_for_month(last_day_of_month(period))
 
 
 class Rate(models.Model):
@@ -51,7 +74,7 @@ class Rate(models.Model):
     service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.CASCADE)
     house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.CASCADE)
     #  Fields
-    rate = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
+    value = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
     from_date = models.DateField(_('Actual from'))
 
     class Meta:

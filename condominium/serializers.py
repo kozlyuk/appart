@@ -18,6 +18,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "resident",
             "resident_name",
             "number",
+            "account_number",
             "description",
             "is_active",
             "area",
