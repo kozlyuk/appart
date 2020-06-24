@@ -8,6 +8,7 @@ import {
   MdEvent,
   MdExtension,
   MdKeyboardArrowDown,
+  MdMonetizationOn,
   MdPayment,
   MdWeb,
   MdWidgets,
@@ -43,6 +44,7 @@ class Sidebar extends React.Component {
       isOpenComponentCondominium: false,
       isOpenComponentNotice: false,
       isOpenComponentService: false,
+      isOpenComponentAccounting: false,
       isOpenContents: true,
       isOpenPages: true
     };
@@ -72,6 +74,41 @@ class Sidebar extends React.Component {
     }
   ];
 
+  accountingComponents = [
+    {
+      to: 'dashboard/bill',
+      name: <Text text="sidebar.bills"/>,
+      exact: true,
+      Icon: MdAttachMoney,
+      modelName: 'bill',
+      permissionName: 'view'
+    },
+    {
+      to: '/dashboard/payment',
+      name: <Text text="sidebar.payment"/>,
+      exact: true,
+      Icon: MdPayment,
+      modelName: 'payment',
+      permissionName: 'view'
+    },
+    {
+      to: 'dashboard/service',
+      name: <Text text="sidebar.service"/>,
+      exact: true,
+      Icon: MdPayment,
+      modelName: 'service',
+      permissionName: 'view'
+    },
+    {
+      to: 'dashboard/rate',
+      name: <Text text="sidebar.rate"/>,
+      exact: true,
+      Icon: MdPayment,
+      modelName: 'rate',
+      permissionName: 'view'
+    }
+  ];
+
   /**
    * @type {({modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string}|{modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string}|{modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string}|{modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string})[]}
    */
@@ -90,22 +127,6 @@ class Sidebar extends React.Component {
       exact: false,
       Icon: MdWeb,
       modelName: 'user',
-      permissionName: 'view'
-    },
-    {
-      to: '/dashboard/bill',
-      name: <Text text="sidebar.bills"/>,
-      exact: true,
-      Icon: MdAttachMoney,
-      modelName: 'bill',
-      permissionName: 'view'
-    },
-    {
-      to: '/dashboard/payment',
-      name: <Text text="sidebar.payment"/>,
-      exact: true,
-      Icon: MdPayment,
-      modelName: 'payment',
       permissionName: 'view'
     }
   ];
@@ -257,6 +278,55 @@ class Sidebar extends React.Component {
             </MultiplePermissionComponent>
             <Collapse isOpen={this.state.isOpenComponentService}>
               {this.serviceComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
+                <PermissionSidebarComponent
+                  aclList={this.context} modelName={modelName}
+                  permissionName={permissionName}
+                >
+                  <NavItem key={index} className={bem.e('nav-item')}>
+                    <BSNavLink
+                      id={`navItem-${name}-${index}`}
+                      className="text-uppercase"
+                      tag={NavLink}
+                      to={to}
+                      activeClassName="active"
+                      exact={exact}
+                    >
+                      <Icon className={bem.e('nav-item-icon')}/>
+                      <span className="">{name}</span>
+                    </BSNavLink>
+                  </NavItem>
+                </PermissionSidebarComponent>
+              ))}
+            </Collapse>
+            <MultiplePermissionComponent
+              aclList={this.context} modelName={['bill', 'payment', 'service', 'rate']}
+              permissionName={['view', 'view', 'view', 'view']}
+            >
+              <NavItem
+                className={bem.e('nav-item')}
+                onClick={this.handleClick('ComponentAccounting')}
+              >
+                <BSNavLink className={bem.e('nav-item-collapse')}>
+                  <div className="d-flex">
+                    <MdMonetizationOn className={bem.e('nav-item-icon')}/>
+                    <span className="align-self-start text-uppercase"><Text text="sidebar.accounting"/></span>
+                  </div>
+                  <MdKeyboardArrowDown
+                    className={bem.e('nav-item-icon')}
+                    style={{
+                      padding: 0,
+                      transform: this.state.isOpenComponentAccounting
+                        ? 'rotate(0deg)'
+                        : 'rotate(-90deg)',
+                      transitionDuration: '0.3s',
+                      transitionProperty: 'transform'
+                    }}
+                  />
+                </BSNavLink>
+              </NavItem>
+            </MultiplePermissionComponent>
+            <Collapse isOpen={this.state.isOpenComponentAccounting}>
+              {this.accountingComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
                 <PermissionSidebarComponent
                   aclList={this.context} modelName={modelName}
                   permissionName={permissionName}

@@ -31,6 +31,7 @@ registerLang('en', {
     }
   },
   sidebar: {
+    accounting: 'accounting',
     home: 'home',
     user: 'users',
     company: 'company',
@@ -46,7 +47,8 @@ registerLang('en', {
     profile: 'profile',
     service: 'service',
     order: 'orders',
-    work: 'work\'s'
+    work: 'work\'s',
+    rate: 'rates'
   },
   paymentList: {
     tableHeader: {
@@ -362,6 +364,7 @@ registerLang('uk', {
     }
   },
   sidebar: {
+    accounting: 'розрахунки',
     home: 'головна',
     user: 'користувачі',
     company: 'компанія',
@@ -377,7 +380,8 @@ registerLang('uk', {
     profile: 'профіль',
     service: 'сервісна служба',
     order: 'замовлення',
-    work: 'роботи'
+    work: 'роботи',
+    rate: 'тарифи'
   },
   paymentList: {
     tableHeader: {
