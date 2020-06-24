@@ -64,7 +64,7 @@ export default class ApartmentUpdate extends AbstractFormView {
     }
     this.requestType = 'put';
     this.addResidentToAppartment.bind(this);
-    this.successRedirect = '/apartment';
+    this.successRedirect = '/dashboard/apartment';
     this._successButton = 'Повернутися до списку апартаментів';
   }
 
@@ -333,16 +333,11 @@ export default class ApartmentUpdate extends AbstractFormView {
               }
             </FormGroup>
             <ButtonToolbar>
-              <Link to="/apartment">
+              <Link to="/dashboard/apartment">
                 <Button color="warning">
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
-              {/*<Link className="mx-auto" to={`delete`}>*/}
-              {/*  <Button color="danger" className="mr-1">*/}
-              {/*    <Text text="apartmentList.tableHeader.deleteBtn"/>*/}
-              {/*  </Button>*/}
-              {/*</Link>*/}
               {this.state.errors.house ||
               this.state.errors.resident ||
               this.state.errors.number ||

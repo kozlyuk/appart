@@ -1,12 +1,9 @@
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
 from rest_framework import viewsets, status, views
-from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
 from dimservice.models import Work, Order, Execution
-from dimservice.serializers import WorkSerializer, OrderSerializer, ExecutionSerializer
-from condominium.models import Apartment
+from dimservice import serializers
 
 
 class WorkViewSet(viewsets.ModelViewSet):
@@ -16,7 +13,7 @@ class WorkViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = WorkSerializer
+    serializer_class = serializers.WorkSerializer
 
     def get_queryset(self):
         queryset = Work.objects.filter(is_active=True)
@@ -50,7 +47,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = OrderSerializer
+    serializer_class = serializers.OrderSerializer
 
     def get_queryset(self):
         queryset = Order.objects.all()
@@ -93,8 +90,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 class ExecutionViewSet(viewsets.ModelViewSet):
     """ViewSet for the Execution class"""
 
-    queryset = Execution.objects.all()
-    serializer_class = ExecutionSerializer
+    serializer_class = serializers.ExecutionSerializer
+    pagination_class = None
+    def get_queryset(self):
+        return Execution.objects.filter(order=self.kwargs['order_pk'])
 
 
 class ExecStatusChoices(views.APIView):

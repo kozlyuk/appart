@@ -36,7 +36,7 @@ export default class ChoiceNew extends AbstractFormView {
               />
             </FormGroup>
 
-            <Link to="/choice">
+            <Link to="/dashboard/choice">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

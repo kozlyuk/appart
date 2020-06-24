@@ -94,7 +94,7 @@ export default class ChoiceList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.choice"/>
-                  <Link to="/choice/new">
+                  <Link to="choice/new">
                     <Button size="sm" className="float-right" color="success">
                       <Text text="choiceList.addBtn"/>
                     </Button>

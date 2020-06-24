@@ -79,7 +79,7 @@ export default class NewsUpdate extends AbstractFormView {
             </FormGroup>
 
 
-            <Link to="/news">
+            <Link to="/dashboard/news">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

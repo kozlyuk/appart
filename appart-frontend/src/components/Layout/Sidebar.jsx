@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
    */
   condominiumComponents = [
     {
-      to: '/house',
+      to: '/dashboard/house',
       name: <Text text="sidebar.house"/>,
       exact: false,
       Icon: MdWidgets,
@@ -63,7 +63,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: '/apartment',
+      to: '/dashboard/apartment',
       name: <Text text="sidebar.apartment"/>,
       exact: false,
       Icon: MdWidgets,
@@ -77,7 +77,7 @@ class Sidebar extends React.Component {
    */
   navItems = [
     {
-      to: '/',
+      to: '/dashboard/',
       name: <Text text="sidebar.home"/>,
       exact: true,
       Icon: MdDashboard,
@@ -85,7 +85,7 @@ class Sidebar extends React.Component {
       permissionName: ''
     },
     {
-      to: '/user',
+      to: '/dashboard/user',
       name: <Text text="sidebar.user"/>,
       exact: false,
       Icon: MdWeb,
@@ -93,7 +93,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: '/bill',
+      to: '/dashboard/bill',
       name: <Text text="sidebar.bills"/>,
       exact: true,
       Icon: MdAttachMoney,
@@ -101,7 +101,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: '/payment',
+      to: '/dashboard/payment',
       name: <Text text="sidebar.payment"/>,
       exact: true,
       Icon: MdPayment,
@@ -115,7 +115,7 @@ class Sidebar extends React.Component {
    */
   serviceComponents = [
     {
-      to: '/order',
+      to: '/dashboard/order',
       name: <Text text="sidebar.order"/>,
       exact: false,
       Icon: MdEvent,
@@ -123,7 +123,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: '/work',
+      to: '/dashboard/work',
       name: <Text text="sidebar.work"/>,
       exact: false,
       Icon: MdWork,

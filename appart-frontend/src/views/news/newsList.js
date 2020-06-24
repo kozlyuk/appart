@@ -136,7 +136,7 @@ export default class NewsList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.news"/>
-                  <Link to="/news/new">
+                  <Link to="news/new">
                     <Button size="sm" className="float-right" color="success">
                       <Text text="newsList.addBtn"/>
                     </Button>

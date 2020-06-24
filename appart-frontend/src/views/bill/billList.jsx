@@ -10,7 +10,7 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
@@ -85,6 +85,11 @@ export default class BillList extends AbstractListView {
     });
   }
 
+  /**
+   * Filter for house select input.
+   *
+   * @param event
+   */
   filterHouseHandler = (event) => {
     const selectValue = event.target.value.toString();
     this.setState({
@@ -94,6 +99,11 @@ export default class BillList extends AbstractListView {
     });
   };
 
+  /**
+   * Filter for service select input.
+   *
+   * @param event
+   */
   filterServiceHandler = (event) => {
     const selectValue = event.target.value.toString();
     this.setState({
@@ -103,6 +113,11 @@ export default class BillList extends AbstractListView {
     });
   };
 
+  /**
+   * Filter for is active checkbox.
+   *
+   * @param event
+   */
   filterIsActiveHandler = (event) => {
     this.setState({
       isActiveQuery: !this.state.isActiveQuery
@@ -182,6 +197,15 @@ export default class BillList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.bills"/>
+                  <PermissionComponent
+                    aclList={this.context.bill} permissionName="add"
+                  >
+                    <Link to="bill/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="billList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
