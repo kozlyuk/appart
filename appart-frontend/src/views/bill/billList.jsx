@@ -153,7 +153,7 @@ export default class BillList extends AbstractListView {
               >
                 <Link to={`bill/${bill.pk}/edit`}>
                   <Badge color="warning" className="mr-1">
-                    <Text text="billList.detail"/>
+                    <Text text="billList.update"/>
                   </Badge>
                 </Link>
               </PermissionComponent>

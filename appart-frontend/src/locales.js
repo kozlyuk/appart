@@ -249,7 +249,8 @@ registerLang('en', {
       actions: 'Actions'
     },
     addBtn: 'Add bill',
-    detail: 'Detail'
+    detail: 'Detail',
+    update: 'Edit'
   },
   billForm: {
     apartment: 'Apartment',
@@ -583,7 +584,8 @@ registerLang('uk', {
       actions: 'Дії'
     },
     addBtn: 'Додати рахунок',
-    detail: 'Деталі'
+    detail: 'Деталі',
+    update: 'Редагувати'
   },
   billForm: {
     apartment: 'Апартаменти',
