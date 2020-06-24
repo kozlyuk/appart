@@ -119,7 +119,7 @@ export default class Navbar extends React.Component {
                     <div className="card-title">{this.props.userFirstName} {this.props.userLastName}</div>
                     <div className="card-subtitle">{this.props.userEmail}</div>
                   </div>
-                  <Link className="dropdown-item" to="/">
+                  <Link className="dropdown-item" to="/dashboard/">
                     <Text text="cabinet.userCard.administration"/>
                   </Link>
                   <a style={{ cursor: 'pointer' }} className="dropdown-item"
