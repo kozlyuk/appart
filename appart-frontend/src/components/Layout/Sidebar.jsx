@@ -77,7 +77,7 @@ class Sidebar extends React.Component {
 
   accountingComponents = [
     {
-      to: 'dashboard/bill',
+      to: '/dashboard/bill',
       name: <Text text="sidebar.bills"/>,
       exact: true,
       Icon: MdAttachMoney,
@@ -93,7 +93,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: 'dashboard/service',
+      to: '/dashboard/service',
       name: <Text text="sidebar.services"/>,
       exact: true,
       Icon: MdExtension,
@@ -101,7 +101,7 @@ class Sidebar extends React.Component {
       permissionName: 'view'
     },
     {
-      to: 'dashboard/rate',
+      to: '/dashboard/rate',
       name: <Text text="sidebar.rate"/>,
       exact: true,
       Icon: MdEqualizer,
