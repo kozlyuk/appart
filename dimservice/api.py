@@ -100,6 +100,8 @@ class ExecStatusChoices(views.APIView):
     """
     Send JSON list of EXEC_STATUS_CHOICES
     """
+    queryset = Order.objects.none()
+
     def get(self, request):
         # Sending JSON list EXEC_STATUS_CHOICES
         json_data = [Order.EXEC_STATUS_CHOICES]
@@ -110,6 +112,8 @@ class PaymentStatusChoices(views.APIView):
     """
     Send JSON list of PAYMENT_STATUS_CHOICES
     """
+    queryset = Order.objects.none()
+
     def get(self, request):
         # Sending JSON list PAYMENT_STATUS_CHOICES
         json_data = [Order.PAYMENT_STATUS_CHOICES]
@@ -120,6 +124,8 @@ class ExecutionStatusChoices(views.APIView):
     """
     Send JSON list of EXEC_STATUS_CHOICES
     """
+    queryset = Execution.objects.none()
+
     def get(self, request):
         # Sending JSON list EXEC_STATUS_CHOICES
         json_data = [Execution.EXEC_STATUS_CHOICES]

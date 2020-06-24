@@ -99,7 +99,7 @@ class Apartment(models.Model):
 
     def total_payments_sum(self):
         """ return payments sum for appartment """
-        return self.payment_set.aggregate(payments_sum=Sum('total_value')) \
+        return self.payment_set.aggregate(payments_sum=Sum('value')) \
                                 ['payments_sum'] or 0
 
     def current_total_debt(self):

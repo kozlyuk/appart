@@ -152,6 +152,7 @@ class GetTotalDebt(APIView):
     * Only apartment owner has permission to view.
     * Return error HTTP_400_BAD_REQUEST if apartment does not exist.
     """
+    queryset = Apartment.objects.none()
 
     def get(self, request, apartment: int):
         apartment_pk = self.kwargs['apartment']
@@ -174,6 +175,7 @@ class PayView(APIView):
     * Return JSON with "data" and "signature"
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
+    queryset = Payment.objects.none()
 
     def get(self, request, bill: int):
         bill_pk = self.kwargs['bill']
@@ -212,6 +214,7 @@ class PayCallbackView(APIView):
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = Payment.objects.none()
 
     def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)

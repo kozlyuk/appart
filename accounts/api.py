@@ -64,6 +64,7 @@ class GetByNumber(views.APIView):
     Return User object by given in URL mobile_number
     or return status.HTTP_404_NOT_FOUND if it isn`t exist.
     """
+    queryset = User.objects.none()
 
     def get(self, request, mobile_number):
         # check if number is valid
@@ -90,6 +91,7 @@ class CheckResident(views.APIView):
     If False return status HTTP_404_NOT_FOUND.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = User.objects.none()
 
     def get(self, request, mobile_number):
         # try if Resident with such mobile_number exists
@@ -114,6 +116,7 @@ class Register(views.APIView):
     If user data  updated return status HTTP_200_OK.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = User.objects.none()
 
     def post(self, request):
         # check if number is valid
@@ -163,6 +166,7 @@ class ActivateEmail(views.APIView):
     If token is not valid send HTTP_400_BAD_REQUEST.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = User.objects.none()
 
     def get(self, request, uidb64, token):
         # check if number is valid
@@ -188,6 +192,7 @@ class ActivateSMS(views.APIView):
     If token is not valid send HTTP_400_BAD_REQUEST.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = User.objects.none()
 
     def get(self, request, mobile_number, otp):
         # check if otp code is valid
@@ -225,6 +230,8 @@ class SetLang(views.APIView):
     """
     Sets current logged user lang.
     """
+    queryset = User.objects.none()
+
     def get(self, request, lang):
         # create list of lang_choices
         lang_list = []
@@ -243,6 +250,8 @@ class GroupChoices(views.APIView):
     """
     Send JSON list of User groups
     """
+    queryset = User.objects.none()
+
     def get(self, request):
         # Sending JSON list EXEC_STATUS_CHOICES
         json_data = [Group.objects.values_list('pk', 'name')]
