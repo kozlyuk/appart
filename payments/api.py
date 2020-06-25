@@ -95,6 +95,18 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class PaymentTypeChoices(APIView):
+    """
+    Send JSON list of PAYMENT_TYPE_CHOICES
+    """
+    queryset = Payment.objects.none()
+
+    def get(self, request):
+        # Sending JSON list PAYMENT_TYPE_CHOICES
+        json_data = Payment.PAYMENT_TYPE_CHOICES
+        return Response(json_data, status=status.HTTP_200_OK)
+
+
 class BillViewSet(viewsets.ModelViewSet):
     """ViewSet for the Bill class
     Filter queryset by search string ('filter' get parameter)
