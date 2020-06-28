@@ -40,7 +40,7 @@ export default class SelectWithButton extends React.Component {
     if (id) {
       axios({
         method: 'delete',
-        url: `${process.env.REACT_APP_EXECUTIONS}${id}/`,
+        url: `${this.props.deleteEndpoint}${id}/`,
         headers: {
           'Authorization': 'Token ' + this.props.token
         }

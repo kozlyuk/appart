@@ -270,7 +270,6 @@ export default class BillForm extends AbstractFormView {
    */
   secondaryRequests(response) {
     super.secondaryRequests();
-    console.log(response);
     this.submitBillLines(response.data.pk);
   }
 

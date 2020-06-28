@@ -42,7 +42,7 @@ class PaymentServiceSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True)
+    payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True, required=False)
     apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:

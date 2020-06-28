@@ -13,6 +13,7 @@ export default class DataInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       formattedValue: '',
       value: this.props.startValue
     };

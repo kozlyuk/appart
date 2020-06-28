@@ -18,22 +18,6 @@ import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
 import Page from '../../components/Page';
 
-/**
- * ugly regular expression for validate length of phone number
- *
- * @type {RegExp}
- */
-// eslint-disable-next-line
-const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
-
-/**
- * ugly regular expression for validate email
- *
- * @type {RegExp}
- */
-// eslint-disable-next-line
-const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-
 export default class PaymentUpdate extends AbstractFormView {
   /**
    *
