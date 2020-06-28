@@ -273,7 +273,7 @@ registerLang('en', {
     executorsSet: {
       header: 'Executors',
       executor: 'Executor',
-      scheduledTime: 'Sheduled time',
+      scheduledTime: 'Scheduled time',
       scheduledTimeHelpText: 'Scheduled end time'
     },
     selectValues: {
