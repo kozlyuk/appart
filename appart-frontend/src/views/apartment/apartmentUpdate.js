@@ -29,6 +29,7 @@ export default class ApartmentUpdate extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       // validation fields
       password: '',
       mobileNumber: '',

@@ -23,6 +23,7 @@ export default class OrderNew extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       data: null,
       errors: {
         description: true

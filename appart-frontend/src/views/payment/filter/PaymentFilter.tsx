@@ -19,12 +19,9 @@ interface FilterInterface {
 
 export default class PaymentFilter extends React.Component<FilterInterface, {}> {
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      isLoaded: false
-    };
-  }
+  public state: FilterInterface = {
+    isLoaded: false
+  };
 
 
   render(): any {

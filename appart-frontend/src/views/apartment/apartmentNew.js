@@ -31,6 +31,7 @@ export default class ApartmentNew extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       resident: '',
       residentIsPinned: '',
       residentIdIsPinned: '',

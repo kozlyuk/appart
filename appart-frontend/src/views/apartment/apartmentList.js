@@ -20,6 +20,7 @@ export default class ApartmentList extends AbstractListView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       isFilterActive: true,
       houseQuery: '',
       searchQuery: ''
