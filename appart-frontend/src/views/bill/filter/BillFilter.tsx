@@ -7,7 +7,7 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Card, CardBody, Col, Collapse, CustomInput, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
@@ -19,7 +19,7 @@ import BillFilterController from '../../../controllers/BillFilterController';
 /**
  * Filter interface.
  */
-interface FilterInterface {
+interface FilterProps {
   isLoaded: boolean,
 }
 
@@ -33,21 +33,22 @@ interface FilterStateInterface {
   serviceChoices: [] | null
 }
 
-export default class BillFilter extends React.Component<FilterInterface, FilterStateInterface> {
+export default class BillFilter extends Component<FilterProps, FilterStateInterface> {
 
   protected BillFilterController: BillFilterController;
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      isLoaded: false,
-      filterToggle: false,
-      houseChoices: null,
-      serviceChoices: null
-    };
     this.toggleFilter = this.toggleFilter.bind(this);
     this.BillFilterController = new BillFilterController();
   }
+
+  state: FilterStateInterface = {
+    isLoaded: false,
+    filterToggle: false,
+    houseChoices: null,
+    serviceChoices: null
+  };
 
   protected toggleFilter(): void {
     this.setState({

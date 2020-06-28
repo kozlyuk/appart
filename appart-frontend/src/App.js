@@ -11,7 +11,7 @@ import Auth from './auth/auth';
 import axios from 'axios';
 import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
-import PaymentUpdate from './views/payment/paymentUpdate';
+import PaymentForm from './views/payment/PaymentForm';
 import BillList from './views/bill/billList';
 import BillForm from './views/bill/billForm';
 import OrderNew from './views/order/OrderNew';
@@ -361,8 +361,12 @@ class App extends React.Component {
                       />
                       <Switch>
                         <PermissionRoute
+                          aclList={this.state.acl} modelName="payment" permissionName="add"
+                          exact path="/dashboard/payment/new" component={PaymentForm}
+                        />
+                        <PermissionRoute
                           aclList={this.state.acl} modelName="payment" permissionName="change"
-                          exact path="/dashboard/payment/:id/edit" component={PaymentUpdate}
+                          exact path="/dashboard/payment/:id/edit" component={PaymentForm}
                         />
                       </Switch>
                       <PermissionRoute

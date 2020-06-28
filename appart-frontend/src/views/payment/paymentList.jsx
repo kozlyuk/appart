@@ -1,7 +1,7 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
@@ -102,6 +102,15 @@ export default class PaymentList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.payment"/>
+                  <PermissionComponent
+                    aclList={this.context.payment} permissionName="add"
+                  >
+                    <Link to="payment/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="paymentList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
