@@ -22,7 +22,36 @@ export default class PaymentList extends AbstractListView {
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
+  state = {
+    searchQuery: '',
+    houseQuery: '',
+    serviceQuery: '',
+    paymentTypeQuery: ''
+  };
+
   static contextType = PermissionContext;
+
+  getQueryString() {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const paymentTypeQuery = this.state.paymentTypeQuery.trim();
+    this.dataUrl = `${process.env.REACT_APP_PAYMENT}?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&payment_type=${paymentTypeQuery}`;
+
+    return this.dataUrl;
+  }
+
+  handlePageChange(pageNumber) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const paymentTypeQuery = this.state.paymentTypeQuery.trim();
+    this.setState({ activePage: pageNumber });
+    this.refreshData(
+      pageNumber,
+      `?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&payment_type=${paymentTypeQuery}`
+    );
+  }
 
   /**
    * Search handler
@@ -31,10 +60,40 @@ export default class PaymentList extends AbstractListView {
    */
   filterSearchHandler(event) {
     event.preventDefault();
-    const queryName = event.target.search.getAttribute('filterquery');
     const searchValue = event.target.search.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
+    this.setState({
+      searchQuery: searchValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
   }
+
+  filterServiceHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      serviceQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterHouseHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      houseQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterPaymentTypeHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      paymentTypeQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
 
   /**
    *
@@ -86,16 +145,16 @@ export default class PaymentList extends AbstractListView {
         <div className="loaderWrapper text-center mt-4">
           <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
-        </div>)
-        ;
+        </div>);
     } else {
       return (
-        <Page
-          className="TablePage"
-        >
+        <Page className="TablePage">
           <PaymentFilter
             filterSearchHandler={this.filterSearchHandler}
-            isLoaded={true}
+            filterHouseHandler={this.filterHouseHandler}
+            filterServiceHandler={this.filterServiceHandler}
+            filterPaymentTypeHandler={this.filterPaymentTypeHandler}
+            isLoaded={false}
           />
           <Row>
             <Col>
