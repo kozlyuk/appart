@@ -163,6 +163,7 @@ registerLang('en', {
     resident: 'Resident number',
     residentCount: 'Resident count',
     description: 'Description',
+    accountNumber: 'Account number',
     successUserAddMessage: 'If you save the form, the user with the number :user will be added to the apartment.',
     newApartment: {
       title: 'New apartment'
@@ -499,6 +500,7 @@ registerLang('uk', {
     area: 'Площа',
     resident: 'Номер телефону жителя',
     residentCount: 'Кількість жителів',
+    accountNumber: 'Особовий рахунок',
     description: 'Описання',
     successUserAddMessage: 'При збереженні форми, користувача з номером :user буде додано до апартаментів.',
     newApartment: {
