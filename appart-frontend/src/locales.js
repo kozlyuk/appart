@@ -49,14 +49,16 @@ registerLang('en', {
     services: 'services',
     order: 'orders',
     work: 'work\'s',
-    rate: 'rates'
+    rate: 'rates',
+    paymentType: 'Payment type'
   },
   paymentList: {
     tableHeader: {
       apartment: 'Apartment',
       value: 'Value',
       actions: 'Actions'
-    }
+    },
+    addBtn: 'Add payment'
   },
   paymentForm: {
     header: 'Payment for apartment:',
@@ -384,14 +386,16 @@ registerLang('uk', {
     services: 'сервіси',
     order: 'замовлення',
     work: 'роботи',
-    rate: 'тарифи'
+    rate: 'тарифи',
+    paymentType: 'Тип оплати'
   },
   paymentList: {
     tableHeader: {
       apartment: 'Апартаменти',
       value: 'Вартість',
       actions: 'Дії'
-    }
+    },
+    addBtn: 'Додати платіж'
   },
   paymentForm: {
     header: 'Платіж для апартаментів:',
