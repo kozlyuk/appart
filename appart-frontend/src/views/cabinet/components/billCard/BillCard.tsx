@@ -5,7 +5,7 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Collapse from 'reactstrap/lib/Collapse';
 import Auth from '../../../../auth/auth';
@@ -24,26 +24,42 @@ interface BillCardPropsInterface {
   },
 }
 
+interface BillCardStateInterface {
+  isLoaded: boolean,
+  liqPayData?: string | null,
+  liqPaySign?: string | null,
+  isOpen: boolean,
+  modal: boolean,
+  modal_backdrop: boolean,
+  modal_nested_parent: boolean,
+  modal_nested: boolean,
+  backdrop: boolean,
+  error: any
+}
+
 /**
  * Bill card class
  *
  * @interface {@link BillCardPropsInterface}
  */
-export default class BillCard extends React.Component <BillCardPropsInterface, {}> {
-  constructor(props: BillCardPropsInterface, state: any) {
-    super(props, state);
-    this.state = {
-      liqPayData: null,
-      liqPaySign: null,
-      isOpen: false,
-      modal: false,
-      modal_backdrop: false,
-      modal_nested_parent: false,
-      modal_nested: false,
-      backdrop: true
-    };
+export default class BillCard extends Component <BillCardPropsInterface, BillCardStateInterface> {
+  constructor(props: BillCardPropsInterface) {
+    super(props);
     this.toggleModal = this.toggleModal.bind(this);
   }
+
+  state: BillCardStateInterface = {
+    isLoaded: true,
+    liqPayData: null,
+    liqPaySign: null,
+    isOpen: false,
+    modal: false,
+    modal_backdrop: false,
+    modal_nested_parent: false,
+    modal_nested: false,
+    backdrop: true,
+    error: null
+  };
 
   /**
    * Url for get api tokens

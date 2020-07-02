@@ -1,7 +1,32 @@
-from django.conf import settings
 from rest_framework import serializers
 
-from .models import Payment, Bill, Service, BillLine, PaymentService
+from payments.models import Payment, Bill, Service, Rate, BillLine, PaymentService
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = [
+            "pk",
+            "houses",
+            "name",
+            "description",
+            "uom_type",
+            "uom"
+        ]
+
+
+class RateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Rate
+        fields = [
+            "service",
+            "house",
+            "value",
+            "from_date"
+        ]
 
 
 class PaymentServiceSerializer(serializers.ModelSerializer):
@@ -10,14 +35,14 @@ class PaymentServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentService
         fields = [
+            "pk",
             "service",
             "value"
         ]
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True)
-    payment_type = serializers.CharField(source='get_payment_type_display')
+    payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True, required=False)
     apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:
@@ -47,17 +72,29 @@ class BillLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = BillLine
         fields = [
+            "pk",
+            "service",
             "previous_debt",
             "value",
             "total_debt"
         ]
 
+    def create(self, validated_data):
+        # add billline to bill
+        bill = Bill.objects.get(pk=self.context["view"].kwargs["bill_pk"])
+        validated_data["bill"] = bill
+        billline = BillLine.objects.create(**validated_data)
+        # update bill total_value
+        bill.total_value += billline.total_debt()
+        bill.save()
+        return billline
+
     def get_total_debt(self, obj):
-        return str(obj.previous_debt + obj.value)
+        return str(obj.total_debt())
 
 
 class BillSerializer(serializers.ModelSerializer):
-    bill_lines = BillLineSerializer(source='billline_set', many=True)
+    bill_lines = BillLineSerializer(source='billline_set', many=True, required=False)
     purpose = serializers.SerializerMethodField()
     apartment_name = serializers.CharField(source='apartment', required=False)
 
@@ -72,6 +109,7 @@ class BillSerializer(serializers.ModelSerializer):
             "purpose",
             "period",
             "bill_lines",
+            "is_active"
         ]
 
     def get_purpose(self, obj):
@@ -83,17 +121,3 @@ class BillSerializer(serializers.ModelSerializer):
         queryset = queryset.prefetch_related('billline_set') \
                            .select_related('apartment')
         return queryset
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Service
-        fields = [
-            "house",
-            "name",
-            "description",
-            "uom_type",
-            "rate",
-            "uom"
-        ]

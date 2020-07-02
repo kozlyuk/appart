@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from django.contrib.auth.models import Group
 from accounts.models import User
 from condominium.models import Company, House, Apartment
-from payments.models import Service
+from payments.models import Service, Rate
 from payments.tasks import create_area_bills
 from dimservice.models import Work, Order
 
@@ -52,7 +52,7 @@ RESIDENTS = [['Resident', '1', '0000000001', 'resident1@gmail.com'],
              ['Resident', '8', '0000000008', 'resident8@gmail.com'],
              ['Resident', '9', '0000000009', 'resident9@gmail.com'],
              ['Resident', '10', '0000000010', 'resident10@gmail.com'],
-]
+             ]
 
 residents_list = []
 for resident in RESIDENTS:
@@ -87,13 +87,14 @@ SERVICES = [['Управління будинком', 'Внески на упр�
 ]
 
 for service in SERVICES:
-    Service.objects.create(house=house,
-                           name=service[0],
-                           description=service[1],
-                           uom_type=service[2],
-                           rate=service[3],
-                           uom=service[4])
-
+    service_obj = Service.objects.create(name=service[0],
+                                         description=service[1],
+                                         uom_type=service[2],
+                                         uom=service[4])
+    Rate.objects.create(house=house,
+                        service=service_obj,
+                        value=service[3],
+                        from_date=date.today())
 print("Initial Services created")
 
 create_area_bills(date.today())
@@ -133,3 +134,112 @@ Group.objects.create(name='Резиденти')
 Group.objects.create(name='Майстри')
 
 print("User groups created")
+
+# Create users permissions
+def create_permission(group, model, permission):
+    from django.contrib.auth.models import Group, Permission
+    new_group, created = Group.objects.get_or_create(name=group)
+    name = 'Can {} {}'.format(permission, model)
+    try:
+        model_add_perm = Permission.objects.get(name=name)
+    except Permission.DoesNotExist:
+        return print("Permission not found with name '{}'.".format(name))
+    new_group.permissions.add(model_add_perm)
+    return print("Added permission with name '{}'.".format(name))
+
+create_permission('Менеджери', 'user', 'view')
+create_permission('Менеджери', 'user', 'add')
+create_permission('Менеджери', 'user', 'change')
+# create_permission('Менеджери', 'user', 'delete')
+create_permission('Менеджери', 'Apartment', 'view')
+create_permission('Менеджери', 'Apartment', 'add')
+create_permission('Менеджери', 'Apartment', 'change')
+create_permission('Менеджери', 'Apartment', 'delete')
+create_permission('Менеджери', 'Company', 'view')
+# create_permission('Менеджери', 'Company', 'add')
+create_permission('Менеджери', 'Company', 'change')
+# create_permission('Менеджери', 'Company', 'delete')
+create_permission('Менеджери', 'House', 'view')
+create_permission('Менеджери', 'House', 'add')
+create_permission('Менеджери', 'House', 'change')
+create_permission('Менеджери', 'House', 'delete')
+create_permission('Менеджери', 'Bill', 'view')
+create_permission('Менеджери', 'Bill', 'add')
+create_permission('Менеджери', 'Bill', 'change')
+create_permission('Менеджери', 'Bill', 'delete')
+create_permission('Менеджери', 'BillLine', 'view')
+create_permission('Менеджери', 'BillLine', 'add')
+create_permission('Менеджери', 'BillLine', 'change')
+create_permission('Менеджери', 'BillLine', 'delete')
+create_permission('Менеджери', 'Service', 'view')
+create_permission('Менеджери', 'Service', 'add')
+create_permission('Менеджери', 'Service', 'change')
+create_permission('Менеджери', 'Service', 'delete')
+create_permission('Менеджери', 'Meter', 'view')
+create_permission('Менеджери', 'Meter', 'add')
+create_permission('Менеджери', 'Meter', 'change')
+create_permission('Менеджери', 'Meter', 'delete')
+create_permission('Менеджери', 'MeterRecord', 'view')
+create_permission('Менеджери', 'MeterRecord', 'add')
+create_permission('Менеджери', 'MeterRecord', 'change')
+create_permission('Менеджери', 'MeterRecord', 'delete')
+create_permission('Менеджери', 'Payment', 'view')
+create_permission('Менеджери', 'Payment', 'add')
+create_permission('Менеджери', 'Payment', 'change')
+create_permission('Менеджери', 'Payment', 'delete')
+create_permission('Менеджери', 'payment service', 'view')
+create_permission('Менеджери', 'payment service', 'add')
+create_permission('Менеджери', 'payment service', 'change')
+create_permission('Менеджери', 'payment service', 'delete')
+create_permission('Менеджери', 'News', 'view')
+create_permission('Менеджери', 'News', 'add')
+create_permission('Менеджери', 'News', 'change')
+create_permission('Менеджери', 'News', 'delete')
+create_permission('Менеджери', 'Notice', 'view')
+create_permission('Менеджери', 'Notice', 'add')
+create_permission('Менеджери', 'Notice', 'change')
+create_permission('Менеджери', 'Notice', 'delete')
+create_permission('Менеджери', 'Poll', 'view')
+create_permission('Менеджери', 'Poll', 'add')
+create_permission('Менеджери', 'Poll', 'change')
+create_permission('Менеджери', 'Poll', 'delete')
+create_permission('Менеджери', 'Choice', 'view')
+create_permission('Менеджери', 'Choice', 'add')
+create_permission('Менеджери', 'Choice', 'change')
+create_permission('Менеджери', 'Choice', 'delete')
+
+create_permission('Диспетчери', 'Work', 'view')
+create_permission('Диспетчери', 'Work', 'add')
+create_permission('Диспетчери', 'Work', 'change')
+create_permission('Диспетчери', 'Work', 'delete')
+create_permission('Диспетчери', 'Order', 'view')
+create_permission('Диспетчери', 'Order', 'add')
+create_permission('Диспетчери', 'Order', 'change')
+create_permission('Диспетчери', 'Order', 'delete')
+create_permission('Диспетчери', 'Execution', 'view')
+create_permission('Диспетчери', 'Execution', 'add')
+create_permission('Диспетчери', 'Execution', 'change')
+create_permission('Диспетчери', 'Execution', 'delete')
+
+create_permission('Резиденти', 'Bill', 'view')
+create_permission('Резиденти', 'Bill', 'add')
+create_permission('Резиденти', 'Bill', 'change')
+create_permission('Резиденти', 'Bill', 'delete')
+create_permission('Резиденти', 'BillLine', 'view')
+create_permission('Резиденти', 'BillLine', 'add')
+create_permission('Резиденти', 'BillLine', 'change')
+create_permission('Резиденти', 'BillLine', 'delete')
+create_permission('Резиденти', 'Payment', 'view')
+create_permission('Резиденти', 'Payment', 'add')
+create_permission('Резиденти', 'Payment', 'change')
+create_permission('Резиденти', 'Payment', 'delete')
+create_permission('Резиденти', 'News', 'view')
+create_permission('Резиденти', 'Notice', 'view')
+create_permission('Резиденти', 'Poll', 'view')
+create_permission('Резиденти', 'Choice', 'view')
+create_permission('Резиденти', 'Choice', 'add')
+
+create_permission('Майстри', 'Execution', 'view')
+create_permission('Майстри', 'Execution', 'change')
+
+print("Permissions created")

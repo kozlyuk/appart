@@ -5,7 +5,6 @@ from appart.celery import app
 
 from condominium.models import Apartment
 from payments.models import Bill, BillLine, Service
-from payments.services import debt_for_service, debt_for_month
 
 logger = get_task_logger(__name__)
 
@@ -28,9 +27,9 @@ def create_area_bills(period):
         # create bill_line for every service
         for service in services:
             BillLine.objects.create(bill=bill,
-                            service=service,
-                            previous_debt=debt_for_service(apartment, service, period),
-                            value=debt_for_month(apartment, service))
+                                    service=service,
+                                    previous_debt=service.previous_debt(apartment, period),
+                                    value=service.debt_for_month(apartment, period))
         # calculate total_value for Bill
         bill.total_value = bill.calc_total_value()
         bill.save()

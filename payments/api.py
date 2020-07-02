@@ -3,32 +3,71 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q, Sum
 from rest_framework import viewsets, status, permissions
-from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
 from liqpay import LiqPay
 
-from payments.serializers import BillSerializer, PaymentSerializer
-from payments.models import Bill, Payment
+from payments import serializers
+from payments.models import Bill, BillLine, Payment, Service, Rate
 from condominium.models import Apartment
 
 from notice.models import News
 
-class PaymentViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Payment class
-    Filter queryset by search string ('filter' get parameter)
-    Filter queryset by apartment and payment_type fields
-    ('apartment', 'payment_type' get parameters)
+class ServiceViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Service class"""
+
+    serializer_class = serializers.ServiceSerializer
+    queryset = Service.objects.all()
+
+
+class ServiceWithoutPagination(ServiceViewSet):
+    """ViewSet for the Service class
+    Without pagination
+    """
+    pagination_class = None
+
+
+class RateViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Rate class
+    Filter queryset by house field ('house' get parameter)
+    Filter queryset by service field ('service' get parameter)
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = PaymentSerializer
+    serializer_class = serializers.RateSerializer
+
+    def get_queryset(self):
+        queryset = Rate.objects.all()
+        house = self.request.GET.get('house')
+        service = self.request.GET.get('service')
+        order = self.request.GET.get('order')
+        if house:
+            queryset = queryset.filter(house=house)
+        if service:
+            queryset = queryset.filter(service=service)
+        if order:
+            queryset = queryset.order_by(order)
+        return queryset
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """ViewSet for the Payment class
+    Filter queryset by search string ('filter' get parameter)
+    Filter queryset by house field ('house' get parameter)
+    Filter queryset by apartment field ('apartment' get parameter)
+    Filter queryset by service field ('service' get parameter)
+    Filter queryset by payment_type field ('payment_type' get parameter)
+    Order queryset by any given field ('order' get parameter)
+    """
+
+    serializer_class = serializers.PaymentSerializer
 
     def get_queryset(self):
         queryset = Payment.objects.all()
         search_string = self.request.GET.get('filter', '').split()
+        house = self.request.GET.get('house')
         apartment = self.request.GET.get('apartment')
+        service = self.request.GET.get('service')
         payment_type = self.request.GET.getlist('payment_type')
         order = self.request.GET.get('order')
         for word in search_string:
@@ -36,8 +75,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
                                        Q(apartment__account_number__contains=word) |
                                        Q(apartment__number__contains=word))
 
+        if house:
+            queryset = queryset.filter(apartment__house=house)
         if apartment:
             queryset = queryset.filter(apartment=apartment)
+        if service:
+            queryset = queryset.filter(service=service)
         if payment_type:
             qs_union = Payment.objects.none()
             for payment in payment_type:
@@ -52,33 +95,66 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class PaymentTypeChoices(APIView):
+    """
+    Send JSON list of PAYMENT_TYPE_CHOICES
+    """
+    queryset = Payment.objects.none()
+
+    def get(self, request):
+        # Sending JSON list PAYMENT_TYPE_CHOICES
+        json_data = Payment.PAYMENT_TYPE_CHOICES
+        return Response(json_data, status=status.HTTP_200_OK)
+
+
 class BillViewSet(viewsets.ModelViewSet):
     """ViewSet for the Bill class
     Filter queryset by search string ('filter' get parameter)
+    Filter queryset by house field ('house' get parameter)
     Filter queryset by apartment field ('apartment' get parameter)
+    Filter queryset by service field ('service' get parameter)
+    Filter queryset by is_active field ('is_active' get parameter)
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = BillSerializer
+    serializer_class = serializers.BillSerializer
 
     def get_queryset(self):
         queryset = Bill.objects.all()
         search_string = self.request.GET.get('filter', '').split()
+        house = self.request.GET.get('house')
         apartment = self.request.GET.get('apartment')
+        service = self.request.GET.get('service')
+        is_active = not self.request.GET.get('is_active') == "false"
         order = self.request.GET.get('order')
         for word in search_string:
             queryset = queryset.filter(Q(number__contains=word) |
                                        Q(apartment__number__contains=word) |
                                        Q(apartment__account_number__contains=word))
 
+        if house:
+            queryset = queryset.filter(apartment__house=house)
         if apartment:
             queryset = queryset.filter(apartment=apartment)
+        if service:
+            queryset = queryset.filter(service=service)
+        if is_active:
+            queryset = queryset.filter(is_active=True)
         if order:
             queryset = queryset.order_by(order)
 
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset
+
+
+class BillLineViewSet(viewsets.ModelViewSet):
+    """ViewSet for the BillLine class"""
+
+    serializer_class = serializers.BillLineSerializer
+    pagination_class = None
+    def get_queryset(self):
+        return BillLine.objects.filter(bill=self.kwargs['bill_pk'])
 
 
 class GetTotalDebt(APIView):
@@ -88,6 +164,7 @@ class GetTotalDebt(APIView):
     * Only apartment owner has permission to view.
     * Return error HTTP_400_BAD_REQUEST if apartment does not exist.
     """
+    queryset = Apartment.objects.none()
 
     def get(self, request, apartment: int):
         apartment_pk = self.kwargs['apartment']
@@ -98,65 +175,8 @@ class GetTotalDebt(APIView):
         except Apartment.DoesNotExist:
             return Response(_('Apartment with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
 
-        # aggregate total_debt from bills
-        total_debt = apartment.bill_set.filter(is_active=True) \
-                                       .aggregate(total_debt=Sum('total_value')) \
-                                       ['total_debt'] or 0
-        return Response(total_debt, status=status.HTTP_200_OK)
-
-
-class BillListView(ListAPIView):
-    """
-    View all active bills of apartment.
-
-    * Requires parameters: apartment.
-    * Only apartment owner has permission to bills.
-    * Return error HTTP_400_BAD_REQUEST if apartment does not exist
-    """
-
-    serializer_class = BillSerializer
-
-    def get_queryset(self):
-        apartment_pk = self.kwargs['apartment']
-        # get the apartment
-        try:
-            apartment = Apartment.objects.get(pk=apartment_pk)
-        # return error HTTP_400_BAD_REQUEST if apartment does not exist
-        except Apartment.DoesNotExist:
-            raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
-        # get bills for apartment
-        queryset = apartment.bill_set.filter(is_active=True)
-
-        # Set up eager loading to avoid N+1 selects
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
-        return queryset.order_by('period')
-
-
-class PaymentsListView(ListAPIView):
-    """
-    View all payments for apartment.
-
-    * Requires parameters: apartment.
-    * Only apartment owner has permission to payments.
-    * Return error HTTP_400_BAD_REQUEST if apartment does not exist
-    """
-
-    serializer_class = PaymentSerializer
-
-    def get_queryset(self):
-        apartment_pk = self.kwargs['apartment']
-        # get the apartment
-        try:
-            apartment = Apartment.objects.get(pk=apartment_pk)
-        # return error HTTP_400_BAD_REQUEST if apartment does not exist
-        except Apartment.DoesNotExist:
-            raise ValidationError({_('error'): [_('Apartment with such id does not exist')]})
-        # get bills for apartment
-        queryset = apartment.payment_set.all()
-
-        # Set up eager loading to avoid N+1 selects
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
-        return queryset.order_by('date')
+        # return total_debt from apartment
+        return Response(apartment.current_total_debt(), status=status.HTTP_200_OK)
 
 
 class PayView(APIView):
@@ -167,6 +187,7 @@ class PayView(APIView):
     * Return JSON with "data" and "signature"
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
+    queryset = Payment.objects.none()
 
     def get(self, request, bill: int):
         bill_pk = self.kwargs['bill']
@@ -177,7 +198,7 @@ class PayView(APIView):
         except Bill.DoesNotExist:
             return Response(_('Bill with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
 
-        # aggregate total_debt from bills
+        # prepearing Liqpay data
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
         params = {
             'action': settings.LIQPAY_DEFAULT_ACTION,
@@ -205,6 +226,7 @@ class PayCallbackView(APIView):
     * Return error HTTP_400_BAD_REQUEST if bill does not exist.
     """
     permission_classes = [permissions.AllowAny]
+    queryset = Payment.objects.none()
 
     def post(self, request):
         liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)

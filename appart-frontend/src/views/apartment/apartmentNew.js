@@ -31,6 +31,7 @@ export default class ApartmentNew extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       resident: '',
       residentIsPinned: '',
       residentIdIsPinned: '',
@@ -43,7 +44,8 @@ export default class ApartmentNew extends AbstractFormView {
         number: true,
         description: '',
         area: true,
-        resident_count: ''
+        resident_count: '',
+        account_number: ''
       },
       fieldError: {
         house: '',
@@ -60,7 +62,7 @@ export default class ApartmentNew extends AbstractFormView {
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_APARTMENTS_URL;
     this.requestType = 'post';
-    this.successRedirect = '/apartment';
+    this.successRedirect = '/dashboard/apartment';
     this._successButton = 'Повернутися до списку апартаментів';
   }
 
@@ -99,6 +101,7 @@ export default class ApartmentNew extends AbstractFormView {
     userFormData.append('description', target.description.value);
     userFormData.append('area', target.area.value);
     userFormData.append('residents_count', target.resident_count.value);
+    userFormData.append('account_number', target.account_number.value);
     if (this.state.residentIsPinned) {
       userFormData.append('resident', this.state.residentIdIsPinned);
     }
@@ -224,6 +227,25 @@ export default class ApartmentNew extends AbstractFormView {
             </Alert>
             }
             <FormGroup>
+              <Label for="account_number"><Text text="apartmentForm.accountNumber"/></Label>
+              {this.state.errors.account_number.length > 0 &&
+              // error field
+              <FormText color="danger">{this.state.errors.account_number}</FormText>}
+              <Input
+                className={this.state.fieldError.account_number && 'is-invalid'}
+                id="account_number"
+                type="text"
+                min="0"
+                name="account_number"
+                onChange={this.handleChange}
+              />
+              {this.state.fieldError.account_number &&
+              <div className="invalid-feedback">
+                {this.state.fieldError.account_number}
+              </div>
+              }
+            </FormGroup>
+            <FormGroup>
               <Label for="number"><Text text="apartmentForm.number"/></Label>
               {this.state.errors.number.length > 0 &&
               // error field
@@ -299,7 +321,7 @@ export default class ApartmentNew extends AbstractFormView {
               }
             </FormGroup>
 
-            <Link to="/apartment">
+            <Link to="/dashboard/apartment">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

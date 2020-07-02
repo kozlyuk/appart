@@ -1,10 +1,12 @@
-import AbstractListView from "../../generics/listViews/abstractListView";
+import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import {Badge, Button, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-import {Text} from "react-easy-i18n";
-import {Link} from "react-router-dom";
-import PageSpinner from "../../components/PageSpinner";
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Text } from 'react-easy-i18n';
+import { Link } from 'react-router-dom';
+import PageSpinner from '../../components/PageSpinner';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class ChoiceList extends AbstractListView {
@@ -14,8 +16,10 @@ export default class ChoiceList extends AbstractListView {
    */
   constructor(props) {
     super(props);
-    this.dataUrl = process.env.REACT_APP_CHOICES_URL
+    this.dataUrl = process.env.REACT_APP_CHOICES_URL;
   }
+
+  static contextType = PermissionContext;
 
   /**
    *
@@ -37,22 +41,30 @@ export default class ChoiceList extends AbstractListView {
             <td width="2%">{choice.choice_text}</td>
             <td>{choice.votes}</td>
             <td width="15%">
-              <Link to={`choice/${choice.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="choiceList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
-              <Link to={`choice/${choice.pk}/delete`}>
-                <Badge color="danger" className="mr-1">
-                  <Text text="choiceList.tableHeader.deleteBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.choice} permissionName="change"
+              >
+                <Link to={`choice/${choice.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="choiceList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
+              <PermissionComponent
+                aclList={this.context.choice} permissionName="delete"
+              >
+                <Link to={`choice/${choice.pk}/delete`}>
+                  <Badge color="danger" className="mr-1">
+                    <Text text="choiceList.tableHeader.deleteBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
           </tr>
         ))}
         </tbody>
       </Table>
-    )
+    );
   }
 
   /**
@@ -60,7 +72,7 @@ export default class ChoiceList extends AbstractListView {
    * @returns {*}
    */
   render() {
-    const {error, isLoaded} = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
     } else if (!isLoaded) {
@@ -74,7 +86,7 @@ export default class ChoiceList extends AbstractListView {
 
       return (
         <Page
-          breadcrumbs={[{name: <Text text="sidebar.choice"/>, active: true}]}
+          breadcrumbs={[{ name: <Text text="sidebar.choice"/>, active: true }]}
           className="TablePage"
         >
           <Row>
@@ -82,7 +94,7 @@ export default class ChoiceList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.choice"/>
-                  <Link to="/choice/new">
+                  <Link to="choice/new">
                     <Button size="sm" className="float-right" color="success">
                       <Text text="choiceList.addBtn"/>
                     </Button>
@@ -95,7 +107,7 @@ export default class ChoiceList extends AbstractListView {
             </Col>
           </Row>
         </Page>
-      )
+      );
     }
   }
 }

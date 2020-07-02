@@ -8,10 +8,20 @@ class ServiceAdmin(admin.ModelAdmin):
     """ Admin settings for Service table """
     list_display = [
         "name",
-        "house",
+        "description",
         "uom_type",
-        "rate",
         "uom"
+    ]
+
+
+@admin.register(models.Rate)
+class RateAdmin(admin.ModelAdmin):
+    """ Admin settings for Rate table """
+    list_display = [
+        "service",
+        "house",
+        "value",
+        "from_date"
     ]
 
 

@@ -39,7 +39,7 @@ export default class BillListing extends React.Component {
 
   componentDidMount() {
     if (this.context) {
-      axios(`${process.env.REACT_APP_GET_BILLS}${this.context.apartment[0].pk}/`, {
+      axios(`${process.env.REACT_APP_GET_BILLS}?apartment=${this.context.apartment[0].pk}`, {
         headers: {
           'Authorization': 'Token ' + this.user.getAuthToken()
         }

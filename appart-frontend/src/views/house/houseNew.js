@@ -13,6 +13,7 @@ export default class HouseNew extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       // validation fields
       password: '',
       mobileNumber: '',
@@ -35,7 +36,7 @@ export default class HouseNew extends AbstractFormView {
     this.dataUrl = undefined;
     this.postUrl = process.env.REACT_APP_HOUSES_URL;
     this.requestType = 'post';
-    this.successRedirect = '/house';
+    this.successRedirect = '/dashboard/house';
     this._successButton = 'Повернутися до списку будинків';
   }
 
@@ -220,7 +221,7 @@ export default class HouseNew extends AbstractFormView {
               }
             </FormGroup>
 
-            <Link to="/house">
+            <Link to="/dashboard/house">
               <Button color="warning">
                 <Text text="buttons.returnBtn"/>
               </Button>

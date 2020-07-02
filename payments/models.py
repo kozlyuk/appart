@@ -1,12 +1,13 @@
 """  Models for Payments application  """
 
-from datetime import date
+from datetime import date, datetime
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
+from condominium.services import last_day_of_month
 
 
 class Service(models.Model):
@@ -18,21 +19,71 @@ class Service(models.Model):
         (ByCounter, _('By counter'))
     )
     #  Relationships
-    house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.PROTECT)
+    houses = models.ManyToManyField(House, through='Rate',
+                                    verbose_name=_('Houses'))
     #  Fields
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), max_length=255, unique=True)
     description = models.CharField(_('Description'), max_length=255, blank=True)
     uom_type = models.CharField(_('Measurement type'), max_length=2, choices=UOM_CHOICES, default='BA')
-    rate = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
     uom = models.CharField(_('Default units of measurement'), max_length=8, default=_('sq.m.'))
 
     class Meta:
-        unique_together = ('house', 'name')
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
 
     def __str__(self):
         return str(self.name)
+
+    def rate_for_month(self, period):
+        """ return actual service rate for current date """
+        actual_rate = None
+        actual_from_date = None
+        for rate in self.rate_set.all():
+            if rate.from_date <= period:
+                if not actual_from_date or actual_from_date < rate.from_date:
+                    actual_from_date = rate.from_date
+                    actual_rate = rate.value
+        return actual_rate
+
+    def bills_sum(self, apartment, period):
+        """ return bills sum for appartment """
+        return self.billline_set.filter(bill__apartment=apartment,
+                                        bill__period__lte=last_day_of_month(period)) \
+                                .aggregate(bills_sum=Sum('value')) \
+                                ['bills_sum'] or 0
+
+    def payments_sum(self, apartment, period):
+        """ return payments sum for appartment """
+        return self.payment_set.filter(apartment=apartment,
+                                       date__lte=last_day_of_month(period)) \
+                               .aggregate(payments_sum=Sum('value')) \
+                               ['payments_sum'] or 0
+
+    def previous_debt(self, apartment, period):
+        """ return total debt of apartment """
+        return self.bills_sum(apartment, period) - self.payments_sum(apartment, period)
+
+    def debt_for_month(self, apartment, period):
+        """ return month's debt of apartment for service """
+        return apartment.area * self.rate_for_month(last_day_of_month(period))
+
+
+class Rate(models.Model):
+    """ Model contains Rates """
+    #  Relationships
+    service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.CASCADE)
+    house = models.ForeignKey(House, verbose_name=_('House'), on_delete=models.CASCADE)
+    #  Fields
+    value = models.DecimalField(_('Rate'), max_digits=8, decimal_places=2, default=0)
+    from_date = models.DateField(_('Actual from'))
+
+    class Meta:
+        unique_together = ('service', 'house')
+        verbose_name = _('Rate')
+        verbose_name_plural = _('Rates')
+
+    def __str__(self):
+        return self.service + self.house
 
 
 class Meter(models.Model):
@@ -66,8 +117,8 @@ class MeterRecord(models.Model):
 
 
     class Meta:
-        verbose_name = _('Meter')
-        verbose_name_plural = _('Meters')
+        verbose_name = _('MeterRecord')
+        verbose_name_plural = _('MeterRecords')
 
     def __str__(self):
         return str(self.value)
@@ -77,6 +128,8 @@ class Bill(models.Model):
     """ Model contains bills for apartments """
     #  Relationships
     apartment = models.ForeignKey(Apartment, verbose_name=_('Apartment'), on_delete=models.PROTECT)
+    service = models.ManyToManyField(Service, through='BillLine',
+                                     verbose_name=_('Services'), blank=True)
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
@@ -116,7 +169,7 @@ class BillLine(models.Model):
         return str(self.value)
 
     def total_debt(self):
-        return str(self.previous_debt + self.value)
+        return self.previous_debt + self.value
 
 
 class Payment(models.Model):

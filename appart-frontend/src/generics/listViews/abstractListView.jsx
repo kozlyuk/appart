@@ -136,29 +136,54 @@ export default class AbstractListView extends React.Component {
    *
    * @param page
    */
-  refreshData(page) {
-    axios(`${this.dataUrl}?page=${page}`, {
-      headers: {
-        'Authorization': 'Token ' + this._user.getAuthToken()
-      }
-    })
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            data: result.data.results,
-            paginationCount: result.data.count,
-            paginationNext: result.data.next,
-            paginationPrevious: result.data.previous
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
+  refreshData(page, queryParams) {
+    if (!queryParams) {
+      axios(`${this.dataUrl}?page=${page}`, {
+        headers: {
+          'Authorization': 'Token ' + this._user.getAuthToken()
         }
-      );
+      })
+        .then(
+          result => {
+            this.setState({
+              isLoaded: true,
+              data: result.data.results,
+              paginationCount: result.data.count,
+              paginationNext: result.data.next,
+              paginationPrevious: result.data.previous
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        );
+    } else {
+      axios(`${this.dataUrl}${queryParams}&page=${page}`, {
+        headers: {
+          'Authorization': 'Token ' + this._user.getAuthToken()
+        }
+      })
+        .then(
+          result => {
+            this.setState({
+              isLoaded: true,
+              data: result.data.results,
+              paginationCount: result.data.count,
+              paginationNext: result.data.next,
+              paginationPrevious: result.data.previous
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        );
+    }
   }
 
   /**

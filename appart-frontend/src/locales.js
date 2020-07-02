@@ -10,6 +10,8 @@ registerLang('en', {
     loading: 'Loading...',
     error: 'Error',
     search: 'Search',
+    filter: 'Filter',
+    displayInactive: 'Display inactive',
     welcomeNotification: 'Welcome to Dim Online!',
     validateErrors: {
       emptyField: 'The field can not be empty!',
@@ -29,6 +31,7 @@ registerLang('en', {
     }
   },
   sidebar: {
+    accounting: 'accounting',
     home: 'home',
     user: 'users',
     company: 'company',
@@ -43,15 +46,19 @@ registerLang('en', {
     bills: 'bills',
     profile: 'profile',
     service: 'service',
+    services: 'services',
     order: 'orders',
-    work: 'work\'s'
+    work: 'work\'s',
+    rate: 'rates',
+    paymentType: 'Payment type'
   },
   paymentList: {
     tableHeader: {
       apartment: 'Apartment',
       value: 'Value',
       actions: 'Actions'
-    }
+    },
+    addBtn: 'Add payment'
   },
   paymentForm: {
     header: 'Payment for apartment:',
@@ -156,6 +163,7 @@ registerLang('en', {
     resident: 'Resident number',
     residentCount: 'Resident count',
     description: 'Description',
+    accountNumber: 'Account number',
     successUserAddMessage: 'If you save the form, the user with the number :user will be added to the apartment.',
     newApartment: {
       title: 'New apartment'
@@ -243,7 +251,9 @@ registerLang('en', {
       purpose: 'Purpose',
       actions: 'Actions'
     },
-    detail: 'Detail'
+    addBtn: 'Add bill',
+    detail: 'Detail',
+    update: 'Edit'
   },
   billForm: {
     apartment: 'Apartment',
@@ -266,7 +276,7 @@ registerLang('en', {
     executorsSet: {
       header: 'Executors',
       executor: 'Executor',
-      scheduledTime: 'Sheduled time',
+      scheduledTime: 'Scheduled time',
       scheduledTimeHelpText: 'Scheduled end time'
     },
     selectValues: {
@@ -338,6 +348,8 @@ registerLang('uk', {
     loading: 'Завантаження...',
     error: 'Помилка',
     search: 'Пошук',
+    filter: 'Фільтр',
+    displayInactive: 'Відображати неактивні',
     welcomeNotification: 'Вітаємо в Дім Онлайн!',
     validateErrors: {
       emptyField: 'Поле не може бути пустим!',
@@ -357,6 +369,7 @@ registerLang('uk', {
     }
   },
   sidebar: {
+    accounting: 'розрахунки',
     home: 'головна',
     user: 'користувачі',
     company: 'компанія',
@@ -371,15 +384,19 @@ registerLang('uk', {
     bills: 'рахунки',
     profile: 'профіль',
     service: 'сервісна служба',
+    services: 'сервіси',
     order: 'замовлення',
-    work: 'роботи'
+    work: 'роботи',
+    rate: 'тарифи',
+    paymentType: 'Тип оплати'
   },
   paymentList: {
     tableHeader: {
       apartment: 'Апартаменти',
       value: 'Вартість',
       actions: 'Дії'
-    }
+    },
+    addBtn: 'Додати платіж'
   },
   paymentForm: {
     header: 'Платіж для апартаментів:',
@@ -483,6 +500,7 @@ registerLang('uk', {
     area: 'Площа',
     resident: 'Номер телефону жителя',
     residentCount: 'Кількість жителів',
+    accountNumber: 'Особовий рахунок',
     description: 'Описання',
     successUserAddMessage: 'При збереженні форми, користувача з номером :user буде додано до апартаментів.',
     newApartment: {
@@ -571,7 +589,9 @@ registerLang('uk', {
       purpose: 'Призначення',
       actions: 'Дії'
     },
-    detail: 'Деталі'
+    addBtn: 'Додати рахунок',
+    detail: 'Деталі',
+    update: 'Редагувати'
   },
   billForm: {
     apartment: 'Апартаменти',

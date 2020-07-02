@@ -40,6 +40,7 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       email: '',
       isMobileChecked: false,
       mobileCheckError: '',

@@ -1,12 +1,14 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import PaymentFilter from './filter/PaymentFilter';
 import PageSpinner from '../../components/PageSpinner';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class PaymentList extends AbstractListView {
@@ -20,6 +22,37 @@ export default class PaymentList extends AbstractListView {
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
 
+  state = {
+    searchQuery: '',
+    houseQuery: '',
+    serviceQuery: '',
+    paymentTypeQuery: ''
+  };
+
+  static contextType = PermissionContext;
+
+  getQueryString() {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const paymentTypeQuery = this.state.paymentTypeQuery.trim();
+    this.dataUrl = `${process.env.REACT_APP_PAYMENT}?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&payment_type=${paymentTypeQuery}`;
+
+    return this.dataUrl;
+  }
+
+  handlePageChange(pageNumber) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    const paymentTypeQuery = this.state.paymentTypeQuery.trim();
+    this.setState({ activePage: pageNumber });
+    this.refreshData(
+      pageNumber,
+      `?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}&payment_type=${paymentTypeQuery}`
+    );
+  }
+
   /**
    * Search handler
    *
@@ -27,10 +60,40 @@ export default class PaymentList extends AbstractListView {
    */
   filterSearchHandler(event) {
     event.preventDefault();
-    const queryName = event.target.search.getAttribute('filterquery');
     const searchValue = event.target.search.value.toString();
-    this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
+    this.setState({
+      searchQuery: searchValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
   }
+
+  filterServiceHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      serviceQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterHouseHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      houseQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
+
+  filterPaymentTypeHandler = (event) => {
+    const selectValue = event.target.value.toString();
+    this.setState({
+      paymentTypeQuery: selectValue
+    }, () => {
+      this.loadData(this.getQueryString());
+    });
+  };
 
   /**
    *
@@ -52,11 +115,15 @@ export default class PaymentList extends AbstractListView {
             <td>{payment.apartment_name}</td>
             <td>{payment.value}</td>
             <td width="15%">
-              <Link to={`payment/${payment.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="userList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.payment} permissionName="change"
+              >
+                <Link to={`payment/${payment.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="userList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
           </tr>
         ))}
@@ -78,22 +145,31 @@ export default class PaymentList extends AbstractListView {
         <div className="loaderWrapper text-center mt-4">
           <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
-        </div>)
-        ;
+        </div>);
     } else {
       return (
-        <Page
-          className="TablePage"
-        >
+        <Page className="TablePage">
           <PaymentFilter
             filterSearchHandler={this.filterSearchHandler}
-            isLoaded={true}
+            filterHouseHandler={this.filterHouseHandler}
+            filterServiceHandler={this.filterServiceHandler}
+            filterPaymentTypeHandler={this.filterPaymentTypeHandler}
+            isLoaded={false}
           />
           <Row>
             <Col>
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.payment"/>
+                  <PermissionComponent
+                    aclList={this.context.payment} permissionName="add"
+                  >
+                    <Link to="payment/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="paymentList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

@@ -8,18 +8,20 @@ django-bootstrap4               # https://pypi.org/project/django-bootstrap4/
 django-font-awesome             # https://github.com/benbacardi/django-font-awesome
 django-widget-tweaks            # https://github.com/jazzband/django-widget-tweaks
 Jinja2                          # https://github.com/noirbizarre/jinja2
-viberbot               # https://viber.github.io/docs/api/python-bot-api/
-django-rest-auth         # https://github.com/Tivix/django-rest-auth
-celery                # https://github.com/celery/celery
-redis                   # https://redis.io/
+viberbot                        # https://viber.github.io/docs/api/python-bot-api/
+django-rest-auth                # https://github.com/Tivix/django-rest-auth
+drf-nested-routers              # https://github.com/alanjds/drf-nested-routers
+celery                          # https://github.com/celery/celery
+redis                           # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
 # django_auto_prefetching==0.1.8  # https://github.com/GeeWee/django-auto-prefetching
-git+https://github.com/liqpay/sdk-python             # https://github.com/liqpay/sdk-python
+git+https://github.com/liqpay/sdk-python    # https://github.com/liqpay/sdk-python
+pyotp==2.3.0                    # https://giRFthub.com/pyauth/pyotp
 
 # Production tools
-django-dotenv==1.4.2
-gunicorn==20.0.4
-django-cors-headers      # https://github.com/adamchainz/django-cors-headers
+django-dotenv==1.4.2            # https://github.com/jpadilla/django-dotenv
+gunicorn==20.0.4                # https://github.com/benoitc/gunicorn
+django-cors-headers             # https://github.com/adamchainz/django-cors-headers
 
 # Debuging tools
-django_silk               # https://github.com/jazzband/django-silk
+django_silk                     # https://github.com/jazzband/django-silk

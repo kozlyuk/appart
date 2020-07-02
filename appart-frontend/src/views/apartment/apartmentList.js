@@ -12,12 +12,15 @@ import { MdClose } from 'react-icons/md';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Fade from 'react-reveal/Fade';
 import PageSpinner from '../../components/PageSpinner';
+import PermissionComponent from '../../acl/PermissionComponent';
+import { PermissionContext } from '../../globalContext/PermissionContext';
 
 
 export default class ApartmentList extends AbstractListView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       isFilterActive: true,
       houseQuery: '',
       searchQuery: ''
@@ -32,6 +35,8 @@ export default class ApartmentList extends AbstractListView {
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
     this.filterSelectHandler = this.filterSelectHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -107,11 +112,15 @@ export default class ApartmentList extends AbstractListView {
                   }
                 </td>
                 <td width="15%">
-                  <Link to={`apartment/${apartment.pk}/edit`}>
-                    <Badge color="warning" className="mr-1">
-                      <Text text="apartmentList.tableHeader.editBtn"/>
-                    </Badge>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.apartment} permissionName="change"
+                  >
+                    <Link to={`apartment/${apartment.pk}/edit`}>
+                      <Badge color="warning" className="mr-1">
+                        <Text text="apartmentList.tableHeader.editBtn"/>
+                      </Badge>
+                    </Link>
+                  </PermissionComponent>
                 </td>
               </tr>
             ))}
@@ -120,6 +129,18 @@ export default class ApartmentList extends AbstractListView {
         </Fade>
       </TransitionGroup>
     );
+  }
+
+  /**
+   * Paginator
+   *
+   * @param pageNumber
+   */
+  handlePageChange(pageNumber) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    this.setState({ activePage: pageNumber });
+    this.refreshData(pageNumber, `?filter=${searchQuery}&house=${houseQuery}`);
   }
 
   render() {
@@ -131,8 +152,7 @@ export default class ApartmentList extends AbstractListView {
         <div className="loaderWrapper text-center mt-4">
           <PageSpinner/>
           <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
-        </div>)
-        ;
+        </div>);
     } else {
 
       return (
@@ -150,11 +170,15 @@ export default class ApartmentList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.apartment"/>
-                  <Link to="/apartment/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="apartmentList.addBtn"/>
-                    </Button>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.apartment} permissionName="add"
+                  >
+                    <Link to="apartment/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="apartmentList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

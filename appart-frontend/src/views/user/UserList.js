@@ -24,6 +24,8 @@ import UserFilter from './filter/UserFilter';
 import PageSpinner from '../../components/PageSpinner';
 import { FaCheck } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
+import PermissionComponent from '../../acl/PermissionComponent';
+import { PermissionContext } from '../../globalContext/PermissionContext';
 
 
 export default class UserList extends AbstractListView {
@@ -36,6 +38,8 @@ export default class UserList extends AbstractListView {
     this.dataUrl = process.env.REACT_APP_USERS_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -92,11 +96,15 @@ export default class UserList extends AbstractListView {
             </td>
             {/*<td>{user.birth_date}</td>*/}
             <td width="15%">
-              <Link to={`user/${user.pk}/edit`}>
-                <Badge color="warning" className="mr-1">
-                  <Text text="userList.tableHeader.editBtn"/>
-                </Badge>
-              </Link>
+              <PermissionComponent
+                aclList={this.context.user} permissionName="change"
+              >
+                <Link to={`user/${user.pk}/edit`}>
+                  <Badge color="warning" className="mr-1">
+                    <Text text="userList.tableHeader.editBtn"/>
+                  </Badge>
+                </Link>
+              </PermissionComponent>
             </td>
 
             <Modal
@@ -166,11 +174,15 @@ export default class UserList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.user"/>
-                  <Link to="/user/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="userList.addBtn"/>
-                    </Button>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.user} permissionName="add"
+                  >
+                    <Link to="user/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="userList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

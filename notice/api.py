@@ -43,7 +43,6 @@ class NoticeListView(ListAPIView):
     * Only apartment owner has permission to notices.
     * Return error HTTP_400_BAD_REQUEST if apartment does not exist
     """
-
     serializer_class = NoticeSerializer
 
     def get_queryset(self):

@@ -10,6 +10,8 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Fade from 'react-reveal/Fade';
 import PageSpinner from '../../components/PageSpinner';
 import WorkFilter from './filter/WorkFilter';
+import { PermissionContext } from '../../globalContext/PermissionContext';
+import PermissionComponent from '../../acl/PermissionComponent';
 
 
 export default class WorkList extends AbstractListView {
@@ -30,6 +32,8 @@ export default class WorkList extends AbstractListView {
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
     this.filterSelectHandler = this.filterSelectHandler.bind(this);
   }
+
+  static contextType = PermissionContext;
 
   /**
    * Search handler
@@ -111,11 +115,15 @@ export default class WorkList extends AbstractListView {
                   <td><Text text="workList.emptyDuration"/></td>
                 }
                 <td width="15%">
-                  <Link to={`work/${work.pk}/edit`}>
-                    <Badge color="warning" className="mr-1">
-                      <Text text="apartmentList.tableHeader.editBtn"/>
-                    </Badge>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.work} permissionName="change"
+                  >
+                    <Link to={`work/${work.pk}/edit`}>
+                      <Badge color="warning" className="mr-1">
+                        <Text text="apartmentList.tableHeader.editBtn"/>
+                      </Badge>
+                    </Link>
+                  </PermissionComponent>
                 </td>
               </tr>
             ))}
@@ -154,11 +162,15 @@ export default class WorkList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.work"/>
-                  <Link to="/work/new">
-                    <Button size="sm" className="float-right" color="success">
-                      <Text text="workList.addBtn"/>
-                    </Button>
-                  </Link>
+                  <PermissionComponent
+                    aclList={this.context.work} permissionName="add"
+                  >
+                    <Link to="work/new">
+                      <Button size="sm" className="float-right" color="success">
+                        <Text text="workList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}

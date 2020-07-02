@@ -52,9 +52,12 @@ INSTALLED_APPS = [
     'font_awesome',
     'widget_tweaks',
     'django_celery_results',
-    'silk'
-
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['silk',
+                       #'django_extensions'
+                       ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,7 +163,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -192,18 +195,17 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static"),
 # ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = '/static/'
+STATIC_URL = '/back_static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
 
 # REDIS and CELERY related settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = os.environ.get("REDIS_SERVER")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_SERVER")
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -221,6 +223,12 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+
+# SMS related settings
+SMS_SERVER_URL = os.environ.get("SMS_SERVER_URL")
+SMS_TOKEN = os.environ.get("SMS_TOKEN")
+SMS_SENDER = os.environ.get("SMS_SENDER")
+OTP_SECRET = os.environ.get("OTP_SECRET")
 
 # Viber related settings
 VIBER_AUTH_TOKEN = os.environ.get("VIBER_AUTH_TOKEN")

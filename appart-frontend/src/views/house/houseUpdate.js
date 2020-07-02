@@ -25,6 +25,7 @@ export default class HouseUpdate extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       // validation fields
       password: '',
       mobileNumber: '',
@@ -49,7 +50,7 @@ export default class HouseUpdate extends AbstractFormView {
       this._postUrl = process.env.REACT_APP_HOUSES_URL + this.props.match.params.id + '/';
     }
     this.requestType = 'put';
-    this.successRedirect = '/house';
+    this.successRedirect = '/dashboard/house';
     this._successButton = 'Повернутися до списку будинків';
   }
 
@@ -246,16 +247,11 @@ export default class HouseUpdate extends AbstractFormView {
               }
             </FormGroup>
             <ButtonToolbar>
-              <Link to="/house">
+              <Link to="/dashboard/house">
                 <Button color="warning">
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
-              {/*<Link className="mx-auto" to={`delete`}>*/}
-              {/*<Button className="mx-auto" disabled color="danger">*/}
-              {/*  <Text text="houseList.tableHeader.deleteBtn"/>*/}
-              {/*</Button>*/}
-              {/*</Link>*/}
               {this.state.errors.description ||
               this.state.errors.address ||
               this.state.errors.name ||

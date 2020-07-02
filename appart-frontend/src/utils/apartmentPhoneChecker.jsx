@@ -14,6 +14,7 @@ import {
   CardImg,
   CardText,
   CardTitle,
+  Form,
   FormGroup,
   FormText,
   Input,
@@ -137,15 +138,16 @@ export default class ApartmentPhoneChecker extends React.Component {
     }
   };
 
-  /**
-   *
-   * @returns {*}
-   */
-  render() {
+  handleAddResidentSubmit = (event) => {
+    event.preventDefault();
+    this.getUserById(event);
+  };
+
+  content() {
     let responseData;
     if (this.state.responseData) {
       responseData = (
-        <Fragment>
+        <>
           <Card className="flex-row mt-2">
             <CardImg
               className="card-img-left"
@@ -165,7 +167,7 @@ export default class ApartmentPhoneChecker extends React.Component {
               </CardText>
             </CardBody>
           </Card>
-        </Fragment>
+        </>
       );
     } else if (this.state.userDoesNotExist) {
       responseData = (
@@ -252,7 +254,7 @@ export default class ApartmentPhoneChecker extends React.Component {
       return (userCanNotExist);
     } else if (this.props.data.resident) {
       return (
-        <Fragment>
+        <>
           <FormGroup>
             <Label for="phoneNumber"><Text text="phoneChecker.number"/></Label>
             {this.state.errors.mobileNumber.length > 0 &&
@@ -282,10 +284,24 @@ export default class ApartmentPhoneChecker extends React.Component {
             className={this.props.className}>
             <UserNew mobileNumber={this.state.mobileNumber} hasCloseBtn={this.toggle()} containerDisable/>
           </Modal>
-        </Fragment>
+        </>
       );
     } else {
       return (userCanNotExist);
     }
+  }
+
+  /**
+   *
+   * @returns {*}
+   */
+  render() {
+    return (
+      <Form id="addResidentForm" onSubmit={this.handleAddResidentSubmit}>
+        <FormGroup>
+          {this.content()}
+        </FormGroup>
+      </Form>
+    );
   }
 }

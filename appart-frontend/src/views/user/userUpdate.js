@@ -52,6 +52,7 @@ export default class UserUpdate extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       // validation fields
       password: '',
       mobileNumber: '',
@@ -83,7 +84,7 @@ export default class UserUpdate extends AbstractFormView {
       this._postUrl = process.env.REACT_APP_USERS_URL + this.props.match.params.id + '/';
     }
     this.requestType = 'put';
-    this.successRedirect = '/user';
+    this.successRedirect = '/dashboard/user';
     this._successButton = 'Повернутися до списку користувачів';
   }
 
@@ -411,7 +412,7 @@ export default class UserUpdate extends AbstractFormView {
               </Input>
             </FormGroup>
             <ButtonToolbar>
-              <Link to="/user">
+              <Link to="/dashboard/user">
                 <Button color="warning">
                   <Text text="buttons.returnBtn"/>
                 </Button>

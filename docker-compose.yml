@@ -1,74 +1,54 @@
 version: '3.8'
 services:
-############
-# POSTGRES #
-############
-  db:
-    image: postgres:12-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.db
 ###########
 # BACKEND #
 ###########
   appart-back:
     build: .
-    image: appart/back:v1
+    image: &img appart_back:latest
     command: ['gunicorn', '--bind', '0.0.0.0:8000', 'appart.wsgi:application',
               '--worker-tmp-dir', '/dev/shm', '--workers', '2',
               '--threads', '4', '--worker-class', 'gthread']
-    ports:
-      - 8000:8000
-    volumes:
-      - .:/app
+    network_mode: host
+    # volumes:
+    #   - back_data:/home/app
     env_file:
-      - ./.env.dev
-    depends_on:
-      - db
+      - ./.env.prod
+    entrypoint: ['/home/app/entrypoint.sh']
 ############
 # FRONTEND #
 ############
   appart-front:
     build:
       context: ./appart-frontend
-    image: appart/front:v1
+    image: appart_front:latest
     command: [nginx, '-g', 'daemon off;']
     ports:
-      - 8080:80
+      - 8002:8080
+    # volumes:
+    #   - front_data:/usr/share/nginx/html
     depends_on:
       - appart-back
-#########
-# REDIS #
-#########
-  redis:
-    image: "redis:alpine"
 ##########
 # CELERY #
 ##########
   celery:
-    image: appart/back:v1
+    # build: .
+    image: *img
     command: ['celery', '-A', 'appart', 'worker', '-l', 'info']
-    volumes:
-      - .:/app
+    network_mode: host
     env_file:
-      - ./.env.dev
-    depends_on:
-      - db
-      - redis
+      - ./.env.prod
 ###############
 # CELERY BEAT #
 ###############
   celery-beat:
-    image: appart/back:v1
+    image: *img
     command: ['celery', '-A', 'appart', 'beat', '-l', 'info']
-    volumes:
-      - .:/app
+    network_mode: host
     env_file:
-      - ./.env.dev
-    depends_on:
-      - db
-      - redis
+      - ./.env.prod
 
-volumes:
-  postgres_data:
+# volumes:
+#   front_data:
+#   back_data:
