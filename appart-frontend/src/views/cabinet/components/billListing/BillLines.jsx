@@ -16,6 +16,7 @@ export default class BillLines extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       isOpen: false
     };
     this.toggleModal = this.toggleModal.bind(this);
