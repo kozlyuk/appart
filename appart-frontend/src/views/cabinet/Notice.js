@@ -93,46 +93,6 @@ export default class Notice extends React.Component {
                   </div>
                 </div>
               ))}
-
-              {/*<div className="mt-2">*/}
-              {/*  <div className="alert alert-danger" role="alert">*/}
-              {/*    <h5 className="card-title mt-1">Важлива новина</h5>*/}
-              {/*    <p className="card-text">*/}
-              {/*      Lorem ipsum dolor sit amet, consectetur adipiscing*/}
-              {/*      elit, sed do eiusmod tempor incididunt ut labore et*/}
-              {/*      dolore magna aliqua. Ut enim ad minim veniam, quis*/}
-              {/*      nostrud exercitation ullamco laboris nisi ut aliquip*/}
-              {/*      ex ea commodo consequat. Duis aute irure dolor in*/}
-              {/*      reprehenderit in voluptate velit esse cillum dolore eu*/}
-              {/*      fugiat nulla pariatur. Excepteur sint occaecat*/}
-              {/*      cupidatat non proident, sunt in culpa qui officia*/}
-              {/*      deserunt mollit anim id est laborum.*/}
-              {/*    </p>*/}
-              {/*  </div>*/}
-              {/*</div>*/}
-              {/*<div className="mt-2">*/}
-              {/*  <div className="card mb-3">*/}
-              {/*    <div className="card-body">*/}
-              {/*      <a className="link" href="/">*/}
-              {/*        <h5 className="card-title mt-1">*/}
-              {/*          Стандартна новина*/}
-              {/*        </h5>*/}
-              {/*      </a>*/}
-              {/*      <p className="card-text">*/}
-              {/*        Lorem ipsum dolor sit amet, consectetur adipiscing*/}
-              {/*        elit, sed do eiusmod tempor incididunt ut labore et*/}
-              {/*        dolore magna aliqua. Ut enim ad minim veniam, quis*/}
-              {/*        nostrud exercitation ullamco laboris nisi ut aliquip*/}
-              {/*        ex ea commodo consequat. Duis aute irure dolor in*/}
-              {/*        reprehenderit in voluptate velit esse cillum dolore*/}
-              {/*        eu fugiat nulla pariatur. Excepteur sint occaecat*/}
-              {/*        cupidatat non proident, sunt in culpa qui officia*/}
-              {/*        deserunt mollit anim id est laborum.*/}
-              {/*      </p>*/}
-
-              {/*    </div>*/}
-              {/*  </div>*/}
-              {/*</div>*/}
             </Col>
           </Row>
         </Container>

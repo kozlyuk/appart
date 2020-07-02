@@ -10,6 +10,7 @@ import Navbar from '../../views/cabinet/layout/Navbar';
 import { UserConsumer } from '../../globalContext/userContext';
 import Sidebar from '../../views/cabinet/layout/CabinetSidebar';
 import './cabinet.css';
+import { Alert } from 'reactstrap';
 
 class CabinetLayout extends React.Component {
 
@@ -27,6 +28,8 @@ class CabinetLayout extends React.Component {
       userCardIsOpen: false
     };
   }
+
+  static contextType = UserConsumer;
 
   /**
    * Navbar toggler.
@@ -60,17 +63,18 @@ class CabinetLayout extends React.Component {
                 <div className="col-12 ">
                   <UserConsumer>
                     {({ pk, email, first_name, last_name, apartment }) => (
-                      <Navbar toggle={this.navbarToggle}
-                              toggleUserCard={this.userCardToggle}
-                              isCardToggled={this.state.userCardIsOpen}
-                              userFirstName={first_name}
-                              userLastName={last_name}
-                              userPk={pk}
-                              userEmail={email}
+                      <Navbar
+                        toggle={this.navbarToggle}
+                        toggleUserCard={this.userCardToggle}
+                        isCardToggled={this.state.userCardIsOpen}
+                        userFirstName={first_name}
+                        userLastName={last_name}
+                        userPk={pk}
+                        userEmail={email}
                       />
                     )}
                   </UserConsumer>
-                  {children}
+                  {this.context.apartment[0] ? children : <UserWithoutApartment/>}
                 </div>
               </div>
             </div>
@@ -82,3 +86,11 @@ class CabinetLayout extends React.Component {
 }
 
 export default CabinetLayout;
+
+function UserWithoutApartment() {
+  return (
+    <Alert color="danger" className="text-center mt-4">
+      У Вас не має жодних апартаментів. Для уточнення інформації зв'яжіться з менеджером!
+    </Alert>
+  );
+}
