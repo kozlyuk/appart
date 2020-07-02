@@ -238,6 +238,8 @@ class App extends React.Component<any, any> {
                     )}
                   />
                   <React.Suspense fallback={<PageSpinner/>}>
+                    {/*
+                    //@ts-ignore*/}
                     <MainLayout breakpoint={this.props.breakpoint}>
                       <Route exact path="/dashboard/" component={DashboardPage}/>
                       <PermissionRoute

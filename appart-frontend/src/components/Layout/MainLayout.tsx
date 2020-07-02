@@ -1,8 +1,11 @@
+// @ts-ignore
 import { Content, Footer, Header, Sidebar } from 'components/Layout';
-import React from 'react';
+import React, { Component } from 'react';
 import { MdFeedback, MdImportantDevices } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
+// @ts-ignore
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
+// @ts-ignore
 import { Text } from 'react-easy-i18n';
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from './feedback.module.css';
@@ -10,27 +13,34 @@ import styles from './feedback.module.css';
 import axios from 'axios';
 import { UserContext } from '../../globalContext/userContext';
 
-class MainLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      feedbackOpen: false
-    };
-  }
+interface MainLayoutStateInterface {
+  isLoaded: boolean,
+  feedbackOpen: boolean
+}
+
+interface MainLayoutPropsInterface {
+  breakpoint: string,
+  breadcrumbs: any
+}
+
+class MainLayout extends Component<MainLayoutPropsInterface, MainLayoutStateInterface> {
+
+  public state: MainLayoutStateInterface = {
+    isLoaded: true,
+    feedbackOpen: false
+  };
 
   /**
    * @return {boolean}
    */
   static isSidebarOpen() {
-    return document
-      .querySelector('.cr-sidebar')
-      .classList.contains('cr-sidebar--open');
+    return document.querySelector('.cr-sidebar')?.classList.contains('cr-sidebar--open');
   }
 
   /**
    * @param breakpoint
    */
-  componentWillReceiveProps({ breakpoint }) {
+  componentWillReceiveProps({ breakpoint }: any) {
     if (breakpoint !== this.props.breakpoint) {
       this.checkBreakpoint(breakpoint);
     }
@@ -40,10 +50,12 @@ class MainLayout extends React.Component {
     this.checkBreakpoint(this.props.breakpoint);
 
     setTimeout(() => {
+      // @ts-ignore
       if (!this.notificationSystem) {
         return;
       }
 
+      // @ts-ignore
       this.notificationSystem.addNotification({
         title: <MdImportantDevices/>,
         message: <Text text="global.welcomeNotification"/>,
@@ -55,7 +67,7 @@ class MainLayout extends React.Component {
   }
 
   // close sidebar when
-  handleContentClick = event => {
+  handleContentClick = () => {
     // close sidebar if sidebar is open and screen size is less than `md`
     if (
       MainLayout.isSidebarOpen() &&
@@ -71,7 +83,7 @@ class MainLayout extends React.Component {
    * @param breakpoint
    * @return {void | undefined}
    */
-  checkBreakpoint(breakpoint) {
+  checkBreakpoint(breakpoint: string) {
     switch (breakpoint) {
       case 'xs':
       case 'sm':
@@ -88,13 +100,14 @@ class MainLayout extends React.Component {
   /**
    * @param openOrClose
    */
-  openSidebar(openOrClose) {
+  openSidebar(openOrClose: string) {
     if (openOrClose === 'open') {
-      return document
-        .querySelector('.cr-sidebar')
-        .classList.add('cr-sidebar--open');
+      const { classList }: any = document
+        .querySelector('.cr-sidebar');
+      return classList.add('cr-sidebar--open');
     }
-    document.querySelector('.cr-sidebar').classList.remove('cr-sidebar--open');
+    const { classList: classList1 }: any = document.querySelector('.cr-sidebar');
+    classList1.remove('cr-sidebar--open');
   }
 
   toggleFeedbackModal = () => {
@@ -105,36 +118,36 @@ class MainLayout extends React.Component {
 
   static userContext = UserContext;
 
-  feedbackSubmit = (e) => {
+  feedbackSubmit = (e: Event) => {
     e.preventDefault();
-    const feedbackForm = new FormData(document.forms.feedbackForm);
-    axios
-      .post(`https://api.cosmicjs.com/v1/appart-feedback/add-object`, {
-        type_slug: 'feedbacks',
-        title: 'test123',
-        content: 'Bug message',
-        write_key: 'NYZKwKPpS91Gjvu24QhSKi0cnvW3A4EHNHEk7diMwu8zSBczlQ',
-        metafields: [
-          {
-            'key': 'user_name',
-            'type': 'text',
-            'title': 'Bug!',
-            'value': 'testaetgeatgeawtg'
-          },
-          {
-            'key': 'message',
-            'type': 'text',
-            'title': 'Bug message',
-            'value': feedbackForm.get('message')
-          },
-          {
-            'key': 'create_date',
-            'type': 'date',
-            'title': 'Creation date',
-            'value': new Date()
-          }
-        ]
-      })
+    const { feedbackForm: feedbackForm1 }: any = document.forms;
+    const feedbackForm = new FormData(feedbackForm1);
+    axios.post(`https://api.cosmicjs.com/v1/appart-feedback/add-object`, {
+      type_slug: 'feedbacks',
+      title: 'test123',
+      content: 'Bug message',
+      write_key: 'NYZKwKPpS91Gjvu24QhSKi0cnvW3A4EHNHEk7diMwu8zSBczlQ',
+      metafields: [
+        {
+          'key': 'user_name',
+          'type': 'text',
+          'title': 'Bug!',
+          'value': 'testaetgeatgeawtg'
+        },
+        {
+          'key': 'message',
+          'type': 'text',
+          'title': 'Bug message',
+          'value': feedbackForm.get('message')
+        },
+        {
+          'key': 'create_date',
+          'type': 'date',
+          'title': 'Creation date',
+          'value': new Date()
+        }
+      ]
+    })
       .then(response => {
         console.log(response);
       });
@@ -146,7 +159,7 @@ class MainLayout extends React.Component {
       <main className="cr-app bg-light">
         <div>
           <Modal isOpen={this.state.feedbackOpen} toggle={this.toggleFeedbackModal} className={'modal-dialog-centered'}>
-            <Form id="feedbackForm" onSubmit={this.feedbackSubmit}>
+            <Form id="feedbackForm" onSubmit={() => this.feedbackSubmit}>
               <ModalHeader toggle={this.toggleFeedbackModal}>Форма зворотнього зв'язку</ModalHeader>
               <ModalBody>
 
@@ -171,10 +184,10 @@ class MainLayout extends React.Component {
         </Content>
 
         <NotificationSystem
+          // @ts-ignore
           dismissible={false}
-          ref={notificationSystem =>
-            (this.notificationSystem = notificationSystem)
-          }
+          // @ts-ignore
+          ref={notificationSystem => (this.notificationSystem = notificationSystem)}
           style={NOTIFICATION_SYSTEM_STYLE}
         />
       </main>
