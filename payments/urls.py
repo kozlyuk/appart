@@ -14,11 +14,14 @@ router.register("payment", api.PaymentViewSet, basename='Payment')
 
 bill_router = routers.NestedDefaultRouter(router, r'bill', lookup='bill')
 bill_router.register(r'billline', api.BillLineViewSet, basename='BillLine')
+payment_router = routers.NestedDefaultRouter(router, r'payment', lookup='payment')
+payment_router.register(r'paymentservice', api.PaymentServiceViewSet, basename='PaymentService')
 
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
     path("api/v1/", include(bill_router.urls)),
+    path("api/v1/", include(payment_router.urls)),
 
     path("api/v1/get_total_debt/<int:apartment>/", api.GetTotalDebt.as_view(), name='get_total_debt'),
     path("api/v1/pay/<int:bill>/", api.PayView.as_view(), name='pay_view'),

@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from liqpay import LiqPay
 
 from payments import serializers
-from payments.models import Bill, BillLine, Payment, Service, Rate
+from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
 from condominium.models import Apartment
 
 from notice.models import News
@@ -93,6 +93,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         return queryset
+
+
+class PaymentServiceViewSet(viewsets.ModelViewSet):
+    """ViewSet for the PaymentService class"""
+
+    serializer_class = serializers.PaymentServiceSerializer
+    pagination_class = None
+    def get_queryset(self):
+        return PaymentService.objects.filter(payment=self.kwargs['payment_pk'])
 
 
 class PaymentTypeChoices(APIView):
