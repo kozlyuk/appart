@@ -18,9 +18,12 @@ def send_email(mail_subject, message, to):
     try:
         email = EmailMessage(mail_subject, message, to=to)
         email.send()
-        logger.info("Email %s sent to %s", mail_subject, to[0])
+        result = f"Email {mail_subject} sent to {to[0]}"
     except SMTPException as error:
-        logger.info("Connection error while send email to %s", error)
+        result = f"Connection error while send email to {error}"
+
+    logger.info(result)
+    return result
 
 
 @app.task
@@ -34,6 +37,9 @@ def send_sms(recipients, message):
         data['sms'] = {'sender': settings.SMS_SENDER, 'text':message}
 
         requests.post(url, json=data)
-        logger.info("SMS %s sent to %s", message, recipients)
+        result = f"SMS {message} sent to {recipients}"
     except SMTPException as error:
-        logger.info("Connection error while send email to %s", error)
+        result = f"Connection error while send email to {error}"
+
+    logger.info(result)
+    return result

@@ -1,6 +1,6 @@
 """  Models for Payments application  """
 
-from datetime import date, datetime
+from datetime import date
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
