@@ -95,25 +95,6 @@ export default class AbstractListView extends React.Component {
    */
   constructor(props, dataUrl, filterUrl) {
     super(props);
-    this.state = {
-      isFilterActive: false,
-      isLoaded: false,
-      isFilterLoaded: false,
-      data: null,
-      filterData: null,
-      paginationCount: null,
-      paginationNext: null,
-      paginationPrevious: null,
-      //paginator settings
-      itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
-      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
-      //paginator settings end
-      modal: false,
-      modal_backdrop: false,
-      modal_nested_parent: false,
-      modal_nested: false,
-      backdrop: true
-    };
     dataUrl = this.dataUrl;
     filterUrl = this.filterUrl;
     this._user = new Auth();
@@ -121,6 +102,26 @@ export default class AbstractListView extends React.Component {
     this._dataUrl = dataUrl;
     this._filterUrl = filterUrl;
   }
+
+  state = {
+    isFilterActive: false,
+    isLoaded: false,
+    isFilterLoaded: false,
+    data: null,
+    filterData: null,
+    paginationCount: null,
+    paginationNext: null,
+    paginationPrevious: null,
+    //paginator settings
+    itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
+    pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
+    //paginator settings end
+    modal: false,
+    modal_backdrop: false,
+    modal_nested_parent: false,
+    modal_nested: false,
+    backdrop: true
+  };
 
   /**
    * Paginator

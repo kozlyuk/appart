@@ -4,6 +4,9 @@
   "homepage": "https://reduction-admin.github.io/react-reduction",
   "dependencies": {
     "@moxy/next-intl": "^1.1.11",
+    "@types/react-notification-system": "^0.2.39",
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^26.0.3",
     "@types/react-router-dom": "^5.1.3",
     "@types/reactstrap": "^8.4.2",
     "axios": "^0.19.2",

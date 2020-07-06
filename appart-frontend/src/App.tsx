@@ -4,6 +4,7 @@ import { EmptyLayout, LayoutRoute, MainLayout } from './components/Layout';
 import PageSpinner from './components/PageSpinner';
 import AuthPage from './pages/AuthPage';
 import React from 'react';
+// @ts-ignore
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
@@ -11,7 +12,7 @@ import Auth from './auth/auth';
 import axios from 'axios';
 import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
-import PaymentForm from './views/payment/PaymentForm';
+import PaymentUpdate from './views/payment/paymentUpdate';
 import BillList from './views/bill/billList';
 import BillForm from './views/bill/billForm';
 import OrderNew from './views/order/OrderNew';
@@ -26,6 +27,7 @@ import WorkList from './views/work/WorkList';
 import WorkUpdate from './views/work/WorkUpdate';
 import OrderList from './views/order/OrderList';
 import OrderForm from './views/order/OrderForm';
+// @ts-ignore
 import { setCurrentLocale } from 'react-easy-i18n';
 import MainController from './controllers/MainController';
 import PermissionRoute from './acl/PermissionRoute';
@@ -57,22 +59,30 @@ const NewsUpdate = React.lazy(() => import('./views/news/newsUpdate'));
 const NewsDelete = React.lazy(() => import('./views/news/newsDelete'));
 
 
-class App extends React.Component {
-  constructor(props) {
+class App extends React.Component<any, any> {
+
+  private user: Auth;
+
+  private MainController: MainController;
+
+  constructor(props: any) {
     super(props);
-    this.state = {
-      isAuthenticate: false,
-      user: null
-    };
     this.user = new Auth();
     this.MainController = new MainController();
   }
+
+  state: { isAuthenticate: boolean, user: any, isLoaded: boolean, acl: object } = {
+    isLoaded: false,
+    isAuthenticate: false,
+    user: null,
+    acl: {}
+  };
 
   /**
    * @param lang
    * @param args
    */
-  changeLang = (lang, args = 'reload') => {
+  changeLang = (lang: string, args = 'reload') => {
     axios(`${process.env.REACT_APP_CHANGE_LANG}${lang}/`, {
       headers: {
         'Authorization': 'Token ' + this.user.getAuthToken()
@@ -91,7 +101,7 @@ class App extends React.Component {
   /**
    * @param lang
    */
-  setLang = (lang) => {
+  setLang = (lang: string) => {
     setCurrentLocale(lang);
     this.setState({});
   };
@@ -99,7 +109,7 @@ class App extends React.Component {
   /**
    * @param lang
    */
-  checkLang = (lang) => {
+  checkLang = (lang: string) => {
     switch (lang) {
       case 'uk':
         this.setLang('uk');
@@ -120,8 +130,8 @@ class App extends React.Component {
    * @param acl
    */
   _setData(
-    user,
-    acl
+    user: object,
+    acl: object
   ) {
     this.setState({
       user: user,
@@ -167,7 +177,7 @@ class App extends React.Component {
                     exact
                     path="/cabinet"
                     layout={CabinetLayout}
-                    component={(props) => (
+                    component={(props: any) => (
                       <Notice {...props}/>
                     )}
                   />
@@ -175,7 +185,7 @@ class App extends React.Component {
                     exact
                     path="/cabinet/bills"
                     layout={CabinetLayout}
-                    component={(props) => (
+                    component={(props: any) => (
                       <BillListing {...props}/>
                     )}
                   />
@@ -183,7 +193,7 @@ class App extends React.Component {
                     exact
                     path="/cabinet/payments"
                     layout={CabinetLayout}
-                    component={(props) => (
+                    component={(props: any) => (
                       <PaymentListing {...props}/>
                     )}
                   />
@@ -191,7 +201,7 @@ class App extends React.Component {
                     exact
                     path="/cabinet/service"
                     layout={CabinetLayout}
-                    component={(props) => (
+                    component={(props: any) => (
                       <ServiceListing {...props}/>
                     )}
                   />
@@ -199,7 +209,7 @@ class App extends React.Component {
                     exact
                     path="/cabinet/order/new"
                     layout={CabinetLayout}
-                    component={props => (
+                    component={(props: any) => (
                       <OrderNew {...props} user={this.state.user}/>
                     )}
                   />
@@ -207,7 +217,7 @@ class App extends React.Component {
                     exact
                     path="/registration"
                     layout={EmptyLayout}
-                    component={props => (
+                    component={(props: any) => (
                       <RegistrationForm {...props} authState={STATE_SIGNUP}/>
                     )}
                   />
@@ -215,7 +225,7 @@ class App extends React.Component {
                     exact
                     path="/login"
                     layout={EmptyLayout}
-                    component={props => (
+                    component={(props: any) => (
                       <AuthPage {...props} authState={STATE_LOGIN}/>
                     )}
                   />
@@ -223,11 +233,13 @@ class App extends React.Component {
                     exact
                     path="/signup"
                     layout={EmptyLayout}
-                    component={props => (
+                    component={(props: any) => (
                       <AuthPage {...props} authState={STATE_SIGNUP}/>
                     )}
                   />
                   <React.Suspense fallback={<PageSpinner/>}>
+                    {/*
+                    //@ts-ignore*/}
                     <MainLayout breakpoint={this.props.breakpoint}>
                       <Route exact path="/dashboard/" component={DashboardPage}/>
                       <PermissionRoute
@@ -273,7 +285,7 @@ class App extends React.Component {
                       <PermissionRoute
                         aclList={this.state.acl} modelName="apartment" permissionName="view"
                         exact path="/dashboard/apartment"
-                        component={props => (
+                        component={(props: any) => (
                           <ApartmentList {...props}/>
                         )}
                       />
@@ -361,12 +373,8 @@ class App extends React.Component {
                       />
                       <Switch>
                         <PermissionRoute
-                          aclList={this.state.acl} modelName="payment" permissionName="add"
-                          exact path="/dashboard/payment/new" component={PaymentForm}
-                        />
-                        <PermissionRoute
                           aclList={this.state.acl} modelName="payment" permissionName="change"
-                          exact path="/dashboard/payment/:id/edit" component={PaymentForm}
+                          exact path="/dashboard/payment/:id/edit" component={PaymentUpdate}
                         />
                       </Switch>
                       <PermissionRoute
@@ -422,7 +430,7 @@ class App extends React.Component {
  * @param width
  * @returns {{breakpoint: string}}
  */
-const query = ({ width }) => {
+const query = ({ width }: { width: number }) => {
   if (width < 575) {
     return { breakpoint: 'xs' };
   }

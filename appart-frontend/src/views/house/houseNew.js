@@ -13,6 +13,7 @@ export default class HouseNew extends AbstractFormView {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       // validation fields
       password: '',
       mobileNumber: '',

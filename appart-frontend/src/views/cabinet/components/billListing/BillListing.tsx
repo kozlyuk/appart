@@ -5,30 +5,36 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import Auth from '../../../../auth/auth';
+// @ts-ignore
 import { Text } from 'react-easy-i18n';
 import BillLines from './BillLines';
 import { UserContext } from '../../../../globalContext/userContext';
 
-export default class BillListing extends React.Component {
+export default class BillListing extends Component {
+
+  private user: Auth;
+
   /**
    * Bill listing constructor
    *
    * @param props
    */
-  constructor(props) {
+  constructor(props: any) {
     super(props);
-    this.state = {
-      isLoaded: false,
-      data: null,
-      paginationCount: '',
-      paginationNext: '',
-      paginationPrevious: ''
-    };
     this.user = new Auth();
   }
+
+  state = {
+    isLoaded: false,
+    isOpen: false,
+    data: null,
+    paginationCount: '',
+    paginationNext: '',
+    paginationPrevious: ''
+  };
 
   /**
    * User context consumer
@@ -65,6 +71,7 @@ export default class BillListing extends React.Component {
 
   render() {
     const { isLoaded } = this.state;
+    const data: any = this.state.data;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
@@ -86,7 +93,7 @@ export default class BillListing extends React.Component {
             </tr>
             </thead>
             <tbody>
-            {this.state.data.map((item) => (
+            {data?.map((item: any) => (
               <BillLines key={item.pk} item={item} isOpen={this.state.isOpen}/>
             ))}
             </tbody>

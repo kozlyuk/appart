@@ -34,8 +34,7 @@ export default class BillForm extends AbstractFormView {
     this.state = {
       billLinesFormsetQuantity: 0,
       // validation fields
-      password: '',
-      mobileNumber: '',
+      isApartmentSelectShow: false,
       // defaultInactiveBtn: true,
       fieldError: {
         apartment: null,
@@ -270,7 +269,6 @@ export default class BillForm extends AbstractFormView {
    */
   secondaryRequests(response) {
     super.secondaryRequests();
-    console.log(response);
     this.submitBillLines(response.data.pk);
   }
 
