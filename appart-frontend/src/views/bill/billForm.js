@@ -34,8 +34,7 @@ export default class BillForm extends AbstractFormView {
     this.state = {
       billLinesFormsetQuantity: 0,
       // validation fields
-      password: '',
-      mobileNumber: '',
+      isApartmentSelectShow: false,
       // defaultInactiveBtn: true,
       fieldError: {
         apartment: null,

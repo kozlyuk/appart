@@ -5,14 +5,20 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { MdAssignment, MdAttachMoney, MdBuild, MdPayment } from 'react-icons/md';
+// @ts-ignore
 import { Slide } from 'react-reveal';
 import logo200Image from '../../../assets/img/logo/logo_main.png';
+// @ts-ignore
 import { Text } from 'react-easy-i18n';
 
-export default class CabinetSidebar extends React.Component {
+interface CabinetSidebarPropsInterface {
+  isOpen: boolean
+}
+
+export default class CabinetSidebar extends Component<CabinetSidebarPropsInterface, any> {
 
   render() {
     const toggle = this.props.isOpen ? 'col-3 center-block menu show collapse' : 'col-3 center-block menu collapse';

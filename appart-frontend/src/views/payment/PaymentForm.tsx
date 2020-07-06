@@ -350,7 +350,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
     }
   };
 
-  private submitPaymentLines = (billPk: number) => {
+  private submitPaymentLines = (paymentPk: number) => {
     const formsetData = this.collectFormsetData();
     let counter = this.state.serviceLinesFormsetQuantity;
     /**
@@ -363,7 +363,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
         const paymentLinePk = parseInt(data[counter - 1].pk);
         axios({
           method: this.isPaymentlLineExist(paymentLinePk) ? 'put' : 'post',
-          url: this.isPaymentlLineExist(paymentLinePk) ? `${process.env.REACT_APP_BILLS}${this.state.data.pk}/billline/${data[counter - 1].pk}/` : `${process.env.REACT_APP_BILLS}${billPk}/billline/`,
+          url: this.isPaymentlLineExist(paymentLinePk) ? `${process.env.REACT_APP_PAYMENT}${this.state.data.pk}/paymentline/${data[counter - 1].pk}/` : `${process.env.REACT_APP_PAYMENT}${paymentPk}/paymentline/`,
           headers: {
             'Authorization': 'Token ' + this.user.getAuthToken()
           },

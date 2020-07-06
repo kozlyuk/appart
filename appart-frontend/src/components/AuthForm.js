@@ -6,6 +6,7 @@ import Auth from '../auth/auth';
 import FormText from 'reactstrap/lib/FormText';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { withRouter } from 'react-router-dom';
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
@@ -118,7 +119,7 @@ class AuthForm extends React.Component {
     const { buttonText } = this.props;
 
     if (!buttonText && this.isLogin) {
-      return 'Login';
+      return 'Вхід';
     }
 
     if (!buttonText && this.isSignup) {
@@ -127,6 +128,10 @@ class AuthForm extends React.Component {
 
     return buttonText;
   }
+
+  onRegisterButtonClick = () => {
+    this.props.history.push('/registration');
+  };
 
   render() {
     const {
@@ -166,12 +171,12 @@ class AuthForm extends React.Component {
           <FormText color="danger">{this.state.errors.password}</FormText>}
           <Input id="password" name="password" {...passwordInputProps} onChange={this.handleChange} autoComplete="off"/>
         </FormGroup>
-        <FormGroup check>
-          <Label check>
-            <Input type="checkbox"/>{' '}
-            {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
-          </Label>
-        </FormGroup>
+        {/*<FormGroup check>*/}
+        {/*  <Label check>*/}
+        {/*    <Input type="checkbox"/>{' '}*/}
+        {/*    {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}*/}
+        {/*  </Label>*/}
+        {/*</FormGroup>*/}
         <hr/>
         {/*display inactive button when error length > 0 and active when error == 0*/}
         {this.state.errors.password.length > 0 || this.state.errors.mobileNumber.length > 0 ?
@@ -180,7 +185,7 @@ class AuthForm extends React.Component {
             className="bg-gradient-theme-left border-0"
             block
             disabled>
-            The data is incorrect
+            Введено некорректні данні
           </Button> : <Button
             size="lg"
             className="bg-gradient-theme-left border-0"
@@ -188,6 +193,16 @@ class AuthForm extends React.Component {
             type="submit">
             {this.renderButtonText()}
           </Button>}
+        <Button
+          size="lg"
+          className="secondary border-0"
+          block
+          onClick={() => {
+            this.onRegisterButtonClick();
+          }}
+          type="button">
+          Реєстрація
+        </Button>
         {children}
       </Form>
     );
@@ -212,23 +227,23 @@ AuthForm.propTypes = {
 AuthForm.defaultProps = {
   authState: 'LOGIN',
   showLogo: true,
-  usernameLabel: 'Mobile number',
+  usernameLabel: 'Номер мобільного телефону',
   usernameInputProps: {
     type: 'text',
     placeholder: '0**********'
   },
-  passwordLabel: 'Password',
+  passwordLabel: 'Пароль',
   passwordInputProps: {
     type: 'password',
-    placeholder: 'your password'
+    placeholder: 'Ваш пароль'
   },
-  confirmPasswordLabel: 'Confirm Password',
+  confirmPasswordLabel: 'Підтвердіть пароль',
   confirmPasswordInputProps: {
     type: 'password',
-    placeholder: 'confirm your password'
+    placeholder: 'підтвердіть ваш пароль'
   },
   onLogoClick: () => {
   }
 };
 
-export default AuthForm;
+export default withRouter(AuthForm);
