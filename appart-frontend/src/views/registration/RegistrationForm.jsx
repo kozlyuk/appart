@@ -8,6 +8,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Flip from 'react-reveal/Flip';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { withRouter } from 'react-router-dom';
 
 /**
  * Ugly regular expression for validate length of phone number
@@ -112,13 +113,13 @@ class RegistrationForm extends React.Component {
         errors.mobileNumber =
           validPhoneRegex.test(value)
             ? ''
-            : 'Mobile number is not valid!';
+            : 'Введено некорректний номер телефону!';
         break;
       case 'email':
         errors.email =
           validEmailRegex.test(value)
             ? ''
-            : 'Email is not valid!';
+            : 'Введено некорректну електронну адресу!';
         break;
       case 'first_name':
         errors.userFirstName =
@@ -135,7 +136,7 @@ class RegistrationForm extends React.Component {
       case 'password':
         errors.password =
           value.length < 6
-            ? 'Password must be 6 characters long!'
+            ? 'Пароль повинен бути більше 6 символів!'
             : '';
         break;
       case 'confirmPassword':
@@ -212,7 +213,7 @@ class RegistrationForm extends React.Component {
     const { buttonText } = this.props;
 
     if (!buttonText && this.isLogin) {
-      return 'Login';
+      return 'Вхід';
     }
 
     if (!buttonText && this.isSignup) {
@@ -220,6 +221,10 @@ class RegistrationForm extends React.Component {
     }
     return buttonText;
   }
+
+  onReturnButtonClick = () => {
+    this.props.history.push('/login');
+  };
 
   checkedForm() {
     const {
@@ -318,7 +323,7 @@ class RegistrationForm extends React.Component {
               className="bg-gradient-theme-left border-0"
               block
               disabled>
-              The data is incorrect
+              Введіть вірні данні
             </Button> : <Button
               type="submit"
               size="lg"
@@ -328,6 +333,16 @@ class RegistrationForm extends React.Component {
             >
               Зареєструватися
             </Button>}
+          <Button
+            size="lg"
+            className="secondary border-0"
+            block
+            onClick={() => {
+              this.onReturnButtonClick();
+            }}
+            type="button">
+            Повернутися на сторінку логіна
+          </Button>
         </Form>
       </>
     );
@@ -369,6 +384,16 @@ class RegistrationForm extends React.Component {
             >
               Перевірити номер
             </Button>}
+          <Button
+            size="lg"
+            className="secondary border-0"
+            block
+            onClick={() => {
+              this.onReturnButtonClick();
+            }}
+            type="button">
+            Повернутися на сторінку логіна
+          </Button>
         </Form>
       </>
     );
@@ -490,4 +515,4 @@ RegistrationForm.defaultProps = {
   }
 };
 
-export default RegistrationForm;
+export default withRouter(RegistrationForm);
