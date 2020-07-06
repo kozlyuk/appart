@@ -21,6 +21,7 @@ class Company(models.Model):
     chief = models.CharField(_('Chief'), max_length=45, blank=True)
     phone = models.CharField(_('Phone'), max_length=13, blank=True)
     email = models.EmailField(_('Email address'), blank=True)
+    service_email = models.EmailField(_('Service email address'), blank=True)
     official_site = models.URLField(_('Official site'), blank=True)
     logo = models.ImageField(_('Logo'), upload_to='company/logo/', default='company/no_image.jpg', blank=True)
     photo = models.ImageField(_('Photo'), upload_to='company/photo/', default='company/no_image.jpg', blank=True)
