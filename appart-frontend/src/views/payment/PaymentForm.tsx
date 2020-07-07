@@ -363,7 +363,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
         const paymentLinePk = parseInt(data[counter - 1].pk);
         axios({
           method: this.isPaymentlLineExist(paymentLinePk) ? 'put' : 'post',
-          url: this.isPaymentlLineExist(paymentLinePk) ? `${process.env.REACT_APP_PAYMENT}${this.state.data.pk}/paymentline/${data[counter - 1].pk}/` : `${process.env.REACT_APP_PAYMENT}${paymentPk}/paymentline/`,
+          url: this.isPaymentlLineExist(paymentLinePk) ? `${process.env.REACT_APP_PAYMENT}${this.state.data.pk}/paymentservice/${data[counter - 1].pk}/` : `${process.env.REACT_APP_PAYMENT}${paymentPk}/paymentservice/`,
           headers: {
             'Authorization': 'Token ' + this.user.getAuthToken()
           },
