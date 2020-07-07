@@ -11,6 +11,7 @@ import { UserConsumer } from '../../globalContext/userContext';
 import Sidebar from '../../views/cabinet/layout/CabinetSidebar';
 import './cabinet.css';
 import { Alert } from 'reactstrap';
+import FeedbackForm from './FeedbackForm';
 
 class CabinetLayout extends React.Component {
 
@@ -74,6 +75,7 @@ class CabinetLayout extends React.Component {
                       />
                     )}
                   </UserConsumer>
+                  <FeedbackForm/>
                   {this.context.apartment[0] ? children : <UserWithoutApartment/>}
                 </div>
               </div>
