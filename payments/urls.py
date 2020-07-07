@@ -24,9 +24,12 @@ urlpatterns = (
     path("api/v1/", include(payment_router.urls)),
 
     path("api/v1/get_total_debt/<int:apartment>/", api.GetTotalDebt.as_view(), name='get_total_debt'),
+    path("api/v1/create_bills/<int:house>/<str:uom_type>/<int:is_active>/", api.CreateBills.as_view()),
+
     path("api/v1/pay/<int:bill>/", api.PayView.as_view(), name='pay_view'),
     path("api/v1/pay_callback/", api.PayCallbackView.as_view(), name='pay_callback'),
 
     path("api/v1/get_payment_choices/", api.PaymentTypeChoices.as_view()),
+    path("api/v1/get_uom_choices/", api.UOMChoices.as_view()),
 
 )

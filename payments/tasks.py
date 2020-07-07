@@ -10,11 +10,12 @@ logger = get_task_logger(__name__)
 
 
 @app.task
-def create_area_bills(period):
+def create_area_bills(house, period, is_active):
     """ create bills by area of apartments """
 
-    # filter active apartments
-    apartments = Apartment.objects.filter(is_active=True)
+    # filter apartments
+    apartments = Apartment.objects.filter(is_active=is_active,
+                                          house__pk=house)
 
     # filter ByArea services
     services = Service.objects.filter(uom_type=Service.ByArea)
@@ -33,3 +34,5 @@ def create_area_bills(period):
         # calculate total_value for Bill
         bill.total_value = bill.calc_total_value()
         bill.save()
+
+    return apartments.count()

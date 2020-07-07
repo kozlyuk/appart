@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
@@ -10,8 +10,8 @@ from liqpay import LiqPay
 from payments import serializers
 from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
 from condominium.models import Apartment
-
 from notice.models import News
+from payments.tasks import create_area_bills
 
 class ServiceViewSet(viewsets.ModelViewSet):
     """ViewSet for the Service class"""
@@ -25,6 +25,18 @@ class ServiceWithoutPagination(ServiceViewSet):
     Without pagination
     """
     pagination_class = None
+
+
+class UOMChoices(APIView):
+    """
+    Send JSON list of UOM_CHOICES
+    """
+    queryset = Service.objects.none()
+
+    def get(self, request):
+        # Sending JSON list PAYMENT_TYPE_CHOICES
+        json_data = Service.UOM_CHOICES
+        return Response(json_data, status=status.HTTP_200_OK)
 
 
 class RateViewSet(viewsets.ModelViewSet):
@@ -164,6 +176,24 @@ class BillLineViewSet(viewsets.ModelViewSet):
     pagination_class = None
     def get_queryset(self):
         return BillLine.objects.filter(bill=self.kwargs['bill_pk'])
+
+
+class CreateBills(APIView):
+    """
+    Create bills for active apartments for given house
+
+    * Only apartment owner has permission to view.
+    * Return error HTTP_400_BAD_REQUEST if apartment does not exist.
+    """
+    queryset = Bill.objects.none()
+
+    def get(self, request, house: int, uom_type: str, is_active: bool):
+        if uom_type == Service.ByArea:
+            # create bills by area for all apartments of house
+            bills_count = create_area_bills(house=house, period=date.today(), is_active=is_active)
+
+        message = f"{bills_count} bills successfully created"
+        return Response(message, status=status.HTTP_200_OK)
 
 
 class GetTotalDebt(APIView):
