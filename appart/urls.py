@@ -26,7 +26,7 @@ urlpatterns = [
     path('condominium/', include('condominium.urls')),
     path('payments/', include('payments.urls')),
     path('', include('pages.urls')),
-    path('', include('messaging.urls')),
+    path('messaging/', include('messaging.urls')),
     path('notice/', include('notice.urls')),
     path('dimservice/', include('dimservice.urls')),
 

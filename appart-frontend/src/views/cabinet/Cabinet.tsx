@@ -25,7 +25,7 @@ const user = new Auth();
  * @returns {*}
  * @constructor
  */
-const Cabinet = (props) => {
+const Cabinet = (props: any) => {
 
   const [activeTab, setActiveTab] = useState('1');
   const [navbarIsOpen, setNavbarIsOpen] = useState(false);
@@ -36,7 +36,7 @@ const Cabinet = (props) => {
    *
    * @param tab
    */
-  const toggle = tab => {
+  const toggle = (tab: string) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 

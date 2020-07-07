@@ -5,25 +5,31 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import axios from 'axios';
 import Auth from '../../../auth/auth';
+// @ts-ignore
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import CabinetBreadcrumbs from '../../../breadcrumbs/CabinetBreadcrumbs';
 import { LangContext } from '../../../globalContext/langContext';
 
-export default class Navbar extends React.Component {
-  constructor(props) {
+export default class Navbar extends Component<any, any> {
+
+  private user: Auth;
+
+  constructor(props: any) {
     super(props);
-    this.state = {
-      isLoaded: false,
-      tooltipOpen1: false,
-      tooltipOpen2: false
-    };
     this.user = new Auth();
   }
+
+  state = {
+    data: null,
+    isLoaded: false,
+    tooltipOpen1: false,
+    tooltipOpen2: false
+  };
 
   toggleTooltip1 = () => {
     const tooltipOpen1 = this.state;
@@ -83,7 +89,7 @@ export default class Navbar extends React.Component {
       return (
         <nav className="navbar navbar-expand-md navbar-light mb-3 bg-white shadow-sm ">
           <button onClick={this.props.toggle} type="button" className="navbar-toggler d-block button-header "
-                  data-toggle="collapse" href="#collapseMenu" role="button" aria-expanded="false"
+                  data-toggle="collapse" ref="#collapseMenu" role="button" aria-expanded="false"
                   aria-controls="collapseMenu" aria-label="Menu">
             <span className="navbar-toggler-icon"/>
           </button>
@@ -105,7 +111,7 @@ export default class Navbar extends React.Component {
                 <a href={process.env.REACT_APP_COMPANY_URL} className="nav-link"><Text text="cabinet.company"/></a>
               </li>
               <li className="dropdown nav-item my-auto " style={{ maxWidth: '70px' }}>
-                <button onClick={this.props.toggleUserCard} className="btn dropdown-toggle " href="#" role="button"
+                <button onClick={this.props.toggleUserCard} className="btn dropdown-toggle " ref="#" role="button"
                         id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <MdAccountCircle size="1.5em"/>
@@ -115,7 +121,7 @@ export default class Navbar extends React.Component {
                   <div
                     className="d-flex justify-content-center align-items-center flex-column card-body">
                     <img src="https://dimonline.pp.ua/static/media/100_4.978e51b5.jpg"
-                         className="rounded-circle mb-2" style={{ width: '80px', height: '80px' }}/>
+                         className="rounded-circle mb-2" style={{ width: '80px', height: '80px' }} alt='user avatar'/>
                     <div className="card-title">{this.props.userFirstName} {this.props.userLastName}</div>
                     <div className="card-subtitle">{this.props.userEmail}</div>
                   </div>

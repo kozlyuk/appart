@@ -30,15 +30,23 @@ class RateSerializer(serializers.ModelSerializer):
 
 
 class PaymentServiceSerializer(serializers.ModelSerializer):
-    service = serializers.StringRelatedField()
+    service_name = serializers.CharField(source='service', required=False)
 
     class Meta:
         model = PaymentService
         fields = [
             "pk",
             "service",
+            "service_name",
             "value"
         ]
+
+    def create(self, validated_data):
+        # add paymentservice to payment
+        payment = Payment.objects.get(pk=self.context["view"].kwargs["payment_pk"])
+        validated_data["payment"] = payment
+        paymentservice = PaymentService.objects.create(**validated_data)
+        return paymentservice
 
 
 class PaymentSerializer(serializers.ModelSerializer):

@@ -18,6 +18,10 @@ export default class WorkList extends AbstractListView {
   constructor(props) {
     super(props);
     this.state = {
+      //paginator settings
+      itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
+      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
+      //paginator settings end
       isFilterActive: true,
       houseQuery: '',
       searchQuery: ''

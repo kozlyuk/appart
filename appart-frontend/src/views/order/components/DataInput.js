@@ -14,7 +14,7 @@ export default class DataInput extends React.Component {
     super(props);
     this.state = {
       isLoaded: true,
-      formattedValue: '',
+      formattedValue: this.props.startValue,
       value: this.props.startValue
     };
   }
@@ -22,8 +22,8 @@ export default class DataInput extends React.Component {
   handleChange(value, formattedValue) {
     const withDash = formattedValue.replace(/\//mg, '-');
     this.setState({
-      value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z"
-      formattedValue: withDash // Formatted String, ex: "11/19/2016"
+      value: value,             // ISO String, ex: "2016-11-19T12:00:00.000Z"
+      formattedValue: withDash  // Formatted String, ex: "11/19/2016"
     });
   }
 

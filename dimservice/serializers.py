@@ -46,7 +46,7 @@ class OrderSerializer(serializers.ModelSerializer):
     exec_status = ChoicesField(choices=Order.EXEC_STATUS_CHOICES, required=False)
     pay_status = ChoicesField(choices=Order.PAYMENT_STATUS_CHOICES, required=False)
     house = serializers.CharField(source='apartment.house.pk', required=False)
-    # execution_set = ExecutionSerializer(many=True, required=False)
+    execution_set = ExecutionSerializer(many=True, required=False)
     apartment_name = serializers.CharField(source='apartment', required=False)
 
     class Meta:
@@ -62,7 +62,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "pay_status",
             "information",
             "warning",
-            # "execution_set",
+            "execution_set",
             "created_by",
             "date_created",
             "date_updated",
@@ -71,7 +71,7 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "house",
             "work_name",
-            # "execution_set",
+            "execution_set",
             "created_by",
             "date_created",
             "date_updated",
