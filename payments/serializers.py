@@ -18,14 +18,19 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class RateSerializer(serializers.ModelSerializer):
+    service_name = serializers.CharField(source='service', required=False)
+    house_name = serializers.CharField(source='house', required=False)
 
     class Meta:
         model = Rate
         fields = [
+            "pk",
             "service",
             "house",
             "value",
-            "from_date"
+            "from_date",
+            "service_name",
+            "house_name"
         ]
 
 
