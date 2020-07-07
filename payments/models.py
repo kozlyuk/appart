@@ -83,7 +83,7 @@ class Rate(models.Model):
         verbose_name_plural = _('Rates')
 
     def __str__(self):
-        return self.service + self.house
+        return self.service.name + self.house.name
 
 
 class Meter(models.Model):
