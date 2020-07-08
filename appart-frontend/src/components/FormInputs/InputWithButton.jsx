@@ -10,7 +10,7 @@ export default class InputWithButton extends React.Component {
 
   _triggerDeleteModal(id) {
     Swal.fire({
-      title: 'Дійсно бажаєте видалити рахунок?',
+      title: this.props.alertText,
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Ні',

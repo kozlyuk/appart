@@ -260,7 +260,7 @@ export default class OrderForm extends AbstractFormView {
         const executorPk = parseInt(data[counter - 1].pk);
         axios({
           method: this._isExecutorExist(executorPk) ? 'put' : 'post',
-          url: this._isExecutorExist(executorPk) ? `${process.env.REACT_APP_EXECUTIONS}${data[counter - 1].pk}/` : process.env.REACT_APP_EXECUTIONS,
+          url: this._isExecutorExist(executorPk) ? `${process.env.REACT_APP_ORDER}${this.state.orderData.pk}/execution/${data[counter - 1].pk}/` : `${process.env.REACT_APP_ORDER}${this.state.orderData.pk}/execution/`,
           headers: {
             'Authorization': 'Token ' + this._user.getAuthToken()
           },
@@ -494,8 +494,10 @@ export default class OrderForm extends AbstractFormView {
               <SelectWithButton
                 label={<Text text="orderForm.executorsSet.executor"/>}
                 name="executor"
+                alertText={'Дійсно бажаєте видалити виконавця?'}
                 disabled={(!executor.isEditable)}
                 index={index}
+                orderPk={this.state.orderData.pk}
                 id={executor.pk}
                 token={this._user.getAuthToken()}
                 callback={this.deleteSuccess}

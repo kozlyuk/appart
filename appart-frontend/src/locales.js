@@ -404,7 +404,7 @@ registerLang('uk', {
     paymentType: 'Тип платежу',
     date: 'Дата',
     value: 'Вартість',
-    purpose: 'Призначення:'
+    purpose: 'Послуга:'
   },
   userList: {
     addBtn: 'Додати нового користувача',
@@ -586,7 +586,7 @@ registerLang('uk', {
     tableHeader: {
       apartment: 'Апартаменти',
       apartmentNumber: 'Номер',
-      purpose: 'Призначення',
+      purpose: 'Послуга',
       actions: 'Дії'
     },
     addBtn: 'Додати рахунок',
@@ -598,7 +598,7 @@ registerLang('uk', {
     apartmentNumber: 'Номер',
     totalValue: 'Загальна вартість',
     period: 'Період',
-    purpose: 'Призначення'
+    purpose: 'Послуга'
   },
   orderForm: {
     newOrderHeader: 'Нове замовлення',
