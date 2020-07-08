@@ -190,18 +190,6 @@ class RegistrationForm extends React.Component {
       data: data
     }).then(response => {
       const ipAPI = '//api.ipify.org?format=json';
-      // Swal.fire({
-      //   title: response.data,
-      //   html: '<input placeholder="Введіть OTP пароль" name="otp" id="otp" class="swal2-input">',
-      //   icon: 'warning',
-      //   showCancelButton: false,
-      //   confirmButtonColor: '#3085d6',
-      //   confirmButtonText: 'Перейти на сторінку входу'
-      // }).then((result) => {
-      //   if (result.value) {
-      //     this.props.history.push('/');
-      //   }
-      // });
       Swal.queue([{
         title: response.data,
         confirmButtonText: 'Перейти на сторінку входу',
