@@ -154,7 +154,8 @@ class Register(views.APIView):
             mobile_number_international = '38' + mobile_number
             otp = hotp.at(user.pk)
             send_sms([mobile_number_international], otp) # TODO add delay
-            return Response(_('User registered'), status=status.HTTP_200_OK)
+            message = _('User registered. Please activate your account from email link or enter OTP code from sms:')
+            return Response(message, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

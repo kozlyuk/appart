@@ -61,3 +61,17 @@ class CompanySerializer(serializers.ModelSerializer):
             "bank_requisites",
             "requisites",
         ]
+
+
+class FileUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()
+
+    class Meta:
+        fields = ["file"]
+
+
+# class OTPSerializer(serializers.Serializer):
+#     file = serializers.FileField()
+
+#     class Meta:
+#         fields = ["file"]
