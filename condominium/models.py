@@ -5,8 +5,6 @@ from django.db.models import Sum
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class Company(models.Model):
     """ Model contains managerial companies """

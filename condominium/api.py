@@ -1,5 +1,6 @@
 import csv, io
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from rest_framework import viewsets, permissions, status
 from rest_framework.generics import CreateAPIView
@@ -136,10 +137,15 @@ class CSVImport(CreateAPIView):
                                                                      defaults={'account_number': row[1],
                                                                                'area': row[3],
                                                                                'residents_count': row[4] or 0,
-                                                                               'exemption_count': row[5] or 0})
+                                                                               'exemption_count': row[5] or 0,
+                                                                               'is_active': True})
                 if created:
                     imported_apartment += 1
                 print(apartment)
 
-        message = f"Imported {imported_users} residents and {imported_apartment} apartments"
+                if imported_users == 0 and imported_apartment == 0:
+                    message = _("File already imported or data is incorrect")
+                    Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        message = _(f"Imported {imported_users} residents and {imported_apartment} apartments")
         return Response(message, status=status.HTTP_201_CREATED)

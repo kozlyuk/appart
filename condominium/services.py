@@ -1,6 +1,5 @@
 """ Business logic for condominium app """
 from datetime import timedelta
-from django.apps import apps
 
 
 def last_day_of_month(any_day):
