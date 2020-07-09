@@ -133,6 +133,7 @@ class Bill(models.Model):
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
+    exemption_value = models.DecimalField(_('Exemption value'), max_digits=8, decimal_places=2, default=0)
     period = models.DateField(_('Bill date'), default=date.today)
     is_active = models.BooleanField(_('Is active'), default=True)
     #  Date information

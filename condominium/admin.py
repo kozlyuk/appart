@@ -19,6 +19,7 @@ class ApartmentAdmin(admin.ModelAdmin):
         "area",
         "resident",
     ]
+    list_filter = ["house"]
 
 
 class HouseAdminForm(forms.ModelForm):
@@ -31,9 +32,8 @@ class HouseAdminForm(forms.ModelForm):
 class HouseAdmin(admin.ModelAdmin):
     form = HouseAdminForm
     list_display = [
-        "description",
-        "address",
         "name",
+        "address",
         "logo",
         "apartments_count"
     ]

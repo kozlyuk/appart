@@ -7,7 +7,6 @@ from django.conf import settings
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from condominium.services import bulk_create_apartments
 
 class Company(models.Model):
     """ Model contains managerial companies """
@@ -55,12 +54,6 @@ class House(models.Model):
         return self.name if self.name else self.address
 
 
-@receiver(post_save, sender=House, dispatch_uid="bulk_create_apartments")
-def create_apartments(sender, instance, created, **kwargs):
-    if created:
-        bulk_create_apartments(instance)
-
-
 class Apartment(models.Model):
     """ Model contains Apartments """
 
@@ -71,8 +64,9 @@ class Apartment(models.Model):
     #  Fields
     number = models.PositiveSmallIntegerField(_('Apartment Number'))
     account_number = models.CharField(_('Deal number'), max_length=30)
-    area = models.PositiveSmallIntegerField(_('Area'), blank=True, null=True)
+    area = models.FloatField(_('Area'), default=0)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True, null=True)
+    exemption_count = models.PositiveSmallIntegerField(_('Exemptions count'), blank=True, null=True)
     description = models.TextField(_('Description'), blank=True)
     is_active = models.BooleanField(_('Is active'), default=False)
     debt = models.DecimalField(_('Total debt'), max_digits=8, decimal_places=2, default=0)
