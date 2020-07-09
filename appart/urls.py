@@ -29,6 +29,7 @@ urlpatterns = [
     path('messaging/', include('messaging.urls')),
     path('notice/', include('notice.urls')),
     path('dimservice/', include('dimservice.urls')),
+    path('dashboard/', include('dashboard.urls')),
 
     path('rest-auth/', include('rest_auth.urls'))
 
