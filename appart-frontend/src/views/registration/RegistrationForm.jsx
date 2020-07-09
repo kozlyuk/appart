@@ -189,10 +189,9 @@ class RegistrationForm extends React.Component {
       url: `${process.env.REACT_APP_REGISTRATION}`,
       data: data
     }).then(response => {
-      const ipAPI = '//api.ipify.org?format=json';
       Swal.queue([{
         title: response.data,
-        confirmButtonText: 'Перейти на сторінку входу',
+        confirmButtonText: 'Надіслати',
         html: '<input placeholder="Введіть OTP пароль" name="otp" id="otp" class="swal2-input">',
         showLoaderOnConfirm: true,
         preConfirm: () => {
