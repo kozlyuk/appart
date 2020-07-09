@@ -277,7 +277,6 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
       },
       data: this.submitData()
     }).then((response: AxiosResponse) => {
-      console.log(response);
       this.secondaryRequests(response);
       let successMessage = '';
       if (typeof response.data == 'string') {
@@ -553,9 +552,10 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
                 <SelectWithButton
                   name={'service'}
                   label={<Text text="paymentForm.serviceLine.service"/>}
+                  alertText={'Дійсно бажаєте видалити послугу?'}
                   defaultValue={this.state.data.payment_service[index].service}
                   buttonText={'Видалити'}
-                  deleteEndpoint={this.dataUrl}
+                  deleteEndpoint={`${process.env['REACT_APP_PAYMENT']}${this.state.data.pk}/paymentservice/`}
                   token={this.user.getAuthToken()}
                   index={index}
                   id={serviceLine.pk}

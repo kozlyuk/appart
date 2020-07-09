@@ -136,6 +136,7 @@ export default class AbstractListView extends React.Component {
   /**
    *
    * @param page
+   * @param queryParams
    */
   refreshData(page, queryParams) {
     if (!queryParams) {

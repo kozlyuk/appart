@@ -1,8 +1,13 @@
+import csv, io
 from django.db.models import Q
-from rest_framework import viewsets, permissions
+from django.contrib.auth.models import Group
+from rest_framework import viewsets, permissions, status
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
 
+from accounts.models import User
 from condominium.models import Company, House, Apartment
-from condominium.serializers import CompanySerializer, HouseSerializer, ApartmentSerializer
+from condominium import serializers
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -12,7 +17,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     Order queryset by any given field ('order' get parameter)
     """
 
-    serializer_class = ApartmentSerializer
+    serializer_class = serializers.ApartmentSerializer
 
     def get_queryset(self):
         queryset = Apartment.objects.all()
@@ -51,7 +56,7 @@ class HouseViewSet(viewsets.ModelViewSet):
     Filter queryset by search string ('filter' get parameter)
     Order queryset by any given field ('order' get parameter)
     """
-    serializer_class = HouseSerializer
+    serializer_class = serializers.HouseSerializer
     permission_class = permissions.AllowAny
 
     def get_queryset(self):
@@ -78,5 +83,49 @@ class CompanyViewSet(viewsets.ModelViewSet):
     """ViewSet for the Company class"""
 
     queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+    serializer_class = serializers.CompanySerializer
     pagination_class = None
+
+
+class CSVImport(CreateAPIView):
+    """
+    Imoprt CSV file with User and Apartments data.
+    Format of CSV row is:
+    appartment_number;account_number;full_name;apartment_area;
+    residents_count;exemption_count;phone_number;email;
+    """
+    queryset = Apartment.objects.none()
+    serializer_class = serializers.FileUploadSerializer
+
+    def post(self, request, *args, **kwargs):
+        def is_int(element):
+            try:
+                int(element)
+                return True
+            except ValueError:
+                return False
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file = serializer.validated_data['file']
+        decoded_file = file.read().decode()
+        # upload_products_csv.delay(decoded_file, request.user.pk)
+        io_string = io.StringIO(decoded_file)
+        rows = csv.reader(io_string)
+        imported = 0
+        for row in rows:
+            print(is_int(row[0]))
+            if is_int(row[0]) and is_int(row[1]) and not is_int(row[2]) and row[6]:
+                full_name = row[2].split(' ', 1)
+                user, created = User.objects.get_or_create(mobile_number=row[6],
+                                                           defaults={'last_name': full_name[0],
+                                                                     'first_name': full_name[1],
+                                                                     'email': row[7]})
+                resident_group = Group.objects.get(name='Резиденти')
+                user.groups.add(resident_group)
+                if created:
+                    imported += 1
+                print(user)
+
+        message = f"Imported {imported} residents"
+        return Response(message, status=status.HTTP_201_CREATED)

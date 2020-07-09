@@ -36,7 +36,7 @@ class User(AbstractUser):
     lang = models.CharField(_('Interface language'), max_length=2, choices=LANG_CHOICES, default='uk')
 
     USERNAME_FIELD = 'mobile_number'
-    REQUIRED_FIELDS = ['email']
+    # REQUIRED_FIELDS = ['email']
 
     objects = CustomUserManager()
 

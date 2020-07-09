@@ -18,11 +18,9 @@ class CustomUserManager(BaseUserManager):
         Creates and saves a User with the given mobile number, email and password.
         """
         if not mobile_number:
-            raise ValueError(_('Users must have an mobile number'))
-        if not email:
-            raise ValueError(_('Users must have an email address'))
+            raise ValueError(_('User must have an mobile number'))
         model = apps.get_model(app_label='accounts', model_name='User')
-        if model.objects.filter(email=self.normalize_email(email)).exists():
+        if email and model.objects.filter(email=self.normalize_email(email)).exists():
             raise ValueError(_("User with such email already exist"))
 
         user = self.model(
@@ -42,6 +40,8 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a SuperUser with the given mobile_number, email and password.
         """
+        if not email:
+            raise ValueError(_('Superuser must have an email address'))
         user = self.create_user(
             mobile_number=mobile_number,
             email=email,

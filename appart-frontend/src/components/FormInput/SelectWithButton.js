@@ -16,7 +16,7 @@ export default class SelectWithButton extends React.Component {
 
   _triggerDeleteModal(id) {
     Swal.fire({
-      title: 'Дійсно бажаєте видалити виконавця?',
+      title: this.props.alertText,
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Ні',

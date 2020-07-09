@@ -245,7 +245,6 @@ export default class BillForm extends AbstractFormView {
         const formset = new FormData(document.getElementById(form));
         let billLine = {
           'pk': parseInt(formset.get('pk')),
-          'previous_debt': formset.get('previous_debt'),
           'service': parseInt(formset.get('service')),
           'value': formset.get('value'),
           'total_debt': formset.get('total_debt')
@@ -496,9 +495,11 @@ export default class BillForm extends AbstractFormView {
                 <InputWithButton
                   name={'previous_debt'}
                   label={'Попередня заборгованість'}
+                  alertText={'Дійсно бажаєте видалити послугу?'}
+                  readOnly
                   defaultValue={this.state.data.bill_lines[index].previous_debt}
                   buttonText={'Видалити'}
-                  deleteEndpoint={this.dataUrl}
+                  deleteEndpoint={`${process.env.REACT_APP_BILLS}${this.state.data.pk}/billline/`}
                   token={this._user.getAuthToken()}
                   index={index}
                   id={billLine.pk}
