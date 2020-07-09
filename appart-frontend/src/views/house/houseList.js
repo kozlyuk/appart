@@ -156,15 +156,17 @@ export default class HouseList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.house"/>
-                  <PermissionComponent
-                    aclList={this.context.choice} permissionName="add"
-                  >
-                    <Link to="house/new">
-                      <Button size="sm" className="float-right" color="success">
-                        <Text text="houseList.addBtn"/>
-                      </Button>
-                    </Link>
-                  </PermissionComponent>
+                  <div className="float-right">
+                    <PermissionComponent
+                      aclList={this.context.choice} permissionName="add"
+                    >
+                      <Link to="house/new">
+                        <Button size="sm" color="success">
+                          <Text text="houseList.addBtn"/>
+                        </Button>
+                      </Link>
+                    </PermissionComponent>
+                  </div>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
