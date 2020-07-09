@@ -13,6 +13,7 @@ registerLang('en', {
     filter: 'Filter',
     displayInactive: 'Display inactive',
     welcomeNotification: 'Welcome to Dim Online!',
+    success: 'Success!',
     validateErrors: {
       emptyField: 'The field can not be empty!',
       incorrectNumber: 'Please enter the correct quantity!',

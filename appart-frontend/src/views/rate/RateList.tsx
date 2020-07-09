@@ -6,7 +6,7 @@
  */
 
 import React, { Component } from 'react';
-import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Pagination, Row, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
 // @ts-ignore
@@ -24,11 +24,17 @@ interface RateListInterface {
     count: number,
     next: string,
     previous: string,
-    results: Rate
+    results: Rate,
   } | null,
   searchQuery: string,
   houseQuery: string,
-  serviceQuery: string
+  serviceQuery: string,
+  itemsCountPerPage: number,
+  pageRangeDisplayed: number,
+  activePage?: number,
+  paginationCount?: number,
+  paginationNext?: string,
+  paginationPrevious?: string
 }
 
 type Rate = {
@@ -57,7 +63,13 @@ export default class RateList extends Component<any, RateListInterface> {
     data: null,
     searchQuery: '',
     houseQuery: '',
-    serviceQuery: ''
+    serviceQuery: '',
+    //paginator settings
+    itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
+    pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
+    activePage: undefined,
+    paginationCount: undefined
+    //paginator settings end
   };
 
   static contextType = PermissionContext;
@@ -77,10 +89,13 @@ export default class RateList extends Component<any, RateListInterface> {
 
   private loadData = (query?: string): void => {
     Promise.all(this.RateController.getListingPromise(query))
-      .then(axios.spread((rates) => {
+      .then(axios.spread((rates: any) => {
         this.setState({
           isLoaded: true,
-          data: rates.data
+          data: rates.data,
+          paginationCount: rates.data.count,
+          paginationNext: rates.data.next,
+          paginationPrevious: rates.data.previous
         });
       }));
   };
@@ -112,6 +127,65 @@ export default class RateList extends Component<any, RateListInterface> {
       this.loadData(this.getQueryString());
     });
   };
+
+  private handlePageChange(pageNumber: number) {
+    const searchQuery = this.state.searchQuery.toString().trim();
+    const houseQuery = this.state.houseQuery.trim();
+    const serviceQuery = this.state.serviceQuery.trim();
+    this.setState({ activePage: pageNumber });
+    this.refreshData(
+      pageNumber,
+      `?filter=${searchQuery}&house=${houseQuery}&service=${serviceQuery}`
+    );
+  }
+
+  private refreshData(page: number, queryParams: string) {
+    if (!queryParams) {
+      axios(`${this.RateController.rateEndpoint}?page=${page}`, {
+        headers: {
+          'Authorization': 'Token ' + this.RateController.user.getAuthToken()
+        }
+      })
+        .then(
+          result => {
+            this.setState({
+              isLoaded: true,
+              data: result.data,
+              paginationCount: result.data.count,
+              paginationNext: result.data.next,
+              paginationPrevious: result.data.previous
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true
+            });
+          }
+        );
+    } else {
+      axios(`${this.RateController.rateEndpoint}${queryParams}&page=${page}`, {
+        headers: {
+          'Authorization': 'Token ' + this.RateController.user.getAuthToken()
+        }
+      })
+        .then(
+          result => {
+            this.setState({
+              isLoaded: true,
+              data: result.data,
+              paginationCount: result.data.count,
+              paginationNext: result.data.next,
+              paginationPrevious: result.data.previous
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true
+            });
+          }
+        );
+    }
+  }
 
   private content(): JSX.Element {
     const data = this.state.data?.results as any;
@@ -148,15 +222,6 @@ export default class RateList extends Component<any, RateListInterface> {
                   </Badge>
                 </Link>
               </PermissionComponent>
-              <PermissionComponent
-                aclList={this.context.rate} permissionName="delete"
-              >
-                <Link to={`rate/${item.pk}/delete`}>
-                  <Badge color="danger" className="mr-1">
-                    <Text text="rateList.deleteBtn"/>
-                  </Badge>
-                </Link>
-              </PermissionComponent>
             </td>
           </tr>
         ))}
@@ -164,7 +229,6 @@ export default class RateList extends Component<any, RateListInterface> {
       </Table>
     );
   }
-
 
   public render(): JSX.Element {
     if (this.state.isLoaded) {
@@ -184,7 +248,7 @@ export default class RateList extends Component<any, RateListInterface> {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.rate"/>
-                  <Link to="choice/new">
+                  <Link to="rate/new">
                     <Button size="sm" className="float-right" color="success">
                       <Text text="rateList.addBtn"/>
                     </Button>
@@ -196,6 +260,17 @@ export default class RateList extends Component<any, RateListInterface> {
               </Card>
             </Col>
           </Row>
+          <Pagination
+            innerClass="pagination pagination-sm ml-auto mr-auto"
+            itemClass="page-item"
+            linkClass="page-link"
+            pageRangeDisplayed={this.state.pageRangeDisplayed}
+            activePage={this.state.activePage}
+            itemsCountPerPage={this.state.itemsCountPerPage}
+            totalItemsCount={this.state.paginationCount}
+            //@ts-ignore
+            onChange={this.handlePageChange.bind(this)}
+          />
         </Page>
       );
     } else {
