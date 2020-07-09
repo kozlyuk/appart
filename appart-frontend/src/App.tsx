@@ -33,6 +33,8 @@ import MainController from './controllers/MainController';
 import PermissionRoute from './acl/PermissionRoute';
 import { PermissionContext } from './globalContext/PermissionContext';
 import NonAuthRoutes from './NonAuthRoutes';
+import RateList from './views/rate/RateList';
+import RateForm from './views/rate/RateForm';
 
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
@@ -389,6 +391,20 @@ class App extends React.Component<any, any> {
                         <PermissionRoute
                           aclList={this.state.acl} modelName="bill" permissionName="change"
                           exact path="/dashboard/bill/:id/edit" component={BillForm}
+                        />
+                      </Switch>
+                      <PermissionRoute
+                        aclList={this.state.acl} modelName="rate" permissionName="view"
+                        exact path="/dashboard/rate" component={RateList}
+                      />
+                      <Switch>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="rate" permissionName="add"
+                          exact path="/dashboard/rate/new" component={RateForm}
+                        />
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="rate" permissionName="change"
+                          exact path="/dashboard/rate/:id/edit" component={RateForm}
                         />
                       </Switch>
                       {/*<Route path="*">*/}

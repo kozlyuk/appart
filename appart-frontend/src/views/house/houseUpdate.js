@@ -16,6 +16,9 @@ import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import AbstractFormView from '../../generics/formViews/abstractFormView';
 import Page from '../../components/Page';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import { FaFileImport } from 'react-icons/fa';
 
 export default class HouseUpdate extends AbstractFormView {
   /**
@@ -88,6 +91,47 @@ export default class HouseUpdate extends AbstractFormView {
     }
     userFormData.append('apartments_count', target.apartmentCount.value);
     return userFormData;
+  }
+
+  onImportButtonClick(event) {
+    Swal.fire({
+      title: 'Надіслати файл для імпорту',
+      input: 'file',
+      inputAttributes: {
+        autocapitalize: 'off',
+        id: 'importFile',
+        accept: '.csv'
+      },
+      cancelButtonText: 'Відмінити',
+      showCancelButton: true,
+      confirmButtonText: 'Надіслати',
+      showLoaderOnConfirm: true,
+      preConfirm: (file) => {
+        const bodyFormData = new FormData();
+        bodyFormData.set('file', file);
+        return axios({
+          method: 'post',
+          url: `${process.env.REACT_APP_IMPORT_HOUSE_CSV}${this.props.match.params.id}/`,
+          headers: {
+            'Authorization': 'Token ' + this.user.getAuthToken(),
+            'Content-Type': 'multipart/form-data'
+          },
+          data: bodyFormData
+        })
+          .then((response) => {
+            Swal.fire({
+              title: response.data
+            });
+          })
+          .catch(error => {
+            console.log(error.response.data);
+            Swal.showValidationMessage(
+              error.response.data
+            );
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    });
   }
 
   /**
@@ -252,15 +296,22 @@ export default class HouseUpdate extends AbstractFormView {
                   <Text text="buttons.returnBtn"/>
                 </Button>
               </Link>
+              <Button
+                onClick={(event) => this.onImportButtonClick(event)}
+                size="sm"
+                className="mr-auto ml-auto"
+                color="secondary">
+                <FaFileImport/> Імпорт
+              </Button>
               {this.state.errors.description ||
               this.state.errors.address ||
               this.state.errors.name ||
               this.state.errors.photoSize ||
               this.state.errors.photoFormat ||
               this.state.errors.apartmentCount ?
-                <Button disabled className="ml-auto float-right">
+                <Button disabled className="float-right">
                   <Text text="buttons.submitBtn"/>
-                </Button> : <Button className="ml-auto float-right" type="submit">
+                </Button> : <Button className="float-right" type="submit">
                   <Text text="buttons.submitBtn"/>
                 </Button>
               }
