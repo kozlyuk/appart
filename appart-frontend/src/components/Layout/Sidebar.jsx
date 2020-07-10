@@ -251,55 +251,6 @@ class Sidebar extends React.Component {
               ))}
             </Collapse>
             <MultiplePermissionComponent
-              aclList={this.context} modelName={['order', 'work']}
-              permissionName={['view', 'view']}
-            >
-              <NavItem
-                className={bem.e('nav-item')}
-                onClick={this.handleClick('ComponentService')}
-              >
-                <BSNavLink className={bem.e('nav-item-collapse')}>
-                  <div className="d-flex">
-                    <MdBuild className={bem.e('nav-item-icon')}/>
-                    <span className="align-self-start text-uppercase"><Text text="sidebar.service"/></span>
-                  </div>
-                  <MdKeyboardArrowDown
-                    className={bem.e('nav-item-icon')}
-                    style={{
-                      padding: 0,
-                      transform: this.state.isOpenComponentService
-                        ? 'rotate(0deg)'
-                        : 'rotate(-90deg)',
-                      transitionDuration: '0.3s',
-                      transitionProperty: 'transform'
-                    }}
-                  />
-                </BSNavLink>
-              </NavItem>
-            </MultiplePermissionComponent>
-            <Collapse isOpen={this.state.isOpenComponentService}>
-              {this.serviceComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
-                <PermissionSidebarComponent
-                  aclList={this.context} modelName={modelName}
-                  permissionName={permissionName}
-                >
-                  <NavItem key={index} className={bem.e('nav-item')}>
-                    <BSNavLink
-                      id={`navItem-${name}-${index}`}
-                      className="text-uppercase"
-                      tag={NavLink}
-                      to={to}
-                      activeClassName="active"
-                      exact={exact}
-                    >
-                      <Icon className={bem.e('nav-item-icon')}/>
-                      <span className="">{name}</span>
-                    </BSNavLink>
-                  </NavItem>
-                </PermissionSidebarComponent>
-              ))}
-            </Collapse>
-            <MultiplePermissionComponent
               aclList={this.context} modelName={['bill', 'payment', 'service', 'rate']}
               permissionName={['view', 'view', 'view', 'view']}
             >
@@ -328,6 +279,55 @@ class Sidebar extends React.Component {
             </MultiplePermissionComponent>
             <Collapse isOpen={this.state.isOpenComponentAccounting}>
               {this.accountingComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
+                <PermissionSidebarComponent
+                  aclList={this.context} modelName={modelName}
+                  permissionName={permissionName}
+                >
+                  <NavItem key={index} className={bem.e('nav-item')}>
+                    <BSNavLink
+                      id={`navItem-${name}-${index}`}
+                      className="text-uppercase"
+                      tag={NavLink}
+                      to={to}
+                      activeClassName="active"
+                      exact={exact}
+                    >
+                      <Icon className={bem.e('nav-item-icon')}/>
+                      <span className="">{name}</span>
+                    </BSNavLink>
+                  </NavItem>
+                </PermissionSidebarComponent>
+              ))}
+            </Collapse>
+            <MultiplePermissionComponent
+              aclList={this.context} modelName={['order', 'work']}
+              permissionName={['view', 'view']}
+            >
+              <NavItem
+                className={bem.e('nav-item')}
+                onClick={this.handleClick('ComponentService')}
+              >
+                <BSNavLink className={bem.e('nav-item-collapse')}>
+                  <div className="d-flex">
+                    <MdBuild className={bem.e('nav-item-icon')}/>
+                    <span className="align-self-start text-uppercase"><Text text="sidebar.service"/></span>
+                  </div>
+                  <MdKeyboardArrowDown
+                    className={bem.e('nav-item-icon')}
+                    style={{
+                      padding: 0,
+                      transform: this.state.isOpenComponentService
+                        ? 'rotate(0deg)'
+                        : 'rotate(-90deg)',
+                      transitionDuration: '0.3s',
+                      transitionProperty: 'transform'
+                    }}
+                  />
+                </BSNavLink>
+              </NavItem>
+            </MultiplePermissionComponent>
+            <Collapse isOpen={this.state.isOpenComponentService}>
+              {this.serviceComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
                 <PermissionSidebarComponent
                   aclList={this.context} modelName={modelName}
                   permissionName={permissionName}
