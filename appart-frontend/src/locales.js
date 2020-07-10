@@ -13,6 +13,7 @@ registerLang('en', {
     filter: 'Filter',
     displayInactive: 'Display inactive',
     welcomeNotification: 'Welcome to Dim Online!',
+    success: 'Success!',
     validateErrors: {
       emptyField: 'The field can not be empty!',
       incorrectNumber: 'Please enter the correct quantity!',
@@ -284,6 +285,19 @@ registerLang('en', {
       resident: 'Resident:'
     },
     description: 'Description'
+  },
+  rateList: {
+    tableHeader: {
+      houseName: 'House',
+      serviceName: 'Service',
+      value: 'Value',
+      actions: 'Actions'
+    },
+    addBtn: 'Add rate',
+    editBtn: 'Edit',
+    deleteBtn: 'Delete',
+    detail: 'Detail',
+    update: 'Edit'
   },
   cabinet: {
     debt: 'Debt',
@@ -625,6 +639,18 @@ registerLang('uk', {
       resident: 'Житель:'
     },
     description: 'Опис'
+  },
+  rateList: {
+    tableHeader: {
+      houseName: 'Будинок',
+      serviceName: 'Сервіс',
+      value: 'Значення',
+      actions: 'Дії'
+    },
+    addBtn: 'Додати тариф',
+    detail: 'Деталі',
+    editBtn: 'Редагувати',
+    deleteBtn: 'Видалити'
   },
   cabinet: {
     debt: 'Заборгованість',

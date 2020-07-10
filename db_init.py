@@ -97,8 +97,7 @@ for service in SERVICES:
                         from_date=date.today())
 print("Initial Services created")
 
-create_area_bills(date.today())
-
+create_area_bills(house, date.today(), True)
 print("Initial Bills created")
 
 WORKS = [['Послуги сантехніка', '1.1', 300, 1, True],

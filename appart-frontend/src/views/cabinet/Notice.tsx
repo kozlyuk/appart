@@ -31,7 +31,7 @@ type NoticeData = {
   title: string
 }
 
-export default class Notice extends Component <any, NoticeInterface> {
+export default class Notice extends Component <any, any> {
 
   private user: Auth;
 

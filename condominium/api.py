@@ -1,5 +1,6 @@
 import csv, io
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from rest_framework import viewsets, permissions, status
 from rest_framework.generics import CreateAPIView
@@ -8,7 +9,7 @@ from rest_framework.response import Response
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from condominium import serializers
-
+from condominium.services import is_int
 
 class ApartmentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Apartment class
@@ -97,14 +98,7 @@ class CSVImport(CreateAPIView):
     queryset = Apartment.objects.none()
     serializer_class = serializers.FileUploadSerializer
 
-    def post(self, request, *args, **kwargs):
-        def is_int(element):
-            try:
-                int(element)
-                return True
-            except ValueError:
-                return False
-
+    def post(self, request, house_pk):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
@@ -112,20 +106,46 @@ class CSVImport(CreateAPIView):
         # upload_products_csv.delay(decoded_file, request.user.pk)
         io_string = io.StringIO(decoded_file)
         rows = csv.reader(io_string)
-        imported = 0
+        imported_users = 0
+        imported_apartment = 0
         for row in rows:
             print(is_int(row[0]))
-            if is_int(row[0]) and is_int(row[1]) and not is_int(row[2]) and row[6]:
+            if is_int(row[0]) and is_int(row[1]) and row[6]:
+                # prepearing data
                 full_name = row[2].split(' ', 1)
+                if row[3] == '' or row[3] == ' ':
+                    row[3] = 0
+                row[3] = float(row[3].replace(',', '.'))
+                if row[4] == '' or row[4] == ' ':
+                    row[4] = 0
+                if row[5] == '' or row[5] == ' ':
+                    row[5] = 0
+                # create resident if user with such mobile_number does not exist
                 user, created = User.objects.get_or_create(mobile_number=row[6],
                                                            defaults={'last_name': full_name[0],
                                                                      'first_name': full_name[1],
-                                                                     'email': row[7]})
+                                                                     'email': row[3]})
                 resident_group = Group.objects.get(name='Резиденти')
                 user.groups.add(resident_group)
                 if created:
-                    imported += 1
+                    imported_users += 1
                 print(user)
+                # create apartment if apartment with such house and number does not exist
+                house = House.objects.get(pk=house_pk)
+                apartment, created = Apartment.objects.get_or_create(house=house,
+                                                                     number=row[0],
+                                                                     defaults={'account_number': row[1],
+                                                                               'area': row[3],
+                                                                               'residents_count': row[4] or 0,
+                                                                               'exemption_count': row[5] or 0,
+                                                                               'is_active': True})
+                if created:
+                    imported_apartment += 1
+                print(apartment)
 
-        message = f"Imported {imported} residents"
+                if imported_users == 0 and imported_apartment == 0:
+                    message = _("File already imported or data is incorrect")
+                    Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        message = _(f"Imported {imported_users} residents and {imported_apartment} apartments")
         return Response(message, status=status.HTTP_201_CREATED)

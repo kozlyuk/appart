@@ -96,12 +96,6 @@ export default class PaymentUpdate extends AbstractFormView {
     let errors = this.state.errors;
     this.setState({ errors, ['defaultInactiveBtn']: false });
     switch (name) {
-      case 'mobileNumber':
-        errors.mobileNumber =
-          (validPhoneRegex.test(value) && value.length === 10)
-            ? ''
-            : [<Text text="global.validateErrors.mobileNumber"/>];
-        break;
       case 'password':
         errors.password =
           value.length < 6
@@ -119,12 +113,6 @@ export default class PaymentUpdate extends AbstractFormView {
           value.length < 1
             ? [<Text text="global.validateErrors.last_name"/>]
             : '';
-        break;
-      case 'email':
-        errors.email =
-          validEmailRegex.test(value)
-            ? ''
-            : [<Text text="global.validateErrors.email"/>];
         break;
       case 'avatar':
         errors.avatarFormat =
