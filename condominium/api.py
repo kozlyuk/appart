@@ -124,7 +124,7 @@ class CSVImport(CreateAPIView):
                 user, created = User.objects.get_or_create(mobile_number=row[6],
                                                            defaults={'last_name': full_name[0],
                                                                      'first_name': full_name[1],
-                                                                     'email': row[3]})
+                                                                     'email': row[7]})
                 resident_group = Group.objects.get(name='Резиденти')
                 user.groups.add(resident_group)
                 if created:
@@ -133,6 +133,7 @@ class CSVImport(CreateAPIView):
                 # create apartment if apartment with such house and number does not exist
                 house = House.objects.get(pk=house_pk)
                 apartment, created = Apartment.objects.get_or_create(house=house,
+                                                                     resident=user,
                                                                      number=row[0],
                                                                      defaults={'account_number': row[1],
                                                                                'area': row[3],
@@ -141,11 +142,10 @@ class CSVImport(CreateAPIView):
                                                                                'is_active': True})
                 if created:
                     imported_apartment += 1
-                print(apartment)
 
                 if imported_users == 0 and imported_apartment == 0:
                     message = _("File already imported or data is incorrect")
-                    Response(message, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
         message = _(f"Imported {imported_users} residents and {imported_apartment} apartments")
         return Response(message, status=status.HTTP_201_CREATED)
