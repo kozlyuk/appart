@@ -40,7 +40,7 @@ export default class NonAuthRoutes extends React.Component {
         />
         <LayoutRoute
           exact
-          path="/activation/:uidb64/:token"
+          path="/registration/:uidb64/:token"
           layout={EmptyLayout}
           component={props => (
             <Activation {...props}/>
