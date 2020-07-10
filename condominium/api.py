@@ -120,6 +120,10 @@ class CSVImport(CreateAPIView):
                     row[4] = 0
                 if row[5] == '' or row[5] == ' ':
                     row[5] = 0
+                if len(row[6]) == 9:
+                    row[6] = '0' + row[6]
+                if len(row[6]) > 10:
+                    row[6] = row[6][len(row[6])-10:]
                 # create resident if user with such mobile_number does not exist
                 user, created = User.objects.get_or_create(mobile_number=row[6],
                                                            defaults={'last_name': full_name[0],
