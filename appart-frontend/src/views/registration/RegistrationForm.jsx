@@ -189,18 +189,27 @@ class RegistrationForm extends React.Component {
       url: `${process.env.REACT_APP_REGISTRATION}`,
       data: data
     }).then(response => {
-      Swal.fire({
-        title: 'Успіх!',
-        text: response.data,
-        icon: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Перейти на сторінку входу'
-      }).then((result) => {
-        if (result.value) {
-          this.props.history.push('/');
+      Swal.queue([{
+        title: response.data,
+        confirmButtonText: 'Надіслати',
+        html: '<input placeholder="Введіть OTP пароль" name="otp" id="otp" class="swal2-input">',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          const otp = document.querySelector('#otp').value.trim();
+          return axios({
+            method: 'get',
+            url: `${process.env.REACT_APP_OTP}${this.state.mobileNumber}/${otp}`
+          }).then(response => {
+            Swal.insertQueueStep(response.data);
+          })
+            .catch((error) => {
+              Swal.insertQueueStep({
+                icon: 'error',
+                title: error.response.data
+              });
+            });
         }
-      });
+      }]);
     })
       .catch(error => {
         this.setState({
