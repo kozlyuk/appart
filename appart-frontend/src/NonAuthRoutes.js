@@ -12,6 +12,7 @@ import AuthPage from './pages/AuthPage';
 import { STATE_LOGIN, STATE_SIGNUP } from './components/AuthForm';
 import RegistrationForm from './views/registration/RegistrationForm';
 import { Redirect } from 'react-router';
+import Activation from './views/registration/Activation';
 
 export default class NonAuthRoutes extends React.Component {
   constructor(props) {
@@ -35,6 +36,14 @@ export default class NonAuthRoutes extends React.Component {
           layout={EmptyLayout}
           component={props => (
             <RegistrationForm {...props} authState={STATE_SIGNUP}/>
+          )}
+        />
+        <LayoutRoute
+          exact
+          path="/activation/:uidb64/:token"
+          layout={EmptyLayout}
+          component={props => (
+            <Activation {...props}/>
           )}
         />
         <Redirect to={'/login'}/>
