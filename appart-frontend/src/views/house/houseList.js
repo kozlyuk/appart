@@ -8,6 +8,8 @@ import {
   CardBody,
   CardHeader,
   Col,
+  CustomInput,
+  Form,
   Modal,
   ModalBody,
   ModalFooter,
@@ -23,6 +25,8 @@ import PageSpinner from '../../components/PageSpinner';
 import HouseFilter from './filter/HouseFilter';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
+import SelectWithChoices from '../order/components/SelectWithChoices';
+import axios from 'axios';
 
 
 export default class HouseList extends AbstractListView {
@@ -36,8 +40,9 @@ export default class HouseList extends AbstractListView {
       isLoaded: false,
       //paginator settings
       itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
-      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED)
+      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
       //paginator settings end
+      printModalToggle: false
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
@@ -57,6 +62,79 @@ export default class HouseList extends AbstractListView {
     this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
   }
 
+  toggleAllCheckboxes = () => {
+    const checkboxes = document.querySelectorAll('.checkbox');
+    checkboxes.forEach((checkbox) => {
+      this.toggleCheckboxChecked(checkbox);
+    });
+  };
+
+  toggleCheckboxChecked(checkbox) {
+    checkbox.checked = !checkbox.checked;
+  }
+
+  togglePrint = () => {
+    const checkboxes = document.querySelectorAll('.checkbox');
+    let billsCreateQuery = [];
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked && !billsCreateQuery.includes(checkbox.value)) {
+        billsCreateQuery.push(checkbox.value);
+      }
+    });
+    this.setState({
+      billsCreateQuery: billsCreateQuery
+    }, this.togglePrintModal);
+  };
+
+  togglePrintModal() {
+    this.getHousesById();
+    this.toggleModal();
+  }
+
+  toggleModal = () => {
+    this.setState({
+      printModalToggle: !this.state.printModalToggle
+    });
+  };
+
+  getHousesById = () => {
+    const houseArray = [];
+    this.state.data.map(house => {
+      if (this.state.billsCreateQuery.includes(house.pk.toString())) {
+        houseArray.push(house);
+      }
+    });
+    this.setState({
+      houseForBills: houseArray
+    });
+  };
+
+  getBills = () => {
+    const endpoint = this.getFormattedBillEndpoint();
+    axios({
+      method: 'get',
+      url: endpoint
+    })
+      .then(response => {
+        this.setState({
+          bills: response.data
+        });
+      });
+  };
+
+  getFormattedBillEndpoint = () => {
+    let createBillsEndpoint = process.env.REACT_APP_CREATE_BILLS;
+    this.state.billsCreateQuery.map((id, index) => {
+      if (index === 0) {
+        createBillsEndpoint += `?house=${id}`;
+      } else {
+        createBillsEndpoint += `&house=${id}`;
+      }
+    });
+
+    return createBillsEndpoint;
+  };
+
   /**
    *
    * @returns {*}
@@ -66,6 +144,7 @@ export default class HouseList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
+          <th width="1%"><input type="checkbox" size="sm" onChange={this.toggleAllCheckboxes}/></th>
           <th><Text text="houseList.tableHeader.housePhoto"/></th>
           <th><Text text="houseList.tableHeader.houseName"/></th>
           <th><Text text="houseList.tableHeader.houseAddress"/></th>
@@ -76,8 +155,11 @@ export default class HouseList extends AbstractListView {
         <tbody>
         {this.state.data.map((house) => (
           <tr key={house.pk} align="center">
+            <td><input value={house.pk} type="checkbox"
+                       size="sm"
+                       className="mt-auto mb-auto ml-0 checkbox"/></td>
             <td width="2%">
-              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
+              <img onClick={this.toggle()} style={{ height: '20px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
             </td>
             <td>{house.name}</td>
             <td>{house.address}</td>
@@ -147,6 +229,42 @@ export default class HouseList extends AbstractListView {
         <Page
           className="TablePage"
         >
+          <Modal isOpen={this.state.printModalToggle} toggle={this.state.printModalToggle} className="modal-xl">
+            <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
+            <ModalBody>
+              <Table responsive>
+                <thead>
+                <tr align="center">
+                  <th>Ім'я будинку</th>
+                  <th>Адресса</th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.state.houseForBills && this.state.houseForBills.map(item => (
+                  <tr align="center">
+                    <td>{item.name}</td>
+                    <td>{item.address}</td>
+                  </tr>
+                ))}
+                </tbody>
+              </Table>
+              <Form>
+                <Row form>
+                  <Col md={12}>
+                    <SelectWithChoices/>
+                    <div className="mx-auto">
+                      <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch"
+                                   label="Turn on this custom switch"/>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={() => this.getBills()}>Сформувати рахунки</Button>{' '}
+              <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
           <HouseFilter
             filterSearchHandler={this.filterSearchHandler}
             isLoaded={true}
@@ -157,6 +275,9 @@ export default class HouseList extends AbstractListView {
                 <CardHeader>
                   <Text text="sidebar.house"/>
                   <div className="float-right">
+                    <Button onClick={this.togglePrint} size="sm" color="secondary" className="mr-2">
+                      Сформувати рахунки
+                    </Button>
                     <PermissionComponent
                       aclList={this.context.choice} permissionName="add"
                     >
