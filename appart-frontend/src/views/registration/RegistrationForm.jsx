@@ -198,7 +198,7 @@ class RegistrationForm extends React.Component {
           const otp = document.querySelector('#otp').value.trim();
           return axios({
             method: 'get',
-            url: `${process.env.REACT_APP_OTP}${otp}`
+            url: `${process.env.REACT_APP_OTP}${this.state.mobileNumber}/${otp}`
           }).then(response => {
             Swal.insertQueueStep(response.data);
           })
