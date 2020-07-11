@@ -75,8 +75,12 @@ class TotalPaymentsCompany(views.APIView):
         paments_sum = Payment.objects.filter(date__month=date.today().month) \
                                      .aggregate(payments_sum=Sum('value')) \
                                       ['payments_sum'] or 0
+        bills_sum = Bill.objects.filter(is_active=True) \
+                        .aggregate(bills_sum=Sum('total_value')) \
+                        ['bills_sum'] or 0
 
         json_data = {}
         json_data["label"] = _("Payment per month")
         json_data["data"] = paments_sum
+        json_data["data_all"] = bills_sum
         return Response(json_data, status=status.HTTP_200_OK)
