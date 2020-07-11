@@ -27,6 +27,7 @@ import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
 import SelectWithChoices from '../order/components/SelectWithChoices';
 import axios from 'axios';
+import HouseController from '../../controllers/HouseController';
 
 
 export default class HouseList extends AbstractListView {
@@ -38,17 +39,32 @@ export default class HouseList extends AbstractListView {
     super(props);
     this.state = {
       isLoaded: false,
+      isActive: true,
       //paginator settings
       itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
       pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
       //paginator settings end
-      printModalToggle: false
+      billsModalToggle: false
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
+    this.HouseController = new HouseController();
   }
 
   static contextType = PermissionContext;
+
+  componentDidMount() {
+    super.componentDidMount();
+    Promise.all(this.HouseController.getUomValues())
+      .then(axios.spread((
+        uom
+        ) => {
+          this.setState({
+            uomTypes: uom.data
+          });
+        })
+      );
+  }
 
   /**
    * Search handler
@@ -73,7 +89,7 @@ export default class HouseList extends AbstractListView {
     checkbox.checked = !checkbox.checked;
   }
 
-  togglePrint = () => {
+  toggleBills = () => {
     const checkboxes = document.querySelectorAll('.checkbox');
     let billsCreateQuery = [];
     checkboxes.forEach((checkbox) => {
@@ -83,17 +99,17 @@ export default class HouseList extends AbstractListView {
     });
     this.setState({
       billsCreateQuery: billsCreateQuery
-    }, this.togglePrintModal);
+    }, this.toggleBillsModal);
   };
 
-  togglePrintModal() {
+  toggleBillsModal() {
     this.getHousesById();
     this.toggleModal();
   }
 
   toggleModal = () => {
     this.setState({
-      printModalToggle: !this.state.printModalToggle
+      billsModalToggle: !this.state.billsModalToggle
     });
   };
 
@@ -106,7 +122,15 @@ export default class HouseList extends AbstractListView {
     });
     this.setState({
       houseForBills: houseArray
+    }, () => {
+      this.setState({
+        checkedHouses: this.isHouseListExist()
+      });
     });
+  };
+
+  isHouseListExist = () => {
+    return !!this.state.houseForBills[0];
   };
 
   getBills = () => {
@@ -131,8 +155,18 @@ export default class HouseList extends AbstractListView {
         createBillsEndpoint += `&house=${id}`;
       }
     });
+    const uomType = document.getElementById('uom_type').value;
+    const isActive = this.state.isActive >>> 0;
+    createBillsEndpoint += `&uom_type=${uomType}`;
+    createBillsEndpoint += `&is_active=${isActive}`;
 
     return createBillsEndpoint;
+  };
+
+  switchToggler = () => {
+    this.setState({
+      isActive: !this.state.isActive
+    });
   };
 
   /**
@@ -229,39 +263,63 @@ export default class HouseList extends AbstractListView {
         <Page
           className="TablePage"
         >
-          <Modal isOpen={this.state.printModalToggle} toggle={this.state.printModalToggle} className="modal-xl">
+          <Modal isOpen={this.state.billsModalToggle} toggle={this.state.billsModalToggle}>
             <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
             <ModalBody>
-              <Table responsive>
-                <thead>
-                <tr align="center">
-                  <th>Ім'я будинку</th>
-                  <th>Адресса</th>
-                </tr>
-                </thead>
-                <tbody>
-                {this.state.houseForBills && this.state.houseForBills.map(item => (
-                  <tr align="center">
-                    <td>{item.name}</td>
-                    <td>{item.address}</td>
-                  </tr>
-                ))}
-                </tbody>
-              </Table>
-              <Form>
-                <Row form>
-                  <Col md={12}>
-                    <SelectWithChoices/>
-                    <div className="mx-auto">
-                      <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch"
-                                   label="Turn on this custom switch"/>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
+              {this.state.checkedHouses ?
+                <>
+                  <Table responsive>
+                    <thead>
+                    <tr align="center">
+                      <th>Ім'я будинку</th>
+                      <th>Адреса</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.houseForBills && this.state.houseForBills.map(item => (
+                      <tr align="center">
+                        <td>{item.name}</td>
+                        <td>{item.address}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </Table>
+                  <Form id={'createBills'}>
+                    <Row form>
+                      <Col md={12}>
+                        <SelectWithChoices
+                          label={'Одиниця виміру'}
+                          name={'uom_type'}
+                          id={'uom_type'}
+                        >
+                          {this.state.uomTypes.map(uom => (
+                            <option value={uom[0]}>{uom[1]}</option>
+                          ))}
+                        </SelectWithChoices>
+                        <div className="mx-auto">
+                          <CustomInput
+                            type="switch"
+                            id="isActive"
+                            name="isActive"
+                            checked={this.state.isActive}
+                            onChange={() => this.switchToggler(this, 'is_active')}
+                            label="Тільки активні"
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                  </Form>
+                </>
+                :
+                <span>
+                Оберіть будинок
+                </span>
+              }
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={() => this.getBills()}>Сформувати рахунки</Button>{' '}
+              {this.state.checkedHouses &&
+              <Button color="primary" onClick={() => this.getBills()}>Сформувати рахунки</Button>
+              }
               <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
             </ModalFooter>
           </Modal>
@@ -275,7 +333,7 @@ export default class HouseList extends AbstractListView {
                 <CardHeader>
                   <Text text="sidebar.house"/>
                   <div className="float-right">
-                    <Button onClick={this.togglePrint} size="sm" color="secondary" className="mr-2">
+                    <Button onClick={this.toggleBills} size="sm" color="secondary" className="mr-2">
                       Сформувати рахунки
                     </Button>
                     <PermissionComponent
