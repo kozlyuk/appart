@@ -130,6 +130,10 @@ export default class BillList extends AbstractListView {
     });
   };
 
+  onPrintBillsClick = (pk) => {
+    console.log('print ' + pk);
+  };
+
   /**
    *
    * @returns {*}
@@ -161,6 +165,10 @@ export default class BillList extends AbstractListView {
                   </Badge>
                 </Link>
               </PermissionComponent>
+              <Badge style={{ cursor: 'pointer' }} onClick={() => this.onPrintBillsClick(bill.pk)} color="secondary"
+                     className="mr-1">
+                Друкувати рахунки
+              </Badge>
             </td>
           </tr>
         ))}
