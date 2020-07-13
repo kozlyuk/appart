@@ -161,7 +161,7 @@ class BillViewSet(viewsets.ModelViewSet):
         if service:
             queryset = queryset.filter(service=service)
         if period:
-            period = datetime.strptime(period).replace(day=1)
+            period = datetime.strptime(period, '%Y-%m-%d').replace(day=1)
             queryset = queryset.filter(period=period)
         if is_active:
             queryset = queryset.filter(is_active=True)

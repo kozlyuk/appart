@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
-from condominium.services import last_day_of_month
+from payments.utils import last_day_of_month
 
 
 class Service(models.Model):
