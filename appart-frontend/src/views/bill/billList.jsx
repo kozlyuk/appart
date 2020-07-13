@@ -221,8 +221,9 @@ export default class BillList extends AbstractListView {
       } else {
         createBillsEndpoint += `&house=${id}`;
       }
-      createBillsEndpoint += `&uom_type=${uomType.value}`;
     });
+
+    createBillsEndpoint += `&uom_type=${uomType.value}`;
 
     return createBillsEndpoint;
   };
