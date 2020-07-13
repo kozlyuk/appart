@@ -189,6 +189,7 @@ class CreateBills(APIView):
 
     def get(self, request):
         if request.query_params.get('uom_type') == Service.ByArea:
+            bills_count = 0
             # create bills by area for all houses in list
             for house in request.query_params.getlist('house'):
                 bills_count += create_area_bills(house=house, period=date.today())
