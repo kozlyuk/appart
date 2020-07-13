@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from payments.models import Service, Rate
-from payments.tasks import create_area_bills
+from payments.services import create_area_bills
 from dimservice.models import Work, Order
 
 
@@ -97,7 +97,7 @@ for service in SERVICES:
                         from_date=date.today())
 print("Initial Services created")
 
-create_area_bills(house, date.today(), True)
+create_area_bills(house, date.today())
 print("Initial Bills created")
 
 WORKS = [['Послуги сантехніка', '1.1', 300, 1, True],
