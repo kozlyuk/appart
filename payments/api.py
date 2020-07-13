@@ -187,10 +187,11 @@ class CreateBills(APIView):
     """
     queryset = Bill.objects.none()
 
-    def get(self, request, house: int, uom_type: str, is_active: bool):
-        if uom_type == Service.ByArea:
-            # create bills by area for all apartments of house
-            bills_count = create_area_bills(house=house, period=date.today(), is_active=is_active)
+    def get(self, request):
+        if request.query_params.get('uom_type') == Service.ByArea:
+            # create bills by area for all houses in list
+            for house in request.query_params.getlist('house'):
+                bills_count += create_area_bills(house=house, period=date.today())
 
         message = f"{bills_count} bills successfully created"
         return Response(message, status=status.HTTP_200_OK)
