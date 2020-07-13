@@ -10,7 +10,24 @@
 import AbstractListView from '../../generics/listViews/abstractListView';
 import Page from 'components/Page';
 import React from 'react';
-import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Table
+} from 'reactstrap';
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
@@ -18,6 +35,10 @@ import PageSpinner from '../../components/PageSpinner';
 import BillFilter from './filter/BillFilter';
 import PermissionComponent from '../../acl/PermissionComponent';
 import { PermissionContext } from '../../globalContext/PermissionContext';
+import axios from 'axios';
+import BillController from '../../controllers/BillController';
+import SelectWithChoices from '../../components/FormInputs/SelectWithChoices';
+import Swal from 'sweetalert2';
 
 
 export default class BillList extends AbstractListView {
@@ -36,13 +57,30 @@ export default class BillList extends AbstractListView {
       searchQuery: '',
       houseQuery: '',
       serviceQuery: '',
+      billsModalToggle: false,
       isActiveQuery: true
     };
     this.dataUrl = process.env.REACT_APP_BILLS;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
+    this.BillController = new BillController();
   }
 
   static contextType = PermissionContext;
+
+  componentDidMount() {
+    super.componentDidMount();
+    Promise.all(this.BillController.getCreateBillsValues())
+      .then(axios.spread((
+        houses,
+        uomTypes
+        ) => {
+          this.setState({
+            houses: houses.data,
+            uomTypes: uomTypes.data
+          });
+        })
+      );
+  }
 
   /**
    * @return {string}
@@ -130,6 +168,65 @@ export default class BillList extends AbstractListView {
     });
   };
 
+  toggleBillsModal = () => {
+    this.toggleModal();
+  };
+
+  toggleModal = () => {
+    this.setState({ billsModalToggle: !this.state.billsModalToggle });
+  };
+
+  createBills = (event) => {
+    event.preventDefault();
+    axios(this.getFormattedBillEndpoint(), {
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(result => {
+        Swal.fire({
+          title: 'Успіх!',
+          text: result.data,
+          icon: 'success',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        })
+          .then(result => {
+            this.toggleModal();
+          });
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          html: error.response.data
+        });
+      });
+  };
+
+  onSelectChange = (event) => {
+    const values = [...event.target.selectedOptions].map(opt => opt.value);
+    this.setState({
+      selectedHouses: values
+    });
+  };
+
+  getFormattedBillEndpoint = () => {
+    let createBillsEndpoint = process.env.REACT_APP_CREATE_BILLS;
+    const uomType = document.getElementById('uom_type');
+    this.state.selectedHouses.map((id, index) => {
+      if (index === 0) {
+        createBillsEndpoint += `?house=${id}`;
+      } else {
+        createBillsEndpoint += `&house=${id}`;
+      }
+      createBillsEndpoint += `&uom_type=${uomType.value}`;
+    });
+
+    return createBillsEndpoint;
+  };
+
   /**
    *
    * @returns {*}
@@ -189,6 +286,43 @@ export default class BillList extends AbstractListView {
         <Page
           className="TablePage"
         >
+          <Modal isOpen={this.state.billsModalToggle} toggle={this.state.billsModalToggle}>
+            <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
+            <Form id={'BillCreateForm'} onSubmit={this.createBills}>
+              <ModalBody>
+                <FormGroup className="mt-3">
+                  <Label for="house">Будинок</Label>
+                  <Input
+                    required
+                    onChange={this.onSelectChange}
+                    defaultValue={this.state.data.groups}
+                    type="select"
+                    name="house"
+                    id="house"
+                    size="15"
+                    multiple
+                  >
+                    {this.state.houses.map(house => (
+                      <option key={house.pk} value={house.pk}>{house.name}</option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <SelectWithChoices
+                  label='Одиниця виміру'
+                  name="uom_type"
+                  id="uom_type"
+                >
+                  {this.state.uomTypes.map(uom => (
+                    <option key={uom[0]} value={uom[0]}>{uom[1]}</option>
+                  ))}
+                </SelectWithChoices>
+              </ModalBody>
+              <ModalFooter>
+                <Button type="submit" color="primary">Сформувати рахунки</Button>
+                <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+              </ModalFooter>
+            </Form>
+          </Modal>
           <BillFilter
             filterSearchHandler={this.filterSearchHandler}
             filterHouseHandler={this.filterHouseHandler}
@@ -204,11 +338,16 @@ export default class BillList extends AbstractListView {
                   <PermissionComponent
                     aclList={this.context.bill} permissionName="add"
                   >
-                    <Link to="bill/new">
-                      <Button size="sm" className="float-right" color="success">
-                        <Text text="billList.addBtn"/>
+                    <div className="float-right">
+                      <Button onClick={this.toggleBillsModal} size="sm" color="secondary" className="mr-2">
+                        Сформувати рахунки
                       </Button>
-                    </Link>
+                      <Link to="bill/new">
+                        <Button size="sm" className="float-right" color="success">
+                          <Text text="billList.addBtn"/>
+                        </Button>
+                      </Link>
+                    </div>
                   </PermissionComponent>
                 </CardHeader>
                 <CardBody>
