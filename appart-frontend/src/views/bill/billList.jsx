@@ -267,6 +267,46 @@ export default class BillList extends AbstractListView {
     );
   }
 
+  createBillsModal = () => (
+    <Modal isOpen={this.state.billsModalToggle} toggle={this.state.billsModalToggle}>
+      <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
+      <Form id={'BillCreateForm'} onSubmit={this.createBills}>
+        <ModalBody>
+          <FormGroup className="mt-3">
+            <Label for="house">Будинок</Label>
+            <Input
+              required
+              onChange={this.onSelectChange}
+              defaultValue={this.state.data.groups}
+              type="select"
+              name="house"
+              id="house"
+              size="15"
+              multiple
+            >
+              {this.state.houses?.map(house => (
+                <option key={house.pk} value={house.pk}>{house.name}</option>
+              ))}
+            </Input>
+          </FormGroup>
+          <SelectWithChoices
+            label='Одиниця виміру'
+            name="uom_type"
+            id="uom_type"
+          >
+            {this.state.uomTypes?.map(uom => (
+              <option key={uom[0]} value={uom[0]}>{uom[1]}</option>
+            ))}
+          </SelectWithChoices>
+        </ModalBody>
+        <ModalFooter>
+          <Button type="submit" color="primary">Сформувати рахунки</Button>
+          <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+        </ModalFooter>
+      </Form>
+    </Modal>
+  );
+
   /**
    *
    * @returns {*}
@@ -287,43 +327,7 @@ export default class BillList extends AbstractListView {
         <Page
           className="TablePage"
         >
-          <Modal isOpen={this.state.billsModalToggle} toggle={this.state.billsModalToggle}>
-            <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
-            <Form id={'BillCreateForm'} onSubmit={this.createBills}>
-              <ModalBody>
-                <FormGroup className="mt-3">
-                  <Label for="house">Будинок</Label>
-                  <Input
-                    required
-                    onChange={this.onSelectChange}
-                    defaultValue={this.state.data.groups}
-                    type="select"
-                    name="house"
-                    id="house"
-                    size="15"
-                    multiple
-                  >
-                    {this.state.houses?.map(house => (
-                      <option key={house.pk} value={house.pk}>{house.name}</option>
-                    ))}
-                  </Input>
-                </FormGroup>
-                <SelectWithChoices
-                  label='Одиниця виміру'
-                  name="uom_type"
-                  id="uom_type"
-                >
-                  {this.state.uomTypes?.map(uom => (
-                    <option key={uom[0]} value={uom[0]}>{uom[1]}</option>
-                  ))}
-                </SelectWithChoices>
-              </ModalBody>
-              <ModalFooter>
-                <Button type="submit" color="primary">Сформувати рахунки</Button>
-                <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
-              </ModalFooter>
-            </Form>
-          </Modal>
+          {this.createBillsModal()}
           <BillFilter
             filterSearchHandler={this.filterSearchHandler}
             filterHouseHandler={this.filterHouseHandler}
