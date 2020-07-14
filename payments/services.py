@@ -1,14 +1,19 @@
 """ Business logic for payments app """
-from datetime import date
-
 from condominium.models import Apartment
 from payments.models import Bill, BillLine, Service
 
 
-def last_day_of_month(any_day):
-    # reurl last day for given month
-    next_month = any_day.replace(day=28) + date.timedelta(days=4)
-    return next_month - date.timedelta(days=next_month.day)
+def make_previous_bill_inactive(apartment, service):
+    """[make old bills of apartment inactive]
+
+    Args:
+        apartment (object): apartment object
+        service (service): Service.UOM_CHOICES
+    """
+    Bill.objects.filter(apartment=apartment,
+                        service__in=service,
+                        is_active=True) \
+                .update(is_active=False)
 
 
 def create_area_bills(house, period):
@@ -23,33 +28,22 @@ def create_area_bills(house, period):
     """
     # set first day of month
     period = period.replace(day=1)
-
     # filter apartments
     apartments = Apartment.objects.filter(is_active=True,
                                           house__pk=house)
-
     # filter ByArea services
     services = Service.objects.filter(uom_type=Service.ByArea)
-
     # create bill for every apartments
     for apartment in apartments:
-        # make old bills not active
-        bill_lines = BillLine.objects.filter(bill__apartment=apartment,
-                                             service__uom_type=Service.ByArea,
-                                             is_active=True)
-        for line in bill_lines:
-            if line.bill.period != date.today().month.replace(day=1):
-                line.bill.is_active = False
-                line.bill.save()
-            # else:
-            #     line
-
-
+        make_previous_bill_inactive(apartment, services)
         # create new bill or update existing bill
-        bill = Bill.objects.get(apartment=apartment,
-                                number=apartment.bill_number_generate(period),
-                                period=period)
+        bill, created = Bill.objects.get_or_create(apartment=apartment,
+                                          service__in=services,
+                                          period=period,
+                                          defaults={'number': apartment.bill_number_generate(period),
+                                                    'is_active': True})
         # create bill_line for every service
+        bill.billline_set.all().delete()
         for service in services:
             BillLine.objects.create(bill=bill,
                                     service=service,
