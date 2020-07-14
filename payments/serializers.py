@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from payments.models import Payment, Bill, Service, Rate, BillLine, PaymentService
@@ -81,15 +82,19 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 class BillLineSerializer(serializers.ModelSerializer):
     total_debt = serializers.SerializerMethodField()
+    rate = serializers.SerializerMethodField()
+    service_name = serializers.CharField(source='service', required=False)
 
     class Meta:
         model = BillLine
         fields = [
             "pk",
             "service",
+            "service_name",
             "previous_debt",
             "value",
-            "total_debt"
+            "total_debt",
+            "rate"
         ]
 
     def create(self, validated_data):
@@ -105,8 +110,57 @@ class BillLineSerializer(serializers.ModelSerializer):
     def get_total_debt(self, obj):
         return str(obj.total_debt())
 
+    def get_rate(self, obj):
+        area = obj.bill.apartment.area
+        if area != 0:
+            return str(obj.value / obj.bill.apartment.area)
+        return 0
+
 
 class BillSerializer(serializers.ModelSerializer):
+    bill_lines = BillLineSerializer(source='billline_set', many=True, required=False)
+    purpose = serializers.SerializerMethodField()
+    apartment_name = serializers.CharField(source='apartment', required=False)
+    apartment_area = serializers.CharField(source='apartment.area', required=False)
+    apartment_account_number = serializers.CharField(source='apartment.account_number', required=False)
+    bill_local_period = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Bill
+        fields = [
+            "pk",
+            "apartment",
+            "apartment_name",
+            "number",
+            "total_value",
+            "purpose",
+            "period",
+            "bill_local_period",
+            "bill_lines",
+            "is_active",
+            "apartment_area",
+            "apartment_account_number"
+        ]
+
+    def get_purpose(self, obj):
+        return ", ".join([line.service.name for line in obj.billline_set.all()])
+
+    def get_bill_local_period(self, obj):
+        return obj.period.strftime('%B %Y')
+
+    # def to_representation(self, instance):
+    #     representation = instance.period(timezone.get_default_timezone()).isoformat()
+    #     return representation
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ optimizing "to-many" relationships with prefetch_related """
+        queryset = queryset.prefetch_related('billline_set') \
+                           .select_related('apartment')
+        return queryset
+
+
+class BillPDFSerializer(serializers.ModelSerializer):
     bill_lines = BillLineSerializer(source='billline_set', many=True, required=False)
     purpose = serializers.SerializerMethodField()
     apartment_name = serializers.CharField(source='apartment', required=False)
