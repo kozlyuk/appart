@@ -4,7 +4,7 @@ from payments.models import Bill, BillLine, Service
 
 
 def make_previous_bill_inactive(apartment, service):
-    """[make old bills of apartment inactive]
+    """make old bills of apartment inactive
 
     Args:
         apartment (object): apartment object
