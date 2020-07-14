@@ -224,7 +224,7 @@ export default class BillList extends AbstractListView {
     });
 
     createBillsEndpoint += `&uom_type=${uomType.value}`;
-    
+
     return createBillsEndpoint;
   };
 
@@ -244,7 +244,7 @@ export default class BillList extends AbstractListView {
         </tr>
         </thead>
         <tbody>
-        {this.state.data.map((bill) => (
+        {this.state.data && this.state.data.map((bill) => (
           <tr key={bill.pk} align="center">
             <td>{bill.apartment_name}</td>
             <td>{bill.number}</td>
