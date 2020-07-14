@@ -3,17 +3,19 @@ from condominium.models import Apartment
 from payments.models import Bill, BillLine, Service
 
 
-def make_previous_bill_inactive(apartment, service):
+def make_previous_bill_inactive(apartment, service, period):
     """make old bills of apartment inactive
 
     Args:
         apartment (object): apartment object
         service (service): Service.UOM_CHOICES
     """
-    Bill.objects.filter(apartment=apartment,
-                        service__in=service,
-                        is_active=True) \
-                .update(is_active=False)
+    prev_bills = Bill.objects.filter(apartment=apartment,
+                                     service__in=service)
+    # deletes current month bills
+    prev_bills.filter(period=period).delete()
+    # makes inactive previous month bills
+    prev_bills.filter(is_active=True).update(is_active=False)
 
 
 def create_area_bills(house, period):
@@ -35,15 +37,13 @@ def create_area_bills(house, period):
     services = Service.objects.filter(uom_type=Service.ByArea)
     # create bill for every apartments
     for apartment in apartments:
-        make_previous_bill_inactive(apartment, services)
+        make_previous_bill_inactive(apartment, services, period)
         # create new bill or update existing bill
-        bill, created = Bill.objects.get_or_create(apartment=apartment,
-                                          service__in=services,
-                                          period=period,
-                                          defaults={'number': apartment.bill_number_generate(period),
-                                                    'is_active': True})
+        bill = Bill.objects.create(apartment=apartment,
+                                   period=period,
+                                   number= apartment.bill_number_generate(period),
+                                   is_active= True)
         # create bill_line for every service
-        bill.billline_set.all().delete()
         for service in services:
             BillLine.objects.create(bill=bill,
                                     service=service,
