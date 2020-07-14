@@ -43,7 +43,7 @@ class Service(models.Model):
                 if not actual_from_date or actual_from_date < rate.from_date:
                     actual_from_date = rate.from_date
                     actual_rate = rate.value
-        return actual_rate
+        return actual_rate or 0
 
     def bills_sum(self, apartment, period):
         """ return bills sum for appartment """
