@@ -244,7 +244,7 @@ export default class BillList extends AbstractListView {
         </tr>
         </thead>
         <tbody>
-        {this.state.data && this.state.data.map((bill) => (
+        {this.state.data?.map((bill) => (
           <tr key={bill.pk} align="center">
             <td>{bill.apartment_name}</td>
             <td>{bill.number}</td>
@@ -303,7 +303,7 @@ export default class BillList extends AbstractListView {
                     size="15"
                     multiple
                   >
-                    {this.state.houses && this.state.houses.map(house => (
+                    {this.state.houses?.map(house => (
                       <option key={house.pk} value={house.pk}>{house.name}</option>
                     ))}
                   </Input>
@@ -313,7 +313,7 @@ export default class BillList extends AbstractListView {
                   name="uom_type"
                   id="uom_type"
                 >
-                  {this.state.uomTypes.map(uom => (
+                  {this.state.uomTypes?.map(uom => (
                     <option key={uom[0]} value={uom[0]}>{uom[1]}</option>
                   ))}
                 </SelectWithChoices>
