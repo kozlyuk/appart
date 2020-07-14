@@ -303,7 +303,7 @@ export default class BillList extends AbstractListView {
                     size="15"
                     multiple
                   >
-                    {this.state.houses.map(house => (
+                    {this.state.houses && this.state.houses.map(house => (
                       <option key={house.pk} value={house.pk}>{house.name}</option>
                     ))}
                   </Input>
