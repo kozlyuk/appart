@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
-from condominium.services import last_day_of_month
+from payments.utils import last_day_of_month
 
 
 class Service(models.Model):
@@ -43,7 +43,7 @@ class Service(models.Model):
                 if not actual_from_date or actual_from_date < rate.from_date:
                     actual_from_date = rate.from_date
                     actual_rate = rate.value
-        return actual_rate
+        return actual_rate or 0
 
     def bills_sum(self, apartment, period):
         """ return bills sum for appartment """

@@ -23,6 +23,8 @@ import PageSpinner from '../../components/PageSpinner';
 import HouseFilter from './filter/HouseFilter';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
+import axios from 'axios';
+import HouseController from '../../controllers/HouseController';
 
 
 export default class HouseList extends AbstractListView {
@@ -34,16 +36,23 @@ export default class HouseList extends AbstractListView {
     super(props);
     this.state = {
       isLoaded: false,
+      isActive: true,
       //paginator settings
       itemsCountPerPage: Number(process.env.REACT_APP_ITEMS_COUNT_PER_PAGE),
-      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED)
+      pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
       //paginator settings end
+      billsModalToggle: false
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
+    this.HouseController = new HouseController();
   }
 
   static contextType = PermissionContext;
+
+  componentDidMount() {
+    super.componentDidMount();
+  }
 
   /**
    * Search handler
@@ -57,6 +66,36 @@ export default class HouseList extends AbstractListView {
     this.loadData(`${this.dataUrl}?${queryName}=${searchValue}`);
   }
 
+  toggleAllCheckboxes = () => {
+    const checkboxes = document.querySelectorAll('.checkbox');
+    checkboxes.forEach((checkbox) => {
+      this.toggleCheckboxChecked(checkbox);
+    });
+  };
+
+  toggleCheckboxChecked(checkbox) {
+    checkbox.checked = !checkbox.checked;
+  }
+
+  getBills = () => {
+    const endpoint = this.getFormattedBillEndpoint();
+    axios({
+      method: 'get',
+      url: endpoint
+    })
+      .then(response => {
+        this.setState({
+          bills: response.data
+        });
+      });
+  };
+
+  switchToggler = () => {
+    this.setState({
+      isActive: !this.state.isActive
+    });
+  };
+
   /**
    *
    * @returns {*}
@@ -66,6 +105,7 @@ export default class HouseList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
+          {/*<th width="1%"><input type="checkbox" size="sm" onChange={this.toggleAllCheckboxes}/></th>*/}
           <th><Text text="houseList.tableHeader.housePhoto"/></th>
           <th><Text text="houseList.tableHeader.houseName"/></th>
           <th><Text text="houseList.tableHeader.houseAddress"/></th>
@@ -76,8 +116,11 @@ export default class HouseList extends AbstractListView {
         <tbody>
         {this.state.data.map((house) => (
           <tr key={house.pk} align="center">
+            {/*<td><input value={house.pk} type="checkbox"*/}
+            {/*           size="sm"*/}
+            {/*           className="mt-auto mb-auto ml-0 checkbox"/></td>*/}
             <td width="2%">
-              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
+              <img onClick={this.toggle()} style={{ height: '20px', cursor: 'pointer' }} src={house.logo} alt="avatar"/>
             </td>
             <td>{house.name}</td>
             <td>{house.address}</td>
@@ -156,17 +199,15 @@ export default class HouseList extends AbstractListView {
               <Card className="mb-3">
                 <CardHeader>
                   <Text text="sidebar.house"/>
-                  <div className="float-right">
-                    <PermissionComponent
-                      aclList={this.context.choice} permissionName="add"
-                    >
-                      <Link to="house/new">
-                        <Button size="sm" color="success">
-                          <Text text="houseList.addBtn"/>
-                        </Button>
-                      </Link>
-                    </PermissionComponent>
-                  </div>
+                  <PermissionComponent
+                    aclList={this.context.choice} permissionName="add"
+                  >
+                    <Link to="house/new">
+                      <Button size="sm" color="success" className="float-right">
+                        <Text text="houseList.addBtn"/>
+                      </Button>
+                    </Link>
+                  </PermissionComponent>
                 </CardHeader>
                 <CardBody>
                   {this.content()}
