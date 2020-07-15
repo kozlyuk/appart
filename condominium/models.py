@@ -61,7 +61,7 @@ class Apartment(models.Model):
                                  blank=True, null=True, on_delete=models.SET_NULL)
     #  Fields
     number = models.PositiveSmallIntegerField(_('Apartment Number'))
-    account_number = models.CharField(_('Deal number'), max_length=30)
+    account_number = models.CharField(_('Account number'), max_length=30)
     area = models.DecimalField(_('Area'), max_digits=6, decimal_places=2, default=0)
     residents_count = models.PositiveSmallIntegerField(_('Residents count'), blank=True, null=True)
     exemption_count = models.PositiveSmallIntegerField(_('Exemptions count'), blank=True, null=True)
