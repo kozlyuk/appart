@@ -78,7 +78,7 @@ class Receipt extends React.Component {
             <tr>
               <th scope="col"><small>{company.name}</small></th>
               <th scope="col" className="text-center" colSpan={10}><small>
-                Чек № {item.number} на оплату комунальних послуг за {item.bill_local_period}
+                Чек № {item.number} на оплату комунальних послуг за {item.local_period}
               </small></th>
             </tr>
             <tr>
