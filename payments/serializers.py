@@ -121,6 +121,7 @@ class BillSerializer(serializers.ModelSerializer):
     bill_lines = BillLineSerializer(source='billline_set', many=True, required=False)
     purpose = serializers.SerializerMethodField()
     apartment_name = serializers.CharField(source='apartment', required=False)
+    resident_name = serializers.CharField(source='apartment.resident', required=False)
     apartment_area = serializers.CharField(source='apartment.area', required=False)
     apartment_number = serializers.CharField(source='apartment.number', required=False)
     apartment_account_number = serializers.CharField(source='apartment.account_number', required=False)
@@ -134,15 +135,16 @@ class BillSerializer(serializers.ModelSerializer):
             "apartment",
             "apartment_name",
             "number",
+            "resident_name",
             "total_value",
             "purpose",
             "period",
             "bill_local_period",
-            "is_active",
             "apartment_area",
             "apartment_number",
             "apartment_account_number",
             "house_address",
+            "is_active",
             "bill_lines",
         ]
 
