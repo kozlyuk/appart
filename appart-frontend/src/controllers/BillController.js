@@ -26,17 +26,15 @@ export default class BillController {
 
   housesEndpoint = process.env.REACT_APP_HOUSES_WITHOUT_PAGINATION;
 
-  billEndpoint = process.env.REACT_APP_BILLS + this.id + '/';
-
   serviceEndpoint = process.env.REACT_APP_SERVICES_WITHOUT_PAGINATION;
 
   uomEndpoint = process.env.REACT_APP_GET_UOM_CHOICES;
 
   getPromiseValues() {
     if (this.id) {
-      return [this.getHousePromise, this.getServicePromise, this.getBillPromise];
+      return [this.getHousePromise(), this.getServicePromise(), this.getBillPromise()];
     } else {
-      return [this.getHousePromise, this.getServicePromise];
+      return [this.getHousePromise(), this.getServicePromise()];
     }
   }
 
@@ -45,7 +43,7 @@ export default class BillController {
   }
 
   getBillPromise() {
-    return axios.get(this.billEndpoint, this.headers);
+    return axios.get(process.env.REACT_APP_BILLS + this.id + '/', this.headers);
   }
 
   getServicePromise() {

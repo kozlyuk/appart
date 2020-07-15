@@ -39,6 +39,7 @@ import axios from 'axios';
 import BillController from '../../controllers/BillController';
 import SelectWithChoices from '../../components/FormInputs/SelectWithChoices';
 import Swal from 'sweetalert2';
+import PrintContainer from './PrintContainer';
 
 
 export default class BillList extends AbstractListView {
@@ -58,6 +59,9 @@ export default class BillList extends AbstractListView {
       houseQuery: '',
       serviceQuery: '',
       billsModalToggle: false,
+      printModalToggle: false,
+      resultPrintModal: false,
+      resultPrintData: null,
       isActiveQuery: true
     };
     this.dataUrl = process.env.REACT_APP_BILLS;
@@ -176,6 +180,14 @@ export default class BillList extends AbstractListView {
     this.setState({ billsModalToggle: !this.state.billsModalToggle });
   };
 
+  togglePrintModal = () => {
+    this.setState({ printModalToggle: !this.state.printModalToggle });
+  };
+
+  togglePrintResultModal = () => {
+    this.setState({ resultPrintModal: !this.state.resultPrintModal });
+  };
+
   createBills = (event) => {
     event.preventDefault();
     axios(this.getFormattedBillEndpoint(), {
@@ -228,6 +240,40 @@ export default class BillList extends AbstractListView {
     return createBillsEndpoint;
   };
 
+  printEndpoint = (house, period) => {
+    let printEndpoint = process.env.REACT_APP_BILLS;
+    return `${printEndpoint}?house=${house}&period=${period}&page_size=1000`;
+  };
+
+  printBills = (event) => {
+    event.preventDefault();
+    const form = document.getElementById('BillPrintForm');
+    const formData = new FormData(form);
+    const house = formData.get('house');
+    const date = new Date().toISOString().slice(0, 10);
+    axios(this.printEndpoint(house, date), {
+      headers: {
+        'Authorization': 'Token ' + this._user.getAuthToken()
+      }
+    })
+      .then(response => {
+        console.log(response);
+        this.togglePrintModal();
+        this.togglePrintResultModal();
+        this.setState({
+          resultPrintModal: true,
+          resultPrintData: response.data.results
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          html: error.response.data
+        });
+      });
+  };
+
   /**
    *
    * @returns {*}
@@ -268,7 +314,7 @@ export default class BillList extends AbstractListView {
   }
 
   createBillsModal = () => (
-    <Modal isOpen={this.state.billsModalToggle} toggle={this.state.billsModalToggle}>
+    <Modal isOpen={this.state.billsModalToggle} toggle={this.toggleModal}>
       <ModalHeader toggle={this.toggleModal}>Формування рахунків</ModalHeader>
       <Form id={'BillCreateForm'} onSubmit={this.createBills}>
         <ModalBody>
@@ -277,7 +323,6 @@ export default class BillList extends AbstractListView {
             <Input
               required
               onChange={this.onSelectChange}
-              defaultValue={this.state.data.groups}
               type="select"
               name="house"
               id="house"
@@ -307,6 +352,46 @@ export default class BillList extends AbstractListView {
     </Modal>
   );
 
+  printBillsModal = () => (
+    <Modal isOpen={this.state.printModalToggle} toggle={this.togglePrintModal}>
+      <ModalHeader toggle={this.togglePrintModal}>Друк рахунків</ModalHeader>
+      <Form id={'BillPrintForm'} onSubmit={this.printBills}>
+        <ModalBody>
+          <FormGroup className="mt-3">
+            <Label for="house">Будинок</Label>
+            <Input
+              required
+              onChange={this.onSelectChange}
+              type="select"
+              name="house"
+              id="house"
+            >
+              {this.state.houses?.map(house => (
+                <option key={house.pk} value={house.pk}>{house.name}</option>
+              ))}
+            </Input>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button type="submit" color="primary">Згенерувати список</Button>
+          <Button color="secondary" onClick={() => this.togglePrintModal()}>Cancel</Button>
+        </ModalFooter>
+      </Form>
+    </Modal>
+  );
+
+  printResultModal = () => (
+    <Modal isOpen={this.state.resultPrintModal} toggle={this.togglePrintResultModal} size="xl">
+      <ModalHeader toggle={this.togglePrintResultModal}>Друк рахунків</ModalHeader>
+      <ModalBody>
+        <PrintContainer data={this.state.resultPrintData}/>
+        {/*{this.state.resultPrintData?.map(bill => (*/}
+        {/*  <Receipt bill={bill}/>*/}
+        {/*))}*/}
+      </ModalBody>
+    </Modal>
+  );
+
   /**
    *
    * @returns {*}
@@ -328,6 +413,8 @@ export default class BillList extends AbstractListView {
           className="TablePage"
         >
           {this.createBillsModal()}
+          {this.printBillsModal()}
+          {this.printResultModal()}
           <BillFilter
             filterSearchHandler={this.filterSearchHandler}
             filterHouseHandler={this.filterHouseHandler}
@@ -344,6 +431,9 @@ export default class BillList extends AbstractListView {
                     aclList={this.context.bill} permissionName="add"
                   >
                     <div className="float-right">
+                      <Button onClick={this.togglePrintModal} size="sm" color="primary" className="mr-2">
+                        Друкувати рахунки
+                      </Button>
                       <Button onClick={this.toggleBillsModal} size="sm" color="secondary" className="mr-2">
                         Сформувати рахунки
                       </Button>
