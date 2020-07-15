@@ -122,7 +122,9 @@ class BillSerializer(serializers.ModelSerializer):
     purpose = serializers.SerializerMethodField()
     apartment_name = serializers.CharField(source='apartment', required=False)
     apartment_area = serializers.CharField(source='apartment.area', required=False)
+    apartment_number = serializers.CharField(source='apartment.number', required=False)
     apartment_account_number = serializers.CharField(source='apartment.account_number', required=False)
+    house_address = serializers.CharField(source='apartment.house.address', required=False)
     bill_local_period = serializers.SerializerMethodField()
 
     class Meta:
@@ -136,10 +138,12 @@ class BillSerializer(serializers.ModelSerializer):
             "purpose",
             "period",
             "bill_local_period",
-            "bill_lines",
             "is_active",
             "apartment_area",
-            "apartment_account_number"
+            "apartment_number",
+            "apartment_account_number",
+            "house_address",
+            "bill_lines",
         ]
 
     def get_purpose(self, obj):
