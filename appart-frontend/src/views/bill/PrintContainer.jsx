@@ -78,7 +78,7 @@ class Receipt extends React.Component {
             <tr>
               <th scope="col"><small>{company.name}</small></th>
               <th scope="col" className="text-center" colSpan={10}><small>
-                Чек № {item.number} на оплату комунальних послуг за {item.local_period}
+                Рахунок № {item.number} на оплату комунальних послуг за {item.local_period}
               </small></th>
             </tr>
             <tr>
@@ -117,7 +117,7 @@ class Receipt extends React.Component {
                 <th><small>{billLine.service_name}</small></th>
                 <th className="text-center"><small>{billLine.previous_debt}</small></th>
                 <th className="text-center"><small>-</small></th>
-                <th className="text-center"><small>-</small></th>
+                <th className="text-center"><small>{billLine.exemption_value}</small></th>
                 <th className="text-center"><small>-</small></th>
                 <th className="text-center"><small>-</small></th>
                 <th className="text-center"><small>-</small></th>
@@ -127,6 +127,14 @@ class Receipt extends React.Component {
                   <small>{billLine.total_debt}</small></th>
               </tr>
             ))}
+            <tr>
+              <th colSpan={8} className="text-right">
+                <small>Рекомендована сума до оплати:</small>
+              </th>
+              <th style={{ borderRight: '3px solid black' }} colSpan={2} className="text-right">
+                <small>{item.total_value}</small>
+              </th>
+            </tr>
             </tbody>
           </table>
         ))}
