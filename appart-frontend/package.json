@@ -37,6 +37,7 @@
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
     "react-test-renderer": "^16.13.0",
+    "react-to-print": "^2.9.0",
     "react-transition-group": "^4.3.0",
     "reactstrap": "^8.4.1",
     "reactstrap-date-picker": "0.0.7",
