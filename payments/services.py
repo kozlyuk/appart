@@ -41,8 +41,8 @@ def create_area_bills(house, period):
         # create new bill or update existing bill
         bill = Bill.objects.create(apartment=apartment,
                                    period=period,
-                                   number= apartment.bill_number_generate(period),
-                                   is_active= True)
+                                   number=apartment.bill_number_generate(period),
+                                   is_active=True)
         # create bill_line for every service
         for service in services:
             BillLine.objects.create(bill=bill,
