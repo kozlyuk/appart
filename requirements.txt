@@ -1,5 +1,4 @@
 Django==3.0.7
-djangorestframework==3.11.0
 psycopg2-binary
 pytz
 Pillow
@@ -9,14 +8,22 @@ django-font-awesome             # https://github.com/benbacardi/django-font-awes
 django-widget-tweaks            # https://github.com/jazzband/django-widget-tweaks
 Jinja2                          # https://github.com/noirbizarre/jinja2
 viberbot                        # https://viber.github.io/docs/api/python-bot-api/
-django-rest-auth                # https://github.com/Tivix/django-rest-auth
-drf-nested-routers              # https://github.com/alanjds/drf-nested-routers
+pyotp==2.3.0                    # https://giRFthub.com/pyauth/pyotp
+
+# DRF celery tools
 celery                          # https://github.com/celery/celery
 redis                           # https://redis.io/
 django-celery-results==1.1.2    # https://github.com/celery/django-celery-results
+
+# DRF tools
+djangorestframework==3.11.0     # https://github.com/encode/django-rest-framework
+django-rest-auth                # https://github.com/Tivix/django-rest-auth
+drf-nested-routers              # https://github.com/alanjds/drf-nested-routers
+django-rest-passwordreset==1.1.0    # https://github.com/anexia-it/django-rest-passwordreset
 # django_auto_prefetching==0.1.8  # https://github.com/GeeWee/django-auto-prefetching
+
+# Liqpay tools
 git+https://github.com/liqpay/sdk-python    # https://github.com/liqpay/sdk-python
-pyotp==2.3.0                    # https://giRFthub.com/pyauth/pyotp
 
 # Production tools
 django-dotenv==1.4.2            # https://github.com/jpadilla/django-dotenv
