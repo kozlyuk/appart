@@ -1,6 +1,7 @@
 """  Models for Payments application  """
 
 from datetime import date
+from decimal import Decimal, ROUND_HALF_UP
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
@@ -65,7 +66,8 @@ class Service(models.Model):
 
     def debt_for_month(self, apartment, period):
         """ return month's debt of apartment for service """
-        return apartment.area * self.rate_for_month(last_day_of_month(period))
+        debt_for_month = apartment.area * self.rate_for_month(last_day_of_month(period))
+        return debt_for_month.quantize(Decimal("1.00"), ROUND_HALF_UP)
 
 
 class Rate(models.Model):
