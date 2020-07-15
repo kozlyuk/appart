@@ -1,4 +1,5 @@
 from django.utils import timezone
+from decimal import Decimal, ROUND_HALF_UP
 from rest_framework import serializers
 
 from payments.models import Payment, Bill, Service, Rate, BillLine, PaymentService
@@ -113,7 +114,8 @@ class BillLineSerializer(serializers.ModelSerializer):
     def get_rate(self, obj):
         area = obj.bill.apartment.area
         if area != 0:
-            return str(obj.value / obj.bill.apartment.area)
+            rate = obj.value / obj.bill.apartment.area
+            return rate.quantize(Decimal("1.00", ROUND_HALF_UP))
         return 0
 
 
