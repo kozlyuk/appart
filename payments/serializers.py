@@ -94,6 +94,7 @@ class BillLineSerializer(serializers.ModelSerializer):
             "service_name",
             "previous_debt",
             "value",
+            "exemption_value",
             "total_debt",
             "rate"
         ]
@@ -164,4 +165,9 @@ class BillSerializer(serializers.ModelSerializer):
                            .select_related('apartment',
                                            'apartment__house',
                                            'apartment__resident')
+
+
+
+
+
         return queryset
