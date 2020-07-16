@@ -9,6 +9,9 @@ from condominium.models import Apartment
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """A Serizlier class for User """
+    password = serializers.CharField(required=False)
+
     class Meta:
         model = User
         fields = [
@@ -47,7 +50,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # creating user and adding it to groups
-        validated_data['password'] = make_password(validated_data['password'])
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
         groups_data = validated_data.pop('groups')
         user = User.objects.create(**validated_data)
         if groups_data:
@@ -64,7 +68,8 @@ class UserSerializer(serializers.ModelSerializer):
         instance.is_staff = validated_data.get('is_staff', instance.is_staff)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.avatar = validated_data.get('avatar', instance.avatar)
-        instance.password = make_password(validated_data.get('password', instance.password))
+        if 'password' in validated_data:
+            instance.password = make_password(validated_data['password'])
         instance.save()
 
         # adding user to groups
