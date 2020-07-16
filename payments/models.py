@@ -69,6 +69,12 @@ class Service(models.Model):
         debt_for_month = apartment.area * self.rate_for_month(last_day_of_month(period))
         return debt_for_month.quantize(Decimal("1.00"), ROUND_HALF_UP)
 
+    def get_prev_exemption(self, apartment, service):
+        """ return last bill of apartment for service """
+        prev_bill = self.billline_set.filter(bill__apartment=apartment,
+                                             service=service).last()
+        return prev_bill.exemption_value if prev_bill else 0
+
 
 class Rate(models.Model):
     """ Model contains Rates """
@@ -135,7 +141,6 @@ class Bill(models.Model):
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
-    exemption_value = models.DecimalField(_('Exemption value'), max_digits=8, decimal_places=2, default=0)
     period = models.DateField(_('Bill date'), default=date.today)
     is_active = models.BooleanField(_('Is active'), default=True)
     #  Date information
@@ -163,6 +168,7 @@ class BillLine(models.Model):
     service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
     previous_debt = models.DecimalField(_('Debt value'), max_digits=8, decimal_places=2, default=0)
     value = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
+    exemption_value = models.DecimalField(_('Exemption value'), max_digits=8, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = _('BillLine')

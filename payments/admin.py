@@ -66,6 +66,7 @@ class BIllLineAdmin(admin.ModelAdmin):
         "service",
         "previous_debt",
         "value",
+        "exemption_value"
     ]
 
 

@@ -12,7 +12,6 @@ import Auth from './auth/auth';
 import axios from 'axios';
 import RegistrationForm from './views/registration/RegistrationForm';
 import PaymentList from './views/payment/paymentList';
-import PaymentUpdate from './views/payment/paymentUpdate';
 import BillList from './views/bill/billList';
 import BillForm from './views/bill/billForm';
 import OrderNew from './views/order/OrderNew';
@@ -35,6 +34,7 @@ import { PermissionContext } from './globalContext/PermissionContext';
 import NonAuthRoutes from './NonAuthRoutes';
 import RateList from './views/rate/RateList';
 import RateForm from './views/rate/RateForm';
+import PaymentForm from './views/payment/PaymentForm';
 
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
@@ -375,8 +375,12 @@ class App extends React.Component<any, any> {
                       />
                       <Switch>
                         <PermissionRoute
+                          aclList={this.state.acl} modelName="payment" permissionName="add"
+                          exact path="/dashboard/payment/new" component={PaymentForm}
+                        />
+                        <PermissionRoute
                           aclList={this.state.acl} modelName="payment" permissionName="change"
-                          exact path="/dashboard/payment/:id/edit" component={PaymentUpdate}
+                          exact path="/dashboard/payment/:id/edit" component={PaymentForm}
                         />
                       </Switch>
                       <PermissionRoute
