@@ -421,7 +421,6 @@ export default class UserUpdate extends AbstractFormView {
               this.state.errors.mobileNumber ||
               this.state.errors.first_name ||
               this.state.errors.last_name ||
-              this.state.errors.email ||
               this.state.errors.birthday ||
               this.state.errors.avatarSize ||
               this.state.errors.avatarFormat ?
