@@ -69,6 +69,12 @@ class Service(models.Model):
         debt_for_month = apartment.area * self.rate_for_month(last_day_of_month(period))
         return debt_for_month.quantize(Decimal("1.00"), ROUND_HALF_UP)
 
+    def get_prev_exemption(self, apartment, service):
+        """ return last bill of apartment for service """
+        prev_bill = self.billline_set.filter(bill__apartment=apartment,
+                                             service=service).last()
+        return prev_bill.exemption_value if prev_bill else 0
+
 
 class Rate(models.Model):
     """ Model contains Rates """
