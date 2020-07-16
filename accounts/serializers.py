@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 from accounts.models import User
 from condominium.models import Apartment
@@ -21,25 +22,34 @@ class UserSerializer(serializers.ModelSerializer):
             "birth_date",
             "avatar",
             "groups",
+            "password"
         ]
+        extra_kwargs = {
+            'password' : {'write_only' : True},
+        }
 
     def validate_email(self, value):
         """
         Check that start is before finish.
         """
         message = _("User with such email already exist")
-        if self.instance:
-            if User.objects.filter(email=value.lower()).exclude(pk=self.instance.pk).exists():
-                raise serializers.ValidationError(message)
-        else:
-            if User.objects.filter(email=value.lower()).exists():
-                raise serializers.ValidationError(message)
+        if value:
+            if self.instance:
+                if User.objects.filter(email=value.lower()) \
+                               .exclude(pk=self.instance.pk) \
+                               .exists():
+                    raise serializers.ValidationError(message)
+            else:
+                if User.objects.filter(email=value.lower()) \
+                               .exists():
+                    raise serializers.ValidationError(message)
         return value
 
     def create(self, validated_data):
         # creating user and adding it to groups
+        validated_data['password'] = make_password(validated_data['password'])
         groups_data = validated_data.pop('groups')
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create(**validated_data)
         if groups_data:
             for group_data in groups_data:
                 user.groups.add(group_data)
@@ -54,6 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.is_staff = validated_data.get('is_staff', instance.is_staff)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.password = make_password(validated_data.get('password', instance.password))
         instance.save()
 
         # adding user to groups

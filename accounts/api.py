@@ -96,14 +96,14 @@ class CheckResident(views.APIView):
     def get(self, request, mobile_number):
         # try if Resident with such mobile_number exists
         try:
-            User.objects.get(mobile_number=mobile_number, is_registered=False)
+            user = User.objects.get(mobile_number=mobile_number, is_registered=False)
+            serializer = UserSerializer(user)
         # except return status.HTTP_404_NOT_FOUND
         except User.DoesNotExist:
             message = _("Resident with such mobile number doesn`t exist or already registered")
             return Response(message, status=status.HTTP_404_NOT_FOUND)
         # return user serialized data
-        message = _("Resident with such mobile number exists")
-        return Response(message, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class Register(views.APIView):
