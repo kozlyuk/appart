@@ -14,7 +14,7 @@ urlpatterns = [
     path('messaging/', include('messaging.urls')),
     path('notice/', include('notice.urls')),
     path('dimservice/', include('dimservice.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path('analytics/', include('analytics.urls')),
 
     path('rest-auth/', include('rest_auth.urls')),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),

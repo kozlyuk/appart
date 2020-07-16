@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'notice.apps.NoticeConfig',
     'pages.apps.PagesConfig',
     'dimservice.apps.DimserviceConfig',
-    'dashboard.apps.DashboardConfig',
+    'analytics.apps.AnalyticsConfig',
     'templatetags',
     'bootstrap4',
     'six',

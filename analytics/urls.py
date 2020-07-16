@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from dashboard import api
+from analytics import api
 
 
 urlpatterns = (
