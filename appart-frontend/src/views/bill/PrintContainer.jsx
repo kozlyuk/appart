@@ -10,8 +10,9 @@ import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import axios from 'axios';
 import Auth from '../../auth/auth';
 import PageSpinner from '../../components/PageSpinner';
-import { Button, Table } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { MdPrint } from 'react-icons/md';
+import styles from './tableStyle.module.css';
 
 export default class PrintContainer extends React.Component {
 
@@ -40,18 +41,13 @@ export default class PrintContainer extends React.Component {
       });
   }
 
-  styleOverrides = `
-  .my-component-classname {
-    box-shadow: 0px 0px 0px 0px #000000;
-  }
-`;
-
   render() {
     const data = this.props.data;
     if (this.state.isLoaded) {
       return (
         <>
           <ReactToPrint
+            copyStyles={true}
             content={() => this.componentRef}>
             <PrintContextConsumer>
               {({ handlePrint }) => (
@@ -78,82 +74,86 @@ class Receipt extends React.Component {
     const company = this.props.company;
     return (
       <div>
-        {bills?.map(item => (
-          <Table style={{ border: '3px solid black' }} className="table table-bordered table-sm">
-            <thead style={{ border: '3px solid black' }}>
-            <tr style={{ border: '3px solid black' }}>
-              <th style={{ border: '3px solid black' }} scope="col"><small>{company.name}</small></th>
-              <th style={{ border: '3px solid black' }} scope="col" className="text-center" colSpan={10}><small>
+        {bills?.map((item, index) => (
+          <table style={index % 5 === 0 ? { pageBreakBefore: 'always' } : {}}
+                 className={'table table-sm ' + styles.tableBorder}>
+            <thead>
+            <tr className={styles.border}>
+              <th className={styles.border} scope="col"><small>{company.name}</small></th>
+              <th scope="col" className={'text-center ' + styles.border} colSpan={10}><small>
                 Рахунок № {item.number} на оплату комунальних послуг за {item.local_period}
               </small></th>
             </tr>
-            <tr style={{ border: '3px solid black' }}>
-              <th style={{ border: '3px solid black' }}><small>{company.address}</small></th>
-              <th style={{ border: '3px solid black' }} colSpan={5}><small>{item.resident_name}</small></th>
-              <th style={{ border: '3px solid black' }} colSpan={5}><small>Особовий
+            <tr className={styles.border}>
+              <th className={styles.border}><small>{company.address}</small></th>
+              <th className={styles.border} colSpan={5}><small>{item.resident_name}</small></th>
+              <th className={styles.border} colSpan={5}><small>Особовий
                 рахунок: {item.apartment_account_number}</small></th>
             </tr>
             <tr>
-              <th style={{ border: '3px solid black' }}>
+              <th className={styles.border}>
                 <small>{company.bank_requisites}</small>
               </th>
-              <th style={{ border: '3px solid black' }} colSpan={5}><small>Адреса: {item.house_address}</small></th>
-              <th style={{ border: '3px solid black' }} colSpan={5}><small>Площа
+              <th className={styles.border} colSpan={5}><small>Адреса: {item.house_address}</small></th>
+              <th className={styles.border} colSpan={5}><small>Площа
                 Загальна: {item.apartment_area} м2</small></th>
             </tr>
             </thead>
-            <tbody style={{ border: '3px solid black' }}>
-            <tr>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Вид послуг</small>
+            <tbody>
+            <tr className={styles.border}>
+              <th className={'text-center ' + styles.border} rowSpan={2}><small>Вид послуг</small>
               </th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Борг на поч. місяця,
+              <th rowSpan={2} className={'text-center ' + styles.border}><small>Борг на поч.
+                місяця,
                 грн.</small></th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Оплачено, грн</small>
+              <th rowSpan={2} className={'text-center ' + styles.border}><small>Оплачено,
+                грн</small>
               </th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Субсидія/Пільга,
+              <th rowSpan={2} className={'text-center ' + styles.border}><small>Субсидія/Пільга,
                 грн</small></th>
-              <th style={{ border: '3px solid black' }} colSpan={3} className="text-center"><small>Показники
+              <th colSpan={3} className={'text-center ' + styles.border}><small>Показники
                 лічильника</small></th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Тариф, грн</small>
+              <th rowSpan={2} className={'text-center ' + styles.border}><small>Тариф, грн</small>
               </th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} className="text-center"><small>Нараховано,
+              <th rowSpan={2} className={'text-center ' + styles.border}><small>Нараховано,
                 грн</small></th>
-              <th style={{ border: '3px solid black' }} rowSpan={2} colSpan={2} className="text-center border-3"><small>Сума
-                до
-                оплати, грн</small></th>
+              <th rowSpan={2} colSpan={2} className={'text-center border-3 ' + styles.border}>
+                <small>Сума
+                  до
+                  оплати, грн</small></th>
             </tr>
             <tr>
-              <th style={{ border: '3px solid black' }} className="text-center"><small>Останній</small></th>
-              <th style={{ border: '3px solid black' }} className="text-center"><small>Попередній</small></th>
-              <th style={{ border: '3px solid black' }} className="text-center"><small>Різниця</small></th>
+              <th className={'text-center ' + styles.border}><small>Останній</small></th>
+              <th className={'text-center ' + styles.border}><small>Попередній</small></th>
+              <th className={'text-center ' + styles.border}><small>Різниця</small></th>
             </tr>
             {item.bill_lines.map(billLine => (
-              <tr style={{ border: '3px solid black' }}>
-                <th style={{ border: '3px solid black' }}><small>{billLine.service_name}</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center">
+              <tr className={styles.border}>
+                <th className={styles.border}><small>{billLine.service_name}</small></th>
+                <th className={'text-center ' + styles.border}>
                   <small>{billLine.previous_debt}</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>-</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center">
+                <th className={'text-center ' + styles.border}><small>-</small></th>
+                <th className={'text-center ' + styles.border}>
                   <small>{billLine.exemption_value}</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>-</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>-</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>-</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>{billLine.rate}</small></th>
-                <th style={{ border: '3px solid black' }} className="text-center"><small>{billLine.value}</small></th>
-                <th colSpan="2" style={{ border: '3px solid black' }} className="text-center">
+                <th className={'text-center ' + styles.border}><small>-</small></th>
+                <th className={'text-center ' + styles.border}><small>-</small></th>
+                <th className={'text-center ' + styles.border}><small>-</small></th>
+                <th className={'text-center ' + styles.border}><small>{billLine.rate}</small></th>
+                <th className={'text-center ' + styles.border}><small>{billLine.value}</small></th>
+                <th colSpan="2" className={'text-center ' + styles.border}>
                   <small>{billLine.total_debt}</small></th>
               </tr>
             ))}
             <tr>
-              <th style={{ border: '3px solid black' }} colSpan={8} className="text-right">
+              <th colSpan={8} className={'text-right ' + styles.border}>
                 <small>Рекомендована сума до оплати:</small>
               </th>
-              <th style={{ border: '3px solid black' }} colSpan={3} className="text-right">
+              <th colSpan={3} className={'text-right ' + styles.border}>
                 <small>{item.total_value}</small>
               </th>
             </tr>
             </tbody>
-          </Table>
+          </table>
         ))}
       </div>
     );
