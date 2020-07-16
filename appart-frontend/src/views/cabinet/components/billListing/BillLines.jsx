@@ -114,8 +114,7 @@ export default class BillLines extends React.Component {
               <tr>
                 <th scope="col" style={{ width: '5%' }}><small>ТОВ "УК ДІМ"</small></th>
                 <th scope="col" className="text-center" colSpan={10}><small>Квитанції на оплату комунальних послуг за
-                  Січень 2020
-                  р.</small></th>
+                </small></th>
               </tr>
               <tr>
                 <th><small>33024, Рівненська обл., м. Рівне, вул. Макарова, 24 А</small></th>

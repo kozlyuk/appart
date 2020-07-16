@@ -1,4 +1,5 @@
-import csv, io
+import csv
+import io
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group

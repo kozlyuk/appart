@@ -184,7 +184,8 @@ class Sidebar extends React.Component {
           </Navbar>
           <Nav vertical>
             {this.navItems.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
-              <PermissionSidebarComponent aclList={this.context} modelName={modelName} permissionName={permissionName}>
+              <PermissionSidebarComponent key={index} aclList={this.context} modelName={modelName}
+                                          permissionName={permissionName}>
                 <NavItem key={index} className={bem.e('nav-item')}>
                   <BSNavLink
                     id={`navItem-${name}-${index}`}
@@ -231,6 +232,7 @@ class Sidebar extends React.Component {
             <Collapse isOpen={this.state.isOpenComponentCondominium}>
               {this.condominiumComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
                 <PermissionSidebarComponent
+                  key={index}
                   aclList={this.context} modelName={modelName}
                   permissionName={permissionName}
                 >
@@ -280,6 +282,7 @@ class Sidebar extends React.Component {
             <Collapse isOpen={this.state.isOpenComponentAccounting}>
               {this.accountingComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
                 <PermissionSidebarComponent
+                  key={index}
                   aclList={this.context} modelName={modelName}
                   permissionName={permissionName}
                 >
@@ -329,6 +332,7 @@ class Sidebar extends React.Component {
             <Collapse isOpen={this.state.isOpenComponentService}>
               {this.serviceComponents.map(({ to, name, exact, Icon, modelName, permissionName }, index) => (
                 <PermissionSidebarComponent
+                  key={index}
                   aclList={this.context} modelName={modelName}
                   permissionName={permissionName}
                 >

@@ -14,43 +14,47 @@ export default class BillController {
      * @type {Auth}
      * @private
      */
-    this._user = new Auth();
   }
 
-  getPromiseValues() {
-    const headers = {
-      headers: {
-        'Authorization': 'Token ' + this._user.getAuthToken()
-      }
-    };
+  _user = new Auth();
 
-    const housesEndpoint = process.env.REACT_APP_HOUSES_WITHOUT_PAGINATION;
-    /**
-     * Houses promise.
-     * @type {Promise<AxiosResponse<object>>}
-     */
-    const housesPromise = axios.get(housesEndpoint, headers);
-
-    const serviceEndpoint = process.env.REACT_APP_SERVICES_WITHOUT_PAGINATION;
-
-    /**
-     * Service promise.
-     * @type {Promise<AxiosResponse<object>>}
-     */
-    const servicesPromise = axios.get(serviceEndpoint, headers);
-
-    if (this.id) {
-      const billEndpoint = process.env.REACT_APP_BILLS + this.id + '/';
-
-      const billPromise = axios.get(billEndpoint, headers);
-
-      return [
-        housesPromise, servicesPromise, billPromise
-      ];
-    } else {
-      return [
-        housesPromise, servicesPromise
-      ];
+  headers = {
+    headers: {
+      'Authorization': 'Token ' + this._user.getAuthToken()
     }
+  };
+
+  housesEndpoint = process.env.REACT_APP_HOUSES_WITHOUT_PAGINATION;
+
+  serviceEndpoint = process.env.REACT_APP_SERVICES_WITHOUT_PAGINATION;
+
+  uomEndpoint = process.env.REACT_APP_GET_UOM_CHOICES;
+
+  getPromiseValues() {
+    if (this.id) {
+      return [this.getHousePromise(), this.getServicePromise(), this.getBillPromise()];
+    } else {
+      return [this.getHousePromise(), this.getServicePromise()];
+    }
+  }
+
+  getCreateBillsValues() {
+    return [this.getHousePromise(), this.getUomPromise()];
+  }
+
+  getBillPromise() {
+    return axios.get(process.env.REACT_APP_BILLS + this.id + '/', this.headers);
+  }
+
+  getServicePromise() {
+    return axios.get(this.serviceEndpoint, this.headers);
+  }
+
+  getHousePromise() {
+    return axios.get(this.housesEndpoint, this.headers);
+  }
+
+  getUomPromise() {
+    return axios.get(this.uomEndpoint, this.headers);
   }
 }

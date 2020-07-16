@@ -1,13 +1,14 @@
 """  Models for Payments application  """
 
 from datetime import date
+from decimal import Decimal, ROUND_HALF_UP
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import F, Sum
 
 from condominium.models import Apartment, House
-from condominium.services import last_day_of_month
+from payments.utils import last_day_of_month
 
 
 class Service(models.Model):
@@ -43,7 +44,7 @@ class Service(models.Model):
                 if not actual_from_date or actual_from_date < rate.from_date:
                     actual_from_date = rate.from_date
                     actual_rate = rate.value
-        return actual_rate
+        return actual_rate or 0
 
     def bills_sum(self, apartment, period):
         """ return bills sum for appartment """
@@ -65,7 +66,8 @@ class Service(models.Model):
 
     def debt_for_month(self, apartment, period):
         """ return month's debt of apartment for service """
-        return apartment.area * self.rate_for_month(last_day_of_month(period))
+        debt_for_month = apartment.area * self.rate_for_month(last_day_of_month(period))
+        return debt_for_month.quantize(Decimal("1.00"), ROUND_HALF_UP)
 
 
 class Rate(models.Model):
@@ -133,7 +135,6 @@ class Bill(models.Model):
     #  Fields
     number = models.CharField(_('Bill number'), unique=True, max_length=32)
     total_value = models.DecimalField(_('Total value'), max_digits=8, decimal_places=2, default=0)
-    exemption_value = models.DecimalField(_('Exemption value'), max_digits=8, decimal_places=2, default=0)
     period = models.DateField(_('Bill date'), default=date.today)
     is_active = models.BooleanField(_('Is active'), default=True)
     #  Date information
@@ -161,6 +162,7 @@ class BillLine(models.Model):
     service = models.ForeignKey(Service, verbose_name=_('Service'), on_delete=models.PROTECT)
     previous_debt = models.DecimalField(_('Debt value'), max_digits=8, decimal_places=2, default=0)
     value = models.DecimalField(_('Bill value'), max_digits=8, decimal_places=2, default=0)
+    exemption_value = models.DecimalField(_('Exemption value'), max_digits=8, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = _('BillLine')

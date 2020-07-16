@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from accounts.models import User
 from condominium.models import Company, House, Apartment
 from payments.models import Service, Rate
-from payments.tasks import create_area_bills
+from payments.services import create_area_bills
 from dimservice.models import Work, Order
 
 
@@ -84,7 +84,7 @@ SERVICES = [['Управління будинком', 'Внески на упр�
              'BA', 0.95, 'sq.m.'],
             ['Теплова енергія', 'Внески на теплову енергію',
              'BC', 1497.0, 'Gcal']
-]
+            ]
 
 for service in SERVICES:
     service_obj = Service.objects.create(name=service[0],
@@ -97,8 +97,6 @@ for service in SERVICES:
                         from_date=date.today())
 print("Initial Services created")
 
-create_area_bills(house, date.today(), True)
-print("Initial Bills created")
 
 WORKS = [['Послуги сантехніка', '1.1', 300, 1, True],
          ['Послуги сантехніка 2 кат.', '1.2', 500, 2, False],

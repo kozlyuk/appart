@@ -8,10 +8,10 @@ from rest_framework.response import Response
 from liqpay import LiqPay
 
 from payments import serializers
+from payments.services import create_area_bills
 from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
 from condominium.models import Apartment
 from notice.models import News
-from payments.tasks import create_area_bills
 
 class ServiceViewSet(viewsets.ModelViewSet):
     """ViewSet for the Service class"""
@@ -146,6 +146,7 @@ class BillViewSet(viewsets.ModelViewSet):
         house = self.request.GET.get('house')
         apartment = self.request.GET.get('apartment')
         service = self.request.GET.get('service')
+        period = self.request.GET.get('period')
         is_active = not self.request.GET.get('is_active') == "false"
         order = self.request.GET.get('order')
         for word in search_string:
@@ -159,6 +160,9 @@ class BillViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(apartment=apartment)
         if service:
             queryset = queryset.filter(service=service)
+        if period:
+            period = datetime.strptime(period, '%Y-%m-%d').replace(day=1)
+            queryset = queryset.filter(period=period)
         if is_active:
             queryset = queryset.filter(is_active=True)
         if order:
@@ -187,10 +191,12 @@ class CreateBills(APIView):
     """
     queryset = Bill.objects.none()
 
-    def get(self, request, house: int, uom_type: str, is_active: bool):
-        if uom_type == Service.ByArea:
-            # create bills by area for all apartments of house
-            bills_count = create_area_bills(house=house, period=date.today(), is_active=is_active)
+    def get(self, request):
+        bills_count = 0
+        if request.query_params.get('uom_type') == Service.ByArea:
+            # create bills by area for all houses in list
+            for house in request.query_params.getlist('house'):
+                bills_count += create_area_bills(house=house, period=date.today())
 
         message = f"{bills_count} bills successfully created"
         return Response(message, status=status.HTTP_200_OK)
