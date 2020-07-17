@@ -89,6 +89,7 @@ class RegistrationForm extends React.Component {
       mobileNumber: mobileNumber
     });
     user.login(mobileNumber, password).then(r => {
+      console.log(r);
       return r;
     });
   };
@@ -159,7 +160,10 @@ class RegistrationForm extends React.Component {
    */
   isUserValid(mobileNumber) {
     axios.get(`${process.env.REACT_APP_CHECK_RESIDENT_BY_NUMBER_URL}${mobileNumber}/`)
-      .then(r => this.setState({ isMobileChecked: true }))
+      .then(r => this.setState({
+        isMobileChecked: true,
+        formValues: r.data
+      }))
       .catch(e => this.setState({ mobileCheckError: e.response.data }));
   }
 
@@ -257,7 +261,8 @@ class RegistrationForm extends React.Component {
             // error field
             <FormText color="danger">{this.state.errors.userFirstName}</FormText>}
             <Input className={this.state.registrationError.first_name && 'is-invalid'} id="userFirstName"
-                   name="first_name" {...userFirstNameInputProps} onChange={this._handleChange}
+                   name="first_name" {...userFirstNameInputProps} defaultValue={this.state.formValues.first_name}
+                   onChange={this._handleChange}
                    autoComplete="off"/>
             {this.state.registrationError.first_name &&
             <div className="invalid-feedback">
@@ -272,6 +277,7 @@ class RegistrationForm extends React.Component {
             <FormText color="danger">{this.state.errors.userSecondName}</FormText>}
             <Input className={this.state.registrationError.last_name && 'is-invalid'} id="userSecondName"
                    name="last_name" {...userSecondNameInputProps} onChange={this._handleChange}
+                   defaultValue={this.state.formValues.last_name}
                    autoComplete="off"/>
             {this.state.registrationError.last_name &&
             <div className="invalid-feedback">
@@ -286,6 +292,7 @@ class RegistrationForm extends React.Component {
             <FormText color="danger">{this.state.errors.email}</FormText>}
             <Input className={this.state.registrationError.email && 'is-invalid'} id="email"
                    name="email" {...emailInputProps} onChange={this._handleChange}
+                   defaultValue={this.state.formValues.email}
                    autoComplete="off"/>
             {this.state.registrationError.email &&
             <div className="invalid-feedback">
@@ -324,9 +331,7 @@ class RegistrationForm extends React.Component {
           </FormGroup>
           {/*display inactive button when error length > 0 and active when error == 0*/}
           {this.state.errors.password ||
-          this.state.errors.confirmPassword ||
-          this.state.errors.userFirstName ||
-          this.state.errors.userLastName ?
+          this.state.errors.confirmPassword ?
             <Button
               size="lg"
               className="bg-gradient-theme-left border-0"
