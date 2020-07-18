@@ -34,8 +34,7 @@ class HouseAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "address",
-        "logo",
-        "apartments_count"
+        "logo"
     ]
 
 

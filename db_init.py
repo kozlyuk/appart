@@ -35,8 +35,7 @@ HOUSES = [['ЖК Hill House', 'вул. Перший промінь, 7Б', 40],
 
 for house in HOUSES:
     House.objects.create(name=house[0],
-                         address=house[1],
-                         apartments_count=house[2])
+                         address=house[1])
 print("Initial Houses created")
 
 house = House.objects.first()

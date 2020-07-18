@@ -76,7 +76,6 @@ def create_condominium_Apartment(**kwargs):
 def create_condominium_House(**kwargs):
     defaults = {}
     defaults["description"] = ""
-    defaults["apartments_count"] = ""
     defaults["address"] = ""
     defaults["name"] = ""
     defaults["logo"] = ""
