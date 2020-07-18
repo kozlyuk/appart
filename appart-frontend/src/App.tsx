@@ -35,6 +35,7 @@ import NonAuthRoutes from './NonAuthRoutes';
 import RateList from './views/rate/RateList';
 import RateForm from './views/rate/RateForm';
 import PaymentForm from './views/payment/PaymentForm';
+import ServiceList from './views/service/ServiceList';
 
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
@@ -411,6 +412,10 @@ class App extends React.Component<any, any> {
                           exact path="/dashboard/rate/:id/edit" component={RateForm}
                         />
                       </Switch>
+                      <PermissionRoute
+                        aclList={this.state.acl} modelName="service" permissionName="view"
+                        exact path="/dashboard/service" component={ServiceList}
+                      />
                       {/*<Route path="*">*/}
                       {/*  <div>test</div>*/}
                       {/*</Route>*/}
