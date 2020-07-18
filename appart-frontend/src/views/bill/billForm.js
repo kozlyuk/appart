@@ -463,13 +463,24 @@ export default class BillForm extends AbstractFormView {
               error={this.state.fieldError.number}
               onChange={this.handleChange}
             />
-            <InputWithLabel
-              name={'total_value'}
-              label={<Text text="billForm.totalValue"/>}
-              type={'number'}
-              defaultValue={this.state.data.total_value}
-              error={this.state.fieldError.total_value}
-            />
+            {this.props.match.params.id ?
+              <InputWithLabel
+                name={'total_value'}
+                label={<Text text="billForm.totalValue"/>}
+                type={'number'}
+                readOnly
+                defaultValue={this.state.data.total_value}
+                error={this.state.fieldError.total_value}
+              />
+              :
+              <InputWithLabel
+                name={'total_value'}
+                label={<Text text="billForm.totalValue"/>}
+                type={'number'}
+                defaultValue={this.state.data.total_value}
+                error={this.state.fieldError.total_value}
+              />
+            }
             <DataInput
               label={<Text text="billForm.period"/>}
               name={'period'}
