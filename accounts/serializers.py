@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
 
 from accounts.models import User
 from condominium.models import Apartment

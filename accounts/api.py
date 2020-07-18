@@ -1,13 +1,12 @@
 import re
 import pyotp
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.db.models import Q
-from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth.models import Group
-from django.conf import settings
 from rest_framework import viewsets, views, status, permissions
 from rest_framework.response import Response
 from messaging.tasks import send_email, send_sms
@@ -140,13 +139,13 @@ class Register(views.APIView):
         if serializer.is_valid():
             serializer.save()
             # send activation email with token
-            current_site = get_current_site(request)
             mail_subject = _('Activate your DimOnline account.')
-            message = render_to_string('acc_active_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_activation_token.make_token(user),
+            domain = settings.FRONT_SITE_URL
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = account_activation_token.make_token(user)
+            message = render_to_string('email/account_activation_email.txt', {
+                'first_name': user.first_name,
+                'account_activation_url': f"{domain}/registration//{uid}/{token}/",
             })
             send_email(mail_subject, message, to=[user.email]) # TODO add delay
             # send activation sms with otp

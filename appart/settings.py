@@ -19,6 +19,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG") == 'TRUE'
 
 SITE_URL = os.environ.get("SITE_URL")
+FRONT_SITE_URL = os.environ.get("FRONT_SITE_URL")
 
 ALLOWED_HOSTS = ['*']
 

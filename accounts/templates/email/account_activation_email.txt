@@ -1,5 +1,5 @@
 {% autoescape off %}
-Вітаю {{ user.first_name }}!,
+Вітаю {{ first_name }}!,
 Натисніть будь ласка на посилання для підтвердження реєстрації,
-http://{{ domain }}/registration/{{ uid }}/{{ token }}/
+{{ account_activation_url }}
 {% endautoescape %}

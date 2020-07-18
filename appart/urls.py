@@ -17,7 +17,7 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')),
 
     path('rest-auth/', include('rest_auth.urls')),
-    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('api/v1/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
 
 # Debuging tools
