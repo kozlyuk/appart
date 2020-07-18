@@ -145,7 +145,7 @@ class Register(views.APIView):
             token = account_activation_token.make_token(user)
             message = render_to_string('email/account_activation_email.txt', {
                 'first_name': user.first_name,
-                'account_activation_url': f"{domain}/registration//{uid}/{token}/",
+                'account_activation_url': f"{domain}/registration/{uid}/{token}/",
             })
             send_email(mail_subject, message, to=[user.email]) # TODO add delay
             # send activation sms with otp

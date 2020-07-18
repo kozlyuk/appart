@@ -22,4 +22,4 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         'first_name': reset_password_token.user.first_name,
         'reset_password_url': f"{domain}/registration/password_reset/{token}/"
     })
-    send_email(mail_subject, message, [reset_password_token.user.email])
+    send_email(mail_subject, message, [reset_password_token.user.email])  # TODO add delay
