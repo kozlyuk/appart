@@ -37,15 +37,13 @@ export default class HouseUpdate extends AbstractFormView {
         address: '',
         name: '',
         photoFormat: '',
-        photoSize: '',
-        apartmentCount: ''
+        photoSize: ''
       },
       fieldError: {
         name: '',
         address: '',
         logo: '',
-        description: '',
-        apartments_count: ''
+        description: ''
       }
     };
     this.dataUrl = process.env.REACT_APP_HOUSES_URL;
@@ -89,7 +87,7 @@ export default class HouseUpdate extends AbstractFormView {
     if (target.photo.files[0]) {
       userFormData.append('logo', target.photo.files[0]);
     }
-    userFormData.append('apartments_count', target.apartmentCount.value);
+
     return userFormData;
   }
 
@@ -158,12 +156,6 @@ export default class HouseUpdate extends AbstractFormView {
         errors.name =
           value.length < 1
             ? [<Text text="global.validateErrors.emptyField"/>]
-            : '';
-        break;
-      case 'apartments_count':
-        errors.apartmentCount =
-          value === '0' || value === ''
-            ? [<Text text="global.validateErrors.houseApartmentsCount"/>]
             : '';
         break;
       case 'logo':
@@ -270,26 +262,6 @@ export default class HouseUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
-            <FormGroup>
-              <Label for="apartmentCount"><Text text="houseForm.apartmentCount"/></Label>
-              {this.state.errors.apartmentCount.length > 0 &&
-              // error field
-              <FormText color="danger">{this.state.errors.apartmentCount}</FormText>}
-              <Input
-                className={this.state.fieldError.apartments_count && 'is-invalid'}
-                id="apartmentCount"
-                type="number"
-                name="apartments_count"
-                min="0"
-                defaultValue={this.state.data.apartments_count}
-                onChange={this.handleChange}
-              />
-              {this.state.fieldError.apartments_count &&
-              <div className="invalid-feedback">
-                {this.state.fieldError.apartments_count}
-              </div>
-              }
-            </FormGroup>
             <ButtonToolbar>
               <Link to="/dashboard/house">
                 <Button color="warning">
@@ -307,8 +279,7 @@ export default class HouseUpdate extends AbstractFormView {
               this.state.errors.address ||
               this.state.errors.name ||
               this.state.errors.photoSize ||
-              this.state.errors.photoFormat ||
-              this.state.errors.apartmentCount ?
+              this.state.errors.photoFormat ?
                 <Button disabled className="float-right">
                   <Text text="buttons.submitBtn"/>
                 </Button> : <Button className="float-right" type="submit">
