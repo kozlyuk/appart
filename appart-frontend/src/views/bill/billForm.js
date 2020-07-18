@@ -416,92 +416,95 @@ export default class BillForm extends AbstractFormView {
   content() {
     return (
       <Fragment>
-        <CardHeader>{this.state.data.number ? this.state.data.number : 'New bill'}</CardHeader>
-        <CardBody>
-          <Form id='billForm' onSubmit={this.handleSubmit}>
-            <SelectWithChoices
-              changeHandler={this._onHouseItemSelect}
-              label={<Text text="billForm.house"/>}
-              name="house"
-              helpText={!this.state.isApartmentSelectShow && 'Для вибору апартаментів виберіть спочатку будинок'}
-            >
-              {this.state.housesData.map(item => (
-                <option key={item.pk} value={item.pk}>{item.name}</option>
-              ))}
-            </SelectWithChoices>
-            {this.state.isApartmentSelectShow ?
+        <Card>
+          <CardHeader>{this.state.data.number ? this.state.data.number : 'New bill'}</CardHeader>
+          <CardBody>
+            <Form id='billForm' onSubmit={this.handleSubmit}>
               <SelectWithChoices
-                label={<Text text="billForm.apartment"/>}
-                name="apartment"
-                error={this.state.fieldError.apartment}
-                defaultValue={this.state.data.apartment}
+                changeHandler={this._onHouseItemSelect}
+                label={<Text text="billForm.house"/>}
+                name="house"
+                helpText={!this.state.isApartmentSelectShow && 'Для вибору апартаментів виберіть спочатку будинок'}
               >
-                {this.state.apartmentsData.map(apartment => (
-                  <option key={apartment.pk}
-                          value={apartment.pk}>
-                    №: {apartment.number} {apartment.resident_name && `${apartment.resident_name}`}
-                  </option>
+                {this.state.housesData.map(item => (
+                  <option key={item.pk} value={item.pk}>{item.name}</option>
                 ))}
               </SelectWithChoices>
-              :
-              <>
-                <input type={'hidden'} name="apartment" value={this.state.data.apartment}/>
+              {this.state.isApartmentSelectShow ?
                 <SelectWithChoices
-                  type="text"
                   label={<Text text="billForm.apartment"/>}
-                  name="apartment" disabled
+                  name="apartment"
                   error={this.state.fieldError.apartment}
-                  value={this.state.data.apartment_name}
+                  defaultValue={this.state.data.apartment}
+                >
+                  {this.state.apartmentsData.map(apartment => (
+                    <option key={apartment.pk}
+                            value={apartment.pk}>
+                      №: {apartment.number} {apartment.resident_name && `${apartment.resident_name}`}
+                    </option>
+                  ))}
+                </SelectWithChoices>
+                :
+                <>
+                  <input type={'hidden'} name="apartment" value={this.state.data.apartment}/>
+                  <SelectWithChoices
+                    type="text"
+                    label={<Text text="billForm.apartment"/>}
+                    name="apartment" disabled
+                    error={this.state.fieldError.apartment}
+                    value={this.state.data.apartment_name}
+                  />
+                </>
+              }
+              <InputWithLabel
+                name={'number'}
+                label={<Text text="billForm.number"/>}
+                type={'text'}
+                defaultValue={this.state.data.number}
+                error={this.state.fieldError.number}
+                onChange={this.handleChange}
+              />
+              {this.props.match.params.id ?
+                <InputWithLabel
+                  name={'total_value'}
+                  label={<Text text="billForm.totalValue"/>}
+                  type={'number'}
+                  readOnly
+                  defaultValue={this.state.data.total_value}
+                  error={this.state.fieldError.total_value}
                 />
-              </>
-            }
-            <InputWithLabel
-              name={'number'}
-              label={<Text text="billForm.number"/>}
-              type={'text'}
-              defaultValue={this.state.data.number}
-              error={this.state.fieldError.number}
-              onChange={this.handleChange}
-            />
-            {this.props.match.params.id ?
-              <InputWithLabel
-                name={'total_value'}
-                label={<Text text="billForm.totalValue"/>}
-                type={'number'}
-                readOnly
-                defaultValue={this.state.data.total_value}
-                error={this.state.fieldError.total_value}
+                :
+                <InputWithLabel
+                  name={'total_value'}
+                  label={<Text text="billForm.totalValue"/>}
+                  type={'number'}
+                  defaultValue={this.state.data.total_value}
+                  error={this.state.fieldError.total_value}
+                />
+              }
+              <DataInput
+                label={<Text text="billForm.period"/>}
+                name={'period'}
+                error={this.state.fieldError.period}
+                startValue={this.state.data.period}
               />
-              :
-              <InputWithLabel
-                name={'total_value'}
-                label={<Text text="billForm.totalValue"/>}
-                type={'number'}
-                defaultValue={this.state.data.total_value}
-                error={this.state.fieldError.total_value}
-              />
-            }
-            <DataInput
-              label={<Text text="billForm.period"/>}
-              name={'period'}
-              error={this.state.fieldError.period}
-              startValue={this.state.data.period}
-            />
-            <Link to="/dashboard/bill">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
+              <Link to="/dashboard/bill">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
+                <Text text="buttons.submitBtn"/>
               </Button>
-            </Link>
-            <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
-              <Text text="buttons.submitBtn"/>
-            </Button>
-          </Form>
-          <hr/>
-          {this.state.data.bill_lines[0] && <h6 className="text-center"><Text text="billForm.purpose"/></h6>}
-          {this.state.data.bill_lines.map((billLine, index) => (
-            <>
+            </Form>
+          </CardBody>
+        </Card>
+        {this.state.data.bill_lines[0] &&
+        <h6 className="text-center mt-2"><Text text="billForm.purpose"/></h6>}
+        {this.state.data.bill_lines.map((billLine, index) => (
+          <Card className={'mt-2'}>
+            <CardBody>
               <Form id={`billLineForm-${index + 1}`}>
-                <hr/>
                 <input id="pk" name="pk" type="hidden" value={billLine.pk}/>
                 <InputWithButton
                   name={'previous_debt'}
@@ -534,15 +537,14 @@ export default class BillForm extends AbstractFormView {
                   error={this.state.fieldError.bill_lines}
                 />
               </Form>
-            </>
-          ))}
-          <div className={styles.orSpacer}>
-            <hr/>
-            <span onClick={this._increaseFormsetQuantity} className={styles.orSpacerSpan}>
+            </CardBody>
+          </Card>
+        ))}
+        <div className={styles.orSpacer}>
+          <span onClick={this._increaseFormsetQuantity} className={styles.orSpacerSpan}>
                 <i className={styles.orSpacerSpanI}>+</i>
               </span>
-          </div>
-        </CardBody>
+        </div>
       </Fragment>
     );
   }
@@ -570,9 +572,7 @@ export default class BillForm extends AbstractFormView {
           className="TablePage"
         >
           <Container>
-            <Card>
-              {this.content()}
-            </Card>
+            {this.content()}
           </Container>
         </Page>
       );

@@ -388,160 +388,164 @@ export default class OrderForm extends AbstractFormView {
   content() {
     return (
       <Fragment>
-        <CardHeader>{this.state.orderData.work_name || <Text text="orderForm.newOrderHeader"/>}</CardHeader>
-        <CardBody>
-          <Form id="orderForm" onSubmit={this.handleSubmit}>
-            <SelectWithChoices changeHandler={this._onHouseItemSelect}
-                               defaultValue={this.state.orderData.house}
-                               label={<Text text="orderForm.house"/>}
-                               name="house"
-                               error={this.state.fieldError.house}
-                               helpText={!this.state.isApartmentSelectShow && <Text text="orderForm.houseHelpText"/>}
-            >
-              {this.state.housesData.map(house => (
-                <option
-                  key={house.pk}
-                  value={house.pk}
-                >
-                  {house.name}
-                </option>
-              ))}
-            </SelectWithChoices>
-            {this.state.isApartmentSelectShow ?
-              <SelectWithChoices
-                label={<Text text="orderForm.apartment"/>}
-                name="apartment"
-                error={this.state.fieldError.apartment}
-                defaultValue={this.state.orderData.apartment}
+        <Card>
+          <CardHeader>{this.state.orderData.work_name || <Text text="orderForm.newOrderHeader"/>}</CardHeader>
+          <CardBody>
+            <Form id="orderForm" onSubmit={this.handleSubmit}>
+              <SelectWithChoices changeHandler={this._onHouseItemSelect}
+                                 defaultValue={this.state.orderData.house}
+                                 label={<Text text="orderForm.house"/>}
+                                 name="house"
+                                 error={this.state.fieldError.house}
+                                 helpText={!this.state.isApartmentSelectShow && <Text text="orderForm.houseHelpText"/>}
               >
-                {this.state.apartmentsData.map(apartment => (
-                  <option key={apartment.pk}
-                          value={apartment.pk}>
-                    №: {apartment.number} {apartment.resident_name && `${apartment.resident_name}`}
+                {this.state.housesData.map(house => (
+                  <option
+                    key={house.pk}
+                    value={house.pk}
+                  >
+                    {house.name}
                   </option>
                 ))}
               </SelectWithChoices>
-              :
-              <>
-                <input type={'hidden'} name="apartment" value={this.state.orderData.apartment}/>
+              {this.state.isApartmentSelectShow ?
                 <SelectWithChoices
-                  type="text"
                   label={<Text text="orderForm.apartment"/>}
-                  name="apartment" disabled
+                  name="apartment"
                   error={this.state.fieldError.apartment}
-                  value={this.state.orderData.apartment_name}
-                />
-              </>
-            }
-            <SelectWithChoices
-              label={<Text text="orderForm.work"/>}
-              name="work"
-              error={this.state.fieldError.work}
-            >
-              {this.state.worksData.map(work => (
-                <option key={work.pk} value={work.pk}>
-                  {work.name}
-                </option>
-              ))}
-            </SelectWithChoices>
-            <SelectWithChoices
-              label={<Text text="orderForm.execStatus"/>}
-              name="exec_status"
-              error={this.state.fieldError.exec_status}
-              defaultValue={this.state.orderData.exec_status}
-            >
-              {this.state.execChoices[0].map(item => (
-                <option key={item[0]} value={item[1]}>
-                  {item[1]}
-                </option>
-              ))}
-            </SelectWithChoices>
-            <SelectWithChoices
-              label={<Text text="orderForm.payStatus"/>}
-              name="pay_status"
-              error={this.state.fieldError.pay_status}
-              defaultValue={this.state.orderData.pay_status}
-            >
-              {this.state.paymentChoices[0].map(item => (
-                <option key={item[0]} value={item[1]}>
-                  {item[1]}
-                </option>
-              ))}
-            </SelectWithChoices>
-            <InputWithLabel
-              name={'information'}
-              label={<Text text="orderForm.information"/>}
-              type={'textarea'}
-              defaultValue={this.state.orderData.information}
-              helpText={<Text text="orderForm.informationHelpText"/>}
-              error={this.state.fieldError.information}
-            />
-            <InputWithLabel
-              name={'warning'}
-              label={<Text text="orderForm.warning"/>}
-              type={'textarea'}
-              defaultValue={this.state.orderData.warning}
-              error={this.state.fieldError.warning}
-            />
-          </Form>
-          <hr/>
-          {this.state.orderData.execution_set[0] && <h6 className="text-center">Виконавці</h6>}
-          {this.state.orderData.execution_set.map((executor, index) => (
-            <Form id={`executorForm-${index + 1}`}>
-              <hr/>
-              <input id="pk" name="pk" type="hidden" value={executor.pk}/>
-              {(!executor.isEditable) && <input id="executor" name="executor" type="hidden" value={executor.executor}/>}
-              <SelectWithButton
-                label={<Text text="orderForm.executorsSet.executor"/>}
-                name="executor"
-                alertText={'Дійсно бажаєте видалити виконавця?'}
-                disabled={(!executor.isEditable)}
-                index={index}
-                orderPk={this.state.orderData.pk}
-                id={executor.pk}
-                token={this._user.getAuthToken()}
-                callback={this.deleteSuccess}
-                buttonText={<Text text="buttons.deleteBtn"/>}
+                  defaultValue={this.state.orderData.apartment}
+                >
+                  {this.state.apartmentsData.map(apartment => (
+                    <option key={apartment.pk}
+                            value={apartment.pk}>
+                      №: {apartment.number} {apartment.resident_name && `${apartment.resident_name}`}
+                    </option>
+                  ))}
+                </SelectWithChoices>
+                :
+                <>
+                  <input type={'hidden'} name="apartment" value={this.state.orderData.apartment}/>
+                  <SelectWithChoices
+                    type="text"
+                    label={<Text text="orderForm.apartment"/>}
+                    name="apartment" disabled
+                    error={this.state.fieldError.apartment}
+                    value={this.state.orderData.apartment_name}
+                  />
+                </>
+              }
+              <SelectWithChoices
+                label={<Text text="orderForm.work"/>}
+                name="work"
+                error={this.state.fieldError.work}
               >
-                {this.state.usersChoices.map(item => (
-                  <option selected={executor.executor === item.pk} key={item.pk} value={item.pk}>
-                    {`${item.first_name} ${item.last_name}`}
+                {this.state.worksData.map(work => (
+                  <option key={work.pk} value={work.pk}>
+                    {work.name}
                   </option>
                 ))}
-              </SelectWithButton>
+              </SelectWithChoices>
               <SelectWithChoices
                 label={<Text text="orderForm.execStatus"/>}
                 name="exec_status"
+                error={this.state.fieldError.exec_status}
+                defaultValue={this.state.orderData.exec_status}
               >
-                {this.state.executorChoices[0].map(item => (
-                  <option selected={executor.exec_status === item[1]} key={item[0]} value={item[1]}>
+                {this.state.execChoices[0].map(item => (
+                  <option key={item[0]} value={item[1]}>
                     {item[1]}
                   </option>
                 ))}
               </SelectWithChoices>
-              <DataInput
-                label={<Text text="orderForm.executorsSet.scheduledTime"/>}
-                name={`scheduled_time_${index}`}
-                startValue={executor.scheduled_time}
-                helpText={<Text text="orderForm.executorsSet.scheduledTimeHelpText"/>}
+              <SelectWithChoices
+                label={<Text text="orderForm.payStatus"/>}
+                name="pay_status"
+                error={this.state.fieldError.pay_status}
+                defaultValue={this.state.orderData.pay_status}
+              >
+                {this.state.paymentChoices[0].map(item => (
+                  <option key={item[0]} value={item[1]}>
+                    {item[1]}
+                  </option>
+                ))}
+              </SelectWithChoices>
+              <InputWithLabel
+                name={'information'}
+                label={<Text text="orderForm.information"/>}
+                type={'textarea'}
+                defaultValue={this.state.orderData.information}
+                helpText={<Text text="orderForm.informationHelpText"/>}
+                error={this.state.fieldError.information}
               />
+              <InputWithLabel
+                name={'warning'}
+                label={<Text text="orderForm.warning"/>}
+                type={'textarea'}
+                defaultValue={this.state.orderData.warning}
+                error={this.state.fieldError.warning}
+              />
+              <Link to="/dashboard/order">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
+                <Text text="buttons.submitBtn"/>
+              </Button>
             </Form>
-          ))}
-          <div className={styles.orSpacer}>
-            <hr/>
-            <span onClick={this._increaseFormsetQuantity} className={styles.orSpacerSpan}>
+          </CardBody>
+        </Card>
+        {this.state.orderData.execution_set[0] && <h6 className="text-center mt-2">Виконавці</h6>}
+        {this.state.orderData.execution_set.map((executor, index) => (
+          <Card className={'mt-2'}>
+            <CardBody>
+              <Form id={`executorForm-${index + 1}`}>
+                <input id="pk" name="pk" type="hidden" value={executor.pk}/>
+                {(!executor.isEditable) &&
+                <input id="executor" name="executor" type="hidden" value={executor.executor}/>}
+                <SelectWithButton
+                  label={<Text text="orderForm.executorsSet.executor"/>}
+                  name="executor"
+                  alertText={'Дійсно бажаєте видалити виконавця?'}
+                  disabled={(!executor.isEditable)}
+                  index={index}
+                  orderPk={this.state.orderData.pk}
+                  id={executor.pk}
+                  token={this._user.getAuthToken()}
+                  callback={this.deleteSuccess}
+                  buttonText={<Text text="buttons.deleteBtn"/>}
+                >
+                  {this.state.usersChoices.map(item => (
+                    <option selected={executor.executor === item.pk} key={item.pk} value={item.pk}>
+                      {`${item.first_name} ${item.last_name}`}
+                    </option>
+                  ))}
+                </SelectWithButton>
+                <SelectWithChoices
+                  label={<Text text="orderForm.execStatus"/>}
+                  name="exec_status"
+                >
+                  {this.state.executorChoices[0].map(item => (
+                    <option selected={executor.exec_status === item[1]} key={item[0]} value={item[1]}>
+                      {item[1]}
+                    </option>
+                  ))}
+                </SelectWithChoices>
+                <DataInput
+                  label={<Text text="orderForm.executorsSet.scheduledTime"/>}
+                  name={`scheduled_time_${index}`}
+                  startValue={executor.scheduled_time}
+                  helpText={<Text text="orderForm.executorsSet.scheduledTimeHelpText"/>}
+                />
+              </Form>
+            </CardBody>
+          </Card>
+        ))}
+        <div className={styles.orSpacer}>
+          <span onClick={this._increaseFormsetQuantity} className={styles.orSpacerSpan}>
                 <i className={styles.orSpacerSpanI}>+</i>
               </span>
-          </div>
-          <Link to="/dashboard/order">
-            <Button color="warning">
-              <Text text="buttons.returnBtn"/>
-            </Button>
-          </Link>
-          <Button type="submit" color="success" onClick={this.handleSubmit} className="float-right">
-            <Text text="buttons.submitBtn"/>
-          </Button>
-        </CardBody>
+        </div>
       </Fragment>
     );
   }
@@ -568,9 +572,7 @@ export default class OrderForm extends AbstractFormView {
           className="TablePage"
         >
           <Container>
-            <Card>
-              {this.content()}
-            </Card>
+            {this.content()}
           </Container>
         </Page>
       );

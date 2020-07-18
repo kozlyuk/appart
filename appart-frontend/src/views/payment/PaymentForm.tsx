@@ -471,83 +471,86 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
     const services: any = this.state.services;
     return (
       <>
-        <CardHeader><Text text="paymentForm.header"/> {this.state.data.apartment}</CardHeader>
-        <CardBody>
-          <Form onSubmit={(event: FormEvent) => this.handleSubmit(event)} id="PaymentForm">
-            <SelectWithChoices
-              changeHandler={this.onHouseItemSelect}
-              label={'House'}
-              name={'house'}
-              error={this.state.fieldError.house}
-              helpText={!this.state.isApartmentSelectShow && 'Для вибору апартаментів виберіть спочатку будинок'}
-            >
-              {houses.map((item: Houses) => (
-                <option key={item.pk} value={item.pk}>{item.name}</option>
-              ))}
-            </SelectWithChoices>
-            {this.state.isApartmentSelectShow ?
+        <Card>
+          <CardHeader><Text text="paymentForm.header"/> {this.state.data.apartment}</CardHeader>
+          <CardBody>
+            <Form onSubmit={(event: FormEvent) => this.handleSubmit(event)} id="PaymentForm">
               <SelectWithChoices
-                label={<Text text="paymentForm.apartment"/>}
-                name="apartment"
-                error={this.state.fieldError.apartment}
-                defaultValue={this.state.data.apartment}
+                changeHandler={this.onHouseItemSelect}
+                label={'House'}
+                name={'house'}
+                error={this.state.fieldError.house}
+                helpText={!this.state.isApartmentSelectShow && 'Для вибору апартаментів виберіть спочатку будинок'}
               >
-                {this.state.apartmentsData.map((item: Apartment) => (
-                  <option key={item.pk}
-                          value={item.pk}>
-                    №: {item.number} {item.resident_name && `${item.resident_name}`}
-                  </option>
+                {houses.map((item: Houses) => (
+                  <option key={item.pk} value={item.pk}>{item.name}</option>
                 ))}
               </SelectWithChoices>
-              :
-              <>
-                <input type={'hidden'} name="apartment" value={this.state.data.apartment}/>
+              {this.state.isApartmentSelectShow ?
                 <SelectWithChoices
-                  type="text"
-                  label={<Text text="billForm.apartment"/>}
-                  name="apartment" disabled
+                  label={<Text text="paymentForm.apartment"/>}
+                  name="apartment"
                   error={this.state.fieldError.apartment}
-                  value={this.state.data.apartment_name}
-                />
-              </>
-            }
-            <SelectWithChoices
-              label={'Payment type'}
-              name={'payment_type'}
-              error={this.state.fieldError.paymentType}
-            >
-              {paymentTypes.map((item: PaymentType) => (
-                <option key={item[0]} value={item[0]}>{item[1]}</option>
-              ))}
-            </SelectWithChoices>
-            <DataInput
-              label={<Text text="paymentForm.date"/>}
-              name={'date'}
-              error={this.state.fieldError.date}
-              startValue={this.state.data.date}
-            />
-            <FormGroup>
-              <Label for="value"><Text text="paymentForm.value"/></Label>
-              <Input
-                type="text"
-                name="value"
-                defaultValue={this.state.data.value}
-                onChange={this.handleChange}
+                  defaultValue={this.state.data.apartment}
+                >
+                  {this.state.apartmentsData.map((item: Apartment) => (
+                    <option key={item.pk}
+                            value={item.pk}>
+                      №: {item.number} {item.resident_name && `${item.resident_name}`}
+                    </option>
+                  ))}
+                </SelectWithChoices>
+                :
+                <>
+                  <input type={'hidden'} name="apartment" value={this.state.data.apartment}/>
+                  <SelectWithChoices
+                    type="text"
+                    label={<Text text="billForm.apartment"/>}
+                    name="apartment" disabled
+                    error={this.state.fieldError.apartment}
+                    value={this.state.data.apartment_name}
+                  />
+                </>
+              }
+              <SelectWithChoices
+                label={'Payment type'}
+                name={'payment_type'}
+                error={this.state.fieldError.paymentType}
+              >
+                {paymentTypes.map((item: PaymentType) => (
+                  <option key={item[0]} value={item[0]}>{item[1]}</option>
+                ))}
+              </SelectWithChoices>
+              <DataInput
+                label={<Text text="paymentForm.date"/>}
+                name={'date'}
+                error={this.state.fieldError.date}
+                startValue={this.state.data.date}
               />
-            </FormGroup>
-            <Link to="/dashboard/payment">
-              <Button color="warning">
-                <Text text="buttons.returnBtn"/>
-              </Button>
-            </Link>
-            <Button className="float-right" type={'submit'}><Text text="buttons.submitBtn"/></Button>
-          </Form>
-          <hr/>
-          {this.state.data.payment_service[0] && <h6 className="text-center"><Text text="paymentForm.purpose"/></h6>}
-          {this.state.data.payment_service.map((serviceLine: ServiceLine, index: number) => (
-            <>
+              <FormGroup>
+                <Label for="value"><Text text="paymentForm.value"/></Label>
+                <Input
+                  type="text"
+                  name="value"
+                  defaultValue={this.state.data.value}
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <Link to="/dashboard/payment">
+                <Button color="warning">
+                  <Text text="buttons.returnBtn"/>
+                </Button>
+              </Link>
+              <Button className="float-right" type={'submit'}><Text text="buttons.submitBtn"/></Button>
+            </Form>
+          </CardBody>
+        </Card>
+        {this.state.data.payment_service[0] &&
+        <h6 className="text-center mt-2"><Text text="paymentForm.purpose"/></h6>}
+        {this.state.data.payment_service.map((serviceLine: ServiceLine, index: number) => (
+          <Card className={'mt-2'}>
+            <CardBody>
               <Form id={`paymentServiceForm-${index + 1}`}>
-                <hr/>
                 <input id="pk" name="pk" type="hidden" value={serviceLine.pk}/>
                 <SelectWithButton
                   name={'service'}
@@ -573,15 +576,14 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
                   error={this.state.fieldError.value}
                 />
               </Form>
-            </>
-          ))}
-          <div className={styles.orSpacer}>
-            <hr/>
-            <span onClick={this.increaseFormsetQuantity} className={styles.orSpacerSpan}>
+            </CardBody>
+          </Card>
+        ))}
+        <div className={styles.orSpacer}>
+          <span onClick={this.increaseFormsetQuantity} className={styles.orSpacerSpan}>
                 <i className={styles.orSpacerSpanI}>+</i>
               </span>
-          </div>
-        </CardBody>
+        </div>
       </>
     );
   }
@@ -594,9 +596,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
           className="TablePage"
         >
           <Container>
-            <Card>
-              {this.content()}
-            </Card>
+            {this.content()}
           </Container>
         </Page>
       );
