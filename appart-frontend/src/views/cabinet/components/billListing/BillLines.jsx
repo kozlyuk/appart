@@ -101,7 +101,7 @@ export default class BillLines extends React.Component {
           <td className="text-center" onClick={this.toggle}>{this.props.item.period}</td>
           <td className="text-center" onClick={this.toggle}>{this.props.item.total_value}</td>
           <td className="text-center">
-            <button className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
+            <button disabled className="btn btn-sm btn-outline-success" onClick={this.toggleModal}><Text
               text="cabinet.billCard.pay"/></button>
           </td>
         </tr>
