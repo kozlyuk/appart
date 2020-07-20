@@ -116,7 +116,7 @@ class BillLineSerializer(serializers.ModelSerializer):
         area = obj.bill.apartment.area
         if area != 0:
             rate = obj.value / obj.bill.apartment.area
-            return rate.quantize(Decimal("1.00", ROUND_HALF_UP))
+            return rate.quantize(Decimal("1.00"), ROUND_HALF_UP)
         return 0
 
 
