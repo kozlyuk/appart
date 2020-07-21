@@ -24,6 +24,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Apartment.objects.all()
         search_string = self.request.GET.get('filter', '').split()
+        company = self.request.GET.get('company')
         house = self.request.GET.get('house')
         is_active = self.request.GET.get('is_active', 'n')
         order = self.request.GET.get('order')
@@ -34,6 +35,8 @@ class ApartmentViewSet(viewsets.ModelViewSet):
                                        Q(number__contains=word) |
                                        Q(account_number__contains=word))
 
+        if company:
+            queryset = queryset.filter(company=company)
         if house:
             queryset = queryset.filter(house=house)
         if is_active != 'n':
