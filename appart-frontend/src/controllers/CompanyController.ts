@@ -26,4 +26,20 @@ export default class CompanyController {
   public getCompaniesPromise(query: string | undefined): Promise<AxiosResponse> {
     return axios.get(<string>query, this.headers);
   }
+
+  public getUpdateFormPromise(id: number): Promise<AxiosResponse>[] {
+    return [this.getCompanyById(id)];
+  }
+
+  public getCreateFormPromise(): [void] {
+    return [void 0];
+  }
+
+  // public getCreateFormPromise(): void {
+  //   return void 0;
+  // }
+
+  private getCompanyById(id: number): Promise<AxiosResponse> {
+    return axios.get(`${this.companyEndpoint}${id}/`, this.headers);
+  }
 }

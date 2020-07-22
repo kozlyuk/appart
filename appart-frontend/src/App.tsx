@@ -38,6 +38,7 @@ import PaymentForm from './views/payment/PaymentForm';
 import ServiceList from './views/service/ServiceList';
 import ServiceForm from './views/service/ServiceForm';
 import CompanyList from './views/company/CompanyList';
+import CompanyForm from './views/company/CompanyForm';
 
 
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
@@ -432,6 +433,16 @@ class App extends React.Component<any, any> {
                         aclList={this.state.acl} modelName="company" permissionName="view"
                         exact path="/dashboard/company" component={CompanyList}
                       />
+                      <Switch>
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="company" permissionName="add"
+                          exact path="/dashboard/company/new" component={CompanyForm}
+                        />
+                        <PermissionRoute
+                          aclList={this.state.acl} modelName="company" permissionName="change"
+                          exact path="/dashboard/company/:id/edit" component={CompanyForm}
+                        />
+                      </Switch>
                       {/*<Route path="*">*/}
                       {/*  <div>test</div>*/}
                       {/*</Route>*/}
@@ -449,7 +460,6 @@ class App extends React.Component<any, any> {
 
   render() {
     if (this.state.isLoaded) {
-      console.log(this.state.isAuthenticate);
       return (
         this.state.isAuthenticate ?
           this.authRoutes()

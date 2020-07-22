@@ -6,17 +6,9 @@ import { productsData, userProgressTableData } from 'demos/dashboardPage';
 import React from 'react';
 import { MdPersonPin } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
-import { getColor } from 'utils/colors';
 import DashboardController from '../controllers/DashboardController';
 import axios from 'axios';
 import PageSpinner from '../components/PageSpinner';
-
-const today = new Date();
-const lastWeek = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 7
-);
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -59,8 +51,6 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    const primaryColor = getColor('primary');
-    const secondaryColor = getColor('secondary');
 
     if (this.state.isLoaded) {
       return (

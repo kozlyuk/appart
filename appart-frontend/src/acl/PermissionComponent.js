@@ -8,9 +8,6 @@
 import React from 'react';
 
 export default class PermissionComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   isHavePermission = (list, permissionName) => {
     return list.includes(permissionName);
