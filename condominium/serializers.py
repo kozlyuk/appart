@@ -27,6 +27,7 @@ class HouseSerializer(serializers.ModelSerializer):
         model = House
         fields = [
             "pk",
+            "company",
             "description",
             "address",
             "name",
