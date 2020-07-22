@@ -125,7 +125,7 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
                           onChange={filterPaymentTypeHandler}
                         >
                           {paymentChoices?.map((item: any) => (
-                            <option value={item[0]}>{item[1]}</option>
+                            <option key={item[0]} value={item[0]}>{item[1]}</option>
                           ))}
                         </Input>
                       </FormGroup>
@@ -144,7 +144,7 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
                           onChange={filterServiceHandler}
                         >
                           {this.state.serviceChoices?.map(({ name, pk }) => (
-                            <option value={pk}>{name}</option>
+                            <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
                       </FormGroup>
@@ -165,7 +165,7 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
                           onChange={filterHouseHandler}
                         >
                           {this.state.houseChoices?.map(({ name, pk }) => (
-                            <option value={pk}>{name}</option>
+                            <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
                       </FormGroup>

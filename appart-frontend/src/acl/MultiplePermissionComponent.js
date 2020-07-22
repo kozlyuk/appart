@@ -8,9 +8,6 @@
 import React from 'react';
 
 export default class MultiplePermissionComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   getPermissionsByModelName = (name) => {
     return this.props.aclList[name];

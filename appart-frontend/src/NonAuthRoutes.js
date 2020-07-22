@@ -16,9 +16,6 @@ import Activation from './views/registration/Activation';
 import ResetActivation from './views/registration/ResetActivation';
 
 export default class NonAuthRoutes extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
