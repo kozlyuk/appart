@@ -4,6 +4,9 @@ import { Button, Card, CardBody, CardHeader, Container, Form, FormGroup, FormTex
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
+import axios from 'axios';
+import SelectWithChoices from '../../components/FormInput/SelectWithChoices';
+import HouseController from '../../controllers/HouseController';
 
 export default class HouseNew extends AbstractFormView {
   /**
@@ -36,6 +39,7 @@ export default class HouseNew extends AbstractFormView {
     this.requestType = 'post';
     this.successRedirect = '/dashboard/house';
     this._successButton = 'Повернутися до списку будинків';
+    this.HouseController = new HouseController();
   }
 
   /**
@@ -54,6 +58,18 @@ export default class HouseNew extends AbstractFormView {
    */
   uploadFileValidationSize(event) {
     return Math.round((event.target.files[0].size / 1000)) < 5000;
+  }
+
+  secondaryLoadData() {
+    Promise.all(this.HouseController.getCompanyPromise())
+      .then(axios.spread((
+        companies
+      ) => {
+        this.setState({
+          isSecondaryLoaded: true,
+          companies: companies.data
+        });
+      }));
   }
 
   /**
@@ -154,6 +170,15 @@ export default class HouseNew extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            <SelectWithChoices
+              name={'company'}
+              label={'Компанія'}
+              error={this.state.fieldError.company}
+            >
+              {this.state.companies.map((item) => (
+                <option key={item.pk} value={item.pk}>{item.name}</option>
+              ))}
+            </SelectWithChoices>
             <FormGroup>
               <Label for="logo"><Text text="houseForm.photo"/></Label>
               {this.state.errors.photoFormat.length > 0 &&
@@ -220,16 +245,29 @@ export default class HouseNew extends AbstractFormView {
    * @returns {*}
    */
   render() {
-    return (
-      <Page
-        className="TablePage"
-      >
-        <Container>
-          <Card>
-            {this.content()}
-          </Card>
-        </Container>
-      </Page>
-    );
+    const { error, isSecondaryLoaded } = this.state;
+    if (error) {
+      return <div><Text text="global.error"/>: {error.message}</div>;
+    } else if (!isSecondaryLoaded) {
+      return (
+        <div className="loaderWrapper text-center mt-4">
+          <h3 className="text-center text-muted">
+            <Text text="global.loading"/>
+          </h3>
+        </div>)
+        ;
+    } else {
+      return (
+        <Page
+          className="TablePage"
+        >
+          <Container>
+            <Card>
+              {this.content()}
+            </Card>
+          </Container>
+        </Page>
+      );
+    }
   }
 }
