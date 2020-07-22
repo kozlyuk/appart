@@ -3,6 +3,36 @@ from rest_framework import serializers
 from condominium.models import Apartment, House, Company
 
 
+class CompanySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Company
+        fields = [
+            "fullname",
+            "chief",
+            "logo",
+            "name",
+            "phone",
+            "address",
+            "description",
+            "bank_requisites",
+            "requisites",
+        ]
+
+
+class HouseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = House
+        fields = [
+            "pk",
+            "description",
+            "address",
+            "name",
+            "logo",
+        ]
+
+
 class ApartmentSerializer(serializers.ModelSerializer):
     house_name = serializers.CharField(source='house', required=False)
     resident_name = serializers.CharField(source='resident', required=False)
@@ -30,34 +60,41 @@ class ApartmentSerializer(serializers.ModelSerializer):
         return queryset
 
 
-class HouseSerializer(serializers.ModelSerializer):
+class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
+    """ Serializer with analytics data for Apartments
+        Get start_date finish_date data from context
+    """
+    house_name = serializers.CharField(source='house', required=False)
+    resident_name = serializers.CharField(source='resident', required=False)
+    period_total_bills = serializers.SerializerMethodField()
+    period_total_payments = serializers.SerializerMethodField()
 
     class Meta:
-        model = House
+        model = Apartment
         fields = [
             "pk",
-            "description",
-            "address",
-            "name",
-            "logo",
+            "house_name",
+            "resident_name",
+            "number",
+            "account_number",
+            "current_total_debt",
+            "period_total_bills",
+            "period_total_payments"
         ]
 
+    def get_period_total_bills(self, obj):
+        return obj.period_total_bills(self.context['start_date'],
+                                      self.context['finish_date'])
 
-class CompanySerializer(serializers.ModelSerializer):
+    def get_period_total_payments(self, obj):
+        return obj.period_total_payments(self.context['start_date'],
+                                      self.context['finish_date'])
 
-    class Meta:
-        model = Company
-        fields = [
-            "fullname",
-            "chief",
-            "logo",
-            "name",
-            "phone",
-            "address",
-            "description",
-            "bank_requisites",
-            "requisites",
-        ]
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ optimizing "to-one" relationships with select_related """
+        queryset = queryset.select_related('house', 'resident')
+        return queryset
 
 
 class FileUploadSerializer(serializers.Serializer):
@@ -65,10 +102,3 @@ class FileUploadSerializer(serializers.Serializer):
 
     class Meta:
         fields = ["file"]
-
-
-# class OTPSerializer(serializers.Serializer):
-#     file = serializers.FileField()
-
-#     class Meta:
-#         fields = ["file"]

@@ -1,10 +1,11 @@
 import csv
 import io
+from datetime import date
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from rest_framework import viewsets, permissions, status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 
 from accounts.models import User
@@ -26,7 +27,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         search_string = self.request.GET.get('filter', '').split()
         company = self.request.GET.get('company')
         house = self.request.GET.get('house')
-        is_active = self.request.GET.get('is_active', 'n')
+        is_active = self.request.GET.get('is_active', 'True')
         order = self.request.GET.get('order')
         for word in search_string:
             queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
@@ -39,8 +40,57 @@ class ApartmentViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(company=company)
         if house:
             queryset = queryset.filter(house=house)
-        if is_active != 'n':
+        if is_active in ['true', 'True']:
             queryset = queryset.filter(is_active=is_active)
+        if order:
+            queryset = queryset.order_by(order)
+
+        # Set up eager loading to avoid N+1 selects
+        queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        return queryset
+
+
+class ApartmentAnalyticsView(ListAPIView):
+    """ ListView for Apartments analytics
+
+    Args:
+        start_date ([date]): [start_date of filter period]
+        finish_date ([date]): [finish_date of filter period]
+        filter ([str]): [search string for filtering]
+        company ([str]): [company for filtering]
+        house ([str]): [house for filtering]
+        is_active ([boolean]): [is_active for filtering]
+        order ([str]): [order for ordering]
+
+    Returns:
+        [queryset]: [queryset of filtered Apartments]
+    """
+    serializer_class = serializers.ApartmentAnalyticsSerializer
+
+    def get_serializer_context(self):
+        return {'start_date': self.request.query_params.get('start_date', date.today().replace(day=1)),
+                'finish_date': self.request.query_params.get('finish_date', date.today())}
+
+    def get_queryset(self):
+        queryset = Apartment.objects.all()
+        search_string = self.request.GET.get('filter', '').split()
+        company = self.request.GET.get('company')
+        house = self.request.GET.get('house')
+        is_active = self.request.GET.get('is_active', 'True')
+        order = self.request.GET.get('order')
+        for word in search_string:
+            queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
+                                       Q(resident__first_name__icontains=word) |
+                                       Q(resident__last_name__icontains=word) |
+                                       Q(number__contains=word) |
+                                       Q(account_number__contains=word))
+
+        if company:
+            queryset = queryset.filter(company=company)
+        if house:
+            queryset = queryset.filter(house=house)
+        if is_active in ['true', 'True']:
+            queryset = queryset.filter(is_active=True)
         if order:
             queryset = queryset.order_by(order)
 
