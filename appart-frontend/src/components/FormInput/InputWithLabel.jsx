@@ -9,14 +9,6 @@ import React from 'react';
 import { FormFeedback, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 export default class InputWithLabel extends React.Component {
-  /**
-   * InputWithLabel constructor.
-   * @param props
-   */
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <FormGroup>

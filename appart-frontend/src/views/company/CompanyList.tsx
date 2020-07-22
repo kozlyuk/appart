@@ -142,7 +142,7 @@ export default class CompanyList extends Component<any, CompanyListInterface> {
               <Card className="mb-3">
                 <CardHeader>
                   Компанії
-                  <Link to="service/new">
+                  <Link to="company/new">
                     <Button size="sm" className="float-right" color="success">
                       Додати компанію
                     </Button>

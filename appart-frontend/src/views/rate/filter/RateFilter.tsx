@@ -115,7 +115,7 @@ export default class RateFilter extends Component<FilterProps, FilterStateInterf
                           onChange={filterHouseHandler}
                         >
                           {this.state.houseChoices?.map(({ name, pk }) => (
-                            <option value={pk}>{name}</option>
+                            <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
                       </FormGroup>
@@ -134,7 +134,7 @@ export default class RateFilter extends Component<FilterProps, FilterStateInterf
                           onChange={filterServiceHandler}
                         >
                           {this.state.serviceChoices?.map(({ name, pk }) => (
-                            <option value={pk}>{name}</option>
+                            <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
                       </FormGroup>

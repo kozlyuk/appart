@@ -4,9 +4,6 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default class InputWithButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   _triggerDeleteModal(id) {
     Swal.fire({
