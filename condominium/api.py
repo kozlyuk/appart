@@ -75,7 +75,7 @@ class ApartmentAnalyticsView(ListAPIView):
         queryset = Apartment.objects.all()
         search_string = self.request.GET.get('filter', '').split()
         company = self.request.GET.get('company')
-        house = self.request.GET.get('house')
+        houses = self.request.GET.getlist('house')
         is_active = self.request.GET.get('is_active', 'True')
         order = self.request.GET.get('order')
         for word in search_string:
@@ -87,8 +87,12 @@ class ApartmentAnalyticsView(ListAPIView):
 
         if company:
             queryset = queryset.filter(house__company=company)
-        if house:
-            queryset = queryset.filter(house=house)
+        if houses:
+            qs_union = Apartment.objects.none()
+            for house in houses:
+                qs_segment = queryset.filter(house=house)
+                qs_union = qs_union | qs_segment
+            queryset = qs_union
         if is_active in ['true', 'True']:
             queryset = queryset.filter(is_active=True)
         if order:
