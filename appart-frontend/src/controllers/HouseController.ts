@@ -19,11 +19,17 @@ export default class HouseController {
 
   public uomEndpoint = process.env['REACT_APP_GET_UOM_CHOICES'];
 
+  public companyEndpoint = process.env['REACT_APP_COMPANY'];
+
   public getUomValues(): Promise<AxiosResponse<any>>[] {
     return [this.getUomPromise()];
   }
 
   private getUomPromise(): Promise<AxiosResponse> {
     return axios.get(<string>this.uomEndpoint, this.headers);
+  }
+
+  public getCompanyPromise(): Promise<AxiosResponse>[] {
+    return [axios.get(<string>this.companyEndpoint, this.headers)];
   }
 }

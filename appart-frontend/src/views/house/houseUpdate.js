@@ -19,6 +19,8 @@ import Page from '../../components/Page';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { FaFileImport } from 'react-icons/fa';
+import HouseController from '../../controllers/HouseController';
+import SelectWithChoices from '../../components/FormInput/SelectWithChoices';
 
 export default class HouseUpdate extends AbstractFormView {
   /**
@@ -53,6 +55,7 @@ export default class HouseUpdate extends AbstractFormView {
     this.requestType = 'put';
     this.successRedirect = '/dashboard/house';
     this._successButton = 'Повернутися до списку будинків';
+    this.HouseController = new HouseController();
   }
 
   /**
@@ -73,6 +76,18 @@ export default class HouseUpdate extends AbstractFormView {
     return Math.round((event.target.files[0].size / 1000)) < 5000;
   }
 
+  secondaryLoadData() {
+    Promise.all(this.HouseController.getCompanyPromise())
+      .then(axios.spread((
+        companies
+      ) => {
+        this.setState({
+          isSecondaryLoaded: true,
+          companies: companies.data
+        });
+      }));
+  }
+
   /**
    *
    * @param target
@@ -84,6 +99,7 @@ export default class HouseUpdate extends AbstractFormView {
     userFormData.append('description', target.description.value);
     userFormData.append('address', target.address.value);
     userFormData.append('name', target.name.value);
+    userFormData.append('company', target.company.value);
     if (target.photo.files[0]) {
       userFormData.append('logo', target.photo.files[0]);
     }
@@ -223,6 +239,16 @@ export default class HouseUpdate extends AbstractFormView {
               </div>
               }
             </FormGroup>
+            <SelectWithChoices
+              name={'company'}
+              label={'Компанія'}
+              error={this.state.fieldError.company}
+              defaultValue={this.state.data.company}
+            >
+              {this.state.companies.map((item) => (
+                <option key={item.pk} value={item.pk}>{item.name}</option>
+              ))}
+            </SelectWithChoices>
             <FormGroup>
               <Label for="photo"><Text text="houseForm.photo"/></Label>
               {this.state.errors.photoFormat.length > 0 &&
@@ -298,10 +324,10 @@ export default class HouseUpdate extends AbstractFormView {
    * @returns {*}
    */
   render() {
-    const { error, isLoaded } = this.state;
+    const { error, isLoaded, isSecondaryLoaded } = this.state;
     if (error) {
       return <div><Text text="global.error"/>: {error.message}</div>;
-    } else if (!isLoaded) {
+    } else if (!isLoaded || !isSecondaryLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
           <h3 className="text-center text-muted">
