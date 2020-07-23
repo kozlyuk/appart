@@ -37,7 +37,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
                                        Q(account_number__contains=word))
 
         if company:
-            queryset = queryset.filter(company=company)
+            queryset = queryset.filter(house__company=company)
         if house:
             queryset = queryset.filter(house=house)
         if is_active in ['true', 'True']:
@@ -86,7 +86,7 @@ class ApartmentAnalyticsView(ListAPIView):
                                        Q(account_number__contains=word))
 
         if company:
-            queryset = queryset.filter(company=company)
+            queryset = queryset.filter(house__company=company)
         if house:
             queryset = queryset.filter(house=house)
         if is_active in ['true', 'True']:
