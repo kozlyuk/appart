@@ -37,7 +37,6 @@ export default class ApartmentList extends AbstractListView {
     this.filterUrl = process.env.REACT_APP_HOUSES_URL;
     this.dataUrl = process.env.REACT_APP_APARTMENTS_URL;
     this.filterSearchHandler = this.filterSearchHandler.bind(this);
-    this.filterSelectHandler = this.filterSelectHandler.bind(this);
   }
 
   static contextType = PermissionContext;
@@ -51,25 +50,70 @@ export default class ApartmentList extends AbstractListView {
     event.preventDefault();
     const searchValue = event.target.search.value.toString();
     this.setState({
-      searchQuery: searchValue
+      filterQueries: {
+        ...this.state.filterQueries,
+        filter: searchValue
+      }
     }, () => {
-      this.loadData(this.getQueryString());
+      this.loadData(this.filterUrlGenerator());
     });
   }
 
-  /**
-   * Filter handler
-   *
-   * @param event
-   */
-  filterSelectHandler(event) {
-    const selectValue = event.target.value.toString();
-    this.setState({
-      houseQuery: selectValue
-    }, () => {
-      this.loadData(this.getQueryString());
+  filterUrlGenerator() {
+    const { filterQueries } = this.state;
+    const queryArray = Object.entries(filterQueries);
+    let result = this.dataUrl;
+    queryArray.map((item, index) => {
+      if (index === 0) {
+        // if (item[1][1]) {
+        //   result += this.nestedQuery(item[1], item[0], '?');
+        // } else {
+        result += '?' + item[0].toString() + '=' + item[1].toString().trim();
+        // }
+      } else {
+        // if (item[1][1]) {
+        //   result += this.nestedQuery(item[1], item[0], '&');
+        // } else {
+        result += '&' + item[0].toString() + '=' + item[1].toString().trim();
+        // }
+      }
     });
+
+    return result;
   }
+
+  nestedQuery(query, queryName, selector) {
+    let queryString = '';
+    query.map(nested => {
+      queryString += selector + queryName + '=' + nested.toString();
+    });
+
+    return queryString;
+  }
+
+  companySelectHandler = (event) => {
+    const selectedValue = event.target.value;
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        company: selectedValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  houseSelectHandler = (event) => {
+    const selectedValue = [...event.target.selectedOptions].map(opt => opt.value);
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        house: selectedValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
 
   /**
    * Get query string
@@ -142,9 +186,10 @@ export default class ApartmentList extends AbstractListView {
    */
   handlePageChange(pageNumber) {
     const searchQuery = this.state.searchQuery.toString().trim();
-    const houseQuery = this.state.houseQuery.trim();
+    const houseQuery = this.state.filterQueries.house.trim();
+    const companyQuery = this.state.filterQueries.company.trim();
     this.setState({ activePage: pageNumber });
-    this.refreshData(pageNumber, `?filter=${searchQuery}&house=${houseQuery}`);
+    this.refreshData(pageNumber, `?filter=${searchQuery}&house=${houseQuery}&company=${companyQuery}`);
   }
 
   render() {
@@ -165,7 +210,8 @@ export default class ApartmentList extends AbstractListView {
         >
           <ApartmentFilter
             data={this.state.filterData}
-            filterSelectHandler={this.filterSelectHandler}
+            houseSelectHandler={this.houseSelectHandler}
+            companySelectHandler={this.companySelectHandler}
             filterSearchHandler={this.filterSearchHandler}
             isLoaded={this.state.isFilterLoaded}
           />
