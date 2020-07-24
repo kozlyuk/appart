@@ -167,7 +167,6 @@ export default class UserUpdate extends AbstractFormView {
    */
   onSelectChange = (event) => {
     const values = [...event.target.selectedOptions].map(opt => opt.value);
-    console.log(values);
     this.setState({
       selectedGroups: values
     });
