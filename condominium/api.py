@@ -4,7 +4,7 @@ from datetime import date
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
-from rest_framework import viewsets, permissions, status
+from rest_framework import views, viewsets, permissions, status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 
@@ -12,6 +12,8 @@ from accounts.models import User
 from condominium.models import Company, House, Apartment
 from condominium import serializers
 from condominium.services import is_int
+from payments.models import Bill, Payment
+from payments.serializers import BillSerializer, PaymentSerializer
 
 class ApartmentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Apartment class
@@ -211,3 +213,51 @@ class CSVImport(CreateAPIView):
 
         message = _(f"Imported {imported_users} residents and {imported_apartment} apartments")
         return Response(message, status=status.HTTP_201_CREATED)
+
+
+class ApartmentBalanceSheet(ListAPIView):
+    """ Send list of apartments bills and payments for period
+    Url parameters:
+        apartment_pk (int): apartment_pk
+    Get parameters:
+        start_date (date): from date filter
+        finish_date (date): to date filter
+    Returns:
+            "Bills": BillSerializer.data,
+            "Payments": PaymentSerializer.data
+    """
+
+    permission_classes = [permissions.IsAuthenticated] # TODO write permissions
+    serializer_class_bill = BillSerializer
+    serializer_class_payment = PaymentSerializer
+    queryset = Bill.objects.none
+
+    def get_queryset_bill(self, apartment_pk):
+        start_date = self.request.GET.get('start_date')
+        finish_date = self.request.GET.get('finish_date')
+        bills = Bill.objects.filter(apartment=apartment_pk) \
+                            .order_by('period')
+        if start_date:
+            bills = bills.filter(period__gte=start_date)
+        if finish_date:
+                bills = bills.filter(period__lte=finish_date)
+        return bills
+
+    def get_queryset_payment(self, apartment_pk):
+        start_date = self.request.GET.get('start_date')
+        finish_date = self.request.GET.get('finish_date')
+        payments = Payment.objects.filter(apartment=apartment_pk) \
+                                  .order_by('date')
+        if start_date:
+            payments = payments.filter(date__gte=start_date)
+        if finish_date:
+                payments = payments.filter(date__lte=finish_date)
+        return payments
+
+    def list(self, request, apartment_pk):
+        bill = self.serializer_class_bill(self.get_queryset_bill(apartment_pk), many=True)
+        payment = self.serializer_class_payment(self.get_queryset_payment(apartment_pk), many=True)
+        return Response({
+            "Bills": bill.data,
+            "Payments": payment.data
+        })
