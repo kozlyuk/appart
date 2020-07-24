@@ -22,7 +22,16 @@ router.register("company", api.CompanyViewSet)
 urlpatterns = (
     path("api/v1/", include(router.urls)),
 
-    path("api/v1/apartment_analytics/", api.ApartmentAnalyticsView.as_view(), name='apartment_analytics'),
-    path("api/v1/apartment_balance_sheet/<int:apartment_pk>/", api.ApartmentBalanceSheet.as_view(), name='apartment_balance_sheet'),
-    path("api/v1/csv_import/<int:house_pk>/", api.CSVImport.as_view(), name='csv_import'),
+    path("api/v1/apartment_analytics/",
+         api.ApartmentAnalytics.as_view(),
+         name='apartment_analytics'),
+    path("api/v1/apartment_balance_sheet/<int:apartment_pk>/",
+         api.ApartmentBalanceSheet.as_view(),
+         name='apartment_balance_sheet'),
+    path("api/v1/total_apartments_analytics/",
+         api.TotalApartmentsAnalytics.as_view(),
+         name='total_apartments_analytics'),
+    path("api/v1/csv_import/<int:house_pk>/",
+         api.CSVImport.as_view(),
+         name='csv_import'),
 )

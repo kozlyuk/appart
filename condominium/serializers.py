@@ -90,7 +90,7 @@ class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
 
     def get_period_total_payments(self, obj):
         return obj.period_total_payments(self.context['start_date'],
-                                      self.context['finish_date'])
+                                         self.context['finish_date'])
 
     @staticmethod
     def setup_eager_loading(queryset):
