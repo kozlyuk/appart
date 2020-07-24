@@ -22,6 +22,7 @@ urlpatterns = [
     path("api/v1/get_acl/", api.GetACL.as_view(), name='get_acl'),
     path("api/v1/set_lang/<str:lang>/", api.SetLang.as_view(), name='set_lang'),
     path("api/v1/get_group_choices/", api.GroupChoices.as_view(), name='group_choices'),
+    path('api/v1/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 
     path('login/', auth.LoginView.as_view(template_name='auth.html'), name='login'),
     path('logout/', auth.LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),

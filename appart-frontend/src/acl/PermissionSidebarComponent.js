@@ -8,9 +8,6 @@
 import React from 'react';
 
 export default class PermissionSidebarComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   /**
    * Get permission by model name.

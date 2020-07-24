@@ -10,10 +10,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default class SelectWithButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   _triggerDeleteModal(id) {
     Swal.fire({
       title: 'Дійсно бажаєте видалити виконавця?',

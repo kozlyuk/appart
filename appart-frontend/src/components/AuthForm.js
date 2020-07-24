@@ -7,6 +7,7 @@ import FormText from 'reactstrap/lib/FormText';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom';
+import ResetPassword from './ResetPassword';
 
 // ugly regular expression for validate length of phone number
 const validPhoneRegex = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
@@ -203,6 +204,7 @@ class AuthForm extends React.Component {
           type="button">
           Реєстрація
         </Button>
+        <ResetPassword/>
         {children}
       </Form>
     );

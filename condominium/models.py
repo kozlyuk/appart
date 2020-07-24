@@ -99,3 +99,21 @@ class Apartment(models.Model):
     def current_total_debt(self):
         """ return total debt of apartment """
         return self.total_bills_sum() - self.total_payments_sum()
+
+    def period_total_bills(self, start_date, finish_date):
+        """ return bills sum for appartment """
+        bills = self.bill_set.filter(is_active=True)
+        if start_date:
+            bills = bills.filter(period__gte=start_date)
+        if finish_date:
+            bills = bills.filter(period__lte=finish_date)
+        return bills.aggregate(bills_sum=Sum('total_value'))['bills_sum'] or 0
+
+    def period_total_payments(self, start_date, finish_date):
+        """ return payments sum for appartment """
+        payments = self.payment_set.all()
+        if start_date:
+            payments = payments.filter(date__gte=start_date)
+        if finish_date:
+            payments = payments.filter(date__lte=finish_date)
+        return payments.aggregate(payments_sum=Sum('value'))['payments_sum'] or 0

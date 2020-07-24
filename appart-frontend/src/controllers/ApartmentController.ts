@@ -8,7 +8,7 @@
 import Auth from '../auth/auth';
 import axios, { AxiosResponse } from 'axios';
 
-export default class HouseController {
+export default class ApartmentController {
   public user: Auth = new Auth();
 
   protected headers: object = {
@@ -17,19 +17,19 @@ export default class HouseController {
     }
   };
 
-  public uomEndpoint = process.env['REACT_APP_GET_UOM_CHOICES'];
-
   public companyEndpoint = process.env['REACT_APP_COMPANY'];
 
-  public getUomValues(): Promise<AxiosResponse<any>>[] {
-    return [this.getUomPromise()];
+  public houseEndpoint = process.env['REACT_APP_HOUSES_WITHOUT_PAGINATION'];
+
+  public getFilterPromise(): Promise<AxiosResponse>[] {
+    return [this.getCompaniesPromise(), this.getHousesPromise()];
   }
 
-  private getUomPromise(): Promise<AxiosResponse> {
-    return axios.get(<string>this.uomEndpoint, this.headers);
+  public getCompaniesPromise(): Promise<AxiosResponse> {
+    return axios.get(<string>this.companyEndpoint, this.headers);
   }
 
-  public getCompanyPromise(): Promise<AxiosResponse>[] {
-    return [axios.get(<string>this.companyEndpoint, this.headers)];
+  public getHousesPromise(): Promise<AxiosResponse> {
+    return axios.get(<string>this.houseEndpoint, this.headers);
   }
 }

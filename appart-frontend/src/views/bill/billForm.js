@@ -485,6 +485,7 @@ export default class BillForm extends AbstractFormView {
               <DataInput
                 label={<Text text="billForm.period"/>}
                 name={'period'}
+                calendarPlacement={'top'}
                 error={this.state.fieldError.period}
                 startValue={this.state.data.period}
               />

@@ -4,6 +4,7 @@ import React from 'react';
 import {
   MdAttachMoney,
   MdBuild,
+  MdBusinessCenter,
   MdDashboard,
   MdEqualizer,
   MdEvent,
@@ -57,6 +58,14 @@ class Sidebar extends React.Component {
    * @type {({modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string}|{modelName: string, name: *, exact: boolean, to: string, Icon: , permissionName: string})[]}
    */
   condominiumComponents = [
+    {
+      to: '/dashboard/company',
+      name: <Text text="sidebar.company"/>,
+      exact: false,
+      Icon: MdBusinessCenter,
+      modelName: 'company',
+      permissionName: 'view'
+    },
     {
       to: '/dashboard/house',
       name: <Text text="sidebar.house"/>,

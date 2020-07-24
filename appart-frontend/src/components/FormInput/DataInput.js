@@ -10,9 +10,6 @@ import { FormGroup, FormText, Label } from 'reactstrap';
 import DatePicker from 'reactstrap-date-picker';
 
 export default class DataInput extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   /**
    * Date picker handle change.

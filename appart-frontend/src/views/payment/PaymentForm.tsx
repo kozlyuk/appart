@@ -523,6 +523,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
               </SelectWithChoices>
               <DataInput
                 label={<Text text="paymentForm.date"/>}
+                calendarPlacement={'top'}
                 name={'date'}
                 error={this.state.fieldError.date}
                 startValue={this.state.data.date}
