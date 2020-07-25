@@ -310,4 +310,5 @@ class TotalApartmentsAnalytics(views.APIView):
         json_data = {}
         json_data["period_total_bills_sum"] = period_total_bills_sum
         json_data["period_total_payments_sum"] = period_total_payments_sum
+        json_data["total_apartments_count"] = queryset.count()
         return Response(json_data, status=status.HTTP_200_OK)
