@@ -27,7 +27,10 @@ export default class ApartmentList extends AbstractListView {
       isLoaded: false,
       isFilterActive: true,
       houseQuery: '',
-      searchQuery: ''
+      searchQuery: '',
+      filterQueries: {
+        is_active: false
+      }
     };
     this.groupProps = {
       appear: true,
@@ -109,6 +112,18 @@ export default class ApartmentList extends AbstractListView {
       filterQueries: {
         ...this.state.filterQueries,
         house: selectedValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  filterIsActiveHandler = (event) => {
+    console.log(event.target.value);
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        is_active: !this.state.filterQueries.is_active >> 0
       }
     }, () => {
       this.loadData(this.filterUrlGenerator());
@@ -213,6 +228,7 @@ export default class ApartmentList extends AbstractListView {
             houseSelectHandler={this.houseSelectHandler}
             companySelectHandler={this.companySelectHandler}
             filterSearchHandler={this.filterSearchHandler}
+            filterIsActiveHandler={this.filterIsActiveHandler}
             isLoaded={this.state.isFilterLoaded}
           />
           <Row>

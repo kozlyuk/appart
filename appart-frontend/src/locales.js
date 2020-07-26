@@ -51,6 +51,7 @@ registerLang('en', {
     order: 'orders',
     work: 'work\'s',
     rate: 'rates',
+    analytics: 'Analytics',
     paymentType: 'Payment type'
   },
   paymentList: {
@@ -402,6 +403,7 @@ registerLang('uk', {
     order: 'замовлення',
     work: 'роботи',
     rate: 'тарифи',
+    analytics: 'аналітика',
     paymentType: 'Тип оплати'
   },
   paymentList: {
