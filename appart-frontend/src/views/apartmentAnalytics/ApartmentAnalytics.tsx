@@ -1,0 +1,252 @@
+/*
+ * @author          Andrey Perestyuk (Arrathilar)
+ * @email-primary   a.perestyuk@itel.rv.ua
+ * @email-secondary arrathilar@blizzard.com, a.perestyuk@archlinux.org,
+ * @copyright       2020 ITEL-Service
+ */
+
+import React, { Component } from 'react';
+import PageSpinner from '../../components/PageSpinner';
+import Page from '../../components/Page';
+import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+// @ts-ignore
+import Pagination from 'react-js-pagination';
+// @ts-ignore
+import { Text } from 'react-easy-i18n';
+import ApartmentAnalyticsController from '../../controllers/ApartmentAnalyticsController';
+import axios from 'axios';
+import styles from './apartmentAnalytics.module.css';
+import AnalyticsFilter from './filter/AnalyticsFilter';
+
+interface ApartmentAnalyticsInterface {
+  isLoaded: boolean,
+  data?: Apartment,
+  itemsCountPerPage: number,
+  pageRangeDisplayed: number,
+  activePage?: number,
+  paginationCount?: number,
+  paginationNext?: string,
+  paginationPrevious?: string,
+  filterQueries?: any
+}
+
+interface ApartmentAnalyticsProps {
+}
+
+type Apartment = {
+  account_number: string, //
+  current_total_debt: number, //
+  house_name: string, //
+  number: number, //
+  period_total_bills: number,
+  period_total_payments: number,
+  pk: number,
+  resident_name: string
+}
+
+export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProps, ApartmentAnalyticsInterface> {
+
+  public state: ApartmentAnalyticsInterface = {
+    isLoaded: false,
+    data: undefined,
+    //paginator settings
+    itemsCountPerPage: 100,
+    pageRangeDisplayed: Number(process.env.REACT_APP_PAGE_RANGE_DISPLAYED),
+    activePage: undefined,
+    paginationCount: undefined,
+    filterQueries: {
+      is_active: false
+    }
+    //paginator settings end
+  };
+
+  private ApartmentAnalyticsController: ApartmentAnalyticsController = new ApartmentAnalyticsController();
+
+  public componentDidMount(): void {
+    Promise.all(this.ApartmentAnalyticsController.getListingPromise())
+      .then(axios.spread((apartments) => {
+        this.setState({
+          isLoaded: true,
+          data: apartments.data.results,
+          paginationCount: apartments.data.count,
+          paginationNext: apartments.data.next,
+          paginationPrevious: apartments.data.previous
+        });
+      }));
+  }
+
+  private loadData(dataUrl: string): void {
+    axios(dataUrl, {
+      headers: {
+        'Authorization': 'Token ' + this.ApartmentAnalyticsController.user.getAuthToken()
+      }
+    })
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            data: result.data.results,
+            paginationCount: result.data.count,
+            paginationNext: result.data.next,
+            paginationPrevious: result.data.previous
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true
+          });
+        }
+      );
+  }
+
+  private filterSearchHandler = (event: any): void => {
+    event.preventDefault();
+    const searchValue = event.target.search.value.toString();
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        filter: searchValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  private companySelectHandler = (event: any): void => {
+    const selectedValue = event.target.value;
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        company: selectedValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  private houseSelectHandler = (event: any): void => {
+    const selectedValue = [...event.target.selectedOptions].map(opt => opt.value);
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        house: selectedValue
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  private dateRangeHandler = (startDate: Date, finishDate: Date): void => {
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        start_date: startDate,
+        finish_date: finishDate
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  private filterUrlGenerator = (): string => {
+    const { filterQueries } = this.state;
+    const queryArray = Object.entries(filterQueries);
+    let result = this.ApartmentAnalyticsController.apartmentAnalyticsEndpoint;
+    queryArray.map((item: any) => {
+      result += `&${item[0].toString()}=${item[1].toString().trim()}`;
+    });
+
+    return result;
+  };
+
+  filterIsActiveHandler = () => {
+    this.setState({
+      filterQueries: {
+        ...this.state.filterQueries,
+        // @ts-ignore
+        is_active: !this.state.filterQueries.is_active >> 0
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  };
+
+  private content = (): JSX.Element => {
+    const data = this.state.data as any;
+    return (
+      <Table responsive>
+        <thead>
+        {/*
+        // @ts-ignore*/}
+        <tr align="center">
+          <th>Назва будинку</th>
+          <th>Апартаменти</th>
+          <th>Житель</th>
+          <th>Рахунок</th>
+          <th>Заборгованість</th>
+          <th>period_total_bills</th>
+          <th>period_total_payments</th>
+        </tr>
+        </thead>
+        <tbody>
+        {data.map((item: Apartment) => (
+          // @ts-ignore
+          <tr align="center">
+            <td className={styles.withoutPadding}>{item.house_name}</td>
+            <td className={styles.withoutPadding}>{item.number}</td>
+            <td className={styles.withoutPadding}>{item.resident_name}</td>
+            <td className={styles.withoutPadding}>{item.account_number}</td>
+            <td className={styles.withoutPadding}>{item.current_total_debt}</td>
+            <td className={styles.withoutPadding}>{item.period_total_bills}</td>
+            <td className={styles.withoutPadding}>{item.period_total_payments}</td>
+          </tr>
+        ))}
+        </tbody>
+      </Table>
+    );
+  };
+
+  public render(): JSX.Element {
+    if (this.state.isLoaded) {
+      return (
+        // @ts-ignore
+        <Page className="TablePage">
+          <AnalyticsFilter
+            houseSelectHandler={this.houseSelectHandler}
+            companySelectHandler={this.companySelectHandler}
+            filterSearchHandler={this.filterSearchHandler}
+            dateRangeHandler={this.dateRangeHandler}
+            filterIsActiveHandler={this.filterIsActiveHandler}
+          />
+          <Row>
+            <Col>
+              <Card className="mb-3">
+                <CardHeader>
+                  <Text text="sidebar.analytics"/>
+                </CardHeader>
+                <CardBody>
+                  {this.content()}
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Pagination
+              innerClass="pagination pagination-sm ml-auto mr-auto"
+              itemClass="page-item"
+              linkClass="page-link"
+              pageRangeDisplayed={this.state.pageRangeDisplayed}
+              activePage={this.state.activePage}
+              itemsCountPerPage={this.state.itemsCountPerPage}
+              totalItemsCount={this.state.paginationCount}
+              //@ts-ignore
+              // onChange={this.handlePageChange.bind(this)}
+            />
+          </Row>
+        </Page>
+      );
+    } else {
+      return (<PageSpinner/>);
+    }
+  }
+}

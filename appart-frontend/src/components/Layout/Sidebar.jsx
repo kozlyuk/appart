@@ -1,4 +1,4 @@
-import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import sidebarBgImage from 'assets/img/sidebar/sidebar-7.jpg';
 import logo200Image from 'assets/img/logo/logo_small_white.png';
 import React from 'react';
 import {
@@ -23,6 +23,7 @@ import { Text } from 'react-easy-i18n';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionSidebarComponent from '../../acl/PermissionSidebarComponent';
 import MultiplePermissionComponent from '../../acl/MultiplePermissionComponent';
+import { IoMdAnalytics } from 'react-icons/io';
 
 /**
  * @type {{backgroundImage: string, backgroundSize: string, backgroundRepeat: string}}
@@ -115,6 +116,14 @@ class Sidebar extends React.Component {
       exact: true,
       Icon: MdEqualizer,
       modelName: 'rate',
+      permissionName: 'view'
+    },
+    {
+      to: '/dashboard/analytics',
+      name: <Text text="sidebar.analytics"/>,
+      exact: true,
+      Icon: IoMdAnalytics,
+      modelName: 'apartment',
       permissionName: 'view'
     }
   ];
@@ -312,8 +321,8 @@ class Sidebar extends React.Component {
               ))}
             </Collapse>
             <MultiplePermissionComponent
-              aclList={this.context} modelName={['order', 'work']}
-              permissionName={['view', 'view']}
+              aclList={this.context} modelName={['order', 'work', 'apartment']}
+              permissionName={['view', 'view', 'view']}
             >
               <NavItem
                 className={bem.e('nav-item')}
