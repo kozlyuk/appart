@@ -3,10 +3,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import Sum
 from rest_framework.response import Response
 from rest_framework import views, status
+from rest_framework.generics import ListAPIView
 
 from condominium.models import Apartment
 from accounts.models import User
 from payments.models import Bill, Payment
+from payments import serializers
 
 
 class ActiveApartments(views.APIView):
@@ -51,8 +53,7 @@ class TotalDebtCompany(views.APIView):
 
     def get(self, request):
         # calculate bills sum for all appartments
-        bills_sum = Bill.objects.filter(is_active=True) \
-                                .aggregate(bills_sum=Sum('total_value')) \
+        bills_sum = Bill.objects.aggregate(bills_sum=Sum('total_value')) \
                                 ['bills_sum'] or 0
         # calculate payments sum for all appartments
         paments_sum = Payment.objects.aggregate(payments_sum=Sum('value')) \
@@ -61,6 +62,7 @@ class TotalDebtCompany(views.APIView):
         json_data = {}
         json_data["label"] = _("Total Debt")
         json_data["data"] = bills_sum - paments_sum
+        json_data["data_all"] = bills_sum
         return Response(json_data, status=status.HTTP_200_OK)
 
 
@@ -84,3 +86,17 @@ class TotalPaymentsCompany(views.APIView):
         json_data["data"] = paments_sum
         json_data["data_all"] = bills_sum
         return Response(json_data, status=status.HTTP_200_OK)
+
+
+class LastPayments(ListAPIView):
+    """ return queryset of last N Payments
+
+    Args:
+        count ([int]): count of entries
+    """
+    serializer_class = serializers.PaymentSerializer
+
+    def get_queryset(self):
+        # filtering queryset
+        count = int(self.request.query_params.get('count', 10))
+        return Payment.objects.all().order_by('-id')[:count]

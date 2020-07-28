@@ -222,10 +222,9 @@ class ApartmentBalanceSheet(ListAPIView):
             "Payments": PaymentSerializer.data
     """
 
-    permission_classes = [permissions.IsAuthenticated] # TODO write permissions
     serializer_class_bill = BillSerializer
     serializer_class_payment = PaymentSerializer
-    queryset = Bill.objects.none
+    queryset = Bill.objects.all()
 
     def get_queryset_bill(self, apartment_pk):
         start_date = self.request.GET.get('start_date')
