@@ -35,14 +35,16 @@ export default class ApartmentFilter extends React.Component<FilterInterface, {}
   };
 
   public componentDidMount() {
+    const emptyCompany = { pk: '', name: '----------' };
+    const emptyHouse = { pk: '', name: '----------' };
     Promise.all(this.ApartmentController.getFilterPromise()).then(axios.spread((
       companies: any,
       houses: any
     ) => {
       this.setState({
         isLoaded: true,
-        companyChoices: companies.data,
-        houseChoices: houses.data
+        companyChoices: [emptyCompany, ...companies.data],
+        houseChoices: [emptyHouse, ...houses.data]
       });
     }));
   }
