@@ -18,7 +18,7 @@ import ApartmentAnalyticsController from '../../../controllers/ApartmentAnalytic
 import axios from 'axios';
 // @ts-ignore
 import moment from 'moment';
-import DayPicker from 'react-day-picker';
+import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import Helmet from 'react-helmet';
 import MomentLocaleUtils from 'react-day-picker/moment';
@@ -39,6 +39,10 @@ interface FilterInterface {
 }
 
 export default class AnalyticsFilter extends Component<any, FilterInterface> {
+  constructor(props: any) {
+    super(props);
+    this.state = this.getInitialState();
+  }
 
   private ApartmentAnalyticsController: ApartmentAnalyticsController = new ApartmentAnalyticsController();
 
@@ -48,7 +52,7 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
     companyChoices: undefined,
     houseChoices: undefined,
     hoverRange: undefined,
-    selectedDays: []
+    selectedDays: this.getWeekRange(new Date())
   };
 
   public componentDidMount = () => {
@@ -62,6 +66,25 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
         houseChoices: houses.data
       });
     }));
+  };
+
+  private getInitialState = (): any => {
+    return {
+      from: this.getMonthRange(new Date).from,
+      to: this.getMonthRange(new Date).to
+    };
+  };
+
+  private handleDayClick = (day: Date) => {
+    // @ts-ignore
+    const range = DateUtils.addDayToRange(day, this.state);
+    // @ts-ignore
+    this.setState(range, () => {
+      this.props.dateRangeHandler(
+        moment(range.from || this.getMonthRange(new Date).from).format('YYYY-MM-DD'),
+        moment(range.to || this.getMonthRange(new Date).to).format('YYYY-MM-DD')
+      );
+    });
   };
 
   protected toggleFilter = (): void => {
@@ -98,13 +121,24 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
     return days;
   }
 
-  private getWeekRange(date: Date): any {
+  public getWeekRange(date: Date): any {
     return {
       from: moment(date)
         .startOf('week')
         .toDate(),
       to: moment(date)
         .endOf('week')
+        .toDate()
+    };
+  }
+
+  public getMonthRange(date: Date): any {
+    return {
+      from: moment(date)
+        .startOf('month')
+        .toDate(),
+      to: moment(date)
+        .endOf('month')
         .toDate()
     };
   }
@@ -158,18 +192,9 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
       hoverRange,
       selectedDays
     }: any = this.state;
-    const daysAreSelected = selectedDays.length > 0;
-    const modifiers = {
-      hoverRange,
-      selectedRange: daysAreSelected && {
-        from: selectedDays[0],
-        to: selectedDays[6]
-      },
-      hoverRangeStart: hoverRange && hoverRange.from,
-      hoverRangeEnd: hoverRange && hoverRange.to,
-      selectedRangeStart: daysAreSelected && selectedDays[0],
-      selectedRangeEnd: daysAreSelected && selectedDays[6]
-    };
+    // @ts-ignore
+    const { from, to } = this.state;
+    const modifiers = { start: from, end: to };
     const isLoaded: boolean = this.state.isLoaded;
     if (!isLoaded) {
       return (
@@ -217,25 +242,6 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
                   <Row>
                     <Col className="pb-0 col-lg-6 col-12">
                       <FormGroup>
-                        <Label className="mr-2" for="house">
-                          <Text text="sidebar.house"
-                                formatters='firstUppercase'/>
-                        </Label>
-                        <Input
-                          type="select"
-                          name="house"
-                          filterquery="house"
-                          id="house"
-                          onChange={houseSelectHandler}
-                        >
-                          {houseChoices?.map(({ name, pk }: { name: string, pk: number }) => (
-                            <option key={pk} value={pk}>{name}</option>
-                          ))}
-                        </Input>
-                      </FormGroup>
-                    </Col>
-                    <Col className="pb-0 col-lg-6 col-12">
-                      <FormGroup>
                         <Label className="mr-2" for="company">
                           <Text text="sidebar.company"
                                 formatters='firstUppercase'/>
@@ -253,14 +259,32 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
                         </Input>
                       </FormGroup>
                     </Col>
+                    <Col className="pb-0 col-lg-6 col-12">
+                      <FormGroup>
+                        <Label className="mr-2" for="house">
+                          <Text text="sidebar.house"
+                                formatters='firstUppercase'/>
+                        </Label>
+                        <Input
+                          type="select"
+                          name="house"
+                          filterquery="house"
+                          id="house"
+                          onChange={houseSelectHandler}
+                        >
+                          {houseChoices?.map(({ name, pk }: { name: string, pk: number }) => (
+                            <option key={pk} value={pk}>{name}</option>
+                          ))}
+                        </Input>
+                      </FormGroup>
+                    </Col>
                   </Row>
                   <Row>
                     <Col>
-                      <div className="SelectedWeek text-center">
-                        {/*
-                        // @ts-ignore*/}
+                      <div className="RangeExample text-center">
                         <DayPicker
-                          selectedDays={selectedDays}
+                          className="Selectable"
+                          selectedDays={[from, { from, to }]}
                           showWeekNumbers
                           showOutsideDays
                           numberOfMonths={4}
@@ -268,57 +292,30 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
                           localeUtils={MomentLocaleUtils}
                           locale={'uk'}
                           modifiers={modifiers}
-                          onDayClick={this.handleDayChange}
-                          onDayMouseEnter={this.handleDayEnter}
-                          onDayMouseLeave={this.handleDayLeave}
-                          onWeekClick={this.handleWeekClick}
+                          onDayClick={this.handleDayClick}
                         />
-                        {selectedDays.length === 7 && (
-                          <div>
-                            {moment(selectedDays[0]).format('LL')} –{' '}
-                            {moment(selectedDays[6]).format('LL')}
-                          </div>
-                        )}
-                      </div>
-                      {/*
+                        {/*
                         // @ts-ignore*/}
-                      <Helmet>
-                        <style>{`
-                          .SelectedWeek .DayPicker-Month {
-                            border-collapse: separate;
-                          }
-                          .SelectedWeek .DayPicker-WeekNumber {
-                            outline: none;
-                          }
-                          .SelectedWeek .DayPicker-Day {
-                            outline: none;
-                            border: 1px solid transparent;
-                          }
-                          .SelectedWeek .DayPicker-Day--hoverRange {
-                            background-color: #EFEFEF !important;
-                          }
-              
-                          .SelectedWeek .DayPicker-Day--selectedRange {
-                            background-color: #8095fc !important;
-                          }
-              
-                          .SelectedWeek .DayPicker-Day--selectedRangeStart {
-                            background-color: #6f7cb9 !important;
-                          }
-              
-                          .SelectedWeek .DayPicker-Day--selectedRangeEnd {
-                            background-color: #6f7cb9 !important;
-                          }
-              
-                          .SelectedWeek .DayPicker-Day--selectedRange:not(.DayPicker-Day--outside).DayPicker-Day--selected,
-                          .SelectedWeek .DayPicker-Day--hoverRange:not(.DayPicker-Day--outside).DayPicker-Day--selected {
-                            color: black !important;
-                          }
-                          .SelectedWeek .DayPicker-Day--hoverRange:hover {
-                            border-radius: 0 !important;
-                          }
-                        `}</style>
-                      </Helmet>
+                        <Helmet>
+                          <style>{`
+                            .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+                              background-color: #f0f8ff !important;
+                              color: #4a90e2;
+                            }
+                            .Selectable .DayPicker-Day {
+                              border-radius: 0 !important;
+                            }
+                            .Selectable .DayPicker-Day--start {
+                              border-top-left-radius: 50% !important;
+                              border-bottom-left-radius: 50% !important;
+                            }
+                            .Selectable .DayPicker-Day--end {
+                              border-top-right-radius: 50% !important;
+                              border-bottom-right-radius: 50% !important;
+                            }
+                          `}</style>
+                        </Helmet>
+                      </div>
                     </Col>
                   </Row>
                 </Form>

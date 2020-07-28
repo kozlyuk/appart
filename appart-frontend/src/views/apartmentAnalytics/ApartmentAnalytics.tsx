@@ -8,19 +8,22 @@
 import React, { Component } from 'react';
 import PageSpinner from '../../components/PageSpinner';
 import Page from '../../components/Page';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 // @ts-ignore
 import Pagination from 'react-js-pagination';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 import ApartmentAnalyticsController from '../../controllers/ApartmentAnalyticsController';
 import axios from 'axios';
-import styles from './apartmentAnalytics.module.css';
 import AnalyticsFilter from './filter/AnalyticsFilter';
+import AnalyticsLine from './components/AnalyticsLine';
+import moment from 'moment';
+import styles from './apartmentAnalytics.module.css';
 
 interface ApartmentAnalyticsInterface {
   isLoaded: boolean,
   data?: Apartment,
+  totalValues?: TotalValues,
   itemsCountPerPage: number,
   pageRangeDisplayed: number,
   activePage?: number,
@@ -33,11 +36,18 @@ interface ApartmentAnalyticsInterface {
 interface ApartmentAnalyticsProps {
 }
 
+type TotalValues = {
+  current_total_debt: number,
+  period_total_bills_sum: number,
+  period_total_payments_sum: number,
+  total_apartments_count: number
+}
+
 type Apartment = {
-  account_number: string, //
-  current_total_debt: number, //
-  house_name: string, //
-  number: number, //
+  account_number: string,
+  current_total_debt: number,
+  house_name: string,
+  number: number,
   period_total_bills: number,
   period_total_payments: number,
   pk: number,
@@ -45,6 +55,9 @@ type Apartment = {
 }
 
 export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProps, ApartmentAnalyticsInterface> {
+
+  // @ts-ignore
+  private AnalyticsFilter: AnalyticsFilter = new AnalyticsFilter();
 
   public state: ApartmentAnalyticsInterface = {
     isLoaded: false,
@@ -55,7 +68,9 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     activePage: undefined,
     paginationCount: undefined,
     filterQueries: {
-      is_active: false
+      is_active: true,
+      start_date: moment(this.AnalyticsFilter.getMonthRange(new Date()).from).format('YYYY-MM-DD'),
+      finish_date: moment(this.AnalyticsFilter.getMonthRange(new Date()).to).format('YYYY-MM-DD')
     }
     //paginator settings end
   };
@@ -63,11 +78,16 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
   private ApartmentAnalyticsController: ApartmentAnalyticsController = new ApartmentAnalyticsController();
 
   public componentDidMount(): void {
-    Promise.all(this.ApartmentAnalyticsController.getListingPromise())
-      .then(axios.spread((apartments) => {
+    const range = [this.state.filterQueries.start_date, this.state.filterQueries.finish_date] as [string, string];
+    Promise.all(this.ApartmentAnalyticsController.getListingPromise(range))
+      .then(axios.spread((
+        apartments,
+        totalValues
+      ) => {
         this.setState({
           isLoaded: true,
           data: apartments.data.results,
+          totalValues: totalValues.data,
           paginationCount: apartments.data.count,
           paginationNext: apartments.data.next,
           paginationPrevious: apartments.data.previous
@@ -76,27 +96,22 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
   }
 
   private loadData(dataUrl: string): void {
-    axios(dataUrl, {
-      headers: {
-        'Authorization': 'Token ' + this.ApartmentAnalyticsController.user.getAuthToken()
-      }
-    })
-      .then(
-        result => {
+    const range = [this.state.filterQueries.start_date, this.state.filterQueries.finish_date] as [string, string];
+    Promise.all(this.ApartmentAnalyticsController.getListingPromise(range, dataUrl))
+      .then(axios.spread((
+        apartments: any,
+        totalValues: any
+        ) => {
           this.setState({
             isLoaded: true,
-            data: result.data.results,
-            paginationCount: result.data.count,
-            paginationNext: result.data.next,
-            paginationPrevious: result.data.previous
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true
+            data: apartments.data.results,
+            totalValues: totalValues.data,
+            paginationCount: apartments.data.count,
+            paginationNext: apartments.data.next,
+            paginationPrevious: apartments.data.previous
           });
         }
-      );
+      ));
   }
 
   private filterSearchHandler = (event: any): void => {
@@ -173,33 +188,33 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
 
   private content = (): JSX.Element => {
     const data = this.state.data as any;
+    const total = this.state.totalValues;
     return (
       <Table responsive>
         <thead>
         {/*
         // @ts-ignore*/}
         <tr align="center">
-          <th>Назва будинку</th>
-          <th>Апартаменти</th>
-          <th>Житель</th>
-          <th>Рахунок</th>
-          <th>Заборгованість</th>
-          <th>period_total_bills</th>
-          <th>period_total_payments</th>
+          <th className={styles.withoutPadding}>Назва будинку</th>
+          <th className={styles.withoutPadding}>Апартаменти</th>
+          <th className={styles.withoutPadding}>Житель <br/>
+            Всього: <Badge color="info" pill>{total?.total_apartments_count}</Badge>
+          </th>
+          <th className={styles.withoutPadding}>Рахунок</th>
+          <th className={styles.withoutPadding}>Заборгованість<br/>
+            Всього: <Badge color="info" pill>{total?.current_total_debt}</Badge></th>
+          <th className={styles.withoutPadding}>Загальна заборгованість<br/>
+            Всього: <Badge color="info" pill>{total?.period_total_bills_sum}</Badge></th>
+          <th className={styles.withoutPadding}>Оплачено<br/>
+            Всього: <Badge color="info" pill>{total?.period_total_payments_sum}</Badge></th>
         </tr>
         </thead>
         <tbody>
         {data.map((item: Apartment) => (
-          // @ts-ignore
-          <tr align="center">
-            <td className={styles.withoutPadding}>{item.house_name}</td>
-            <td className={styles.withoutPadding}>{item.number}</td>
-            <td className={styles.withoutPadding}>{item.resident_name}</td>
-            <td className={styles.withoutPadding}>{item.account_number}</td>
-            <td className={styles.withoutPadding}>{item.current_total_debt}</td>
-            <td className={styles.withoutPadding}>{item.period_total_bills}</td>
-            <td className={styles.withoutPadding}>{item.period_total_payments}</td>
-          </tr>
+          <AnalyticsLine
+            key={item.pk} analyticsLine={item}
+            filterRange={[this.state.filterQueries.start_date, this.state.filterQueries.finish_date]}
+          />
         ))}
         </tbody>
       </Table>
