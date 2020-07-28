@@ -202,28 +202,6 @@ class CreateBills(APIView):
         return Response(message, status=status.HTTP_200_OK)
 
 
-class GetTotalDebt(APIView):
-    """
-    Return total debt for given apartment
-
-    * Only apartment owner has permission to view.
-    * Return error HTTP_400_BAD_REQUEST if apartment does not exist.
-    """
-    queryset = Apartment.objects.none()
-
-    def get(self, request, apartment: int):
-        apartment_pk = self.kwargs['apartment']
-        # get the apartment
-        try:
-            apartment = Apartment.objects.get(pk=apartment_pk)
-        # return error HTTP_400_BAD_REQUEST if apartment does not exist
-        except Apartment.DoesNotExist:
-            return Response(_('Apartment with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
-
-        # return total_debt from apartment
-        return Response(apartment.current_total_debt(), status=status.HTTP_200_OK)
-
-
 class PayView(APIView):
     """
     Prepare data for Payment Widget

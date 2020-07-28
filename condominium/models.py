@@ -87,8 +87,7 @@ class Apartment(models.Model):
 
     def total_bills_sum(self):
         """ return bills sum for appartment """
-        return self.bill_set.filter(is_active=True) \
-                            .aggregate(bills_sum=Sum('total_value')) \
+        return self.bill_set.aggregate(bills_sum=Sum('total_value')) \
                             ['bills_sum'] or 0
 
     def total_payments_sum(self):

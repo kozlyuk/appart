@@ -11,4 +11,5 @@ urlpatterns = (
     path("api/v1/total_debt_company/", api.TotalDebtCompany.as_view(), name='total_debt_company'),
     path("api/v1/total_payments_company/", api.TotalPaymentsCompany.as_view(), name='total_payments_company'),
     path("api/v1/last_payments/", api.LastPayments.as_view(), name='last_payments'),
+    path("api/v1/top_debtors/", api.TopDebtors.as_view(), name='top_debtors'),
 )

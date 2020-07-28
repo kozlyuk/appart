@@ -6,9 +6,10 @@ from rest_framework import views, status
 from rest_framework.generics import ListAPIView
 
 from condominium.models import Apartment
+from condominium.serializers import ApartmentSerializer
 from accounts.models import User
 from payments.models import Bill, Payment
-from payments import serializers
+from payments.serializers import PaymentSerializer
 
 
 class ActiveApartments(views.APIView):
@@ -94,9 +95,23 @@ class LastPayments(ListAPIView):
     Args:
         count ([int]): count of entries
     """
-    serializer_class = serializers.PaymentSerializer
+    serializer_class = PaymentSerializer
 
     def get_queryset(self):
         # filtering queryset
         count = int(self.request.query_params.get('count', 10))
-        return Payment.objects.all().order_by('-id')[:count]
+        return Payment.objects.order_by('-id')[:count]
+
+
+class TopDebtors(ListAPIView):
+    """ return queryset of top N Debtors
+
+    Args:
+        count ([int]): count of entries
+    """
+    serializer_class = ApartmentSerializer
+
+    def get_queryset(self):
+        # filtering queryset
+        count = int(self.request.query_params.get('count', 10))
+        return Apartment.objects.order_by('-debt')[:count]

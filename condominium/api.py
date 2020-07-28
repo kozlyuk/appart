@@ -282,7 +282,7 @@ class TotalApartmentsAnalytics(views.APIView):
         period_total_bills_sum = 0
         period_total_payments_sum = 0
         for apartment in queryset:
-            current_total_debt += apartment.current_total_debt()
+            current_total_debt += apartment.debt
             period_total_bills_sum += apartment.period_total_bills(start_date, finish_date)
             period_total_payments_sum += apartment.period_total_payments(start_date, finish_date)
 
