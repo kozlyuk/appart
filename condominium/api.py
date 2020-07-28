@@ -15,6 +15,49 @@ from condominium.services import is_int
 from payments.models import Bill, Payment
 from payments.serializers import BillSerializer, PaymentSerializer
 
+
+def apartment_queryset_filter(request):
+    """return queryset of apartments filtered by get parameters in request"""
+    queryset = Apartment.objects.all()
+    search_string = request.GET.get('filter', '').split()
+    company = request.GET.get('company')
+    houses = request.GET.getlist('house')
+    is_active = not request.GET.get('is_active') == "0"
+    order = request.GET.get('order')
+    for word in search_string:
+        queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
+                                   Q(resident__first_name__icontains=word) |
+                                   Q(resident__last_name__icontains=word) |
+                                   Q(number__contains=word) |
+                                   Q(account_number__contains=word))
+    if company:
+        queryset = queryset.filter(house__company=company)
+    if houses:
+        qs_union = Apartment.objects.none()
+        for house in houses:
+            qs_segment = queryset.filter(house=house)
+            qs_union = qs_union | qs_segment
+        queryset = qs_union
+    if is_active:
+        queryset = queryset.filter(is_active=True)
+    if order:
+        queryset = queryset.order_by(order)
+    return queryset
+
+
+def house_queryset_filter(request):
+    """return queryset of houses filtered by get parameters in request"""
+    queryset = House.objects.all()
+    search_string = request.GET.get('filter', '').split()
+    order = request.GET.get('order')
+    for word in search_string:
+        queryset = queryset.filter(Q(name__icontains=word) |
+                                   Q(address__icontains=word))
+    if order:
+        queryset = queryset.order_by(order)
+    return queryset
+
+
 class ApartmentViewSet(viewsets.ModelViewSet):
     """ViewSet for the Apartment class
     Filter queryset by search string ('filter' get parameter)
@@ -25,27 +68,8 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ApartmentSerializer
 
     def get_queryset(self):
-        queryset = Apartment.objects.all()
-        search_string = self.request.GET.get('filter', '').split()
-        company = self.request.GET.get('company')
-        house = self.request.GET.get('house')
-        is_active = self.request.GET.get('is_active', 'True')
-        order = self.request.GET.get('order')
-        for word in search_string:
-            queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
-                                       Q(resident__first_name__icontains=word) |
-                                       Q(resident__last_name__icontains=word) |
-                                       Q(number__contains=word) |
-                                       Q(account_number__contains=word))
-
-        if company:
-            queryset = queryset.filter(house__company=company)
-        if house:
-            queryset = queryset.filter(house=house)
-        if is_active in ['true', 'True']:
-            queryset = queryset.filter(is_active=is_active)
-        if order:
-            queryset = queryset.order_by(order)
+        # filtering queryset
+        queryset = apartment_queryset_filter(self.request)
 
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
@@ -74,31 +98,8 @@ class ApartmentAnalytics(ListAPIView):
                 'finish_date': self.request.query_params.get('finish_date', date.today())}
 
     def get_queryset(self):
-        queryset = Apartment.objects.all()
-        search_string = self.request.GET.get('filter', '').split()
-        company = self.request.GET.get('company')
-        houses = self.request.GET.getlist('house')
-        is_active = self.request.GET.get('is_active', 'True')
-        order = self.request.GET.get('order')
-        for word in search_string:
-            queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
-                                       Q(resident__first_name__icontains=word) |
-                                       Q(resident__last_name__icontains=word) |
-                                       Q(number__contains=word) |
-                                       Q(account_number__contains=word))
-
-        if company:
-            queryset = queryset.filter(house__company=company)
-        if houses:
-            qs_union = Apartment.objects.none()
-            for house in houses:
-                qs_segment = queryset.filter(house=house)
-                qs_union = qs_union | qs_segment
-            queryset = qs_union
-        if is_active in ['true', 'True']:
-            queryset = queryset.filter(is_active=True)
-        if order:
-            queryset = queryset.order_by(order)
+        # filtering queryset
+        queryset = apartment_queryset_filter(self.request)
 
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
@@ -121,16 +122,7 @@ class HouseViewSet(viewsets.ModelViewSet):
     permission_class = permissions.AllowAny
 
     def get_queryset(self):
-        queryset = House.objects.all()
-        search_string = self.request.GET.get('filter', '').split()
-        order = self.request.GET.get('order')
-        for word in search_string:
-            queryset = queryset.filter(Q(name__icontains=word) |
-                                       Q(address__icontains=word))
-
-        if order:
-            queryset = queryset.order_by(order)
-        return queryset
+        return house_queryset_filter(self.request)
 
 
 class HouseWithoutPagination(HouseViewSet):
@@ -266,48 +258,36 @@ class ApartmentBalanceSheet(ListAPIView):
 class TotalApartmentsAnalytics(views.APIView):
     """
     Sending JSON with total apartments analytics
+    Get parameters:
+        start_date (date): from date filter
+        finish_date (date): to date filter
+    Returns:
+        "total_apartments_count": count of apartments in queryset,
+        "current_total_debt": total debt of apartments in queryset
+        "period_total_bills_sum": bills sum of apartments in queryset,
+        "period_total_payments_sum": payments sum of apartments in queryset
     """
     queryset = Apartment.objects.none()
 
     def get(self, request):
         # filtering queryset
-        queryset = Apartment.objects.all()
-        search_string = self.request.GET.get('filter', '').split()
-        company = self.request.GET.get('company')
-        houses = self.request.GET.getlist('house')
-        is_active = self.request.GET.get('is_active', 'True')
-        order = self.request.GET.get('order')
-        for word in search_string:
-            queryset = queryset.filter(Q(resident__mobile_number__contains=word) |
-                                       Q(resident__first_name__icontains=word) |
-                                       Q(resident__last_name__icontains=word) |
-                                       Q(number__contains=word) |
-                                       Q(account_number__contains=word))
-
-        if company:
-            queryset = queryset.filter(house__company=company)
-        if houses:
-            qs_union = Apartment.objects.none()
-            for house in houses:
-                qs_segment = queryset.filter(house=house)
-                qs_union = qs_union | qs_segment
-            queryset = qs_union
-        if is_active in ['true', 'True']:
-            queryset = queryset.filter(is_active=True)
-        if order:
-            queryset = queryset.order_by(order)
+        queryset = apartment_queryset_filter(self.request)
 
         # qalculating total data
         start_date = self.request.GET.get('start_date')
         finish_date = self.request.GET.get('finish_date')
+        current_total_debt = 0
         period_total_bills_sum = 0
         period_total_payments_sum = 0
         for apartment in queryset:
+            current_total_debt += apartment.current_total_debt()
             period_total_bills_sum += apartment.period_total_bills(start_date, finish_date)
             period_total_payments_sum += apartment.period_total_payments(start_date, finish_date)
 
         # sending responce with totals
         json_data = {}
+        json_data["total_apartments_count"] = queryset.count()
+        json_data["current_total_debt"] = current_total_debt
         json_data["period_total_bills_sum"] = period_total_bills_sum
         json_data["period_total_payments_sum"] = period_total_payments_sum
         return Response(json_data, status=status.HTTP_200_OK)

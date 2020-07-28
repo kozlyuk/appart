@@ -59,6 +59,7 @@ class PaymentServiceSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     payment_service = PaymentServiceSerializer(source='paymentservice_set', many=True, required=False)
     apartment_name = serializers.CharField(source='apartment', required=False)
+    payment_type_name = serializers.CharField(source='get_payment_type_display', required=False)
 
     class Meta:
         model = Payment
@@ -68,6 +69,7 @@ class PaymentSerializer(serializers.ModelSerializer):
             "apartment_name",
             "payment_service",
             "payment_type",
+            "payment_type_name",
             "date",
             "value",
             "description",
