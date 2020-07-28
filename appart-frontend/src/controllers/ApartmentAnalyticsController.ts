@@ -21,10 +21,14 @@ export default class ApartmentAnalyticsController {
 
   public companyEndpoint = process.env['REACT_APP_COMPANY'];
 
+  public apartmentBalanceSheetEndpoint = process.env['REACT_APP_APARTMENTS_BALANCE_SHEET'];
+
+  public apartmentTotalValuesEndpoint = process.env['REACT_APP_APARTMENTS_TOTAL_ANALYTICS'];
+
   public apartmentAnalyticsEndpoint = process.env['REACT_APP_APARTMENTS_ANALYTICS'] + '?page_size=100';
 
-  public getListingPromise(): Promise<AxiosResponse>[] {
-    return [this.getApartmentsAnalyticsPromise()];
+  public getListingPromise(range: [string, string], query: string = this.apartmentAnalyticsEndpoint): Promise<AxiosResponse>[] {
+    return [this.getApartmentsAnalyticsPromise(query), this.getApartmentAnalyticsTotalValuePromise(range)];
   }
 
   public getFilterPromise(): Promise<AxiosResponse>[] {
@@ -39,7 +43,15 @@ export default class ApartmentAnalyticsController {
     return axios.get(<string>this.houseEndpoint, this.headers);
   }
 
-  public getApartmentsAnalyticsPromise(): Promise<AxiosResponse> {
-    return axios.get(<string>this.apartmentAnalyticsEndpoint, this.headers);
+  public getApartmentsAnalyticsPromise(query: string): Promise<AxiosResponse> {
+    return axios.get(<string>query, this.headers);
+  }
+
+  public getApartmentAnalyticsTotalValuePromise(range: [string, string]): Promise<AxiosResponse> {
+    return axios.get(<string>`${this.apartmentTotalValuesEndpoint}?start_date=${range[0]}&finish_date=${range[1]}`, this.headers);
+  }
+
+  public getApartmentBalanceSheetPromise(id: number, range: [string, string]): Promise<AxiosResponse>[] {
+    return [axios.get(`${this.apartmentBalanceSheetEndpoint}${id}/?start_date=${range[0]}&finish_date=${range[1]}`, this.headers)];
   }
 }
