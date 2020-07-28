@@ -32,8 +32,8 @@ interface FilterProps {
 interface FilterStateInterface {
   isLoaded: boolean,
   filterToggle: boolean,
-  houseChoices: [] | null,
-  serviceChoices: [] | null
+  houseChoices: [] | any,
+  serviceChoices: [] | any
 }
 
 export default class RateFilter extends Component<FilterProps, FilterStateInterface> {
@@ -60,14 +60,16 @@ export default class RateFilter extends Component<FilterProps, FilterStateInterf
   };
 
   public componentDidMount() {
+    const emptyHouse = { pk: '', name: '----------' };
+    const emptyService = { pk: '', name: '----------' };
     Promise.all(this.RateController.getFilterPromise())
       .then(axios.spread((
         houses,
         services
         ) => {
           this.setState({
-            houseChoices: houses.data,
-            serviceChoices: services.data,
+            houseChoices: [emptyHouse, ...houses.data],
+            serviceChoices: [emptyService, ...services.data],
             isLoaded: true
           });
         }
@@ -114,7 +116,7 @@ export default class RateFilter extends Component<FilterProps, FilterStateInterf
                           id="house"
                           onChange={filterHouseHandler}
                         >
-                          {this.state.houseChoices?.map(({ name, pk }) => (
+                          {this.state.houseChoices?.map(({ name, pk }: any) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
@@ -133,7 +135,7 @@ export default class RateFilter extends Component<FilterProps, FilterStateInterf
                           id="service"
                           onChange={filterServiceHandler}
                         >
-                          {this.state.serviceChoices?.map(({ name, pk }) => (
+                          {this.state.serviceChoices?.map(({ name, pk }: any) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>

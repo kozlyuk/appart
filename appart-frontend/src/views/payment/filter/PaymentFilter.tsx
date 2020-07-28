@@ -23,9 +23,9 @@ interface FilterProps {
 interface FilterStateInterface {
   isLoaded: boolean,
   filterToggle: boolean,
-  houseChoices: [] | null,
-  serviceChoices: [] | null,
-  paymentTypeChoices: [] | null
+  houseChoices: [] | any,
+  serviceChoices: [] | any,
+  paymentTypeChoices: [] | any
 }
 
 export default class PaymentFilter extends Component<FilterProps, FilterStateInterface> {
@@ -53,6 +53,9 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
   };
 
   public componentDidMount() {
+    const emptyHouse = { pk: '', name: '----------' };
+    const emptyService = { pk: '', name: '----------' };
+    const emptyPaymentType = ['', '----------'];
     // @ts-ignore
     Promise.all(this.PaymentFilterContoller.getPromiseValues())
       .then(axios.spread((
@@ -61,9 +64,9 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
         paymentTypes: any
         ) => {
           this.setState({
-            serviceChoices: services.data,
-            houseChoices: houses.data,
-            paymentTypeChoices: paymentTypes.data,
+            serviceChoices: [emptyService, ...services.data],
+            houseChoices: [emptyHouse, ...houses.data],
+            paymentTypeChoices: [emptyPaymentType, ...paymentTypes.data],
             isLoaded: true
           });
         }
@@ -143,7 +146,7 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
                           id="service"
                           onChange={filterServiceHandler}
                         >
-                          {this.state.serviceChoices?.map(({ name, pk }) => (
+                          {this.state.serviceChoices?.map(({ name, pk }: any) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
@@ -164,7 +167,7 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
                           id="house"
                           onChange={filterHouseHandler}
                         >
-                          {this.state.houseChoices?.map(({ name, pk }) => (
+                          {this.state.houseChoices?.map(({ name, pk }: any) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
