@@ -268,7 +268,7 @@ export default class AnalyticsLine extends Component<AnalyticsLineProps, Analyti
           <td className={styles.withoutPadding}>{analyticsLine.period_total_payments}</td>
         </tr>
         <Modal isOpen={this.state.toggleModal} toggle={this.toggleModal} size="xl">
-          <ModalHeader toggle={this.toggleModal}>Рахунок: {analyticsLine.account_number} для
+          <ModalHeader toggle={this.toggleModal}>Особовий рахунок: {analyticsLine.account_number} для
             апартаментів № {analyticsLine.number} {analyticsLine.house_name}</ModalHeader>
           <ModalBody>
             {this.modalContent()}
