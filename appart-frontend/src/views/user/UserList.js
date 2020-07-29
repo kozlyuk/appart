@@ -69,7 +69,6 @@ export default class UserList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="userList.tableHeader.avatar"/></th>
           <th><Text text="userList.tableHeader.firstName"/></th>
           <th><Text text="userList.tableHeader.lastName"/></th>
           <th><Text text="userList.tableHeader.isActive"/></th>
@@ -81,10 +80,6 @@ export default class UserList extends AbstractListView {
         <tbody>
         {this.state.data.map((user) => (
           <tr key={user.pk} align="center">
-            <td width="2%">
-              <img onClick={this.toggle()} style={{ height: '30px', cursor: 'pointer' }} src={user.avatar}
-                   alt="avatar"/>
-            </td>
             <td>{user.first_name}</td>
             <td>{user.last_name}</td>
             <td>
