@@ -200,9 +200,9 @@ export default class ApartmentList extends AbstractListView {
    * @param pageNumber
    */
   handlePageChange(pageNumber) {
-    const searchQuery = this.state.searchQuery.toString().trim();
-    const houseQuery = this.state.filterQueries.house.trim();
-    const companyQuery = this.state.filterQueries.company.trim();
+    const searchQuery = this.state.searchQuery?.toString().trim();
+    const houseQuery = this.state.filterQueries?.house || '';
+    const companyQuery = this.state.filterQueries?.company || '';
     this.setState({ activePage: pageNumber });
     this.refreshData(pageNumber, `?filter=${searchQuery}&house=${houseQuery}&company=${companyQuery}`);
   }
