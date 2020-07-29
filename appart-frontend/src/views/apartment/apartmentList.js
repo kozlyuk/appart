@@ -14,6 +14,7 @@ import Fade from 'react-reveal/Fade';
 import PageSpinner from '../../components/PageSpinner';
 import PermissionComponent from '../../acl/PermissionComponent';
 import { PermissionContext } from '../../globalContext/PermissionContext';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class ApartmentList extends AbstractListView {
@@ -153,28 +154,28 @@ export default class ApartmentList extends AbstractListView {
           <Table responsive>
             <thead>
             <tr align="center">
-              <th><Text text="apartmentList.tableHeader.number"/></th>
-              <th><Text text="apartmentList.tableHeader.house"/></th>
-              <th><Text text="apartmentList.tableHeader.resident"/></th>
-              <th width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
-              <th><Text text="apartmentList.tableHeader.actions"/></th>
+              <th className={styles.withoutPadding}><Text text="apartmentList.tableHeader.number"/></th>
+              <th className={styles.withoutPadding}><Text text="apartmentList.tableHeader.house"/></th>
+              <th className={styles.withoutPadding}><Text text="apartmentList.tableHeader.resident"/></th>
+              <th className={styles.withoutPadding} width="2%"><Text text="apartmentList.tableHeader.isActive"/></th>
+              <th className={styles.withoutPadding}><Text text="apartmentList.tableHeader.actions"/></th>
             </tr>
             </thead>
             <tbody>
             {this.state.data.map((apartment) => (
               <tr key={apartment.pk} align="center">
-                <td width="2%">{apartment.number}</td>
-                <td>{apartment.house_name}</td>
-                {apartment.resident ? <td>{apartment.resident_name}</td>
-                  : <td><Text text="apartmentList.emptyApartment"/></td>}
-                <td>
+                <td className={styles.withoutPadding} width="2%">{apartment.number}</td>
+                <td className={styles.withoutPadding}>{apartment.house_name}</td>
+                {apartment.resident ? <td className={styles.withoutPadding}>{apartment.resident_name}</td>
+                  : <td className={styles.withoutPadding}><Text text="apartmentList.emptyApartment"/></td>}
+                <td className={styles.withoutPadding}>
                   {apartment.is_active ?
                     <FaCheck className="text-success"/>
                     :
                     <MdClose className="text-danger"/>
                   }
                 </td>
-                <td width="15%">
+                <td className={styles.withoutPadding} width="15%">
                   <PermissionComponent
                     aclList={this.context.apartment} permissionName="change"
                   >

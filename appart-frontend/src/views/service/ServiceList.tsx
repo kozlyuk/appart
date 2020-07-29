@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import PageSpinner from '../../components/PageSpinner';
 import PermissionComponent from '../../acl/PermissionComponent';
 import { PermissionContext } from '../../globalContext/PermissionContext';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 interface ServiceListInterface {
   isLoaded: boolean,
@@ -90,20 +91,20 @@ export default class ServiceList extends Component<any, ServiceListInterface> {
         {/*
         // @ts-ignore*/}
         <tr align="center">
-          <th>Сервіс</th>
-          <th>Одиниця виміру</th>
-          <th><Text text="rateList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}>Сервіс</th>
+          <th className={styles.withoutPadding}>Одиниця виміру</th>
+          <th className={styles.withoutPadding}><Text text="rateList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {data?.map((item: Service) => (
           // @ts-ignore
           <tr align="center">
-            <td>{item.name}</td>
-            <td>{item.uom}</td>
+            <td className={styles.withoutPadding}>{item.name}</td>
+            <td className={styles.withoutPadding}>{item.uom}</td>
             {/*
             // @ts-ignore*/}
-            <td width="15%">
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.service} permissionName="change"
               >

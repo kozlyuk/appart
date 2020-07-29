@@ -17,6 +17,7 @@ import PageSpinner from '../../components/PageSpinner';
 import PermissionComponent from '../../acl/PermissionComponent';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import RateFilter from './filter/RateFilter';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 interface RateListInterface {
   isLoaded: boolean,
@@ -195,24 +196,24 @@ export default class RateList extends Component<any, RateListInterface> {
         {/*
         // @ts-ignore*/}
         <tr align="center">
-          <th><Text text="rateList.tableHeader.houseName"/></th>
-          <th><Text text="rateList.tableHeader.serviceName"/></th>
-          <th><Text text="rateList.tableHeader.value"/></th>
-          <th><Text text="rateList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}><Text text="rateList.tableHeader.houseName"/></th>
+          <th className={styles.withoutPadding}><Text text="rateList.tableHeader.serviceName"/></th>
+          <th className={styles.withoutPadding}><Text text="rateList.tableHeader.value"/></th>
+          <th className={styles.withoutPadding}><Text text="rateList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {data?.map((item: Rate) => (
           // @ts-ignore
           <tr align="center">
-            <td>{item.house_name}</td>
-            <td>{item.service_name}</td>
+            <td className={styles.withoutPadding}>{item.house_name}</td>
+            <td className={styles.withoutPadding}>{item.service_name}</td>
             {/*
             // @ts-ignore*/}
-            <td width="5%">{item.value}</td>
+            <td className={styles.withoutPadding} width="5%">{item.value}</td>
             {/*
             // @ts-ignore*/}
-            <td width="15%">
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.rate} permissionName="change"
               >

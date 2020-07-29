@@ -26,6 +26,7 @@ import { FaCheck } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import PermissionComponent from '../../acl/PermissionComponent';
 import { PermissionContext } from '../../globalContext/PermissionContext';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class UserList extends AbstractListView {
@@ -69,27 +70,27 @@ export default class UserList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="userList.tableHeader.firstName"/></th>
-          <th><Text text="userList.tableHeader.lastName"/></th>
-          <th><Text text="userList.tableHeader.isActive"/></th>
-          <th><Text text="userList.tableHeader.isPersonal"/></th>
+          <th className={styles.withoutPadding}><Text text="userList.tableHeader.firstName"/></th>
+          <th className={styles.withoutPadding}><Text text="userList.tableHeader.lastName"/></th>
+          <th className={styles.withoutPadding}><Text text="userList.tableHeader.isActive"/></th>
+          <th className={styles.withoutPadding}><Text text="userList.tableHeader.isPersonal"/></th>
           {/*<th><Text text="userList.tableHeader.birthDate"/></th>*/}
-          <th><Text text="userList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}><Text text="userList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data.map((user) => (
           <tr key={user.pk} align="center">
-            <td>{user.first_name}</td>
-            <td>{user.last_name}</td>
-            <td>
+            <td className={styles.withoutPadding}>{user.first_name}</td>
+            <td className={styles.withoutPadding}>{user.last_name}</td>
+            <td className={styles.withoutPadding}>
               {user.is_active ?
                 <FaCheck className="text-success"/>
                 :
                 <MdClose className="text-danger"/>
               }
             </td>
-            <td>
+            <td className={styles.withoutPadding}>
               {user.is_staff ?
                 <FaCheck className="text-success"/>
                 :
@@ -97,7 +98,7 @@ export default class UserList extends AbstractListView {
               }
             </td>
             {/*<td>{user.birth_date}</td>*/}
-            <td width="15%">
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.user} permissionName="change"
               >

@@ -24,6 +24,7 @@ import HouseFilter from './filter/OrderFilter';
 import { MdFiberManualRecord } from 'react-icons/md';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class OrderList extends AbstractListView {
@@ -66,31 +67,31 @@ export default class OrderList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="orderList.tableHeader.apartment"/></th>
-          <th><Text text="orderList.tableHeader.execStatus"/></th>
-          <th><Text text="orderList.tableHeader.payStatus"/></th>
-          <th><Text text="orderList.tableHeader.warning"/></th>
-          <th><Text text="orderList.tableHeader.workName"/></th>
-          <th><Text text="orderList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.apartment"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.execStatus"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.payStatus"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.warning"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.workName"/></th>
+          <th className={styles.withoutPadding}><Text text="orderList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data.map((order) => (
           <tr key={order.pk} align="center">
-            <td>{order.apartment_name}</td>
+            <td className={styles.withoutPadding}>{order.apartment_name}</td>
             {order.exec_status === 'New' ?
-              <td>
+              <td className={styles.withoutPadding}>
                 <MdFiberManualRecord
                   color={'#45b649'}
                   style={{ marginBottom: '2px' }}
                   size={12}
                 /> {order.exec_status}
               </td> :
-              <td>{order.exec_status}</td>}
-            <td>{order.pay_status}</td>
-            <td>{order.warning}</td>
-            <td>{order.work_name}</td>
-            <td width="15%">
+              <td className={styles.withoutPadding}>{order.exec_status}</td>}
+            <td className={styles.withoutPadding}>{order.pay_status}</td>
+            <td className={styles.withoutPadding}>{order.warning}</td>
+            <td className={styles.withoutPadding}>{order.work_name}</td>
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.order} permissionName="change"
               >

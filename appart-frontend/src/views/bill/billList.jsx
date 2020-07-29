@@ -40,6 +40,7 @@ import BillController from '../../controllers/BillController';
 import SelectWithChoices from '../../components/FormInputs/SelectWithChoices';
 import Swal from 'sweetalert2';
 import PrintContainer from './PrintContainer';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class BillList extends AbstractListView {
@@ -283,19 +284,19 @@ export default class BillList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="billList.tableHeader.apartment"/></th>
-          <th><Text text="billList.tableHeader.apartmentNumber"/></th>
-          <th><Text text="billList.tableHeader.purpose"/></th>
-          <th><Text text="billList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}><Text text="billList.tableHeader.apartment"/></th>
+          <th className={styles.withoutPadding}><Text text="billList.tableHeader.apartmentNumber"/></th>
+          <th className={styles.withoutPadding}><Text text="billList.tableHeader.purpose"/></th>
+          <th className={styles.withoutPadding}><Text text="billList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data?.map((bill) => (
           <tr key={bill.pk} align="center">
-            <td>{bill.apartment_name}</td>
-            <td>{bill.number}</td>
-            <td>{bill.purpose}</td>
-            <td width="15%">
+            <td className={styles.withoutPadding}>{bill.apartment_name}</td>
+            <td className={styles.withoutPadding}>{bill.number}</td>
+            <td className={styles.withoutPadding}>{bill.purpose}</td>
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.bill} permissionName="view"
               >
