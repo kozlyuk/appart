@@ -23,7 +23,6 @@ urlpatterns = (
     path("api/v1/", include(bill_router.urls)),
     path("api/v1/", include(payment_router.urls)),
 
-    path("api/v1/get_total_debt/<int:apartment>/", api.GetTotalDebt.as_view(), name='get_total_debt'),
     path("api/v1/create_bills/", api.CreateBills.as_view()),
 
     path("api/v1/pay/<int:bill>/", api.PayView.as_view(), name='pay_view'),

@@ -53,6 +53,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
             "is_active",
             "area",
             "residents_count",
+            "debt"
         ]
 
     @staticmethod
@@ -79,7 +80,7 @@ class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
             "resident_name",
             "number",
             "account_number",
-            "current_total_debt",
+            "debt",
             "period_total_bills",
             "period_total_payments"
         ]

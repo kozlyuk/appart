@@ -12,6 +12,7 @@ import PageSpinner from '../../components/PageSpinner';
 import WorkFilter from './filter/WorkFilter';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class WorkList extends AbstractListView {
@@ -80,15 +81,6 @@ export default class WorkList extends AbstractListView {
     return `${this.dataUrl}?filter=${searchQuery}&house=${houseQuery}`;
   }
 
-  sample = {
-    'pk': 2,
-    'name': 'awdafasqadqa',
-    'price_code': '2134',
-    'price': '1231.00',
-    'description': 'afa',
-    'duration': null
-  };
-
   /**
    *
    * @return {*}
@@ -100,25 +92,25 @@ export default class WorkList extends AbstractListView {
           <Table responsive>
             <thead>
             <tr align="center">
-              <th><Text text="workList.tableHeader.name"/></th>
-              <th><Text text="workList.tableHeader.priceCode"/></th>
-              <th><Text text="workList.tableHeader.price"/></th>
-              <th width="2%"><Text text="workList.tableHeader.duration"/></th>
-              <th><Text text="workList.tableHeader.actions"/></th>
+              <th className={styles.withoutPadding}><Text text="workList.tableHeader.name"/></th>
+              <th className={styles.withoutPadding}><Text text="workList.tableHeader.priceCode"/></th>
+              <th className={styles.withoutPadding}><Text text="workList.tableHeader.price"/></th>
+              <th className={styles.withoutPadding} width="2%"><Text text="workList.tableHeader.duration"/></th>
+              <th className={styles.withoutPadding}><Text text="workList.tableHeader.actions"/></th>
             </tr>
             </thead>
             <tbody>
             {this.state.data.map((work) => (
               <tr key={work.pk} align="center">
-                <td>{work.name}</td>
-                <td>{work.price_code}</td>
-                <td>{work.price}</td>
+                <td className={styles.withoutPadding}>{work.name}</td>
+                <td className={styles.withoutPadding}>{work.price_code}</td>
+                <td className={styles.withoutPadding}>{work.price}</td>
                 {work.duration ?
-                  <td>{work.duration}</td>
+                  <td className={styles.withoutPadding}>{work.duration}</td>
                   :
-                  <td><Text text="workList.emptyDuration"/></td>
+                  <td className={styles.withoutPadding}><Text text="workList.emptyDuration"/></td>
                 }
-                <td width="15%">
+                <td className={styles.withoutPadding} width="15%">
                   <PermissionComponent
                     aclList={this.context.work} permissionName="change"
                   >

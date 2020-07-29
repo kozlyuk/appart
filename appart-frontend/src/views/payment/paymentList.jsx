@@ -9,6 +9,7 @@ import PaymentFilter from './filter/PaymentFilter';
 import PageSpinner from '../../components/PageSpinner';
 import { PermissionContext } from '../../globalContext/PermissionContext';
 import PermissionComponent from '../../acl/PermissionComponent';
+import styles from '../apartmentAnalytics/apartmentAnalytics.module.css';
 
 
 export default class PaymentList extends AbstractListView {
@@ -110,17 +111,17 @@ export default class PaymentList extends AbstractListView {
       <Table responsive>
         <thead>
         <tr align="center">
-          <th><Text text="paymentList.tableHeader.apartment"/></th>
-          <th><Text text="paymentList.tableHeader.value"/></th>
-          <th><Text text="paymentList.tableHeader.actions"/></th>
+          <th className={styles.withoutPadding}><Text text="paymentList.tableHeader.apartment"/></th>
+          <th className={styles.withoutPadding}><Text text="paymentList.tableHeader.value"/></th>
+          <th className={styles.withoutPadding}><Text text="paymentList.tableHeader.actions"/></th>
         </tr>
         </thead>
         <tbody>
         {this.state.data.map((payment) => (
           <tr key={payment.pk} align="center">
-            <td>{payment.apartment_name}</td>
-            <td>{payment.value}</td>
-            <td width="15%">
+            <td className={styles.withoutPadding}>{payment.apartment_name}</td>
+            <td className={styles.withoutPadding}>{payment.value}</td>
+            <td className={styles.withoutPadding} width="15%">
               <PermissionComponent
                 aclList={this.context.payment} permissionName="change"
               >

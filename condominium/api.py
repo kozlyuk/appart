@@ -21,7 +21,8 @@ def apartment_queryset_filter(request):
     queryset = Apartment.objects.all()
     search_string = request.GET.get('filter', '').split()
     company = request.GET.get('company')
-    houses = request.GET.getlist('house')
+    house = request.GET.get('house')
+    # houses = request.GET.get('houses')
     is_active = not request.GET.get('is_active') == "0"
     order = request.GET.get('order')
     for word in search_string:
@@ -32,12 +33,14 @@ def apartment_queryset_filter(request):
                                    Q(account_number__contains=word))
     if company:
         queryset = queryset.filter(house__company=company)
-    if houses:
-        qs_union = Apartment.objects.none()
-        for house in houses:
-            qs_segment = queryset.filter(house=house)
-            qs_union = qs_union | qs_segment
-        queryset = qs_union
+    if house:
+        queryset = queryset.filter(house=house)
+    # if houses:
+    #     qs_union = Apartment.objects.none()
+    #     for house in houses:
+    #         qs_segment = queryset.filter(house=house)
+    #         qs_union = qs_union | qs_segment
+    #     queryset = qs_union
     if is_active:
         queryset = queryset.filter(is_active=True)
     if order:
@@ -219,10 +222,9 @@ class ApartmentBalanceSheet(ListAPIView):
             "Payments": PaymentSerializer.data
     """
 
-    permission_classes = [permissions.IsAuthenticated] # TODO write permissions
     serializer_class_bill = BillSerializer
     serializer_class_payment = PaymentSerializer
-    queryset = Bill.objects.none
+    queryset = Bill.objects.all()
 
     def get_queryset_bill(self, apartment_pk):
         start_date = self.request.GET.get('start_date')
@@ -280,7 +282,7 @@ class TotalApartmentsAnalytics(views.APIView):
         period_total_bills_sum = 0
         period_total_payments_sum = 0
         for apartment in queryset:
-            current_total_debt += apartment.current_total_debt()
+            current_total_debt += apartment.debt
             period_total_bills_sum += apartment.period_total_bills(start_date, finish_date)
             period_total_payments_sum += apartment.period_total_payments(start_date, finish_date)
 
