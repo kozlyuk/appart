@@ -88,7 +88,8 @@ class UserApartmentsSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "house",
-            "number"
+            "number",
+            "debt"
         ]
 
 
