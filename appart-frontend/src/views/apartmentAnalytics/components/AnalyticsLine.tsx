@@ -79,7 +79,7 @@ type PaymentLine = {
 
 type Apartment = {
   account_number: string,
-  current_total_debt: number,
+  debt: number,
   house_name: string,
   number: number,
   period_total_bills: number,
@@ -263,7 +263,7 @@ export default class AnalyticsLine extends Component<AnalyticsLineProps, Analyti
           <td className={styles.withoutPadding}>{analyticsLine.number}</td>
           <td className={styles.withoutPadding}>{analyticsLine.resident_name}</td>
           <td className={styles.withoutPadding}>{analyticsLine.account_number}</td>
-          <td className={styles.withoutPadding}>{analyticsLine.current_total_debt}</td>
+          <td className={styles.withoutPadding}>{analyticsLine.debt}</td>
           <td className={styles.withoutPadding}>{analyticsLine.period_total_bills}</td>
           <td className={styles.withoutPadding}>{analyticsLine.period_total_payments}</td>
         </tr>

@@ -7,13 +7,13 @@
 
 import React, { Component } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
-import axios from 'axios';
 import Auth from '../../../auth/auth';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
 import { Link } from 'react-router-dom';
 import CabinetBreadcrumbs from '../../../breadcrumbs/CabinetBreadcrumbs';
 import { LangContext } from '../../../globalContext/langContext';
+import { UserContext } from '../../../globalContext/userContext';
 
 export default class Navbar extends Component<any, any> {
 
@@ -26,7 +26,7 @@ export default class Navbar extends Component<any, any> {
 
   state = {
     data: null,
-    isLoaded: false,
+    isLoaded: true,
     tooltipOpen1: false,
     tooltipOpen2: false
   };
@@ -44,31 +44,6 @@ export default class Navbar extends Component<any, any> {
       tooltipOpen2: !tooltipOpen2
     });
   };
-
-  componentDidMount() {
-    console.log(this.context);
-    axios(`${process.env.REACT_APP_GET_TOTAL_DEBT}${this.props.userPk}`, {
-      headers: {
-        'Authorization': 'Token ' + this.user.getAuthToken()
-      }
-    })
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            data: result.data,
-            paginationCount: result.data.count,
-            paginationNext: result.data.next,
-            paginationPrevious: result.data.previous
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true
-          });
-        }
-      );
-  }
 
   static contextType = LangContext;
 
@@ -100,9 +75,13 @@ export default class Navbar extends Component<any, any> {
             <div>
               <p/>
             </div>
-            <div className=" alert alert-success align-self-center p-1 mb-0 mx-auto" role="alert">
-              <Text text="cabinet.debt"/>: {this.state.data}
-            </div>
+            <UserContext.Consumer>
+              {({ apartment }: any) => (
+                <div className=" alert alert-success align-self-center p-1 mb-0 mx-auto" role="alert">
+                  <Text text="cabinet.debt"/>: {apartment[0].debt}
+                </div>
+              )}
+            </UserContext.Consumer>
             <ul className="navbar-nav">
               <li className="nav-item  align-self-center ">
                 <a href={process.env.REACT_APP_HOUSE_URL} className="nav-link"><Text text="cabinet.house"/></a>
