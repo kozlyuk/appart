@@ -28,11 +28,11 @@ export default class CompanyController {
   }
 
   public getUpdateFormPromise(id: number): Promise<AxiosResponse>[] {
-    return [this.getCompanyById(id)];
+    return [this.getCompanyById(id), this.getCompaniesPromise(this.companyEndpoint)];
   }
 
-  public getCreateFormPromise(): [void] {
-    return [void 0];
+  public getCreateFormPromise(): Promise<AxiosResponse>[] {
+    return [this.getCompaniesPromise(this.companyEndpoint)];
   }
 
   // public getCreateFormPromise(): void {
