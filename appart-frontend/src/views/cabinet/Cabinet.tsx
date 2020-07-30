@@ -56,10 +56,11 @@ const Cabinet = (props: any) => {
           <div className="tab-pane content">
             <div className="row">
               <div className="col-12 ">
-                <Navbar toggle={navbarToggle}
-                        toggleUserCard={userCardToggle}
-                        isCardToggled={userCardIsOpen}
-                        user={props.user}
+                <Navbar
+                  toggle={navbarToggle}
+                  toggleUserCard={userCardToggle}
+                  isCardToggled={userCardIsOpen}
+                  user={props.user}
                 />
               </div>
             </div>

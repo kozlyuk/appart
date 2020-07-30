@@ -174,7 +174,7 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     return result;
   };
 
-  filterIsActiveHandler = () => {
+  private filterIsActiveHandler = (): void => {
     this.setState({
       filterQueries: {
         ...this.state.filterQueries,
@@ -186,6 +186,18 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     });
   };
 
+  handlePageChange(pageNumber: number) {
+    this.setState({
+      activePage: pageNumber,
+      filterQueries: {
+        ...this.state.filterQueries,
+        page: pageNumber
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  }
+
   private content = (): JSX.Element => {
     const data = this.state.data as any;
     const total = this.state.totalValues;
@@ -195,13 +207,13 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
         {/*
         // @ts-ignore*/}
         <tr align="center">
-          <th className={styles.withoutPadding}>Назва будинку</th>
-          <th className={styles.withoutPadding}>Апартаменти</th>
+          <th className={styles.withoutPadding + ' align-top'}>Назва будинку<br/>{' '}</th>
+          <th className={styles.withoutPadding + ' align-top'}>Апартаменти<br/>{' '}</th>
           <th className={styles.withoutPadding}>Житель <br/>
             Всього: <Badge color="info" pill>{total?.total_apartments_count}</Badge>
           </th>
-          <th className={styles.withoutPadding}>Рахунок</th>
-          <th className={styles.withoutPadding}>Заборгованість<br/>
+          <th className={styles.withoutPadding + ' align-top'}>Рахунок</th>
+          <th className={styles.withoutPadding + ' align-top'}>Заборгованість<br/>
             Всього: <Badge color="info" pill>{total?.current_total_debt}</Badge></th>
           <th className={styles.withoutPadding}>Загальна заборгованість<br/>
             Всього: <Badge color="info" pill>{total?.period_total_bills_sum}</Badge></th>
@@ -212,6 +224,7 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
         <tbody>
         {data.map((item: Apartment) => (
           <AnalyticsLine
+            // @ts-ignore
             key={item.pk} analyticsLine={item}
             filterRange={[this.state.filterQueries.start_date, this.state.filterQueries.finish_date]}
           />
@@ -255,7 +268,7 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
               itemsCountPerPage={this.state.itemsCountPerPage}
               totalItemsCount={this.state.paginationCount}
               //@ts-ignore
-              // onChange={this.handlePageChange.bind(this)}
+              onChange={this.handlePageChange.bind(this)}
             />
           </Row>
         </Page>
