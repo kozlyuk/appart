@@ -174,7 +174,7 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     return result;
   };
 
-  filterIsActiveHandler = () => {
+  private filterIsActiveHandler = (): void => {
     this.setState({
       filterQueries: {
         ...this.state.filterQueries,
@@ -185,6 +185,18 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
       this.loadData(this.filterUrlGenerator());
     });
   };
+
+  handlePageChange(pageNumber: number) {
+    this.setState({
+      activePage: pageNumber,
+      filterQueries: {
+        ...this.state.filterQueries,
+        page: pageNumber
+      }
+    }, () => {
+      this.loadData(this.filterUrlGenerator());
+    });
+  }
 
   private content = (): JSX.Element => {
     const data = this.state.data as any;
@@ -256,7 +268,7 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
               itemsCountPerPage={this.state.itemsCountPerPage}
               totalItemsCount={this.state.paginationCount}
               //@ts-ignore
-              // onChange={this.handlePageChange.bind(this)}
+              onChange={this.handlePageChange.bind(this)}
             />
           </Row>
         </Page>
