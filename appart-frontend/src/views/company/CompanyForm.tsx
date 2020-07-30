@@ -30,10 +30,12 @@ import { Link } from 'react-router-dom';
 import { Text } from 'react-easy-i18n';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import CompanyController from '../../controllers/CompanyController';
+import SelectWithChoices from '../../components/FormInput/SelectWithChoices';
 
 interface CompanyFormInterface {
   isLoaded: boolean,
   data?: Company,
+  companies?: [Company] | any,
   fieldError?: Company,
   errors?: ValidationErrors,
   uomTypes?: [any]
@@ -46,6 +48,7 @@ type Company = {
   description: string, //
   fullname: string, //
   logo: string,
+  parent_company?: number,
   name: string, //
   phone: string, //
   pk: number,
@@ -89,23 +92,27 @@ export default class CompanyForm extends Component<any, CompanyFormInterface> {
   }
 
   public componentDidMount(): void {
+    const emptyCompany: any = { pk: '', name: '---------' };
     if (this.id) {
       Promise.all(this.CompanyController.getUpdateFormPromise(this.id))
         .then(axios.spread((
-          company: any
+          company: any,
+          companies: any
         ) => {
           this.setState({
             isLoaded: true,
-            data: company.data
+            data: company.data,
+            companies: [emptyCompany, ...companies.data]
           });
         }));
     } else {
       Promise.all(this.CompanyController.getCreateFormPromise())
         .then(axios.spread((
-          uom: any
+          companies: any
         ) => {
           this.setState({
-            isLoaded: true
+            isLoaded: true,
+            companies: [emptyCompany, ...companies.data]
           });
         }));
     }
@@ -241,6 +248,15 @@ export default class CompanyForm extends Component<any, CompanyFormInterface> {
               defaultValue={data?.name}
               error={fieldError?.name}
             />
+            <SelectWithChoices
+              label={'Контролююча компанія'}
+              name={'parent_company'}
+              defaultValue={this.state.data?.parent_company}
+            >
+              {this.state.companies?.map((company: Company) => (
+                <option key={company.pk} value={company.pk}>{company.name}</option>
+              ))}
+            </SelectWithChoices>
             <InputWithLabel
               name="fullname"
               label="Повна назва"
