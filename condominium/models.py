@@ -9,6 +9,10 @@ from django.conf import settings
 class Company(models.Model):
     """ Model contains managerial companies """
 
+    #  Relationships
+    parent_company = models.ForeignKey('self', verbose_name=_('Parent company'),
+                                       blank=True, null=True, on_delete=models.PROTECT)
+
     #  Fields
     name = models.CharField(_('Name'), max_length=45, blank=True)
     fullname = models.CharField(_('Full name'), max_length=255, blank=True)

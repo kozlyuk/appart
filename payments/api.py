@@ -10,7 +10,6 @@ from liqpay import LiqPay
 from payments import serializers
 from payments.services import create_area_bills
 from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
-from condominium.models import Apartment
 from notice.models import News
 
 class ServiceViewSet(viewsets.ModelViewSet):
