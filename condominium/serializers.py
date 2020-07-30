@@ -18,6 +18,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "description",
             "bank_requisites",
             "requisites",
+            "parent_company",
         ]
 
 
