@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import styles from '../apartmentAnalytics.module.css';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
+import { Badge, Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from 'reactstrap';
 import PageSpinner from '../../../components/PageSpinner';
 import axios from 'axios';
 import ApartmentAnalyticsController from '../../../controllers/ApartmentAnalyticsController';
@@ -26,7 +26,9 @@ interface AnalyticsLineState {
 
 type ModalContent = {
   Bills: Bills[],
-  Payments: Payments[]
+  Payments: Payments[],
+  end_total_debt: number,
+  start_total_debt: number
 }
 
 type Bills = {
@@ -79,7 +81,8 @@ type PaymentLine = {
 
 type Apartment = {
   account_number: string,
-  debt: number,
+  start_total_debt: number,
+  end_total_debt: number,
   house_name: string,
   number: number,
   period_total_bills: number,
@@ -240,6 +243,16 @@ export default class AnalyticsLine extends Component<AnalyticsLineProps, Analyti
     if (this.state.modalContentLoaded) {
       return (
         <>
+          <Row>
+            <Col className="text-center">
+              <h6>Заборгованість на початок періоду: <Badge
+                color="info" pill>{this.state.modalContentData?.start_total_debt}</Badge></h6>
+            </Col>
+            <Col className="text-center">
+              <h6>Заборгованість на кінець періоду: <Badge
+                color="info" pill>{this.state.modalContentData?.end_total_debt}</Badge></h6>
+            </Col>
+          </Row>
           {this.modalBills()}
           {this.modalPayments()}
         </>
@@ -259,13 +272,13 @@ export default class AnalyticsLine extends Component<AnalyticsLineProps, Analyti
         //@ts-ignore*/}
         <tr key={analyticsLine.pk} align="center" style={{ cursor: 'pointer' }}
             onClick={() => this.enableModal(analyticsLine.pk)}>
-          <td className={styles.withoutPadding}>{analyticsLine.house_name}</td>
-          <td className={styles.withoutPadding}>{analyticsLine.number}</td>
+          <td className={styles.withoutPadding}>№ {analyticsLine.number} {analyticsLine.house_name}</td>
           <td className={styles.withoutPadding}>{analyticsLine.resident_name}</td>
           <td className={styles.withoutPadding}>{analyticsLine.account_number}</td>
-          <td className={styles.withoutPadding}>{analyticsLine.debt}</td>
+          <td className={styles.withoutPadding}>{analyticsLine.start_total_debt}</td>
           <td className={styles.withoutPadding}>{analyticsLine.period_total_bills}</td>
           <td className={styles.withoutPadding}>{analyticsLine.period_total_payments}</td>
+          <td className={styles.withoutPadding}>{analyticsLine.end_total_debt}</td>
         </tr>
         <Modal isOpen={this.state.toggleModal} toggle={this.toggleModal} size="xl">
           <ModalHeader toggle={this.toggleModal}>Особовий рахунок: {analyticsLine.account_number} для
