@@ -1,6 +1,6 @@
 import csv
 import io
-from datetime import date
+from datetime import date, datetime, timedelta
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
@@ -12,7 +12,6 @@ from accounts.models import User
 from condominium.models import Company, House, Apartment
 from condominium import serializers
 from condominium.services import is_int
-from payments.models import Bill, Payment
 from payments.serializers import BillSerializer, PaymentSerializer
 
 
@@ -222,7 +221,7 @@ class ApartmentBalanceSheet(ListAPIView):
 
     serializer_class_bill = BillSerializer
     serializer_class_payment = PaymentSerializer
-    queryset = Bill.objects.all()
+    queryset = Apartment.objects.all()
 
     def get_queryset_bill(self, apartment, start_date, end_date):
         bills = apartment.bill_set.order_by('period')
@@ -246,11 +245,18 @@ class ApartmentBalanceSheet(ListAPIView):
         apartment = Apartment.objects.get(pk=apartment_pk)
         bill = self.serializer_class_bill(self.get_queryset_bill(apartment, start_date, end_date), many=True)
         payment = self.serializer_class_payment(self.get_queryset_payment(apartment, start_date, end_date), many=True)
+        if start_date:
+            start_previous_day = datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1)
+            start_total_debt = apartment.period_total_bills(end_date=start_previous_day)
+        else:
+            start_total_debt = 0
+        end_total_debt = apartment.period_total_bills(end_date=end_date)
+
         return Response({
-            "start_total_debt": apartment.period_total_bills(end_date=start_date) if start_date else 0,
+            "start_total_debt": start_total_debt,
+            "end_total_debt": end_total_debt,
             "Bills": bill.data,
-            "Payments": payment.data,
-            "end_total_debt": apartment.period_total_bills(end_date=end_date)
+            "Payments": payment.data
         })
 
 
