@@ -37,8 +37,9 @@ interface ApartmentAnalyticsProps {
 }
 
 type TotalValues = {
-  current_total_debt: number,
+  start_total_debt: number,
   period_total_bills_sum: number,
+  end_total_debt: number,
   period_total_payments_sum: number,
   total_apartments_count: number
 }
@@ -212,18 +213,25 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
         {/*
         // @ts-ignore*/}
         <tr align="center">
-          <th className={styles.withoutPadding + ' align-top'}>Назва будинку<br/>{' '}</th>
           <th className={styles.withoutPadding + ' align-top'}>Апартаменти<br/>{' '}</th>
           <th className={styles.withoutPadding}>Житель <br/>
             Всього: <Badge color="info" pill>{total?.total_apartments_count}</Badge>
           </th>
           <th className={styles.withoutPadding + ' align-top'}>Рахунок</th>
-          <th className={styles.withoutPadding + ' align-top'}>Заборгованість<br/>
-            Всього: <Badge color="info" pill>{total?.current_total_debt}</Badge></th>
-          <th className={styles.withoutPadding}>Загальна заборгованість<br/>
+          <th className={styles.withoutPadding + ' align-top'}>Початок періоду<br/>
+            Всього: <Badge color="info" pill>{total?.start_total_debt}</Badge></th>
+          <th className={styles.withoutPadding + ' align-top'}>Нараховано<br/>
             Всього: <Badge color="info" pill>{total?.period_total_bills_sum}</Badge></th>
-          <th className={styles.withoutPadding}>Оплачено<br/>
+          <th className={styles.withoutPadding + ' align-top'}>Оплачено<br/>
             Всього: <Badge color="info" pill>{total?.period_total_payments_sum}</Badge></th>
+          <th className={styles.withoutPadding + ' align-top'}>Кінець періоду<br/>
+            Всього: <Badge color="info" pill>{total?.end_total_debt}</Badge></th>
+          {/*<th className={styles.withoutPadding + ' align-top'}>Заборгованість<br/>*/}
+          {/*  Всього: <Badge color="info" pill>{total?.current_total_debt}</Badge></th>*/}
+          {/*<th className={styles.withoutPadding}>Загальна заборгованість<br/>*/}
+          {/*  Всього: <Badge color="info" pill>{total?.period_total_bills_sum}</Badge></th>*/}
+          {/*<th className={styles.withoutPadding}>Оплачено<br/>*/}
+          {/*  Всього: <Badge color="info" pill>{total?.period_total_payments_sum}</Badge></th>*/}
         </tr>
         </thead>
         <tbody>
