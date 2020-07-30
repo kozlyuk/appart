@@ -21,8 +21,7 @@ def apartment_queryset_filter(request):
     queryset = Apartment.objects.all()
     search_string = request.GET.get('filter', '').split()
     company = request.GET.get('company')
-    house = request.GET.get('house')
-    # houses = request.GET.get('houses')
+    houses = request.GET.getlist('house')
     is_active = not request.GET.get('is_active') == "0"
     order = request.GET.get('order')
     for word in search_string:
@@ -33,14 +32,12 @@ def apartment_queryset_filter(request):
                                    Q(account_number__contains=word))
     if company:
         queryset = queryset.filter(house__company=company)
-    if house:
-        queryset = queryset.filter(house=house)
-    # if houses:
-    #     qs_union = Apartment.objects.none()
-    #     for house in houses:
-    #         qs_segment = queryset.filter(house=house)
-    #         qs_union = qs_union | qs_segment
-    #     queryset = qs_union
+    if houses and houses[0]:
+        qs_union = Apartment.objects.none()
+        for house in houses:
+            qs_segment = queryset.filter(house=house)
+            qs_union = qs_union | qs_segment
+        queryset = qs_union
     if is_active:
         queryset = queryset.filter(is_active=True)
     if order:
