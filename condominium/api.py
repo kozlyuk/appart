@@ -31,7 +31,8 @@ def apartment_queryset_filter(request):
                                    Q(number__contains=word) |
                                    Q(account_number__contains=word))
     if company:
-        queryset = queryset.filter(house__company=company)
+        queryset = queryset.filter(Q(house__company=company) |
+                                   Q(house__company__parent_company=company))
     if houses and houses[0]:
         qs_union = Apartment.objects.none()
         for house in houses:
