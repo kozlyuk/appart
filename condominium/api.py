@@ -224,22 +224,16 @@ class ApartmentBalanceSheet(ListAPIView):
     serializer_class_payment = PaymentSerializer
     queryset = Bill.objects.all()
 
-    def get_queryset_bill(self, apartment_pk):
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        bills = Bill.objects.filter(apartment=apartment_pk) \
-                            .order_by('period')
+    def get_queryset_bill(self, apartment, start_date, end_date):
+        bills = apartment.bill_set.order_by('period')
         if start_date:
             bills = bills.filter(period__gte=start_date)
         if end_date:
             bills = bills.filter(period__lte=end_date)
         return bills
 
-    def get_queryset_payment(self, apartment_pk):
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        payments = Payment.objects.filter(apartment=apartment_pk) \
-                                  .order_by('date')
+    def get_queryset_payment(self, apartment, start_date, end_date):
+        payments = apartment.payment_set.order_by('date')
         if start_date:
             payments = payments.filter(date__gte=start_date)
         if end_date:
@@ -247,11 +241,16 @@ class ApartmentBalanceSheet(ListAPIView):
         return payments
 
     def list(self, request, apartment_pk):
-        bill = self.serializer_class_bill(self.get_queryset_bill(apartment_pk), many=True)
-        payment = self.serializer_class_payment(self.get_queryset_payment(apartment_pk), many=True)
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        apartment = Apartment.objects.get(pk=apartment_pk)
+        bill = self.serializer_class_bill(self.get_queryset_bill(apartment, start_date, end_date), many=True)
+        payment = self.serializer_class_payment(self.get_queryset_payment(apartment, start_date, end_date), many=True)
         return Response({
+            "start_total_debt": apartment.period_total_bills(end_date=start_date) if start_date else 0,
             "Bills": bill.data,
-            "Payments": payment.data
+            "Payments": payment.data,
+            "end_total_debt": apartment.period_total_bills(end_date=end_date)
         })
 
 
