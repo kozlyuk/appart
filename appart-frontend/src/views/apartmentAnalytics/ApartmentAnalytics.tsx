@@ -139,12 +139,11 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     });
   };
 
-  private houseSelectHandler = (event: any): void => {
-    const selectedValue = [...event.target.selectedOptions].map(opt => opt.value);
+  private houseSelectHandler = (result: any): void => {
     this.setState({
       filterQueries: {
         ...this.state.filterQueries,
-        house: selectedValue
+        house: result
       }
     }, () => {
       this.loadData(this.filterUrlGenerator());
@@ -168,7 +167,13 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
     const queryArray = Object.entries(filterQueries);
     let result = this.ApartmentAnalyticsController.apartmentAnalyticsEndpoint;
     queryArray.map((item: any) => {
-      result += `&${item[0].toString()}=${item[1].toString().trim()}`;
+      if (item[1][0]?.label) {
+        item[1].map((nestedQuery: any) => {
+          result += `&${item[0].toString()}=${nestedQuery?.value.toString().trim()}`;
+        });
+      } else {
+        result += `&${item[0].toString()}=${item[1].toString().trim()}`;
+      }
     });
 
     return result;

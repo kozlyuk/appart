@@ -23,6 +23,8 @@ import 'react-day-picker/lib/style.css';
 import Helmet from 'react-helmet';
 import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/uk';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 /**
  * Filter interface
@@ -37,6 +39,8 @@ interface FilterInterface {
   hoverRange?: Date[],
   selectedDays?: Date[]
 }
+
+const animatedComponents = makeAnimated();
 
 export default class AnalyticsFilter extends Component<any, FilterInterface> {
   constructor(props: any) {
@@ -57,15 +61,18 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
 
   public componentDidMount = () => {
     const emptyCompany = { pk: '', name: '----------' };
-    const emptyHouse = { pk: '', name: '----------' };
     Promise.all(this.ApartmentAnalyticsController.getFilterPromise()).then(axios.spread((
       companies: any,
       houses: any
     ) => {
+      const houseOptions: any[] = [];
+      houses.data.map((item: any) => {
+        houseOptions.push({ value: item.pk, label: item.name });
+      });
       this.setState({
         isLoaded: true,
         companyChoices: [emptyCompany, ...companies.data],
-        houseChoices: [emptyHouse, ...houses.data]
+        houseChoices: houseOptions
       });
     }));
   };
@@ -267,17 +274,25 @@ export default class AnalyticsFilter extends Component<any, FilterInterface> {
                           <Text text="sidebar.house"
                                 formatters='firstUppercase'/>
                         </Label>
-                        <Input
-                          type="select"
-                          name="house"
-                          filterquery="house"
-                          id="house"
+                        <Select
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          // defaultValue={[colourOptions[4], colourOptions[5]]}
                           onChange={houseSelectHandler}
-                        >
-                          {houseChoices?.map(({ name, pk }: { name: string, pk: number }) => (
-                            <option key={pk} value={pk}>{name}</option>
-                          ))}
-                        </Input>
+                          isMulti
+                          options={houseChoices}
+                        />
+                        {/*<Input*/}
+                        {/*  type="select"*/}
+                        {/*  name="house"*/}
+                        {/*  filterquery="house"*/}
+                        {/*  id="house"*/}
+                        {/*  onChange={houseSelectHandler}*/}
+                        {/*>*/}
+                        {/*  {houseChoices?.map(({ name, pk }: { name: string, pk: number }) => (*/}
+                        {/*    <option key={pk} value={pk}>{name}</option>*/}
+                        {/*  ))}*/}
+                        {/*</Input>*/}
                       </FormGroup>
                     </Col>
                   </Row>
