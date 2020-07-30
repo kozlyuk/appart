@@ -82,7 +82,7 @@ class ApartmentAnalytics(ListAPIView):
 
     Args:
         start_date ([date]): [start_date of filter period]
-        finish_date ([date]): [finish_date of filter period]
+        end_date ([date]): [end_date of filter period]
         filter ([str]): [search string for filtering]
         company ([str]): [company for filtering]
         house ([str]): [house for filtering]
@@ -96,7 +96,7 @@ class ApartmentAnalytics(ListAPIView):
 
     def get_serializer_context(self):
         return {'start_date': self.request.query_params.get('start_date', date.today().replace(day=1)),
-                'finish_date': self.request.query_params.get('finish_date', date.today())}
+                'end_date': self.request.query_params.get('end_date', date.today())}
 
     def get_queryset(self):
         # filtering queryset
@@ -189,10 +189,10 @@ class CSVImport(CreateAPIView):
                 print(user)
                 # create apartment if apartment with such house and number does not exist
                 house = House.objects.get(pk=house_pk)
-                apartment, created = Apartment.objects.get_or_create(house=house,
-                                                                     resident=user,
-                                                                     number=row[0],
-                                                                     defaults={'account_number': row[1],
+                apartment, created = Apartment.objects.get_or_create(account_number=row[1],
+                                                                     defaults={'resident': user,
+                                                                               'house': house,
+                                                                               'number': row[0],
                                                                                'area': row[3],
                                                                                'residents_count': row[4] or 0,
                                                                                'exemption_count': row[5] or 0,
@@ -214,7 +214,7 @@ class ApartmentBalanceSheet(ListAPIView):
         apartment_pk (int): apartment_pk
     Get parameters:
         start_date (date): from date filter
-        finish_date (date): to date filter
+        end_date (date): to date filter
     Returns:
             "Bills": BillSerializer.data,
             "Payments": PaymentSerializer.data
@@ -226,24 +226,24 @@ class ApartmentBalanceSheet(ListAPIView):
 
     def get_queryset_bill(self, apartment_pk):
         start_date = self.request.GET.get('start_date')
-        finish_date = self.request.GET.get('finish_date')
+        end_date = self.request.GET.get('end_date')
         bills = Bill.objects.filter(apartment=apartment_pk) \
                             .order_by('period')
         if start_date:
             bills = bills.filter(period__gte=start_date)
-        if finish_date:
-            bills = bills.filter(period__lte=finish_date)
+        if end_date:
+            bills = bills.filter(period__lte=end_date)
         return bills
 
     def get_queryset_payment(self, apartment_pk):
         start_date = self.request.GET.get('start_date')
-        finish_date = self.request.GET.get('finish_date')
+        end_date = self.request.GET.get('end_date')
         payments = Payment.objects.filter(apartment=apartment_pk) \
                                   .order_by('date')
         if start_date:
             payments = payments.filter(date__gte=start_date)
-        if finish_date:
-            payments = payments.filter(date__lte=finish_date)
+        if end_date:
+            payments = payments.filter(date__lte=end_date)
         return payments
 
     def list(self, request, apartment_pk):
@@ -260,12 +260,13 @@ class TotalApartmentsAnalytics(views.APIView):
     Sending JSON with total apartments analytics
     Get parameters:
         start_date (date): from date filter
-        finish_date (date): to date filter
+        end_date (date): to date filter
     Returns:
-        "total_apartments_count": count of apartments in queryset,
-        "current_total_debt": total debt of apartments in queryset
-        "period_total_bills_sum": bills sum of apartments in queryset,
-        "period_total_payments_sum": payments sum of apartments in queryset
+        "total_apartments_count": count of apartments in queryset
+        "start_total_debt": total debt of apartments on start of period
+        "end_total_debt": total debt of apartments on end of period
+        "period_total_bills_sum": bills sum of apartments for period,
+        "period_total_payments_sum": payments sum of apartments for period
     """
     queryset = Apartment.objects.none()
 
@@ -275,19 +276,22 @@ class TotalApartmentsAnalytics(views.APIView):
 
         # qalculating total data
         start_date = self.request.GET.get('start_date')
-        finish_date = self.request.GET.get('finish_date')
-        current_total_debt = 0
+        end_date = self.request.GET.get('end_date')
+        start_total_debt = 0
+        end_total_debt = 0
         period_total_bills_sum = 0
         period_total_payments_sum = 0
         for apartment in queryset:
-            current_total_debt += apartment.debt
-            period_total_bills_sum += apartment.period_total_bills(start_date, finish_date)
-            period_total_payments_sum += apartment.period_total_payments(start_date, finish_date)
+            start_total_debt += apartment.total_debt(end_date=start_date)
+            end_total_debt += apartment.total_debt(end_date=end_date)
+            period_total_bills_sum += apartment.period_total_bills(start_date, end_date)
+            period_total_payments_sum += apartment.period_total_payments(start_date, end_date)
 
         # sending responce with totals
         json_data = {}
         json_data["total_apartments_count"] = queryset.count()
-        json_data["current_total_debt"] = current_total_debt
+        json_data["start_total_debt"] = start_total_debt
+        json_data["end_total_debt"] = end_total_debt
         json_data["period_total_bills_sum"] = period_total_bills_sum
         json_data["period_total_payments_sum"] = period_total_payments_sum
         return Response(json_data, status=status.HTTP_200_OK)

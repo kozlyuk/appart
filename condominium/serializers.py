@@ -66,10 +66,12 @@ class ApartmentSerializer(serializers.ModelSerializer):
 
 class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
     """ Serializer with analytics data for Apartments
-        Get start_date finish_date data from context
+        Get start_date end_date data from context
     """
     house_name = serializers.CharField(source='house', required=False)
     resident_name = serializers.CharField(source='resident', required=False)
+    start_total_debt = serializers.SerializerMethodField()
+    end_total_debt = serializers.SerializerMethodField()
     period_total_bills = serializers.SerializerMethodField()
     period_total_payments = serializers.SerializerMethodField()
 
@@ -81,18 +83,25 @@ class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
             "resident_name",
             "number",
             "account_number",
-            "debt",
+            "start_total_debt",
+            "end_total_debt",
             "period_total_bills",
             "period_total_payments"
         ]
 
+    def get_start_total_debt(self, obj):
+        return obj.period_total_bills(end_date=self.context['start_date'])
+
+    def get_end_total_debt(self, obj):
+        return obj.period_total_bills(end_date=self.context['end_date'])
+
     def get_period_total_bills(self, obj):
         return obj.period_total_bills(self.context['start_date'],
-                                      self.context['finish_date'])
+                                      self.context['end_date'])
 
     def get_period_total_payments(self, obj):
         return obj.period_total_payments(self.context['start_date'],
-                                         self.context['finish_date'])
+                                         self.context['end_date'])
 
     @staticmethod
     def setup_eager_loading(queryset):

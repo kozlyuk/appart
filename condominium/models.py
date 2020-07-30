@@ -89,34 +89,24 @@ class Apartment(models.Model):
                                         .count() + 1
         return f'{period}-{self.account_number}-{period_bills_count}'
 
-    def total_bills_sum(self):
-        """ return bills sum for appartment """
-        return self.bill_set.aggregate(bills_sum=Sum('total_value')) \
-                            ['bills_sum'] or 0
-
-    def total_payments_sum(self):
-        """ return payments sum for appartment """
-        return self.payment_set.aggregate(payments_sum=Sum('value')) \
-                                ['payments_sum'] or 0
-
-    def current_total_debt(self):
-        """ return total debt of apartment """
-        return self.total_bills_sum() - self.total_payments_sum()
-
-    def period_total_bills(self, start_date, finish_date):
-        """ return bills sum for appartment """
-        bills = self.bill_set.filter(is_active=True)
+    def period_total_bills(self, start_date=None, end_date=None):
+        """ return bills sum of appartment for given period """
+        bills = self.bill_set.all()
         if start_date:
             bills = bills.filter(period__gte=start_date)
-        if finish_date:
-            bills = bills.filter(period__lte=finish_date)
+        if end_date:
+            bills = bills.filter(period__lte=end_date)
         return bills.aggregate(bills_sum=Sum('total_value'))['bills_sum'] or 0
 
-    def period_total_payments(self, start_date, finish_date):
-        """ return payments sum for appartment """
+    def period_total_payments(self, start_date=None, end_date=None):
+        """ return payments sum of appartment for given period """
         payments = self.payment_set.all()
         if start_date:
             payments = payments.filter(date__gte=start_date)
-        if finish_date:
-            payments = payments.filter(date__lte=finish_date)
+        if end_date:
+            payments = payments.filter(date__lte=end_date)
         return payments.aggregate(payments_sum=Sum('value'))['payments_sum'] or 0
+
+    def total_debt(self, start_date=None, end_date=None):
+        """ return total debt of apartment for given period """
+        return self.period_total_bills(start_date, end_date) - self.period_total_payments(start_date, end_date)
