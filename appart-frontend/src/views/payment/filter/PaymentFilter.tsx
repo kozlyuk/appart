@@ -7,87 +7,209 @@
  * @copyright       2020 ITEL-Service
  */
 
+// @ts-ignore
 import React, { Component } from 'react';
-import { Button, Card, CardBody, Col, Collapse, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Button, Card, CardBody, Col, Collapse, CustomInput, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 // @ts-ignore
 import { Text } from 'react-easy-i18n';
-import axios from 'axios';
-import { FiFilter } from 'react-icons/fi';
 import PageSpinner from '../../../components/PageSpinner';
-import PaymentFilterController from '../../../controllers/PaymentFilterController';
+import { FiFilter } from 'react-icons/fi';
+import ApartmentAnalyticsController from '../../../controllers/ApartmentAnalyticsController';
+import axios from 'axios';
+// @ts-ignore
+import moment from 'moment';
+import DayPicker, { DateUtils } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
+import Helmet from 'react-helmet';
+import MomentLocaleUtils from 'react-day-picker/moment';
+import 'moment/locale/uk';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
-interface FilterProps {
-  isLoaded: boolean,
-}
-
-interface FilterStateInterface {
+/**
+ * Filter interface
+ */
+interface FilterInterface {
   isLoaded: boolean,
   filterToggle: boolean,
-  houseChoices: [] | any,
-  serviceChoices: [] | any,
-  paymentTypeChoices: [] | any
+  companyChoices?: any,
+  houseChoices?: any,
+  startDateValue?: any,
+  startDateFormattedValue?: any,
+  hoverRange?: Date[],
+  selectedDays?: Date[]
 }
 
-export default class PaymentFilter extends Component<FilterProps, FilterStateInterface> {
+const animatedComponents = makeAnimated();
 
-  protected PaymentFilterContoller: PaymentFilterController;
-
+export default class PaymentFilter extends Component<any, FilterInterface> {
   constructor(props: any) {
     super(props);
-    this.toggleFilter = this.toggleFilter.bind(this);
-    this.PaymentFilterContoller = new PaymentFilterController();
+    this.state = this.getInitialState();
   }
 
-  state: FilterStateInterface = {
+  private ApartmentAnalyticsController: ApartmentAnalyticsController = new ApartmentAnalyticsController();
+
+  public state: FilterInterface = {
     isLoaded: false,
     filterToggle: false,
-    houseChoices: null,
-    serviceChoices: null,
-    paymentTypeChoices: null
+    companyChoices: undefined,
+    houseChoices: undefined,
+    hoverRange: undefined,
+    selectedDays: this.getWeekRange(new Date())
   };
 
-  protected toggleFilter(): void {
+  public componentDidMount = () => {
+    const emptyCompany = { pk: '', name: '----------' };
+    Promise.all(this.ApartmentAnalyticsController.getFilterPromise()).then(axios.spread((
+      companies: any,
+      houses: any
+    ) => {
+      const houseOptions: any[] = [];
+      houses.data.map((item: any) => {
+        houseOptions.push({ value: item.pk, label: item.name });
+      });
+      this.setState({
+        isLoaded: true,
+        companyChoices: [emptyCompany, ...companies.data],
+        houseChoices: houseOptions
+      });
+    }));
+  };
+
+  private getInitialState = (): any => {
+    return {
+      from: this.getMonthRange(new Date).from,
+      to: this.getMonthRange(new Date).to
+    };
+  };
+
+  private handleDayClick = (day: Date) => {
+    // @ts-ignore
+    const range = DateUtils.addDayToRange(day, this.state);
+    // @ts-ignore
+    this.setState(range, () => {
+      this.props.dateRangeHandler(
+        moment(range.from || this.getMonthRange(new Date).from).format('YYYY-MM-DD'),
+        moment(range.to || this.getMonthRange(new Date).to).format('YYYY-MM-DD')
+      );
+    });
+  };
+
+  protected toggleFilter = (): void => {
     this.setState({
       filterToggle: !this.state.filterToggle
     });
   };
 
-  public componentDidMount() {
-    const emptyHouse = { pk: '', name: '----------' };
-    const emptyService = { pk: '', name: '----------' };
-    const emptyPaymentType = ['', '----------'];
-    // @ts-ignore
-    Promise.all(this.PaymentFilterContoller.getPromiseValues())
-      .then(axios.spread((
-        services: any,
-        houses: any,
-        paymentTypes: any
-        ) => {
-          this.setState({
-            serviceChoices: [emptyService, ...services.data],
-            houseChoices: [emptyHouse, ...houses.data],
-            paymentTypeChoices: [emptyPaymentType, ...paymentTypes.data],
-            isLoaded: true
-          });
-        }
-      ));
+  private getRelativeDayInWeek(d: Date, dy: number): string { // 0 = Sunday, 1 = Monday ... 6 = Saturday
+    d = new Date(d);
+    const day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6 : dy);
+    return new Date(d.setDate(diff)).toISOString();
   }
 
+  private handleStartDataChange(value: any, formattedValue: any): void {
+    const withDash = formattedValue.replace(/\//mg, '-');
+    this.setState({
+      startDateValue: value,             // ISO String, ex: "2016-11-19T12:00:00.000Z"
+      startDateFormattedValue: withDash  // Formatted String, ex: "11/19/2016"
+    });
+  }
+
+  private getWeekDays(weekStart: Date): Date[] {
+    const days = [weekStart];
+    for (let i = 1; i < 7; i += 1) {
+      days.push(
+        moment(weekStart)
+          .add(i, 'days')
+          .toDate()
+      );
+    }
+
+    return days;
+  }
+
+  public getWeekRange(date: Date): any {
+    return {
+      from: moment(date)
+        .startOf('week')
+        .toDate(),
+      to: moment(date)
+        .endOf('week')
+        .toDate()
+    };
+  }
+
+  public getMonthRange(date: Date): any {
+    return {
+      from: moment(date)
+        .startOf('month')
+        .toDate(),
+      to: moment(date)
+        .endOf('month')
+        .toDate()
+    };
+  }
+
+  private handleDayChange = (date: Date): void => {
+    this.setState({
+      selectedDays: this.getWeekDays(this.getWeekRange(date).from)
+    }, () => {
+      const days: any = this.state.selectedDays;
+      this.props.dateRangeHandler(moment(days[0]).format('YYYY-MM-DD'), moment(days[6]).format('YYYY-MM-DD'));
+    });
+  };
+
+  private handleDayEnter = (date: Date): void => {
+    this.setState({
+      hoverRange: this.getWeekRange(date)
+    });
+  };
+
+  private handleDayLeave = (): void => {
+    this.setState({
+      hoverRange: undefined
+    });
+  };
+
+  private handleWeekClick = (weekNumber: number, days: Date[], e: Event): void => {
+    this.setState({
+      selectedDays: days
+    }, () => {
+      this.props.dateRangeHandler(moment(days[0]).format('YYYY-MM-DD'), moment(days[6]).format('YYYY-MM-DD'));
+    });
+  };
+
+  private static displayMonth(counter: number) {
+    const today = new Date();
+    const month = new Date().getMonth() - counter;
+    today.setMonth(month);
+    return today;
+  }
 
   public render(): any {
     const {
       filterSearchHandler,
-      filterHouseHandler,
-      filterServiceHandler,
-      filterPaymentTypeHandler
+      houseSelectHandler,
+      companySelectHandler,
+      filterIsActiveHandler
     }: any = this.props;
+    const {
+      houseChoices,
+      companyChoices,
+      hoverRange,
+      selectedDays
+    }: any = this.state;
+    // @ts-ignore
+    const { from, to } = this.state;
+    const modifiers = { start: from, end: to };
     const isLoaded: boolean = this.state.isLoaded;
-    const paymentChoices: any = this.state.paymentTypeChoices;
     if (!isLoaded) {
       return (
         <div className="loaderWrapper text-center mt-4">
           <PageSpinner/>
-          <h3 className="text-center text-muted mt-2"><Text text="global.loading"/></h3>
+          <h3 className="text-center text-muted"><Text text="global.loading"/></h3>
         </div>);
     } else {
       return (
@@ -96,7 +218,20 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
             <Button size="sm" color="secondary" outline onClick={this.toggleFilter} className="ml-2">
               <FiFilter/> <Text text="global.filter"/>
             </Button>
-            <Form inline className="ml-auto" onSubmit={filterSearchHandler}>
+            <Form inline className="ml-auto">
+              <FormGroup>
+                <div>
+                  <CustomInput
+                    type="checkbox"
+                    id="isActive"
+                    name="isActive"
+                    label={<Text text="global.displayInactive"/>} inline
+                    onChange={filterIsActiveHandler}
+                  />
+                </div>
+              </FormGroup>
+            </Form>
+            <Form inline className="ml-2" onSubmit={filterSearchHandler}>
               <FormGroup className="mr-2">
                 <Label className="mr-2" for="search"><Text text="global.search"/></Label>
                 <Input
@@ -114,64 +249,79 @@ export default class PaymentFilter extends Component<FilterProps, FilterStateInt
               <CardBody className="pb-0">
                 <Form>
                   <Row>
-                    <Col className="pb-0 col-lg-6 col-12 mb-0">
+                    <Col className="pb-0 col-lg-6 col-12">
                       <FormGroup>
-                        <Label className="mr-2" for="payment_type">
-                          <Text text="sidebar.paymentType"
+                        <Label className="mr-2" for="company">
+                          <Text text="sidebar.company"
                                 formatters='firstUppercase'/>
                         </Label>
                         <Input
                           type="select"
-                          name="payment_type"
-                          filterquery="payment_type"
-                          id="payment_type"
-                          onChange={filterPaymentTypeHandler}
+                          name="company"
+                          filterquery="company"
+                          id="company"
+                          onChange={companySelectHandler}
                         >
-                          {paymentChoices?.map((item: any) => (
-                            <option key={item[0]} value={item[0]}>{item[1]}</option>
-                          ))}
-                        </Input>
-                      </FormGroup>
-                    </Col>
-                    <Col className="pb-0 col-lg-6 col-12 mb-0">
-                      <FormGroup>
-                        <Label className="mr-2" for="service">
-                          <Text text="sidebar.service"
-                                formatters='firstUppercase'/>
-                        </Label>
-                        <Input
-                          type="select"
-                          name="service"
-                          filterquery="service"
-                          id="service"
-                          onChange={filterServiceHandler}
-                        >
-                          {this.state.serviceChoices?.map(({ name, pk }: any) => (
+                          {companyChoices?.map(({ name, pk }: { name: string, pk: number }) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col className="pb-0 col-lg-12 col-12">
+                    <Col className="pb-0 col-lg-6 col-12">
                       <FormGroup>
                         <Label className="mr-2" for="house">
                           <Text text="sidebar.house"
                                 formatters='firstUppercase'/>
                         </Label>
-                        <Input
-                          type="select"
-                          name="house"
-                          filterquery="house"
-                          id="house"
-                          onChange={filterHouseHandler}
-                        >
-                          {this.state.houseChoices?.map(({ name, pk }: any) => (
-                            <option key={pk} value={pk}>{name}</option>
-                          ))}
-                        </Input>
+                        <Select
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          // defaultValue={[colourOptions[4], colourOptions[5]]}
+                          onChange={houseSelectHandler}
+                          isMulti
+                          options={houseChoices}
+                        />
                       </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="RangeExample text-center">
+                        <DayPicker
+                          className="Selectable"
+                          selectedDays={[from, { from, to }]}
+                          showWeekNumbers
+                          showOutsideDays
+                          numberOfMonths={4}
+                          month={PaymentFilter.displayMonth(3)}
+                          localeUtils={MomentLocaleUtils}
+                          locale={'uk'}
+                          modifiers={modifiers}
+                          onDayClick={this.handleDayClick}
+                        />
+                        {/*
+                        // @ts-ignore*/}
+                        <Helmet>
+                          <style>{`
+                            .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+                              background-color: #f0f8ff !important;
+                              color: #4a90e2;
+                            }
+                            .Selectable .DayPicker-Day {
+                              border-radius: 0 !important;
+                            }
+                            .Selectable .DayPicker-Day--start {
+                              border-top-left-radius: 50% !important;
+                              border-bottom-left-radius: 50% !important;
+                            }
+                            .Selectable .DayPicker-Day--end {
+                              border-top-right-radius: 50% !important;
+                              border-bottom-right-radius: 50% !important;
+                            }
+                          `}</style>
+                        </Helmet>
+                      </div>
                     </Col>
                   </Row>
                 </Form>
