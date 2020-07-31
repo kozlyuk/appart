@@ -110,3 +110,19 @@ class Apartment(models.Model):
     def total_debt(self, start_date=None, end_date=None):
         """ return total debt of apartment for given period """
         return self.period_total_bills(start_date, end_date) - self.period_total_payments(start_date, end_date)
+
+    def period_bills(self, start_date, end_date):
+        bills = self.bill_set.order_by('period')
+        if start_date:
+            bills = bills.filter(period__gte=start_date)
+        if end_date:
+            bills = bills.filter(period__lte=end_date)
+        return bills
+
+    def period_payments(self, start_date, end_date):
+        payments = self.payment_set.order_by('date')
+        if start_date:
+            payments = payments.filter(date__gte=start_date)
+        if end_date:
+            payments = payments.filter(date__lte=end_date)
+        return payments

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from rest_framework import serializers
 
 from condominium.models import Apartment, House, Company
@@ -90,7 +91,8 @@ class ApartmentAnalyticsSerializer(serializers.ModelSerializer):
         ]
 
     def get_start_total_debt(self, obj):
-        return obj.period_total_bills(end_date=self.context['start_date'])
+        start_previous_day = self.context['start_date'] - timedelta(days=1)
+        return obj.period_total_bills(end_date=start_previous_day)
 
     def get_end_total_debt(self, obj):
         return obj.period_total_bills(end_date=self.context['end_date'])

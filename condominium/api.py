@@ -9,10 +9,11 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 
 from accounts.models import User
+from payments.serializers import BillSerializer, PaymentSerializer
+from payments.utils import last_day_of_month
 from condominium.models import Company, House, Apartment
 from condominium import serializers
 from condominium.services import is_int
-from payments.serializers import BillSerializer, PaymentSerializer
 
 
 def apartment_queryset_filter(request):
@@ -85,7 +86,7 @@ class ApartmentAnalytics(ListAPIView):
         filter ([str]): [search string for filtering]
         company ([str]): [company for filtering]
         house ([str]): [house for filtering]
-        is_active ([boolean]): [is_active for filtering]
+        is_active ([0 or 1]): [is_active for filtering]
         order ([str]): [order for ordering]
 
     Returns:
@@ -94,8 +95,20 @@ class ApartmentAnalytics(ListAPIView):
     serializer_class = serializers.ApartmentAnalyticsSerializer
 
     def get_serializer_context(self):
-        return {'start_date': self.request.query_params.get('start_date', date.today().replace(day=1)),
-                'end_date': self.request.query_params.get('end_date', date.today())}
+        start_date_str = self.request.query_params.get('start_date')
+        end_date_str = self.request.query_params.get('end_date')
+        # if start_day parameter doesn't exist return first day of current month
+        if start_date_str:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+        else:
+            start_date = date.today().replace(day=1)
+        # if end_date parameter doesn't exist return last day of current month
+        if end_date_str:
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+        else:
+            end_date = last_day_of_month(date.today())
+        return {'start_date': start_date,
+                'end_date': end_date}
 
     def get_queryset(self):
         # filtering queryset
@@ -223,40 +236,36 @@ class ApartmentBalanceSheet(ListAPIView):
     serializer_class_payment = PaymentSerializer
     queryset = Apartment.objects.all()
 
-    def get_queryset_bill(self, apartment, start_date, end_date):
-        bills = apartment.bill_set.order_by('period')
-        if start_date:
-            bills = bills.filter(period__gte=start_date)
-        if end_date:
-            bills = bills.filter(period__lte=end_date)
-        return bills
-
-    def get_queryset_payment(self, apartment, start_date, end_date):
-        payments = apartment.payment_set.order_by('date')
-        if start_date:
-            payments = payments.filter(date__gte=start_date)
-        if end_date:
-            payments = payments.filter(date__lte=end_date)
-        return payments
-
     def list(self, request, apartment_pk):
+        # get the apartment
+        try:
+            apartment = Apartment.objects.get(pk=apartment_pk)
+        # return error HTTP_400_BAD_REQUEST if apartment does not exist
+        except Apartment.DoesNotExist:
+            return Response(_('Apartment with such id does not exist'), status=status.HTTP_400_BAD_REQUEST)
+        # get date parameters from request
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
-        apartment = Apartment.objects.get(pk=apartment_pk)
-        bill = self.serializer_class_bill(self.get_queryset_bill(apartment, start_date, end_date), many=True)
-        payment = self.serializer_class_payment(self.get_queryset_payment(apartment, start_date, end_date), many=True)
+        # get bills list for period
+        bills = self.serializer_class_bill(apartment.period_bills(start_date=start_date,
+                                           end_date=end_date), many=True)
+        # get payments list for period
+        payments = self.serializer_class_payment(apartment.period_payments(start_date=start_date,
+                                                 end_date=end_date), many=True)
+        # prepare start_total_debt end_total_debt fields
+        # if start_date does not exist return start_total_debt = 0
         if start_date:
             start_previous_day = datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1)
             start_total_debt = apartment.period_total_bills(end_date=start_previous_day)
         else:
             start_total_debt = 0
         end_total_debt = apartment.period_total_bills(end_date=end_date)
-
+        # return responce
         return Response({
             "start_total_debt": start_total_debt,
             "end_total_debt": end_total_debt,
-            "Bills": bill.data,
-            "Payments": payment.data
+            "Bills": bills.data,
+            "Payments": payments.data
         })
 
 
@@ -279,15 +288,19 @@ class TotalApartmentsAnalytics(views.APIView):
         # filtering queryset
         queryset = apartment_queryset_filter(self.request)
 
-        # qalculating total data
+        # get date parameters from request
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
+        # set start_previous_day to previous day of start_date
+        start_previous_day = datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1) if start_date else None
+        # qalculating total data
         start_total_debt = 0
         end_total_debt = 0
         period_total_bills_sum = 0
         period_total_payments_sum = 0
         for apartment in queryset:
-            start_total_debt += apartment.total_debt(end_date=start_date)
+            # if start_date does not exist return start_total_debt = 0
+            start_total_debt += apartment.total_debt(end_date=start_previous_day) if start_previous_day else 0
             end_total_debt += apartment.total_debt(end_date=end_date)
             period_total_bills_sum += apartment.period_total_bills(start_date, end_date)
             period_total_payments_sum += apartment.period_total_payments(start_date, end_date)

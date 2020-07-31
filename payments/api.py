@@ -213,7 +213,7 @@ class PayView(APIView):
 
     def get(self, request, bill: int):
         bill_pk = self.kwargs['bill']
-        # get the apartment
+        # get the bill
         try:
             bill = Bill.objects.get(pk=bill_pk)
         # return error HTTP_400_BAD_REQUEST if apartment does not exist
