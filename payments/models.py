@@ -200,6 +200,7 @@ class Payment(models.Model):
     value = models.DecimalField(_('Payment value'), max_digits=8, decimal_places=2, default=0)
     description = models.CharField(_('Payment description'), max_length=255, blank=True)
     liqpay_responce = models.TextField(_('LiqPay responce'), blank=True, null=True)
+    is_recognized = models.BooleanField(_('Is recognized'), default=False)
     # Creator and Date information
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Created by'),
                                    blank=True, null=True, on_delete=models.CASCADE)

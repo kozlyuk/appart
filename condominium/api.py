@@ -84,8 +84,8 @@ class ApartmentAnalytics(ListAPIView):
         start_date ([date]): [start_date of filter period]
         end_date ([date]): [end_date of filter period]
         filter ([str]): [search string for filtering]
-        company ([str]): [company for filtering]
-        house ([str]): [house for filtering]
+        company ([pk]): [company for filtering]
+        house ([pk]): [house for filtering]
         is_active ([0 or 1]): [is_active for filtering]
         order ([str]): [order for ordering]
 

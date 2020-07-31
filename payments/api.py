@@ -9,6 +9,7 @@ from liqpay import LiqPay
 
 from payments import serializers
 from payments.services import create_area_bills
+from payments.utils import last_day_of_month
 from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
 from notice.models import News
 
@@ -62,32 +63,54 @@ class RateViewSet(viewsets.ModelViewSet):
 
 
 class PaymentViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Payment class
-    Filter queryset by search string ('filter' get parameter)
-    Filter queryset by house field ('house' get parameter)
-    Filter queryset by apartment field ('apartment' get parameter)
-    Filter queryset by service field ('service' get parameter)
-    Filter queryset by payment_type field ('payment_type' get parameter)
-    Order queryset by any given field ('order' get parameter)
+    """ ViewSet for the Payment
+
+    Args:
+        start_date ([date]): [start_date of filter period]
+        end_date ([date]): [end_date of filter period]
+        filter ([str]): [search string for filtering]
+        company ([pk]): [company id for filtering]
+        house ([pk]): [house id for filtering] [list]
+        apartment ([pk]): [apartment id for filtering]
+        service ([pk]): [service id for filtering]
+        payment_type ([pk]): [PAYMENT_TYPE_CHOICES for filtering] [list]
+        is_recognized ([0 or 1]): [is_active for filtering]
+        order ([str]): [order for ordering]
+
+    Returns:
+        [queryset]: [queryset of filtered Payments]
     """
 
     serializer_class = serializers.PaymentSerializer
 
     def get_queryset(self):
+        # get all paymentrs in queryset
         queryset = Payment.objects.all()
+        # get parameters from request
         search_string = self.request.GET.get('filter', '').split()
-        house = self.request.GET.get('house')
+        company = self.request.GET.get('company')
+        houses = self.request.GET.getlist('house')
         apartment = self.request.GET.get('apartment')
         service = self.request.GET.get('service')
         payment_type = self.request.GET.getlist('payment_type')
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        is_recognized = self.request.GET.get('is_recognized')
         order = self.request.GET.get('order')
+        # filter queryset
         for word in search_string:
             queryset = queryset.filter(Q(description__icontains=word) |
                                        Q(apartment__account_number__contains=word) |
                                        Q(apartment__number__contains=word))
-
-        if house:
-            queryset = queryset.filter(apartment__house=house)
+        if company:
+            queryset = queryset.filter(Q(apartment__house__company=company) |
+                                       Q(apartment__house__company__parent_company=company))
+        if houses and houses[0]:
+            qs_union = Payment.objects.none()
+            for house in houses:
+                qs_segment = queryset.filter(apartment__house=house)
+                qs_union = qs_union | qs_segment
+            queryset = qs_union
         if apartment:
             queryset = queryset.filter(apartment=apartment)
         if service:
@@ -98,11 +121,20 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 qs_segment = queryset.filter(payment_type=payment)
                 qs_union = qs_union | qs_segment
             queryset = qs_union
+        if start_date:
+            queryset = queryset.filter(date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(date__lte=end_date)
+        if is_recognized == '0':
+            queryset = queryset.filter(is_recognized=False)
+        if is_recognized == '1':
+            queryset = queryset.filter(is_recognized=True)
         if order:
             queryset = queryset.order_by(order)
 
-        # Set up eager loading to avoid N+1 selects
+        # set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        # return filtered queryset
         return queryset
 
 
