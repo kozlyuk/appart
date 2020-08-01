@@ -69,11 +69,11 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ApartmentSerializer
 
     def get_queryset(self):
-        # filtering queryset
+        # get filtered apartments
         queryset = apartment_queryset_filter(self.request)
-
-        # Set up eager loading to avoid N+1 selects
+        # set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        # return filtered queryset
         return queryset
 
 
@@ -113,9 +113,9 @@ class ApartmentAnalytics(ListAPIView):
     def get_queryset(self):
         # filtering queryset
         queryset = apartment_queryset_filter(self.request)
-
         # Set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        # return filtered queryset
         return queryset
 
 

@@ -1,8 +1,8 @@
 from datetime import datetime, date
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Q
-from rest_framework import viewsets, status, permissions
+from django.db.models import Q, Sum
+from rest_framework import views, viewsets, status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from liqpay import LiqPay
@@ -12,6 +12,59 @@ from payments.services import create_area_bills
 from payments.utils import last_day_of_month
 from payments.models import Bill, BillLine, Payment, Service, Rate, PaymentService
 from notice.models import News
+
+
+def payment_queryset_filter(request):
+    """return queryset of payments filtered by get parameters in request"""
+    # get all payments
+    queryset = Payment.objects.all()
+    # get parameters from request
+    search_string = request.GET.get('filter', '').split()
+    company = request.GET.get('company')
+    houses = request.GET.getlist('house')
+    apartment = request.GET.get('apartment')
+    service = request.GET.get('service')
+    payment_type = request.GET.getlist('payment_type')
+    start_date = request.query_params.get('start_date')
+    end_date = request.query_params.get('end_date')
+    is_recognized = request.GET.get('is_recognized')
+    order = request.GET.get('order')
+    # filtering queryset
+    for word in search_string:
+        queryset = queryset.filter(Q(description__icontains=word) |
+                                   Q(apartment__account_number__contains=word) |
+                                   Q(apartment__number__contains=word))
+    if company:
+        queryset = queryset.filter(Q(apartment__house__company=company) |
+                                   Q(apartment__house__company__parent_company=company))
+    if houses and houses[0]:
+        qs_union = Payment.objects.none()
+        for house in houses:
+            qs_segment = queryset.filter(apartment__house=house)
+            qs_union = qs_union | qs_segment
+        queryset = qs_union
+    if apartment:
+        queryset = queryset.filter(apartment=apartment)
+    if service:
+        queryset = queryset.filter(service=service)
+    if payment_type:
+        qs_union = Payment.objects.none()
+        for payment in payment_type:
+            qs_segment = queryset.filter(payment_type=payment)
+            qs_union = qs_union | qs_segment
+        queryset = qs_union
+    if start_date:
+        queryset = queryset.filter(date__gte=start_date)
+    if end_date:
+        queryset = queryset.filter(date__lte=end_date)
+    if is_recognized == '0':
+        queryset = queryset.filter(is_recognized=False)
+    if is_recognized == '1':
+        queryset = queryset.filter(is_recognized=True)
+    if order:
+        queryset = queryset.order_by(order)
+    return queryset
+
 
 class ServiceViewSet(viewsets.ModelViewSet):
     """ViewSet for the Service class"""
@@ -84,54 +137,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PaymentSerializer
 
     def get_queryset(self):
-        # get all paymentrs in queryset
-        queryset = Payment.objects.all()
-        # get parameters from request
-        search_string = self.request.GET.get('filter', '').split()
-        company = self.request.GET.get('company')
-        houses = self.request.GET.getlist('house')
-        apartment = self.request.GET.get('apartment')
-        service = self.request.GET.get('service')
-        payment_type = self.request.GET.getlist('payment_type')
-        start_date = self.request.query_params.get('start_date')
-        end_date = self.request.query_params.get('end_date')
-        is_recognized = self.request.GET.get('is_recognized')
-        order = self.request.GET.get('order')
-        # filter queryset
-        for word in search_string:
-            queryset = queryset.filter(Q(description__icontains=word) |
-                                       Q(apartment__account_number__contains=word) |
-                                       Q(apartment__number__contains=word))
-        if company:
-            queryset = queryset.filter(Q(apartment__house__company=company) |
-                                       Q(apartment__house__company__parent_company=company))
-        if houses and houses[0]:
-            qs_union = Payment.objects.none()
-            for house in houses:
-                qs_segment = queryset.filter(apartment__house=house)
-                qs_union = qs_union | qs_segment
-            queryset = qs_union
-        if apartment:
-            queryset = queryset.filter(apartment=apartment)
-        if service:
-            queryset = queryset.filter(service=service)
-        if payment_type:
-            qs_union = Payment.objects.none()
-            for payment in payment_type:
-                qs_segment = queryset.filter(payment_type=payment)
-                qs_union = qs_union | qs_segment
-            queryset = qs_union
-        if start_date:
-            queryset = queryset.filter(date__gte=start_date)
-        if end_date:
-            queryset = queryset.filter(date__lte=end_date)
-        if is_recognized == '0':
-            queryset = queryset.filter(is_recognized=False)
-        if is_recognized == '1':
-            queryset = queryset.filter(is_recognized=True)
-        if order:
-            queryset = queryset.order_by(order)
-
+        # get filtered payments
+        queryset = payment_queryset_filter(self.request)
         # set up eager loading to avoid N+1 selects
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
         # return filtered queryset
@@ -305,3 +312,36 @@ class PayCallbackView(APIView):
             News.objects.create(title="Failed payment", text=data+' '+signature)
             return Response({'check': 'callback is not valid'},
                             status=status.HTTP_412_PRECONDITION_FAILED)
+
+
+class TotalPayments(views.APIView):
+    """
+    Sending JSON with total payments analytics
+
+    Args:
+        start_date ([date]): [start_date of filter period]
+        end_date ([date]): [end_date of filter period]
+        filter ([str]): [search string for filtering]
+        company ([pk]): [company id for filtering]
+        house ([pk]): [house id for filtering] [list]
+        apartment ([pk]): [apartment id for filtering]
+        service ([pk]): [service id for filtering]
+        payment_type ([pk]): [PAYMENT_TYPE_CHOICES for filtering] [list]
+        is_recognized ([0 or 1]): [is_active for filtering]
+        order ([str]): [order for ordering]
+
+    Returns:
+        [queryset]: [queryset of filtered Payments]
+    """
+
+    queryset = Payment.objects.none()
+
+    def get(self, request):
+        # get filtered queryset of payments
+        queryset = payment_queryset_filter(self.request)
+        # creating JSON data
+        json_data = {}
+        json_data["total_payments_count"] = queryset.count()
+        json_data["period_total_payments"] = queryset.aggregate(Sum('value'))['value__sum'] or 0
+        # sending responce with totals
+        return Response(json_data, status=status.HTTP_200_OK)
