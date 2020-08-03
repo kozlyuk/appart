@@ -113,17 +113,19 @@ export default class BillForm extends AbstractFormView {
    * @private
    */
   _setDataWithLoading(houses) {
+    const emptyHouse = { pk: '', name: '----------' };
     this.setState({
       billLinesPk: [],
-      housesData: houses.data,
+      housesData: [emptyHouse, ...houses.data],
       isLoaded: true
     });
   }
 
   _setDataWithoutLoading(houses, services, bill) {
+    const emptyHouse = { pk: '', name: '----------' };
     this.setState({
       billLinesPk: this.parseBillLines(bill.data.bill_lines),
-      housesData: houses.data,
+      housesData: [emptyHouse, ...houses.data],
       services: services.data,
       data: bill.data,
       isLoaded: true
