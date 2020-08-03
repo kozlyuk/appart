@@ -66,7 +66,7 @@ def create_area_bills(house, period):
         bill.total_value = bill.calc_total_value()
         bill.save()
         # update debt if apartment
-        apartment.debt = apartment.current_total_debt()
+        apartment.debt = apartment.total_debt()
         apartment.save()
 
     return apartments.count()

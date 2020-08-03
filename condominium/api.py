@@ -174,7 +174,6 @@ class CSVImport(CreateAPIView):
         imported_users = 0
         imported_apartment = 0
         for row in rows:
-            print(is_int(row[0]))
             if is_int(row[0]) and is_int(row[1]) and row[6]:
                 # prepearing data
                 full_name = row[2].split(' ', 1)
@@ -198,7 +197,6 @@ class CSVImport(CreateAPIView):
                 user.groups.add(resident_group)
                 if created:
                     imported_users += 1
-                print(user)
                 # create apartment if apartment with such house and number does not exist
                 house = House.objects.get(pk=house_pk)
                 apartment, created = Apartment.objects.get_or_create(account_number=row[1],
