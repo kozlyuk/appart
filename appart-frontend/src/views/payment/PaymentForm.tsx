@@ -24,7 +24,7 @@ import styles from '../order/styles/delimiter.module.css';
 
 interface PaymentFormState {
   data: Payment,
-  houses: Houses,
+  houses: Houses | any,
   paymentType: PaymentType,
   isLoaded: boolean,
   errors: FieldErrors,
@@ -179,14 +179,15 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
 
   private setData = (
     services: ServiceData,
-    houses: HousesData,
+    houses: HousesData | any,
     paymentType: PaymentTypeData,
     payment: PaymentData
   ) => {
+    const emptyHouse = { pk: '', name: '----------' };
     this.setState({
       serviceLinesPk: this.parseServiceLines(payment.data.payment_service),
       services: services.data,
-      houses: houses.data,
+      houses: [emptyHouse, ...houses.data],
       paymentType: paymentType.data,
       data: payment.data,
       isLoaded: true
@@ -194,6 +195,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
   };
 
   public componentDidMount(): void {
+    const emptyHouse = { pk: '', name: '----------' };
     // @ts-ignore
     Promise.all(this.PaymentController.getPromiseValues())
       .then(axios.spread((
@@ -222,7 +224,7 @@ export default class PaymentForm extends Component<any, PaymentFormState> {
               payment_service: [],
               apartment_name: ''
             },
-            houses: houses.data,
+            houses: [emptyHouse, ...houses.data],
             paymentType: paymentType.data,
             isLoaded: true
           });
