@@ -5,14 +5,14 @@
  * @copyright       2020 ITEL-Service
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PageSpinner from '../../components/PageSpinner';
 import Page from '../../components/Page';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 // @ts-ignore
 import Pagination from 'react-js-pagination';
 // @ts-ignore
-import { Text } from 'react-easy-i18n';
+import {Text} from 'react-easy-i18n';
 import ApartmentAnalyticsController from '../../controllers/ApartmentAnalyticsController';
 import axios from 'axios';
 import AnalyticsFilter from './filter/AnalyticsFilter';
@@ -164,11 +164,12 @@ export default class ApartmentAnalytics extends Component<ApartmentAnalyticsProp
   };
 
   private filterUrlGenerator = (): string => {
-    const { filterQueries } = this.state;
+    const {filterQueries} = this.state;
     const queryArray = Object.entries(filterQueries);
     let result = this.ApartmentAnalyticsController.apartmentAnalyticsEndpoint;
     queryArray.map((item: any) => {
-      if (item[1][0]?.label) {
+      if (item[1] === null) {
+      } else if (item[1][0]?.label) {
         item[1].map((nestedQuery: any) => {
           result += `&${item[0].toString()}=${nestedQuery?.value.toString().trim()}`;
         });

@@ -8,17 +8,17 @@
  */
 
 // @ts-ignore
-import React, { Component } from 'react';
-import { Button, Card, CardBody, Col, Collapse, CustomInput, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import React, {Component} from 'react';
+import {Button, Card, CardBody, Col, Collapse, CustomInput, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 // @ts-ignore
-import { Text } from 'react-easy-i18n';
+import {Text} from 'react-easy-i18n';
 import PageSpinner from '../../../components/PageSpinner';
-import { FiFilter } from 'react-icons/fi';
+import {FiFilter} from 'react-icons/fi';
 import ApartmentAnalyticsController from '../../../controllers/ApartmentAnalyticsController';
 import axios from 'axios';
 // @ts-ignore
 import moment from 'moment';
-import DayPicker, { DateUtils } from 'react-day-picker';
+import DayPicker, {DateUtils} from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import Helmet from 'react-helmet';
 import MomentLocaleUtils from 'react-day-picker/moment';
@@ -60,14 +60,14 @@ export default class PaymentFilter extends Component<any, FilterInterface> {
   };
 
   public componentDidMount = () => {
-    const emptyCompany = { pk: '', name: '----------' };
+    const emptyCompany = {pk: '', name: '----------'};
     Promise.all(this.ApartmentAnalyticsController.getFilterPromise()).then(axios.spread((
       companies: any,
       houses: any
     ) => {
       const houseOptions: any[] = [];
       houses.data.map((item: any) => {
-        houseOptions.push({ value: item.pk, label: item.name });
+        houseOptions.push({value: item.pk, label: item.name});
       });
       this.setState({
         isLoaded: true,
@@ -202,8 +202,8 @@ export default class PaymentFilter extends Component<any, FilterInterface> {
       selectedDays
     }: any = this.state;
     // @ts-ignore
-    const { from, to } = this.state;
-    const modifiers = { start: from, end: to };
+    const {from, to} = this.state;
+    const modifiers = {start: from, end: to};
     const isLoaded: boolean = this.state.isLoaded;
     if (!isLoaded) {
       return (
@@ -225,7 +225,7 @@ export default class PaymentFilter extends Component<any, FilterInterface> {
                     type="checkbox"
                     id="isActive"
                     name="isActive"
-                    label={<Text text="global.displayInactive"/>} inline
+                    label={'Тільки нерозпізнані'} inline
                     onChange={filterIsActiveHandler}
                   />
                 </div>
@@ -262,7 +262,7 @@ export default class PaymentFilter extends Component<any, FilterInterface> {
                           id="company"
                           onChange={companySelectHandler}
                         >
-                          {companyChoices?.map(({ name, pk }: { name: string, pk: number }) => (
+                          {companyChoices?.map(({name, pk}: { name: string, pk: number }) => (
                             <option key={pk} value={pk}>{name}</option>
                           ))}
                         </Input>
@@ -286,11 +286,46 @@ export default class PaymentFilter extends Component<any, FilterInterface> {
                     </Col>
                   </Row>
                   <Row>
+                    <Col className="pb-0 col-lg-6 col-12">
+                      <FormGroup>
+                        <Label className="mr-2" for="company">
+                          Тип оплати
+                        </Label>
+                        <Input
+                          type="select"
+                          name="company"
+                          filterquery="company"
+                          id="company"
+                          onChange={companySelectHandler}
+                        >
+                          {companyChoices?.map(({name, pk}: { name: string, pk: number }) => (
+                            <option key={pk} value={pk}>{name}</option>
+                          ))}
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col className="pb-0 col-lg-6 col-12">
+                      <FormGroup>
+                        <Label className="mr-2" for="house">
+                          Сервісна служба
+                        </Label>
+                        <Select
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          // defaultValue={[colourOptions[4], colourOptions[5]]}
+                          onChange={houseSelectHandler}
+                          isMulti
+                          options={houseChoices}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
                     <Col>
                       <div className="RangeExample text-center">
                         <DayPicker
                           className="Selectable"
-                          selectedDays={[from, { from, to }]}
+                          selectedDays={[from, {from, to}]}
                           showWeekNumbers
                           showOutsideDays
                           numberOfMonths={4}

@@ -9,16 +9,16 @@ import Auth from '../auth/auth';
 import axios, { AxiosPromise, AxiosResponse } from 'axios';
 
 interface PaymentControllerInterface {
-  id: string
+  id: string | undefined
 }
 
 export default class PaymentController implements PaymentControllerInterface {
 
-  public id: string;
+  public id: string | undefined;
 
   private _user: Auth = new Auth();
 
-  constructor(id: string) {
+  constructor(id?: string) {
     this.id = id;
     this._user = new Auth();
   }
@@ -28,6 +28,8 @@ export default class PaymentController implements PaymentControllerInterface {
       'Authorization': 'Token ' + this._user.getAuthToken()
     }
   };
+
+  public paymentEndpoint?: string = process.env['REACT_APP_PAYMENT']
 
   public getPromiseValues() {
     if (this.id) {
@@ -42,7 +44,8 @@ export default class PaymentController implements PaymentControllerInterface {
   }
 
   private getPaymentPromise(): Promise<AxiosPromise> {
-    const getPaymentEndpoint: string = process.env['REACT_APP_PAYMENT'] + this.id + '/';
+    // @ts-ignore
+    const getPaymentEndpoint = `${this.paymentEndpoint}${this.id}/`
 
     return axios.get(<string>getPaymentEndpoint, this.headers);
   }
