@@ -9,8 +9,8 @@ from dimservice.models import Work, Order
 
 
 # Cteare superuser
-user = User.objects.create_superuser('0673607460', 'sergey.kozlyuk@gmail.com', '100Grad')
-print("Superuser with login 0673607460 created")
+user = User.objects.create_superuser('*', '*', '*')
+print("Superuser with created")
 
 
 # Create initial Company
